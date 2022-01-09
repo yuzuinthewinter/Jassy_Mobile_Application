@@ -1,50 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_application_1/constants.dart';
+import 'package:flutter_application_1/screens/landing/landing_page.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    title: 'Jassy Application',
-    home: LaunchPage(),
-  ));
-}
+void main() => runApp(const MyApp());
+  
+class MyApp extends StatelessWidget {
 
-class LaunchPage extends StatelessWidget {
-  const LaunchPage({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
+  // This widget is the root of your application.5
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          child: const Text('Open route'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SecondRoute()),
-            );
-          },
-        ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Auth',
+      theme: ThemeData(
+        textTheme: GoogleFonts.kanitTextTheme(),
+        primaryColor: primaryColor,
+        scaffoldBackgroundColor: bgColor
       ),
+      home: const LandingPage(),
     );
   }
 }
 
-class SecondRoute extends StatelessWidget {
-  const SecondRoute({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Second Route"),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Go back!'),
-        ),
-      ),
-    );
-  }
-}
