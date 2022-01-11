@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/componant/account_exists_login.dart';
-import 'package:flutter_application_1/componant/background.dart';
-import 'package:flutter_application_1/componant/round_button.dart';
-import 'package:flutter_application_1/componant/term_and_policies.dart';
-import 'package:flutter_application_1/componant/text_button.dart';
+import 'package:flutter_application_1/component/account_exists_login.dart';
+import 'package:flutter_application_1/component/background.dart';
+import 'package:flutter_application_1/component/round_button.dart';
+import 'package:flutter_application_1/component/term_and_policies.dart';
+import 'package:flutter_application_1/component/text_button.dart';
 import 'package:flutter_application_1/constants.dart';
 import 'package:flutter_svg/svg.dart';
 
