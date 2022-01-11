@@ -10,7 +10,7 @@ class TextLinkButton extends StatelessWidget {
     Key? key, 
     required this.text, 
     required this.press, 
-    this.textColor = primaryColor,
+    this.textColor = greyDark,
   }) : super(key: key);
 
   @override
