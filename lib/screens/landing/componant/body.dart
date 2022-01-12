@@ -3,8 +3,8 @@ import 'package:flutter_application_1/component/account_exists_login.dart';
 import 'package:flutter_application_1/component/background.dart';
 import 'package:flutter_application_1/component/round_button.dart';
 import 'package:flutter_application_1/component/term_and_policies.dart';
-import 'package:flutter_application_1/component/text_button.dart';
 import 'package:flutter_application_1/constants.dart';
+import 'package:flutter_application_1/screens/register/register_page.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Body extends StatelessWidget {
@@ -34,7 +34,12 @@ class Body extends StatelessWidget {
           RoundButton(
             text: 'ลงทะเบียนสำหรับผู้ใช้ใหม่',
             minimumSize: Size(279, 36),
-            press: () => {},),
+            press: () {
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const RegisterPage()),
+              );
+            },),
           AccountExistsLogin(),
           SizedBox(height: size.height * 0.05,),
           TermAndPolicies()
