@@ -47,3 +47,5 @@ const negativeLight     = Color(0xFFFFE6DE);
 const negative          = Color(0xFFFFA688);
 const negativeDark      = Color(0xFFFD9775);
 const negativeDarker    = Color(0xFFE38869);
+
+const facebook    = Color(0xFF4267B2);

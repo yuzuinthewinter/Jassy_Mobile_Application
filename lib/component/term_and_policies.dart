@@ -13,7 +13,7 @@ class TermAndPolicies extends StatelessWidget {
       textAlign: TextAlign.center,
       text: TextSpan(
       style: TextStyle(
-        color: grey,
+        color: greyDark,
         fontFamily: 'Kanit',
         ),
       children: [
