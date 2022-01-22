@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_application_1/constants.dart';
+import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_application_1/screens/landing/landing_page.dart';
 
 void main() => runApp(const MyApp());

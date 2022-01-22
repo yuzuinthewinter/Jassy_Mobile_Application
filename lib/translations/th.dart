@@ -1,0 +1,1 @@
+//TODO: config with thai languages

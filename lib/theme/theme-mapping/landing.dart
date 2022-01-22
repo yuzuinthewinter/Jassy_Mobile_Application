@@ -1,0 +1,1 @@
+//TODO: mapping each component on page
