@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/back_close_appbar.dart';
-import 'package:flutter_application_1/constants.dart';
 import 'package:flutter_application_1/screens/register/component/body.dart';
 
 class RegisterPage extends StatelessWidget {
