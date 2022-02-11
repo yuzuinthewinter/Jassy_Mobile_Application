@@ -1,16 +1,57 @@
-# flutter_application_1
+## Flutter Node MongoDB Login Registration
 
-A new Flutter project.
+`Git Clone`
 
-## Getting Started
+```
+git clone https://github.com/maheshkareeya/flutter-node-mongodb-login-registration.git
+```
 
-This project is a starting point for a Flutter application.
+`Change Directory`
 
-A few resources to get you started if this is your first Flutter project:
+```
+cd flutter-node-mongodb-login-registration
+```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+`Change Directory`
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+cd backend
+```
+
+`Run Npm Command`
+
+```
+npm install
+```
+
+```
+node index.js
+```
+
+`Change Directory`
+
+```
+cd frontend
+```
+
+`Run Command`
+
+```
+flutter run
+```
+
+`Or Open VSCode and`
+
+```
+Ctrl/Cmd + F5
+```
+
+`Url for POST Data`
+
+http://localhost:8080/signin
+
+http://localhost:8080/signup
+
+`Demo`
+
+![flutter+strapi](https://user-images.githubusercontent.com/16520789/94677174-1a59a080-033a-11eb-9717-7a08773743ec.png)
