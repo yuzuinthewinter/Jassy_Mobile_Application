@@ -1,10 +1,4 @@
-## Flutter Node MongoDB Login Registration
-
-`Git Clone`
-
-```
-git clone https://github.com/maheshkareeya/flutter-node-mongodb-login-registration.git
-```
+## Jassy Application using Flutter and Node.js express (Mongodb)
 
 `Change Directory`
 
