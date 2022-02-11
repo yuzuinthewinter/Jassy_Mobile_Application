@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.kanitTextTheme(),
         primaryColor: primaryColor,
-        scaffoldBackgroundColor: bgColor
+        scaffoldBackgroundColor: greyLightest
       ),
       home: const LandingPage(),
     );

@@ -25,7 +25,7 @@ class Body extends StatelessWidget {
           SizedBox(height: size.height * 0.05,),
           Text(
             "มาแลกเปลี่ยนความรู้กันเถอะ !",
-            style: TextStyle(
+              style: TextStyle(
               fontSize: 18, 
               fontWeight: FontWeight.w500,
               color: greyDark),
