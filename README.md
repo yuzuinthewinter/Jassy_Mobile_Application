@@ -3,12 +3,6 @@
 `Change Directory`
 
 ```
-cd flutter-node-mongodb-login-registration
-```
-
-`Change Directory`
-
-```
 cd backend
 ```
 
