@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/background.dart';
 import 'package:flutter_application_1/component/term_and_policies.dart';
 import 'package:flutter_application_1/component/button/icon_button.dart';
+import 'package:flutter_application_1/screens/register/phone_register.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -24,7 +25,12 @@ class Body extends StatelessWidget {
             text: 'ลงทะเบียนด้วยเบอร์โทรศัพท์',
             minimumSize: Size(279, 36),
             iconPicture: SvgPicture.asset('assets/icons/mobile.svg', height: 21,),
-            press: () {},
+            press: () {
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PhoneRegister()),
+              );
+            },
           ),
           IconButtonComponent(
             text: 'ลงทะเบียนด้วย Facebook',

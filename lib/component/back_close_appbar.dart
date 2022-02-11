@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 class BackAndCloseAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String text;
+  
   const BackAndCloseAppBar({
-    Key? key,
+    Key? key, 
+    this.text = '',
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      title: Text(text, style: TextStyle(color: textDark),),
+      centerTitle: true,
       elevation: 0,
       backgroundColor: Colors.transparent,
       leading: BackButton(

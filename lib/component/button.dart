@@ -49,9 +49,9 @@ class ButtonComponent extends StatelessWidget {
                 size: 24.0,
                 semanticLabel: 'Text to announce in accessibility modes',
               ),
-              Text(
-                data: '123',
-              ),
+              // Text(
+              //   data: '123',
+              // ),
             ],
             
           )

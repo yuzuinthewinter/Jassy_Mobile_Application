@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // const primaryColor = Color(0xFF6F35A5);
-const bgColor = Color(0xFFFFFFFF);
+// const bgColor = Color(0xFFFFFFFF);
 
 // core color
 
@@ -48,4 +48,5 @@ const negative          = Color(0xFFFFA688);
 const negativeDark      = Color(0xFFFD9775);
 const negativeDarker    = Color(0xFFE38869);
 
-const facebook    = Color(0xFF4267B2);
+const facebook   = Color(0xFF4267B2);
+const bgColor    = Color(0xFFE5E5E5); 
