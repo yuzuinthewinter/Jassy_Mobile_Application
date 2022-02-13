@@ -1,8 +1,8 @@
 //TODO: re-componant from button folder
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/theme/index.dart';
 
-import '../theme/index.dart';
 
 class ButtonComponent extends StatelessWidget {
   final String text, buttonVariant, iconPosition, icon;

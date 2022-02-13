@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'componant/landing_body.dart';
+import 'package:flutter_application_1/screens/landing/componant/landing_body.dart';
 
 
 class LandingPage extends StatelessWidget {

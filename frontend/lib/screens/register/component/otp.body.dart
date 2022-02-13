@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../../component/curved_widget.dart';
-import '../../../component/header_style/header_style1.dart';
-import '../../../component/numeric_numpad.dart';
-import '../../../component/text/header_text.dart';
-import '../../../theme/index.dart';
-import '../create_password.dart';
+import 'package:flutter_application_1/component/curved_widget.dart';
+import 'package:flutter_application_1/component/header_style/header_style1.dart';
+import 'package:flutter_application_1/component/numeric_numpad.dart';
+import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/screens/register/create_password.dart';
+import 'package:flutter_application_1/theme/index.dart';
 
 class Body extends StatefulWidget {
   final String phoneNumber;

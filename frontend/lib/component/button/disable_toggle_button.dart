@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../theme/index.dart';
+import 'package:flutter_application_1/theme/index.dart';
 
 class DisableToggleButton extends StatefulWidget {
   final String text;

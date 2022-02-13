@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../theme/index.dart';
 
 class IconButtonComponent extends StatelessWidget {
   final String text;

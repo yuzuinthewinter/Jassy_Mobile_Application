@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../component/back_close_appbar.dart';
-import 'component/regpage_body.dart';
+import 'package:flutter_application_1/component/back_close_appbar.dart';
+import 'package:flutter_application_1/screens/register/component/regpage_body.dart';
 class RegisterPage extends StatelessWidget {
   const RegisterPage({ Key? key }) : super(key: key);
 
