@@ -39,7 +39,7 @@ class Body extends StatelessWidget {
             minimumSize: Size(279, 36),
             iconPicture: SvgPicture.asset('assets/icons/facebook.svg', height: 21,),
             press: () {},
-            color: facebook,
+            color: facebookColor,
           ),
           IconButtonComponent(
             text: 'ลงทะเบียนด้วย Google',
