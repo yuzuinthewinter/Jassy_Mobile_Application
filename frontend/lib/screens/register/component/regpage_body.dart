@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/component/background.dart';
-import 'package:flutter_application_1/component/term_and_policies.dart';
-import 'package:flutter_application_1/component/button/icon_button.dart';
-import 'package:flutter_application_1/screens/register/phone_register.dart';
-import 'package:flutter_application_1/theme/index.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../../component/background.dart';
+import '../../../component/button/icon_button.dart';
+import '../../../component/term_and_policies.dart';
+import '../../../theme/index.dart';
+import '../phone_register.dart';
 
 class Body extends StatelessWidget {
   const Body({ Key? key }) : super(key: key);
+
+  get facebook => null;
 
   @override
   Widget build(BuildContext context) {

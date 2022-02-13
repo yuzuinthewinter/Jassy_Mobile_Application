@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/component/button/disable_toggle_button.dart';
-import 'package:flutter_application_1/component/curved_widget.dart';
-import 'package:flutter_application_1/component/header_style/header_style1.dart';
-import 'package:flutter_application_1/component/input_feilds/required_text_field_label.dart';
-import 'package:flutter_application_1/component/input_feilds/text_feild_container.dart';
-import 'package:flutter_application_1/component/text/description_text.dart';
-import 'package:flutter_application_1/component/text/header_text.dart';
-import 'package:flutter_application_1/theme/index.dart';
+import '../../../component/button/disable_toggle_button.dart';
+import '../../../component/curved_widget.dart';
+import '../../../component/header_style/header_style1.dart';
+import '../../../component/input_feilds/required_text_field_label.dart';
+import '../../../component/text/description_text.dart';
+import '../../../component/text/header_text.dart';
+import '../../../theme/index.dart';
 
 class Body extends StatefulWidget {
   const Body({ Key? key }) : super(key: key);

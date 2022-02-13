@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/component/account_exists_login.dart';
-import 'package:flutter_application_1/component/background.dart';
-import 'package:flutter_application_1/component/button/round_button.dart';
-import 'package:flutter_application_1/component/term_and_policies.dart';
-import 'package:flutter_application_1/theme/index.dart';
-import 'package:flutter_application_1/screens/register/register_page.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../component/account_exists_login.dart';
+import '../../../component/background.dart';
+import '../../../component/button/round_button.dart';
+import '../../../component/term_and_policies.dart';
+import '../../../theme/index.dart';
+import '../../register/register_page.dart';
 
 class Body extends StatelessWidget {
   const Body({ Key? key }) : super(key: key);
