@@ -22,7 +22,7 @@ class _BodyState extends State<Body> {
   bool isHiddenPassword = true;
   bool isHiddenConfirmPassword = true;
   User user = User();
-  RegExp regex = RegExp("(?=.*[A-Z])(?=.*[a-z])(?=.*?[!@#\$&*~]).{8,}");
+  RegExp regex = RegExp("(?=.*[A-Z])(?=.*[a-z])(?=.*?[!@#\$&*~.]).{8,}");
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
