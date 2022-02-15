@@ -31,7 +31,6 @@ class User {
   String password;
   String role;
   String phoneOtp;
-  Info info;
 
-  User(this.phoneNumber, this.password, this.role, this.phoneOtp, this.info);
+  User({this.phoneNumber = '', this.password = '', this.role = '', this.phoneOtp = ''});
 }
