@@ -6,6 +6,8 @@ import 'package:flutter_application_1/component/header_style/header_style1.dart'
 import 'package:flutter_application_1/component/input_feilds/required_text_field_label.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/models/user.dart';
+import 'package:flutter_application_1/screens/register/create_password_success.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 class Body extends StatefulWidget {
@@ -17,6 +19,12 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
+  bool isHiddenPassword = true;
+  bool isHiddenConfirmPassword = true;
+  User user = User();
+  RegExp regex = RegExp("(?=.*[A-Z])(?=.*[a-z])(?=.*?[!@#\$&*~.]).{8,}");
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +53,18 @@ class _BodyState extends State<Body> {
             SizedBox(height: size.height * 0.01,),
             Container(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-            child: TextFormField(    
+            child: TextFormField(
+                controller: passwordController,
+                obscureText: isHiddenPassword,
                 keyboardType: TextInputType.text,
                 inputFormatters: [LengthLimitingTextInputFormatter(9)],
                 decoration: InputDecoration(
+                  suffixIcon: InkWell(
+                    onTap: _togglePasswordView,
+                    child: isHiddenPassword? Icon(Icons.visibility_off) : Icon(Icons.visibility)
+                    ),
                   fillColor: textLight,
+                  // hintText: "กรุณากรอก",
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40),
@@ -67,8 +82,13 @@ class _BodyState extends State<Body> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
+                  }else if (!regex.hasMatch(value)){
+                    return "กรุณากรอกตามpattern";
                   }
                   return null;
+                },
+                onSaved: (String? password) {
+                  user.password = password!;
                 },
               ),
             ),
@@ -79,10 +99,16 @@ class _BodyState extends State<Body> {
             SizedBox(height: size.height * 0.01,),
             Container(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-            child: TextFormField(    
+            child: TextFormField(
+                controller: confirmPasswordController,
+                obscureText: isHiddenConfirmPassword,   
                 keyboardType: TextInputType.text,
                 inputFormatters: [LengthLimitingTextInputFormatter(9)],
                 decoration: InputDecoration(
+                  suffixIcon: InkWell(
+                    onTap: _toggleConfirmPasswordView,
+                    child: isHiddenConfirmPassword? Icon(Icons.visibility_off) : Icon(Icons.visibility)
+                    ),
                   fillColor: textLight,
                   filled: true,
                   border: OutlineInputBorder(
@@ -101,6 +127,10 @@ class _BodyState extends State<Body> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
+                  }else if (!regex.hasMatch(value)){
+                    return "กรุณากรอกตามpattern";
+                  }else if (passwordController.text != confirmPasswordController.text){
+                    return "รหัสไม่ตรงกัน";
                   }
                   return null;
                 },
@@ -113,14 +143,16 @@ class _BodyState extends State<Body> {
             SizedBox(height: size.height * 0.09,),
             Center(       
               child: DisableToggleButton(
-                  text: "ตกลง", 
+                  text: "ยืนยันการตั้งค่ารหัสผ่าน",
                   minimumSize: Size(279, 36),
                   press: () {
                   if (_formKey.currentState!.validate()) {
-                        // Navigator.push(
-                        // context,
-                        // MaterialPageRoute(builder: (context) => const EnterOTP()),
-                        // );
+                        _formKey.currentState!.save();
+                        print("password: ${user.password}");
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CreatePasswordSuccess()),
+                        );
                       }
                   },
               )
@@ -129,5 +161,17 @@ class _BodyState extends State<Body> {
         ),
       ),
     );
+  }
+
+  void _togglePasswordView() {  
+    setState(() {
+      isHiddenPassword =! isHiddenPassword;  
+    });
+  }
+
+  void _toggleConfirmPasswordView() {
+    setState(() {
+      isHiddenConfirmPassword =! isHiddenConfirmPassword;
+    });
   }
 }

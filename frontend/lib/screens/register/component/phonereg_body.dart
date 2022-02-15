@@ -6,6 +6,7 @@ import 'package:flutter_application_1/component/header_style/header_style1.dart'
 import 'package:flutter_application_1/component/input_feilds/required_text_field_label.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/register/enter_otp.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -18,26 +19,9 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  // late TextEditingController controller;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   controller = TextEditingController();
-  //   controller.addListener(() {
-      
-  //   })
-  // }
-
-  // @override
-  // void dispose() {
-  //   controller.dispose();
-
-  //   super.dispose();
-  // }
-  // bool isButtonActive = true;
   final _formKey = GlobalKey<FormState>();
+  User user = User();
 
   @override
   Widget build(BuildContext context) {
@@ -88,8 +72,13 @@ class _BodyState extends State<Body> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
+                  }else if (value.length < 9) {
+                    return "กรอกให้ครบ";
                   }
                   return null;
+                },
+                onSaved: (String? phoneNumber) {
+                  user.phoneNumber = phoneNumber!;
                 },
               ),
           ),
@@ -100,6 +89,8 @@ class _BodyState extends State<Body> {
               minimumSize: const Size(279, 36),
               press: () {
                 if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  print("phone: ${user.phoneNumber}");
                   Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const EnterOTP()),
