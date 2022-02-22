@@ -22,6 +22,14 @@ class _BodyState extends State<Body> {
 
   final _formKey = GlobalKey<FormState>();
   User user = User();
+  final phoneNumberController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    phoneNumberController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +55,11 @@ class _BodyState extends State<Body> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
             child: TextFormField(    
+              controller: phoneNumberController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [LengthLimitingTextInputFormatter(9)],
                 decoration: InputDecoration(
+                  // hintText: "869077768",
                   fillColor: textLight,
                   filled: true,
                   border: OutlineInputBorder(
@@ -78,7 +88,8 @@ class _BodyState extends State<Body> {
                   return null;
                 },
                 onSaved: (String? phoneNumber) {
-                  user.phoneNumber = phoneNumber!;
+                  phoneNumber = phoneNumberController.text;
+                  user.phoneNumber = phoneNumber;
                 },
               ),
           ),

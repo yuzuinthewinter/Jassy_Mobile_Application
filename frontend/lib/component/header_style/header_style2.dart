@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HeaderStyle1 extends StatelessWidget {
-  const HeaderStyle1({
+class HeaderStyle2 extends StatelessWidget {
+  const HeaderStyle2({
     Key? key,
   }) : super(key: key);
 
@@ -9,7 +9,7 @@ class HeaderStyle1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 250,
+      height: 270,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
         begin: Alignment.topLeft,
@@ -22,7 +22,7 @@ class HeaderStyle1 extends StatelessWidget {
         colors: [Color(0xFFE6E3FF), Color(0xFFFFEAEF), Color(0xFFFFEAC4)]),
         image: DecorationImage(
           alignment: Alignment.bottomCenter, 
-          image: AssetImage("assets/images/phone_reg_img.png"),
+          image: AssetImage("assets/images/header_img2.png"),
         )
       ),
     );

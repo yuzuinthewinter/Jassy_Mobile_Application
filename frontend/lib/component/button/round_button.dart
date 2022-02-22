@@ -5,7 +5,7 @@ class RoundButton extends StatelessWidget {
   final String text;
   final Size minimumSize;
   final Color color, textColor;
-  final VoidCallback press;
+  final VoidCallback? press;
   
   const RoundButton({
     Key? key, 
