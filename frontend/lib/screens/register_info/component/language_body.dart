@@ -22,18 +22,18 @@ class _BodyState extends State<Body> {
   Name name = Name();
   Info userInfo = Info();
   User user = User();
-  late FixedExtentScrollController nationScrollController;
-  late FixedExtentScrollController motherScrollController;
-  late FixedExtentScrollController motherLevelScrollController;
+  late FixedExtentScrollController countryScrollController;
+  late FixedExtentScrollController defaultScrollController;
+  late FixedExtentScrollController defaultLevelScrollController;
   late FixedExtentScrollController interestScrollController;
   late FixedExtentScrollController interestLevelScrollController;
 
   final languageLevelItems = ['beginner', 'intermediate', 'Advance'];
   final languageItems = ['ไทย', 'korean', 'Indonsian'];
 
-  int nationIndex = 0;
-  int motherIndex = 0;
-  int motherLevelIndex = 0;
+  int countryIndex = 0;
+  int defaultIndex = 0;
+  int defaultLevelIndex = 0;
   int interestIndex = 0;
   int interestLevelIndex = 0;
 
@@ -41,18 +41,18 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
 
-    nationScrollController = FixedExtentScrollController(initialItem: nationIndex);
-    motherScrollController = FixedExtentScrollController(initialItem: motherIndex);
-    motherLevelScrollController = FixedExtentScrollController(initialItem: motherLevelIndex);
+    countryScrollController = FixedExtentScrollController(initialItem: countryIndex);
+    defaultScrollController = FixedExtentScrollController(initialItem: defaultIndex);
+    defaultLevelScrollController = FixedExtentScrollController(initialItem: defaultLevelIndex);
     interestScrollController = FixedExtentScrollController(initialItem: interestIndex);
     interestLevelScrollController = FixedExtentScrollController(initialItem: interestLevelIndex);
   }
 
   @override
   void dispose() {
-    nationScrollController.dispose();
-    motherScrollController.dispose();
-    motherLevelScrollController.dispose();
+    countryScrollController.dispose();
+    defaultScrollController.dispose();
+    defaultLevelScrollController.dispose();
     interestScrollController.dispose();
     interestLevelScrollController.dispose();
 
@@ -79,21 +79,21 @@ class _BodyState extends State<Body> {
               child: TextFormField(
                   readOnly: true,
                   onTap: () {
-                    nationScrollController.dispose;
-                    nationScrollController = FixedExtentScrollController(initialItem: nationIndex);
+                    countryScrollController.dispose;
+                    countryScrollController = FixedExtentScrollController(initialItem: countryIndex);
                     showCupertinoModalPopup(
                       context: context, 
                       builder: (context) { 
                         return CupertinoActionSheet(
                         actions: [
-                          nationalityPicker()
+                          countryalityPicker()
                         ],
                       );}
                     );
                   },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    labelText: languageItems[nationIndex],
+                    labelText: languageItems[countryIndex],
                     fillColor: textLight,
                     filled: true,
                     suffixIcon: Icon(Icons.arrow_forward_ios, size: 20,),
@@ -110,10 +110,9 @@ class _BodyState extends State<Body> {
                       borderSide:  const BorderSide(color: textLight ),
                     ),
                   ),
-                  // onSaved: (String? birthDate) {
-                  //   birthDate = DateFormat.yMd().format(_selectedDateTime);
-                  //   userInfo.birthDate = birthDate;
-                  // },
+                  onSaved: (String? country) {
+                    userInfo.country = languageItems[countryIndex];
+                  },
                 ),
             ),
             RequiredTextFieldLabel(textLabel: "ภาษาแม่"),
@@ -122,21 +121,21 @@ class _BodyState extends State<Body> {
               child: TextFormField(
                   readOnly: true,
                   onTap: () {
-                    motherScrollController.dispose;
-                    motherScrollController = FixedExtentScrollController(initialItem: motherIndex);
+                    defaultScrollController.dispose;
+                    defaultScrollController = FixedExtentScrollController(initialItem: defaultIndex);
                     showCupertinoModalPopup(
                       context: context, 
                       builder: (context) { 
                         return CupertinoActionSheet(
                         actions: [
-                          motherLanguagePicker()
+                          defaultLanguagePicker()
                         ],
                       );}
                     );
                   },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    labelText: languageItems[motherIndex],
+                    labelText: languageItems[defaultIndex],
                     fillColor: textLight,
                     filled: true,
                     suffixIcon: Icon(Icons.arrow_forward_ios, size: 20,),
@@ -153,10 +152,9 @@ class _BodyState extends State<Body> {
                       borderSide:  const BorderSide(color: textLight ),
                     ),
                   ),
-                  // onSaved: (String? birthDate) {
-                  //   birthDate = DateFormat.yMd().format(_selectedDateTime);
-                  //   userInfo.birthDate = birthDate;
-                  // },
+                  onSaved: (String? defaultLanguage) {
+                    userInfo.defaultLanguage = languageItems[defaultIndex];
+                  },
                 ),
             ),
             RequiredTextFieldLabel(textLabel: "ระดับภาษาแม่"),
@@ -165,21 +163,21 @@ class _BodyState extends State<Body> {
               child: TextFormField(
                   readOnly: true,
                   onTap: () {
-                    motherLevelScrollController.dispose;
-                    motherLevelScrollController = FixedExtentScrollController(initialItem: motherLevelIndex);
+                    defaultLevelScrollController.dispose;
+                    defaultLevelScrollController = FixedExtentScrollController(initialItem: defaultLevelIndex);
                     showCupertinoModalPopup(
                       context: context, 
                       builder: (context) { 
                         return CupertinoActionSheet(
                         actions: [
-                          motherLanguageLevelPicker()
+                          defaultLanguageLevelPicker()
                         ],
                       );}
                     );
                   },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    labelText: languageLevelItems[motherLevelIndex],
+                    labelText: languageLevelItems[defaultLevelIndex],
                     fillColor: textLight,
                     filled: true,
                     suffixIcon: Icon(Icons.arrow_forward_ios, size: 20,),
@@ -196,10 +194,9 @@ class _BodyState extends State<Body> {
                       borderSide:  const BorderSide(color: textLight ),
                     ),
                   ),
-                  // onSaved: (String? birthDate) {
-                  //   birthDate = DateFormat.yMd().format(_selectedDateTime);
-                  //   userInfo.birthDate = birthDate;
-                  // },
+                  onSaved: (String? defaultLevel) {
+                    userInfo.levelDefaultLanguage = languageItems[defaultLevelIndex];
+                  },
                 ),
             ),
             RequiredTextFieldLabel(textLabel: "ภาษาที่สนใจ"),
@@ -239,10 +236,9 @@ class _BodyState extends State<Body> {
                       borderSide:  const BorderSide(color: textLight ),
                     ),
                   ),
-                  // onSaved: (String? birthDate) {
-                  //   birthDate = DateFormat.yMd().format(_selectedDateTime);
-                  //   userInfo.birthDate = birthDate;
-                  // },
+                  onSaved: (String? interestLanguage) {
+                    userInfo.interestedLanguage = languageItems[interestIndex];
+                  },
                 ),
             ),
             RequiredTextFieldLabel(textLabel: "ระดับภาษาที่สนใจ"),
@@ -282,10 +278,9 @@ class _BodyState extends State<Body> {
                       borderSide:  const BorderSide(color: textLight ),
                     ),
                   ),
-                  // onSaved: (String? birthDate) {
-                  //   birthDate = DateFormat.yMd().format(_selectedDateTime);
-                  //   userInfo.birthDate = birthDate;
-                  // },
+                  onSaved: (String? interestLevel) {
+                    userInfo.levelInterestedLanguage = languageItems[interestLevelIndex];
+                  },
                 ),
             ),
             Center(
@@ -293,7 +288,8 @@ class _BodyState extends State<Body> {
                 text: "next",
                 minimumSize: Size(279, 36),
                 press: () {
-                 
+                  _formKey.currentState!.save();
+                 print("${userInfo.country}");
                 //   Navigator.push(
                 //   context,
                 //   MaterialPageRoute(builder: (context) => const EnterOTP()),
@@ -308,14 +304,14 @@ class _BodyState extends State<Body> {
     );
   }
 
-  Widget nationalityPicker () {
+  Widget countryalityPicker () {
     return Center(
       child: Column(
         children: [
           SizedBox(
             height: 150,
             child: CupertinoPicker(
-              scrollController: nationScrollController,
+              scrollController: countryScrollController,
               itemExtent: 40,
               children: languageItems
                 .map((item) => Center(
@@ -327,7 +323,7 @@ class _BodyState extends State<Body> {
                 .toList(),
               onSelectedItemChanged: (value) {
                 setState(() {
-                  this.nationIndex = value;
+                  this.countryIndex = value;
                 });
               },
             ),
@@ -337,14 +333,14 @@ class _BodyState extends State<Body> {
     );
   }
 
-  Widget motherLanguagePicker () {
+  Widget defaultLanguagePicker () {
     return Center(
       child: Column(
         children: [
           SizedBox(
             height: 150,
             child: CupertinoPicker(
-              scrollController: motherScrollController,
+              scrollController: defaultScrollController,
               itemExtent: 40,
               children: languageItems
                 .map((item) => Center(
@@ -356,7 +352,7 @@ class _BodyState extends State<Body> {
                 .toList(),
               onSelectedItemChanged: (value) {
                 setState(() {
-                  this.motherIndex = value;
+                  this.defaultIndex = value;
                 });
               },
             ),
@@ -366,14 +362,14 @@ class _BodyState extends State<Body> {
     );
   }
   
-  Widget motherLanguageLevelPicker () {
+  Widget defaultLanguageLevelPicker () {
     return Center(
       child: Column(
         children: [
           SizedBox(
             height: 150,
             child: CupertinoPicker(
-              scrollController: motherLevelScrollController,
+              scrollController: defaultLevelScrollController,
               itemExtent: 40,
               children: languageLevelItems
                 .map((item) => Center(
@@ -385,7 +381,7 @@ class _BodyState extends State<Body> {
                 .toList(),
               onSelectedItemChanged: (value) {
                 setState(() {
-                  this.motherLevelIndex = value;
+                  this.defaultLevelIndex = value;
                 });
               },
             ),
