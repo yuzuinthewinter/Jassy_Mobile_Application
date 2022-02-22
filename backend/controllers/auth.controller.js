@@ -16,12 +16,12 @@ const { generateOTP, fast2sms } = require("../utils/otp.util");
 
 // --------------------- create new user ---------------------------------
 
-exports.registerUser = async (req, res, next) => {
+exports.registerWithPhoneNumber = async (req, res, next) => {
   try {
-    let { phone, name } = req.body;
+    let { phoneNumber } = req.body;
 
     // check duplicate phone Number
-    const phoneExist = await User.findOne({ phone });
+    const phoneExist = await User.findOne({ phoneNumber });
 
     if (phoneExist) {
       next({ status: 400, message: PHONE_ALREADY_EXISTS_ERR });
@@ -30,9 +30,8 @@ exports.registerUser = async (req, res, next) => {
 
     // create new user
     const createUser = new User({
-      phone,
-      name,
-      role: phone === process.env.ADMIN_PHONE ? "ADMIN" : "USER",
+      phoneNumber,
+      role: "USER",
     });
 
     // save user
@@ -41,7 +40,7 @@ exports.registerUser = async (req, res, next) => {
 
     res.status(200).json({
       type: "success",
-      message: "Account created OTP sended to mobile number",
+      message: "Account created, OTP sended to mobile number.",
       data: {
         userId: user._id,
       },
@@ -55,7 +54,7 @@ exports.registerUser = async (req, res, next) => {
     // send otp to phone number
     await fast2sms(
       {
-        message: `JASSY : Your OTP is ${otp}`,
+        message: `JASSY Application: Your OTP is ${otp}`,
         contactNumber: user.phone,
       },
       next
@@ -64,45 +63,91 @@ exports.registerUser = async (req, res, next) => {
     next(error);
   }
 };
+exports.registerWithFacebook = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+};
+exports.registerWithGoogle = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+};
+exports.loginWithPhoneNumber = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+};
+exports.loginWithFacebook = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+};
+exports.loginWithGoogle = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+};
+exports.setupUserInfo = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+};
+exports.setupPassword = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+};
+// ------------ choose login ------------------------------------------
+// exports.loginUser = async (req, res, next) => {
+
+// }
 
 // ------------ login with phone otp ----------------------------------
 
-exports.loginWithPhoneOtp = async (req, res, next) => {
-  try {
-    const { phone } = req.body;
-    const user = await User.findOne({ phone });
+// exports.loginWithPhoneNumber = async (req, res, next) => {
+//   try {
+//     const { phone } = req.body;
+//     const user = await User.findOne({ phone });
 
-    if (!user) {
-      next({ status: 400, message: PHONE_NOT_FOUND_ERR });
-      return;
-    }
+//     if (!user) {
+//       next({ status: 400, message: PHONE_NOT_FOUND_ERR });
+//       return;
+//     }
 
-    res.status(201).json({
-      type: "success",
-      message: "OTP sended to your registered phone number",
-      data: {
-        userId: user._id,
-      },
-    });
+//     res.status(201).json({
+//       type: "success",
+//       message: "OTP sended to your registered phone number",
+//       data: {
+//         userId: user._id,
+//       },
+//     });
 
-    // generate otp
-    const otp = generateOTP(6);
-    // save otp to user collection
-    user.phoneOtp = otp;
-    user.isAccountVerified = true;
-    await user.save();
-    // send otp to phone number
-    await fast2sms(
-      {
-        message: `Your OTP is ${otp}`,
-        contactNumber: user.phone,
-      },
-      next
-    );
-  } catch (error) {
-    next(error);
-  }
-};
+//     // generate otp
+//     const otp = generateOTP(6);
+//     // save otp to user collection
+//     user.phoneOtp = otp;
+//     user.isAccountVerified = true;
+//     await user.save();
+//     // send otp to phone number
+//     await fast2sms(
+//       {
+//         message: `Your OTP is ${otp}`,
+//         contactNumber: user.phone,
+//       },
+//       next
+//     );
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 // ---------------------- verify phone otp -------------------------
 
@@ -139,36 +184,36 @@ exports.verifyPhoneOtp = async (req, res, next) => {
 
 // --------------- fetch current user -------------------------
 
-exports.fetchCurrentUser = async (req, res, next) => {
-  try {
-    const currentUser = res.locals.user;
+// exports.fetchCurrentUser = async (req, res, next) => {
+//   try {
+//     const currentUser = res.locals.user;
 
-    return res.status(200).json({
-      type: "success",
-      message: "fetch current user",
-      data: {
-        user: currentUser,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+//     return res.status(200).json({
+//       type: "success",
+//       message: "fetch current user",
+//       data: {
+//         user: currentUser,
+//       },
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 // --------------- admin access only -------------------------
 
-exports.handleAdmin = async (req, res, next) => {
-  try {
-    const currentUser = res.locals.user;
+// exports.handleAdmin = async (req, res, next) => {
+//   try {
+//     const currentUser = res.locals.user;
 
-    return res.status(200).json({
-      type: "success",
-      message: "Okay you are admin!!",
-      data: {
-        user: currentUser,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+//     return res.status(200).json({
+//       type: "success",
+//       message: "Okay you are admin!!",
+//       data: {
+//         user: currentUser,
+//       },
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };

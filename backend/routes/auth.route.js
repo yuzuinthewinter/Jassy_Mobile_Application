@@ -1,24 +1,46 @@
 const express = require("express");
 const router = express.Router();
 
-const checkAuth = require("../middlewares/checkAuth");
-const checkAdmin = require("../middlewares/checkAdmin");
+// const checkAuth = require("../middlewares/checkAuth");
+// const checkAdmin = require("../middlewares/checkAdmin");
 const {
-  fetchCurrentUser,
-  loginWithPhoneOtp,
-  registerUser,
+  registerWithPhoneNumber,
+  registerWithFacebook,
+  registerWithGoogle,
+  loginWithPhoneNumber,
+  loginWithFacebook,
+  loginWithGoogle,
+  setupUserInfo,
+  setupPassword,
   verifyPhoneOtp,
-  handleAdmin,
 } = require("../controllers/auth.controller");
 
-router.post("/register", registerUser);
+router.get("/", (req, res) => {
+  res.send("Hello World");
+});
 
-router.post("/login_with_phone", loginWithPhoneOtp);
+router.get("/registerWithPhoneNumber", (req, res) => {
+  res.send("call register with phone number");
+});
 
-router.post("/verify", verifyPhoneOtp);
+router.post("/registerWithPhoneNumber", registerWithPhoneNumber);
 
-router.get("/checkUser", checkAuth, fetchCurrentUser);
+router.post("/registerWithFacebook", registerWithFacebook);
 
-router.get("/admin", checkAuth, checkAdmin, handleAdmin);
+router.post("/registerWithGoogle", registerWithGoogle);
+
+router.post("/setupPassword", setupPassword);
+
+router.post("/setupUserInfo", setupUserInfo);
+
+router.get("/loginWithPhoneNumber", loginWithPhoneNumber);
+
+router.get("/loginWithFacebook", loginWithFacebook);
+
+router.get("/loginWithGoogle", loginWithGoogle);
+
+router.post("/verifyOtp", verifyPhoneOtp);
+
+// router.get("/checkUser", checkAuth, fetchCurrentUser);
 
 module.exports = router;

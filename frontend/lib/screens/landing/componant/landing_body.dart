@@ -37,7 +37,7 @@ class Body extends StatelessWidget {
             press: () {
               Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const RegisterPage()),
+              MaterialPageRoute(builder: (context) => RegisterPage()),
               );
             },),
           AccountExistsLogin(),

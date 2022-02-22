@@ -31,10 +31,10 @@ if (NODE_ENV === "development") {
 }
 
 // index route
-app.get("/", authRoutes);
+app.use("/", authRoutes);
 
 // routes middlewares
-app.use("/api/auth", authRoutes);
+// app.use("/api/auth", apiRoutes);
 
 // global error handling middleware
 app.use((err, req, res, next) => {
@@ -49,13 +49,25 @@ app.use((err, req, res, next) => {
   });
 });
 
-mongoose.connect(
-  MONGODB_URI,
-  async(err)=>{
-      if(err) throw err;
-      console.log("conncted to db")
-  }
-);
+// mongoose.connect(MONGODB_URI, async (err) => {
+//   if (err) throw err;
+//   console.log("conncted to db");
+// });
+const MongoClient = require("mongodb").MongoClient;
+
+MongoClient.connect(MONGODB_URI, function (err, client) {
+  if (err) throw err;
+
+  client
+    .db("Jassy-Application")
+    .collection("user")
+    .find()
+    .toArray(function (err, result) {
+      if (err) throw err;
+
+      console.log(result);
+    });
+});
 
 console.log("database connected");
 

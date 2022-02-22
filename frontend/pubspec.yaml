@@ -37,6 +37,9 @@ dependencies:
   flutter_svg: ^1.0.0
   google_fonts: ^2.2.0
   country_code_picker: ^2.0.2
+  flutter_facebook_login: ^3.0.0
+  firebase_core: ^1.12.0
+  firebase_auth: ^3.3.7
 
 dev_dependencies:
   flutter_test:
