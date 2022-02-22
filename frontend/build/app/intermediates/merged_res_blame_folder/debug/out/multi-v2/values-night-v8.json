@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\flutter_app\\Jassy_Mobile_Application\\frontend\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "outputFile": "C:\\Users\\Strix\\Desktop\\KMUTT\\Jassy_Company\\Jassy_Mobile_Application\\frontend\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\flutter_app\\Jassy_Mobile_Application\\frontend\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\Strix\\Desktop\\KMUTT\\Jassy_Company\\Jassy_Mobile_Application\\frontend\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

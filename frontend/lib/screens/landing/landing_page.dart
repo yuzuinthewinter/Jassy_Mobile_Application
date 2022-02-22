@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/landing/componant/landing_body.dart';
 
+// Timer(Duration(seconds: 3), () {
+//   print("printed after 3 seconds")
+// })
 
 class LandingPage extends StatelessWidget {
   const LandingPage({ Key? key }) : super(key: key);

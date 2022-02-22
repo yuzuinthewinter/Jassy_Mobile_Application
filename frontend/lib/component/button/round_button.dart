@@ -12,9 +12,11 @@ class RoundButton extends StatelessWidget {
     required this.text, 
     required this.minimumSize,
     required this.press, 
-    this.color = primaryColor, 
-    this.textColor = textLight,
+    required this.color,
+    required this.textColor,
   }) : super(key: key);
+
+  // required : className variant handleClick icon iconPosition disableIcon disabledButton fontSize
 
   @override
   Widget build(BuildContext context) {
@@ -47,3 +49,15 @@ class RoundButton extends StatelessWidget {
     );
   }
 }
+
+// class Button extends StatelessWidget
+
+// class ButtonVariant extends StatelessWidget {
+//   switch (variant) {
+//     case primary:
+//     case primaryOutline:
+//     case secondary:
+//     case secondaryOutline:
+//     case disable:
+//   }
+// }
