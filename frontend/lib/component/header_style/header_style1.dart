@@ -9,7 +9,7 @@ class HeaderStyle1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 250,
+      height: 270,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
         begin: Alignment.topLeft,

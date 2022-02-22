@@ -2,11 +2,19 @@ class Name {
   String firstname;
   String lastname;
 
-  Name(this.firstname, this.lastname);
+  Name({this.firstname = '', this.lastname = ''});
+
+  void updateFirstname (String firstname) {
+    this.firstname = firstname;
+  }
+
+  void updateLastname (String lastname) {
+    this.lastname = lastname;
+  }
 }
 
 class Info {
-  Name name;
+  // Name name;
   String birthDate;
   String genre;
   String country;
@@ -15,15 +23,15 @@ class Info {
   String interestedLanguage;
   String levelInterestedLanguage;
 
-  Info(
-      this.name,
-      this.birthDate,
-      this.genre,
-      this.country,
-      this.defaultLanguage,
-      this.levelDefaultLanguage,
-      this.interestedLanguage,
-      this.levelInterestedLanguage);
+  Info({
+      // required this.name,
+      this.birthDate = '',
+      this.genre = '',
+      this.country = '',
+      this.defaultLanguage = '',
+      this.levelDefaultLanguage = '',
+      this.interestedLanguage = '',
+      this.levelInterestedLanguage = ''});
 }
 
 class User {
