@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/background.dart';
 import 'package:flutter_application_1/component/button/icon_button.dart';
-import 'package:flutter_application_1/component/term_and_policies.dart';
+import 'package:flutter_application_1/component/text/term_and_policies.dart';
 import 'package:flutter_application_1/screens/register/phone_register.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_application_1/theme/index.dart';
