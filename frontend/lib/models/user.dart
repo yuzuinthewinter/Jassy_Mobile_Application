@@ -15,6 +15,7 @@ class Name {
 
 class Info {
   // Name name;
+  String email;
   String birthDate;
   String genre;
   String country;
@@ -25,6 +26,7 @@ class Info {
 
   Info({
       // required this.name,
+      this.email = '',
       this.birthDate = '',
       this.genre = '',
       this.country = '',
@@ -38,7 +40,6 @@ class User {
   String phoneNumber;
   String password;
   String role;
-  String phoneOtp;
 
-  User({this.phoneNumber = '', this.password = '', this.role = '', this.phoneOtp = ''});
+  User({this.phoneNumber = '', this.password = '', this.role = ''});
 }
