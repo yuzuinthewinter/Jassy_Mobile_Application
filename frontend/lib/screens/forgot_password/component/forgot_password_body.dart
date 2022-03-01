@@ -3,6 +3,7 @@ import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/header_style1.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/screens/forgot_password/email/send_to_email.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -60,7 +61,12 @@ class _BodyState extends State<Body> {
                     alignment: Alignment.centerLeft
                   ),
                   
-                  onPressed: () {}, 
+                  onPressed: () {
+                      Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder: (context) => const SendToEmailPage())
+                    );
+                  }, 
                   icon: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5 , vertical: 0),
                     child: SvgPicture.asset('assets/icons/email_circle.svg',)
