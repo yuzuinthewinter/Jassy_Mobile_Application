@@ -33,7 +33,7 @@ class Body extends StatelessWidget {
           SizedBox(height: size.height * 0.2,),
           RoundButton(
             text: 'ลงทะเบียนสำหรับผู้ใช้ใหม่',
-            minimumSize: Size(279, 36),
+            minimumSize: Size(339, 36),
             press: () {
               Navigator.push(
               context,

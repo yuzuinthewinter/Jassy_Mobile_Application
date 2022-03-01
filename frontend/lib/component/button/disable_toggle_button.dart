@@ -41,7 +41,7 @@ class _DisableToggleButtonState extends State<DisableToggleButton> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: widget.minimumSize,
-            padding: EdgeInsets.symmetric(horizontal: 80 , vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 20 , vertical: 12),
             primary: widget.color,
             onPrimary: widget.textColor,
             textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w300, fontFamily: 'Kanit'),

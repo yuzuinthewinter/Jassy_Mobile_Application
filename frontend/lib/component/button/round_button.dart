@@ -36,7 +36,7 @@ class RoundButton extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: minimumSize,
-            padding: EdgeInsets.symmetric(horizontal: 80 , vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 20 , vertical: 12),
             primary: color,
             onPrimary: textColor,
             textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w300, fontFamily: 'Kanit')
