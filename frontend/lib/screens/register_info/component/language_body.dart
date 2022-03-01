@@ -28,7 +28,7 @@ class _BodyState extends State<Body> {
   late FixedExtentScrollController interestScrollController;
   late FixedExtentScrollController interestLevelScrollController;
 
-  final languageLevelItems = ['beginner', 'intermediate', 'Advance'];
+  final languageLevelItems = ['beginner', 'intermediate', 'Advance', 'Native'];
   final languageItems = ['ไทย', 'korean', 'Indonsian'];
 
   int countryIndex = 0;
