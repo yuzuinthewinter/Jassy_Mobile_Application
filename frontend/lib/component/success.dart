@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Sucess extends StatelessWidget {
-  final String text;
+  final String titleText, subtitleText;
+  
   const Sucess({ 
     Key? key, 
-    this.text = ''
+    this.titleText = '', 
+    this.subtitleText = '', 
     }) : super(key: key);
 
   @override
@@ -16,10 +19,15 @@ class Sucess extends StatelessWidget {
         children: [
           SizedBox(height: size.height * 0.2,),
           SvgPicture.asset('assets/icons/success.svg', height: size.height * 0.15,),
-          SizedBox(height: size.height * 0.03,),
+          SizedBox(height: size.height * 0.05,),
           Text(
-            text,
-            style: TextStyle(fontSize: 18),
+            titleText,
+            style: TextStyle(fontSize: 18,),
+          ),
+          SizedBox(height: size.height * 0.01,),
+          Text(
+            subtitleText,
+            style: TextStyle(fontSize: 14, color: greyDark,),
           )
         ],
       ),
