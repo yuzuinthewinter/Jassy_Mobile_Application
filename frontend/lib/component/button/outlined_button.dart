@@ -21,7 +21,7 @@ class OutlinedButtonComponent extends StatelessWidget {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
         minimumSize: minimumSize,
-        padding: EdgeInsets.symmetric(horizontal: 50 , vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: 20 , vertical: 12),
         primary: textColor,
         side: BorderSide(width: 2, color: color),
         shape: StadiumBorder(),
