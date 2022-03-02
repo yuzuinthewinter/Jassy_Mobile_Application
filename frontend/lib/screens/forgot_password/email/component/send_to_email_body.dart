@@ -6,6 +6,7 @@ import 'package:flutter_application_1/component/input_feilds/required_text_field
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/models/user.dart';
+import 'package:flutter_application_1/screens/forgot_password/email/email_opt.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 class Body extends StatefulWidget {
@@ -84,10 +85,10 @@ class _BodyState extends State<Body> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     print("phone: ${info.email}");
-                  //   Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const EnterOTP()),
-                  // );
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const EmailOTP()),
+                    );
                   }
                 },
               )
