@@ -3,6 +3,7 @@ import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/header_style1.dart';
 import 'package:flutter_application_1/component/numeric_numpad.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/screens/forgot_password/change_password.dart';
 import 'package:flutter_application_1/screens/register/create_password.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
@@ -23,7 +24,15 @@ class _BodyState extends State<Body> {
         const CurvedWidget(
             child: HeaderStyle1(),
         ),
-        InkWell(onTap: (){}, child: Text("clickkkkkk"),),
+        InkWell(
+          onTap: (){
+            Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ChangePasswordPage()),
+            );
+          }, 
+          child: Text("clickkkkkk"),
+        ),
         const HeaderText(text: "กรุณาใส่รหัส OTP",),
         SizedBox(height: size.height * 0.01,),
         Container(
