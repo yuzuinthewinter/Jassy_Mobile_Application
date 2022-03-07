@@ -7,11 +7,12 @@ import 'package:flutter_application_1/component/button/icon_button.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/header_style3.dart';
 import 'package:flutter_application_1/component/input_feilds/required_text_field_label.dart';
-import 'package:flutter_application_1/component/no_account_register.dart';
-import 'package:flutter_application_1/component/term_and_policies.dart';
+import 'package:flutter_application_1/component/text/no_account_register.dart';
+import 'package:flutter_application_1/component/text/term_and_policies.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/models/user.dart';
+import 'package:flutter_application_1/screens/forgot_password/forgot_password.dart';
 import 'package:flutter_application_1/screens/register/phone_register.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -168,7 +169,11 @@ class _BodyState extends State<Body> {
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
               alignment: Alignment.centerRight,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => const ForgotPasswordPage())
+                );},
                 child: Text('ลืมรหัสผ่านใช่หรือไม่', style: TextStyle(color: secoundary, decoration: TextDecoration.underline),)
               ),
             ),

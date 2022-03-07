@@ -11,7 +11,7 @@ class Body extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
-        Sucess(text: "ตั้งค่ารหัสผ่านสำเร็จ",),
+        Sucess(titleText: "ตั้งค่ารหัสผ่านสำเร็จ",),
         SizedBox(height: size.height * 0.23,),
         RoundButton(
           text: "ถัดไป", 

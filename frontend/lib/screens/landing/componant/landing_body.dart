@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/component/account_exists_login.dart';
+import 'package:flutter_application_1/component/text/account_exists_login.dart';
 import 'package:flutter_application_1/component/background.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
-import 'package:flutter_application_1/component/term_and_policies.dart';
+import 'package:flutter_application_1/component/text/term_and_policies.dart';
 import 'package:flutter_application_1/screens/register/register_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/svg.dart';
