@@ -7,7 +7,7 @@ import 'package:flutter_application_1/component/input_feilds/required_text_field
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/models/user.dart';
-import 'package:flutter_application_1/screens/register/create_password_success.dart';
+import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 class Body extends StatefulWidget {
@@ -21,7 +21,7 @@ class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
   bool isHiddenPassword = true;
   bool isHiddenConfirmPassword = true;
-  User user = User();
+  UserSchema user = UserSchema();
   RegExp regex = RegExp("(?=.*[A-Z])(?=.*[a-z])(?=.*?[!@#\$&*~.]).{8,}");
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -151,7 +151,7 @@ class _BodyState extends State<Body> {
                         print("password: ${user.password}");
                         Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const CreatePasswordSuccess()),
+                        MaterialPageRoute(builder: (context) => SuccessPage('ตั้งค่ารหัสผ่านสำเร็จ')),
                         );
                       }
                   },
