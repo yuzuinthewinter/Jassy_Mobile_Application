@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jassy-Languages-Community</string>
+    <string name="facebook_app_id">653740499076010</string>
+    <string name="fb_login_protocol_scheme">fb653740499076010</string>
+    <string name="facebook_client_token">d901cff96674d97fbcce45399fab950f</string>
+</resources>

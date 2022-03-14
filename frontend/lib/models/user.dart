@@ -34,11 +34,11 @@ class Info {
       this.levelInterestedLanguage = ''});
 }
 
-class User {
+class UserSchema {
   String phoneNumber;
   String password;
   String role;
   String phoneOtp;
 
-  User({this.phoneNumber = '', this.password = '', this.role = '', this.phoneOtp = ''});
+  UserSchema({this.phoneNumber = '', this.password = '', this.role = '', this.phoneOtp = ''});
 }
