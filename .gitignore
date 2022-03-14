@@ -4,12 +4,12 @@
 ### Flutter ###
 
 ##initial project
-/.idea
+.idea/
 
 ##frontend folder
-/frontend/.dart_tool
-/frontend/.vscode
-/frontend/build
+frontend/.dart_tool/
+frontend/.vscode/
+frontend/build/
 
 # Flutter/Dart/Pub related
 **/doc/api/
