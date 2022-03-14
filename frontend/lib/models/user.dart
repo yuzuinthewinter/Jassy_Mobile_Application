@@ -4,11 +4,11 @@ class Name {
 
   Name({this.firstname = '', this.lastname = ''});
 
-  void updateFirstname (String firstname) {
+  void updateFirstname(String firstname) {
     this.firstname = firstname;
   }
 
-  void updateLastname (String lastname) {
+  void updateLastname(String lastname) {
     this.lastname = lastname;
   }
 }
@@ -23,7 +23,8 @@ class Info {
   String interestedLanguage;
   String levelInterestedLanguage;
 
-  Info({
+  Info(
+      {
       // required this.name,
       this.birthDate = '',
       this.genre = '',
@@ -40,6 +41,9 @@ class UserSchema {
   String role;
   String phoneOtp;
 
-  UserSchema({this.phoneNumber = '', this.password = '', this.role = '', this.phoneOtp = ''});
+  UserSchema(
+      {this.phoneNumber = '',
+      this.password = '',
+      this.role = '',
+      this.phoneOtp = ''});
 }
-
