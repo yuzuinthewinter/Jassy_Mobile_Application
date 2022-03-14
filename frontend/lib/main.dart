@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'screens/landing/landing_page.dart';
 import 'theme/index.dart';
@@ -14,18 +15,34 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  
-  //TODO: set languages for application
+
   // This widget is the root of your application.5
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Auth',
+      title: 'Jassy-Languages-Community',
       theme: ThemeData(
           textTheme: GoogleFonts.kanitTextTheme(),
           primaryColor: primaryColor,
           scaffoldBackgroundColor: greyLightest),
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('th', 'TH'),
+      ],
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode &&
+              supportedLocale.countryCode == locale.countryCode) {
+            return supportedLocale;
+          }
+        }
+      },
       home: const LandingPage(),
     );
   }

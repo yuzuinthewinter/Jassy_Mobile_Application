@@ -346,7 +346,7 @@ class _BodyState extends State<Body> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SuccessPage('ลงทะเบียนสำเร็จ')),
+                        builder: (context) => SuccessPage('ลงทะเบียนสำเร็จ', LandingPage())),
                   );
                 },
               ),

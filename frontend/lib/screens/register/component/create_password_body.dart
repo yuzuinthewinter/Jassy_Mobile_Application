@@ -8,6 +8,7 @@ import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
+import 'package:flutter_application_1/screens/register_info/profile.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 class Body extends StatefulWidget {
@@ -151,7 +152,7 @@ class _BodyState extends State<Body> {
                         print("password: ${user.password}");
                         Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SuccessPage('ตั้งค่ารหัสผ่านสำเร็จ')),
+                        MaterialPageRoute(builder: (context) => SuccessPage('ตั้งค่ารหัสผ่านสำเร็จ', RegisterProfile())),
                         );
                       }
                   },

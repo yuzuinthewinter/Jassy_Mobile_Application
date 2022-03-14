@@ -10,6 +10,7 @@ import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
+import 'package:flutter_application_1/screens/landing/landing_page.dart';
 import 'package:flutter_application_1/screens/register_info/language.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:intl/intl.dart';
@@ -46,7 +47,7 @@ class _BodyState extends State<Body> {
       await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => SuccessPage('เข้าสู่ระบบสำเร็จ')),
+            builder: (context) => SuccessPage('เข้าสู่ระบบสำเร็จ', LandingPage())),
       );
     } else {
       isLoading = false;

@@ -5,7 +5,8 @@ import 'package:flutter_application_1/screens/register_info/profile.dart';
 
 class Body extends StatelessWidget {
   final String SuccessWord;
-  Body(this.SuccessWord);
+  final Widget Path;
+  Body(this.SuccessWord, this.Path);
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +19,10 @@ class Body extends StatelessWidget {
           text: "ถัดไป", 
           minimumSize: Size(279, 36), 
           press: () {
-            // Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => const RegisterProfile()),
-            // );
+            Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Path),
+            );
           })
       ],
     );
