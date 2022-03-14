@@ -15,7 +15,7 @@ class Sucess extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: size.height * 0.2,),
-          SvgPicture.asset('assets/icons/success.svg', height: size.height * 0.2,),
+          SvgPicture.asset('assets/icons/success.svg', height: size.height * 0.15,),
           SizedBox(height: size.height * 0.03,),
           Text(
             text,

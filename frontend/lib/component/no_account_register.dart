@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/login/login.dart';
+import 'package:flutter_application_1/screens/register/register_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
-class AccountExistsLogin extends StatelessWidget {
-  const AccountExistsLogin({
+class NoAccountRegister extends StatelessWidget {
+  const NoAccountRegister({
     Key? key,
   }) : super(key: key);
 
@@ -19,17 +19,17 @@ class AccountExistsLogin extends StatelessWidget {
           fontFamily: 'Kanit',
           ),
         children: [
-          TextSpan(text: 'มีบัญชีผู้ใช้อยู่แล้ว ? '),
+          TextSpan(text: 'ยังไม่มีบัญชีผู้ใช้ ? '),
           TextSpan(
-            text: 'เข้าสู่ระบบ ',
+            text: 'ลงทะเบียนสำหรับผู้ใช้ใหม่ ',
             style: TextStyle(color: primaryColor,),
             recognizer: TapGestureRecognizer()
               ..onTap = () => {
                 Navigator.push(
                   context, 
-                  MaterialPageRoute(builder: (context) => const LoginPage())
+                  MaterialPageRoute(builder: (context) => const RegisterPage())
                 ),
-                print('เข้าสู่ระบบ')
+                print('ลงทะเบียนสำหรับผู้ใช้ใหม่')
               }),
         ]
       ),),
