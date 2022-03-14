@@ -12,6 +12,7 @@ import 'package:flutter_application_1/component/term_and_policies.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/models/user.dart';
+import 'package:flutter_application_1/screens/jassy_home/home.dart';
 import 'package:flutter_application_1/screens/register/phone_register.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -25,7 +26,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
-  UserSchema user = UserSchema();
+  User user = User();
   final phoneNumberController = TextEditingController();
   bool isHiddenPassword = true;
   RegExp regex = RegExp("(?=.*[A-Z])(?=.*[a-z])(?=.*?[!@#\$&*~.]).{8,}");
@@ -177,7 +178,12 @@ class _BodyState extends State<Body> {
               child: DisableToggleButton(
                 text: "เข้าสู่ระบบ", 
                 minimumSize: Size(339, 36), 
-                press: (){}
+                press: (){
+                   Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const JassyHome()),
+                ); 
+                }
               ),
             ),
             SizedBox(height: size.height * 0.01,),

@@ -1,16 +1,8 @@
+
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,flutter,node,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,flutter,node,macos
 
 ### Flutter ###
-
-##initial project
-.idea/
-
-##frontend folder
-frontend/.dart_tool/
-frontend/.vscode/
-frontend/build/
-
 # Flutter/Dart/Pub related
 **/doc/api/
 .dart_tool/

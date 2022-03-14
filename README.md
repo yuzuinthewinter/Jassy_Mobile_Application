@@ -6,6 +6,16 @@
 cd backend
 ```
 
+`Run Npm Command`
+
+```
+npm install
+```
+
+```
+node index.js
+```
+
 `Change Directory`
 
 ```
