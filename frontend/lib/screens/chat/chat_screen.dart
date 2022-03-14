@@ -1,24 +1,16 @@
-//TODO: do it later
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/appbar/chat_selected_appbar.dart';
+import 'package:flutter_application_1/screens/chat/component/chat_screen_body.dart';
 
-class ChatsScreen extends StatelessWidget {
+class ChatScreen extends StatelessWidget {
+  const ChatScreen({ Key? key }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppbar(),
-    );
-  }
-
-  AppBar buildAppbar() {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      title: Text('Chats'),
-      actions: [
-        IconButton(
-          onPressed: () {}, 
-          icon: Icon(Icons.search)
-        ),
-      ]
+      extendBodyBehindAppBar: true,
+      appBar: ChatSelectedAppBar(text: "สนทนา",),
+      body: ChatScreenBody(),
     );
   }
 }
