@@ -42,3 +42,4 @@ class UserSchema {
 
   UserSchema({this.phoneNumber = '', this.password = '', this.role = '', this.phoneOtp = ''});
 }
+

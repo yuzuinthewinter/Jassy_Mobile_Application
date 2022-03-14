@@ -105,7 +105,7 @@ class _BodyState extends State<Body> {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
           child: const Text(
-            "กรุณาใส่รหัส OTP ที่คุณได้รับผ่านหมายเลขโทรศัพท์ของคุณภายในเวลาที่กำหนด",
+            "กรุณาใส่รหัส OTP ที่คุณได้รับผ่านหมายเลขโทรศัพท์ภายในเวลาที่กำหนด",
             textAlign: TextAlign.left,
             style: TextStyle(
                 fontSize: 16, fontWeight: FontWeight.w500, color: greyDark),
