@@ -25,7 +25,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
-  User user = User();
+  UserSchema user = UserSchema();
   final phoneNumberController = TextEditingController();
   bool isHiddenPassword = true;
   RegExp regex = RegExp("(?=.*[A-Z])(?=.*[a-z])(?=.*?[!@#\$&*~.]).{8,}");
