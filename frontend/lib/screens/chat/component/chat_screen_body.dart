@@ -97,6 +97,14 @@ class ChatCard extends StatelessWidget {
             backgroundImage: AssetImage(chat.image),
             radius: 33,
           ),
+          Container(
+            height: 16,
+            width: 16,
+            decoration: BoxDecoration(
+              color: onlineColor,
+              shape: BoxShape.circle,
+            ),
+          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
