@@ -1,4 +1,6 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 class ReportTypeChoice extends StatelessWidget {
@@ -31,7 +33,34 @@ class ReportTypeChoice extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
                     child: Text("รายละเอียดการรายงาน", style: TextStyle(fontSize: 16),),
                   ),
-                  
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: "กรุณากรอก",
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
+                    child: Text("แนบหลักฐานการรายงาน", style: TextStyle(fontSize: 16),),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: selectFile, 
+                    icon: Icon(Icons.file_upload, color: primaryColor,),
+                    // icon: SvgPicture.asset("assets/icons/upload.svg",),
+                    label: Text("เพิ่มไฟล์", style: TextStyle(color: primaryColor),),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: Size(159, 36),
+                      side: BorderSide(color: primaryColor),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    )
+                  ),
+                  Spacer(),
+                  Center(
+                    child: RoundButton(
+                      text: "รายงาน", 
+                      minimumSize: Size(339, 36), 
+                      press: () {},
+                    ),
+                  )
                 ],
               ),
             )
@@ -46,4 +75,8 @@ class ReportTypeChoice extends StatelessWidget {
         ),
     );
   }
+}
+
+Future selectFile() async{
+  final result = await FilePicker.platform.pickFiles();
 }
