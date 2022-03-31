@@ -7,6 +7,8 @@ import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/chat/message_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
+// NOTE: chat card in all chat page show name lastest message and unread notification
+// TODO: map profile image, name and lastest message here
 class ChatCard extends StatelessWidget {
 
   final ChatMessage chat;
@@ -24,6 +26,7 @@ class ChatCard extends StatelessWidget {
       onTap: () {
         Navigator.push(context,
           CupertinoPageRoute(builder: (context) {
+            // NOTE: click each card to go to chat room
             return ChatRoom(user: chat.sender,);
           })
         );
