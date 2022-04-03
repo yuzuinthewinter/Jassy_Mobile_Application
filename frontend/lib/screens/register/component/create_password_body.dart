@@ -6,13 +6,15 @@ import 'package:flutter_application_1/component/header_style/header_style1.dart'
 import 'package:flutter_application_1/component/input_feilds/required_text_field_label.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
+import 'package:flutter_application_1/screens/jassy_home/home.dart';
 import 'package:flutter_application_1/screens/register_info/profile.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 class Body extends StatefulWidget {
-  const Body({ Key? key }) : super(key: key);
+  const Body({Key? key}) : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
@@ -36,54 +38,60 @@ class _BodyState extends State<Body> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              
-            ),
-            const CurvedWidget(
-              child: HeaderStyle1()
-            ),
+            Container(),
+            const CurvedWidget(child: HeaderStyle1()),
             const HeaderText(
               text: "เริ่มต้นตั้งค่ารหัสผ่าน",
             ),
-            SizedBox(height: size.height * 0.01,),
-            const DescriptionText(text: "กรุณากำหนดรหัสที่แข็งแรงและปลอดภัยเพื่อปกป้องบัญชีของคุณ"),
-            SizedBox(height: size.height * 0.01,),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
+            const DescriptionText(
+                text:
+                    "กรุณากำหนดรหัสที่แข็งแรงและปลอดภัยเพื่อปกป้องบัญชีของคุณ"),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
             const RequiredTextFieldLabel(
               textLabel: "รหัสผ่าน",
             ),
-            SizedBox(height: size.height * 0.01,),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
             Container(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-            child: TextFormField(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+              child: TextFormField(
                 controller: passwordController,
                 obscureText: isHiddenPassword,
                 keyboardType: TextInputType.text,
                 inputFormatters: [LengthLimitingTextInputFormatter(9)],
                 decoration: InputDecoration(
                   suffixIcon: InkWell(
-                    onTap: _togglePasswordView,
-                    child: isHiddenPassword? Icon(Icons.visibility_off) : Icon(Icons.visibility)
-                    ),
+                      onTap: _togglePasswordView,
+                      child: isHiddenPassword
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility)),
                   fillColor: textLight,
                   // hintText: "กรุณากรอก",
                   filled: true,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40),
-                    borderSide: const BorderSide(color: textLight, width: 0.0)
-                  ),
+                      borderRadius: BorderRadius.circular(40),
+                      borderSide:
+                          const BorderSide(color: textLight, width: 0.0)),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40.0),
-                    borderSide:  const BorderSide(color: textLight ),
+                    borderSide: const BorderSide(color: textLight),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40.0),
-                    borderSide:  const BorderSide(color: textLight ),
+                    borderSide: const BorderSide(color: textLight),
                   ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
-                  }else if (!regex.hasMatch(value)){
+                  } else if (!regex.hasMatch(value)) {
                     return "กรุณากรอกตามpattern";
                   }
                   return null;
@@ -93,86 +101,99 @@ class _BodyState extends State<Body> {
                 },
               ),
             ),
-            SizedBox(height: size.height * 0.01,),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
             const RequiredTextFieldLabel(
               textLabel: "ยืนยันรหัสผ่าน",
             ),
-            SizedBox(height: size.height * 0.01,),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
             Container(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-            child: TextFormField(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+              child: TextFormField(
                 controller: confirmPasswordController,
-                obscureText: isHiddenConfirmPassword,   
+                obscureText: isHiddenConfirmPassword,
                 keyboardType: TextInputType.text,
                 inputFormatters: [LengthLimitingTextInputFormatter(9)],
                 decoration: InputDecoration(
                   suffixIcon: InkWell(
-                    onTap: _toggleConfirmPasswordView,
-                    child: isHiddenConfirmPassword? Icon(Icons.visibility_off) : Icon(Icons.visibility)
-                    ),
+                      onTap: _toggleConfirmPasswordView,
+                      child: isHiddenConfirmPassword
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility)),
                   fillColor: textLight,
                   filled: true,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40),
-                    borderSide: const BorderSide(color: textLight, width: 0.0)
-                  ),
+                      borderRadius: BorderRadius.circular(40),
+                      borderSide:
+                          const BorderSide(color: textLight, width: 0.0)),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40.0),
-                    borderSide:  const BorderSide(color: textLight ),
+                    borderSide: const BorderSide(color: textLight),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40.0),
-                    borderSide:  const BorderSide(color: textLight ),
+                    borderSide: const BorderSide(color: textLight),
                   ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
-                  }else if (!regex.hasMatch(value)){
+                  } else if (!regex.hasMatch(value)) {
                     return "กรุณากรอกตามpattern";
-                  }else if (passwordController.text != confirmPasswordController.text){
+                  } else if (passwordController.text !=
+                      confirmPasswordController.text) {
                     return "รหัสไม่ตรงกัน";
                   }
                   return null;
                 },
               ),
             ),
-            SizedBox(height: size.height * 0.03,),
+            SizedBox(
+              height: size.height * 0.03,
+            ),
             const DescriptionText(text: "ประกอบไปด้วยอย่างน้อย 8 ตัวอักษร"),
-            SizedBox(height: size.height * 0.01,),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
             const DescriptionText(text: "ประกอบไปด้วยอย่างน้อย 1 ตัวเลข"),
-            SizedBox(height: size.height * 0.09,),
-            Center(       
-              child: DisableToggleButton(
-                  text: "ยืนยันการตั้งค่ารหัสผ่าน",
-                  minimumSize: Size(279, 36),
-                  press: () {
-                  if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        print("password: ${user.password}");
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SuccessPage('ตั้งค่ารหัสผ่านสำเร็จ', RegisterProfile())),
-                        );
-                      }
-                  },
-              )
-            )
+            SizedBox(
+              height: size.height * 0.09,
+            ),
+            Center(
+                child: DisableToggleButton(
+              text: "ยืนยันการตั้งค่ารหัสผ่าน",
+              minimumSize: Size(279, 36),
+              press: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  print("password: ${user.password}");
+                  Navigator.pushNamed(
+                    context,
+                    Routes.SuccessPage,
+                    arguments: ['RegisterSuccess'],
+                  );
+                }
+              },
+            ))
           ],
         ),
       ),
     );
   }
 
-  void _togglePasswordView() {  
+  void _togglePasswordView() {
     setState(() {
-      isHiddenPassword =! isHiddenPassword;  
+      isHiddenPassword = !isHiddenPassword;
     });
   }
 
   void _toggleConfirmPasswordView() {
     setState(() {
-      isHiddenConfirmPassword =! isHiddenConfirmPassword;
+      isHiddenConfirmPassword = !isHiddenConfirmPassword;
     });
   }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/constants/translations.dart';
 import 'package:flutter_application_1/screens/login/login.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 
 class AccountExistsLogin extends StatelessWidget {
   const AccountExistsLogin({
@@ -19,17 +22,16 @@ class AccountExistsLogin extends StatelessWidget {
           fontFamily: 'Kanit',
           ),
         children: [
-          TextSpan(text: 'มีบัญชีผู้ใช้อยู่แล้ว ? '),
+          TextSpan(text: 'LandingHaveAccount'.tr),
           TextSpan(
-            text: 'เข้าสู่ระบบ ',
+            text: ' ${'LandingLogin'.tr}',
             style: TextStyle(color: primaryColor,),
             recognizer: TapGestureRecognizer()
               ..onTap = () => {
-                Navigator.push(
+                Navigator.pushNamed(
                   context, 
-                  MaterialPageRoute(builder: (context) => const LoginPage())
-                ),
-                print('เข้าสู่ระบบ')
+                  Routes.LoginPage
+                )
               }),
         ]
       ),),

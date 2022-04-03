@@ -4,16 +4,14 @@ import 'package:flutter_application_1/component/popup_page/body/successWithButto
 
 class SuccessPage extends StatelessWidget {
   final String SuccessWord;
-  final Widget Path;
-  // final String Path;
-  SuccessPage(this.SuccessWord, this.Path);
+  SuccessPage(this.SuccessWord);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: false,
       appBar: BackAndCloseAppBar(),
-      body: Body(this.SuccessWord, this.Path),
-      );
+      body: Body(this.SuccessWord),
+    );
   }
 }

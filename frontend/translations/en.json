@@ -8,4 +8,18 @@
     "LandingPreTermOfService": "By creating an account you agree to our",
     "LandingTermOfService": "Term of service",
     "LandingPrivacy": "Privacy",
+
+    "RegisterByPhone": "Register with Phone Number",
+    "RegisterByFaceBook": "Register with Facebook",
+    "RegisterByGoogle": "Register with Google",
+
+    "PhoneRegisterPage": "Register with phone number",
+    "PhonePageFilled": "Enter your phone number",
+    "PhonePageDesc": "Please enter your phone number for sending OTP to register.",
+    "PhonePagePhoneNumber": "Phone number",
+
+    "OtpPageFilled": "Enter OTP code",
+    "OtpPageDesc": "Please enter the OTP you received via your phone number within the time limit.",
+    "OtpTimeout": "This OTP will expire in 5 minutes.",
+    "OtpResend": "Resend",
 }

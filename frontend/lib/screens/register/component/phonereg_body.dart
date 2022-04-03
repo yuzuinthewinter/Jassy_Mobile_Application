@@ -6,9 +6,11 @@ import 'package:flutter_application_1/component/header_style/header_style1.dart'
 import 'package:flutter_application_1/component/input_feilds/required_text_field_label.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/register/enter_otp.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:get/get.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -46,21 +48,20 @@ class _BodyState extends State<Body> {
           const CurvedWidget(
             child: HeaderStyle1(),
           ),
-          const HeaderText(
-            text: "กรอกเบอร์โทรศัพท์",
+          HeaderText(
+            text: 'PhonePageFilled'.tr,
           ),
           SizedBox(
             height: size.height * 0.01,
           ),
-          const DescriptionText(
-            text:
-                "กรุณากรอกหมายเลขโทรศัพท์ของคุณสำหรับการส่งเลข OTP เพื่อลงทะเบียน",
+          DescriptionText(
+            text: 'PhonePageDesc'.tr,
           ),
           SizedBox(
             height: size.height * 0.01,
           ),
-          const RequiredTextFieldLabel(
-            textLabel: "เบอร์โทรศัพท์",
+          RequiredTextFieldLabel(
+            textLabel: 'PhonePagePhoneNumber'.tr,
           ),
           SizedBox(
             height: size.height * 0.01,
@@ -115,11 +116,7 @@ class _BodyState extends State<Body> {
                 _formKey.currentState!.save();
                 String phone = getCoutryCode + '${phoneNumberController.text}';
                 print(phone);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => EnterOTP(phone)),
-                );
+                Navigator.pushNamed(context, Routes.EnterOTP, arguments: phone);
               }
             },
           ))

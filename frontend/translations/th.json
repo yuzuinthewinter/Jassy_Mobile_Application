@@ -8,4 +8,18 @@
     "LandingPreTermOfService": "หากคุณเข้าสู่ระบบคุณจะ",
     "LandingTermOfService": "ยอมรับข้อกำหนด",
     "LandingPrivacy": "นโยบายความเป็นส่วนตัวของเรา",
+
+    "RegisterByPhone": "ลงทะเบียนด้วยเบอร์โทรศัพท์",
+    "RegisterByFaceBook": "ลงทะเบียนด้วย Facebook",
+    "RegisterByGoogle": "ลงทะเบียนด้วย Google",
+
+    "PhoneRegisterPage": "ลงทะเบียนด้วยเบอร์โทรศัพท์",
+    "PhonePageFilled": "กรอกเบอร์โทรศัพท์",
+    "PhonePageDesc": "กรุณากรอกหมายเลขโทรศัพท์ของคุณสำหรับการส่งเลข OTP เพื่อลงทะเบียน",
+    "PhonePagePhoneNumber": "เบอร์โทรศัพท์",
+
+    "OtpPageFilled": "กรุณาใส่รหัสลับ",
+    "OtpPageDesc": "กรุณาใส่รหัส OTP ที่คุณได้รับผ่านหมายเลขโทรศัพท์ของคุณภายในเวลาที่กำหนด",
+    "OtpTimeout": "รหัสนี้จะหมดเวลาภายใน 5 นาที",
+    "OtpResend": " ส่งใหม่",
 }
