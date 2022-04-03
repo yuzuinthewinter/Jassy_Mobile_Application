@@ -3,10 +3,12 @@ import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/header_style1.dart';
 import 'package:flutter_application_1/component/numeric_numpad.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/register/create_password.dart';
 import 'package:flutter_application_1/screens/register_info/profile.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 class Body extends StatefulWidget {
   final String phoneNumber;
@@ -38,11 +40,10 @@ class _BodyState extends State<Body> {
             .signInWithCredential(PhoneAuthCredential)
             .then((value) async {
           if (value.user != null) {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => RegisterProfile()),
-                (route) => false);
+            Navigator.pushNamed(
+              context,
+              Routes.RegisterProfile,
+            );
           }
         });
       },
@@ -63,18 +64,16 @@ class _BodyState extends State<Body> {
   }
 
   checkOTP(code) async {
-    print(code);
     try {
       await FirebaseAuth.instance
           .signInWithCredential(PhoneAuthProvider.credential(
               verificationId: verificationCode, smsCode: code))
           .then((value) async {
         if (value.user != null) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => RegisterProfile()),
-              (route) => false);
+          Navigator.pushNamed(
+            context,
+            Routes.RegisterProfile,
+          );
         }
       });
     } catch (e) {
@@ -96,16 +95,16 @@ class _BodyState extends State<Body> {
         const CurvedWidget(
           child: HeaderStyle1(),
         ),
-        const HeaderText(
-          text: "กรุณาใส่รหัส OTP",
+        HeaderText(
+          text: 'OtpPageFilled'.tr,
         ),
         SizedBox(
           height: size.height * 0.01,
         ),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-          child: const Text(
-            "กรุณาใส่รหัส OTP ที่คุณได้รับผ่านหมายเลขโทรศัพท์ของคุณภายในเวลาที่กำหนด",
+          child: Text(
+            'OtpPageDesc'.tr,
             textAlign: TextAlign.left,
             style: TextStyle(
                 fontSize: 16, fontWeight: FontWeight.w500, color: greyDark),
@@ -149,8 +148,8 @@ class _BodyState extends State<Body> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      const Text(
-                        "รหัสนี้จะหมดเวลาภายใน 5 นาที",
+                      Text(
+                        'OtpTimeout'.tr,
                         style: TextStyle(
                           fontSize: 16,
                           color: secoundary,
@@ -168,8 +167,8 @@ class _BodyState extends State<Body> {
                           );
                           print("ส่งใหม่");
                         },
-                        child: const Text(
-                          "ส่งใหม่",
+                        child: Text(
+                          'OtpResend'.tr,
                           style: TextStyle(
                             fontSize: 16,
                             color: primaryColor,
@@ -199,7 +198,6 @@ class _BodyState extends State<Body> {
                   code = code + value.toString();
                   print(code.length);
                   if (code.length == 6) {
-                    print('yeah');
                     checkOTP(code);
                   }
                 }

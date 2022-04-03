@@ -4,7 +4,6 @@ import 'package:flutter_application_1/component/popup_page/body/successWithButto
 
 class SuccessPage extends StatelessWidget {
   final String SuccessWord;
-  // final String Path;
   SuccessPage(this.SuccessWord);
 
   @override
@@ -13,6 +12,6 @@ class SuccessPage extends StatelessWidget {
       extendBodyBehindAppBar: false,
       appBar: BackAndCloseAppBar(),
       body: Body(this.SuccessWord),
-      );
+    );
   }
 }

@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/background.dart';
 import 'package:flutter_application_1/component/button/icon_button.dart';
 import 'package:flutter_application_1/component/term_and_policies.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/register/phone_register.dart';
 import 'package:flutter_application_1/screens/register_info/profile.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:get/get.dart';
 
 class Body extends StatelessWidget {
   bool isLoading = false;
@@ -21,9 +23,7 @@ class Body extends StatelessWidget {
           facebookLoginResult.accessToken!.token);
       await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
 
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => RegisterProfile()),
-          (route) => false);
+      Navigator.of(context).pushNamed(Routes.RegisterProfile);
     } on FirebaseAuthException catch (e) {
       isLoading = false;
       //TODO: failed
@@ -50,22 +50,21 @@ class Body extends StatelessWidget {
                   height: size.height * 0.2,
                 ),
                 IconButtonComponent(
-                  text: 'ลงทะเบียนด้วยเบอร์โทรศัพท์',
+                  text: 'RegisterByPhone'.tr,
                   minimumSize: Size(279, 36),
                   iconPicture: SvgPicture.asset(
                     'assets/icons/mobile.svg',
                     height: 21,
                   ),
                   press: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const PhoneRegister()),
+                      Routes.PhoneRegister,
                     );
                   },
                 ),
                 IconButtonComponent(
-                  text: 'ลงทะเบียนด้วย Facebook',
+                  text: 'RegisterByFaceBook'.tr,
                   minimumSize: Size(279, 36),
                   iconPicture: SvgPicture.asset(
                     'assets/icons/facebook.svg',
@@ -75,7 +74,7 @@ class Body extends StatelessWidget {
                   color: facebookColor,
                 ),
                 IconButtonComponent(
-                  text: 'ลงทะเบียนด้วย Google',
+                  text: 'RegisterByGoogle'.tr,
                   minimumSize: Size(279, 36),
                   iconPicture: SvgPicture.asset(
                     'assets/icons/google.svg',
