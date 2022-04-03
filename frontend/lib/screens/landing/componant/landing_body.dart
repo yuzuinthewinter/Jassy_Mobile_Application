@@ -96,11 +96,11 @@ class Body extends StatelessWidget {
           ),
           TermAndPolicies(),
           // TODO: change language button on landing page.
-          ElevatedButton(
-              onPressed: () {
-                buildLanguageDialog(context);
-              },
-              child: Text('*')),
+          // ElevatedButton(
+          //    onPressed: () {
+          //      buildLanguageDialog(context);
+          //    },
+          //    child: Text('*')),
         ],
       ),
     );
