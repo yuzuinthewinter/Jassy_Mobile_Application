@@ -62,3 +62,86 @@ class ChatUser {
     this.isActive = false
   });
 }
+
+class MainUser {
+  final String name, desc, image, age,time, country, motherLanguage, interestLanguage;
+
+  MainUser({
+    this.name = '', 
+    this.desc = '', 
+    this.image = '', 
+    this.time = '', 
+    this.country = '', 
+    this.motherLanguage = '', 
+    this.interestLanguage = '', 
+    this.age= ''
+  });
+}
+
+List<MainUser> dataLists = [
+  MainUser(
+    name: "Ammie",
+    desc: "Hi im Ammie. Nice too meet you",
+    image: "assets/images/ammie.jpg",
+    time: "",
+    country: "Thailand",
+    motherLanguage: "Thai",
+    interestLanguage: "Korean",
+    age: "22",
+  ),
+  MainUser(
+    name: "Jujee",
+    desc: "Hi im Jujee. Nice too meet you",
+    image: "assets/images/jujee.jpg",
+    time: "",
+    country: "Thailand",
+    motherLanguage: "Thai",
+    interestLanguage: "Korean",
+    age: "22",
+  ),MainUser(
+    name: "Ammie",
+    desc: "Hi im Ammie. Nice too meet you",
+    image: "assets/images/ammie.jpg",
+    time: "",
+    country: "Thailand",
+    motherLanguage: "Thai",
+    interestLanguage: "Korean",
+    age: "22",
+  ),MainUser(
+    name: "Ammie",
+    desc: "Hi im Ammie. Nice too meet you",
+    image: "assets/images/ammie.jpg",
+    time: "",
+    country: "Thailand",
+    motherLanguage: "Thai",
+    interestLanguage: "Korean",
+    age: "22",
+  ),MainUser(
+    name: "Ammie",
+    desc: "Hi im Ammie. Nice too meet you",
+    image: "assets/images/ammie.jpg",
+    time: "",
+    country: "Thailand",
+    motherLanguage: "Thai",
+    interestLanguage: "Korean",
+    age: "22",
+  ),MainUser(
+    name: "Ammie",
+    desc: "Hi im Ammie. Nice too meet you",
+    image: "assets/images/ammie.jpg",
+    time: "",
+    country: "Thailand",
+    motherLanguage: "Thai",
+    interestLanguage: "Korean",
+    age: "22",
+  ),MainUser(
+    name: "Ammie",
+    desc: "Hi im Ammie. Nice too meet you",
+    image: "assets/images/ammie.jpg",
+    time: "",
+    country: "Thailand",
+    motherLanguage: "Thai",
+    interestLanguage: "Korean",
+    age: "22",
+  ),
+];
