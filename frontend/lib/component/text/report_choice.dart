@@ -28,36 +28,35 @@ class ReportTypeChoice extends StatelessWidget {
                 // mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(child: Text("รายงาน", style: TextStyle(fontSize: 16),)),
-                  Padding(
+                  const Center(child: Text("รายงาน", style: TextStyle(fontSize: 16),)),
+                  const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
                     child: Text("รายละเอียดการรายงาน", style: TextStyle(fontSize: 16),),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: "กรุณากรอก",
                     ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
                     child: Text("แนบหลักฐานการรายงาน", style: TextStyle(fontSize: 16),),
                   ),
                   OutlinedButton.icon(
                     onPressed: selectFile, 
-                    icon: Icon(Icons.file_upload, color: primaryColor,),
-                    // icon: SvgPicture.asset("assets/icons/upload.svg",),
-                    label: Text("เพิ่มไฟล์", style: TextStyle(color: primaryColor),),
+                    icon: const Icon(Icons.file_upload, color: primaryColor,),
+                    label: const Text("เพิ่มไฟล์", style: TextStyle(color: primaryColor),),
                     style: OutlinedButton.styleFrom(
-                      minimumSize: Size(159, 36),
-                      side: BorderSide(color: primaryColor),
+                      minimumSize: const Size(159, 36),
+                      side: const BorderSide(color: primaryColor),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     )
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Center(
                     child: RoundButton(
                       text: "รายงาน", 
-                      minimumSize: Size(339, 36), 
+                      minimumSize: const Size(339, 36), 
                       press: () {},
                     ),
                   )
