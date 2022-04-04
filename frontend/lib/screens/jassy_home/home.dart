@@ -3,6 +3,7 @@ import 'package:flutter_application_1/component/back_close_appbar.dart';
 import 'package:flutter_application_1/component/buttom_appbar.dart';
 import 'package:flutter_application_1/screens/chat/chat_screen.dart';
 import 'package:flutter_application_1/screens/jassy_home/component/home_body.dart';
+import 'package:flutter_application_1/screens/main/jassy_main.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -15,11 +16,11 @@ class JassyHome extends StatefulWidget {
 
 class _JassyHomeState extends State<JassyHome> {
 
-  int _currentIndex = 3;
+  int _currentIndex = 2;
   final screens = [
     Center(child: Text('home'),),
     Center(child: Text('likes'),),
-    Center(child: Text('community'),),
+    JassyMain(),
     ChatScreen(),
     Center(child: Text('profile'),),
   ];
@@ -28,15 +29,20 @@ class _JassyHomeState extends State<JassyHome> {
   Widget build(BuildContext context) {
     return Scaffold(  
       extendBodyBehindAppBar: true,
-      floatingActionButton: Visibility(
-        visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
-        child: FloatingActionButton(
-          child: SvgPicture.asset('assets/icons/jassy_water.svg'),
-          backgroundColor: greyLightest,
-          onPressed: () {},
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: Visibility(
+      //   visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
+      //   child: FloatingActionButton(
+      //     child: SvgPicture.asset('assets/icons/jassy_water.svg'),
+      //     backgroundColor: greyLightest,
+      //     onPressed: () {
+      //       Navigator.push(
+      //         context, 
+      //         MaterialPageRoute(builder: (context) => const JassyMain())
+      //       );
+      //     },
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: screens[_currentIndex],
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
@@ -58,7 +64,7 @@ class _JassyHomeState extends State<JassyHome> {
                 items: [
                   BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก',),
                   BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: 'ถูกใจ'),
-                  BottomNavigationBarItem(icon: Icon(Icons.category), label: ''),
+                  BottomNavigationBarItem(icon: SvgPicture.asset('assets/icons/jassy_water.svg', height: 35,), label: ''),
                   BottomNavigationBarItem(icon: Icon(Icons.forum_outlined), label: 'แชท'),
                   BottomNavigationBarItem(icon: Icon(Icons.person), label: 'โพรไฟล์')
                 ]),
