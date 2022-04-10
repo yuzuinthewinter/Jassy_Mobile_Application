@@ -12,11 +12,11 @@ import 'package:flutter_application_1/theme/index.dart';
 class ChatCard extends StatelessWidget {
 
   final ChatMessage chat;
-  final VoidCallback press;
+  // final VoidCallback press;
 
   const ChatCard({
     Key? key,
-    required this.press,
+    // required this.press,
     required this.chat,
   }) : super(key: key);
 

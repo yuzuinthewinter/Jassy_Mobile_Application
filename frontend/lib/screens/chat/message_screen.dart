@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/text/report_choice.dart';
+import 'package:flutter_application_1/models/demo_chat_message.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/chat/component/message_screen_body.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -16,6 +17,8 @@ class ChatRoom extends StatefulWidget {
 }
 
 class _ChatRoomState extends State<ChatRoom> {
+
+  bool isNotificationOn = true;
   
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,7 @@ class _ChatRoomState extends State<ChatRoom> {
       appBar: AppBar(
         title: Column(
           children: [
+            // Note: map chat room name on appbar here
             Text(widget.user.name, style: TextStyle(fontSize: 18, color: textDark),),
             const Text('3 mins ago', style: TextStyle(fontSize: 14, color: greyDark),),
           ],
@@ -45,7 +49,9 @@ class _ChatRoomState extends State<ChatRoom> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             onSelected: (value) => {
               if (value == MenuItem.item1) {
-               print("turn off notification")
+               print("turn off notification"),
+               _toggleNotification,
+               print(isNotificationOn)
               }else if (value == MenuItem.item2) {
                print("cancel pairing")
               }else if (value == MenuItem.item3) {
@@ -56,10 +62,16 @@ class _ChatRoomState extends State<ChatRoom> {
             itemBuilder: (context) => [
               PopupMenuItem(
                 value: MenuItem.item1,
+                onTap: () {
+                  print(isNotificationOn);
+                  _toggleNotification;
+                },
                 child: Row(
                   children: [
-                    SvgPicture.asset("assets/icons/notification_on.svg"),
-                    const Text("ปิดการแจ้งเตือน"),
+                    isNotificationOn ? 
+                    SvgPicture.asset("assets/icons/notification_on.svg") : SvgPicture.asset("assets/icons/notification_off.svg"),
+                    isNotificationOn ?
+                    const Text("เปิดการแจ้งเตือน") : const Text("ปิดการแจ้งเตือน"),
                   ],
                 )
               ),
@@ -86,12 +98,18 @@ class _ChatRoomState extends State<ChatRoom> {
           )
         ],
       ),
-      body: const MessageScreenBody(),
+      body: MessageScreenBody(user: widget.user,),
     );
   }
 
-Future<dynamic> reportModalBottomSheet(BuildContext context) {
-  return showModalBottomSheet(
+  void _toggleNotification () {
+    setState(() {
+      isNotificationOn =! isNotificationOn;  
+    });
+  } 
+
+  Future<dynamic> reportModalBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
               isScrollControlled: true,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               context: context, 
@@ -129,5 +147,5 @@ Future<dynamic> reportModalBottomSheet(BuildContext context) {
                 ),
               )
             );
-  }
+    }
 }
