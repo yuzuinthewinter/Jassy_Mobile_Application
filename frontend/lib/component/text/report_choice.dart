@@ -19,7 +19,7 @@ class ReportTypeChoice extends StatelessWidget {
           // Navigator.pop(context);
           showModalBottomSheet(
             isScrollControlled: true,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
             context: context, 
             builder: (context) => Container(
               height: MediaQuery.of(context).size.height * 0.60,
