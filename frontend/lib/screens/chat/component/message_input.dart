@@ -19,14 +19,26 @@ class MessageInput extends StatelessWidget {
       ),
         child: Row(
           children: [
-            SvgPicture.asset("assets/icons/add_circle.svg"),
+            InkWell(
+              // TODO: add add icon detail (ammie)
+              onTap: () {
+                print("add icon");
+              },
+              child: SvgPicture.asset("assets/icons/add_circle.svg")
+            ),
             SizedBox(width: size.height * 0.01,),
             Expanded(
               child: TextField(
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
                   hintText: "พิมพ์ข้อความ",
-                  suffixIcon: Icon(Icons.sentiment_satisfied_alt, color: primaryColor,),
+                  suffixIcon: InkWell(
+                    // TODO : add emoji picker (ammie)
+                    onTap: () {
+                      print("emoji");
+                    },
+                    child: Icon(Icons.sentiment_satisfied_alt, color: primaryColor,)
+                  ),
                   filled: true,
                   fillColor: textLight,
                   contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20.0),
@@ -46,7 +58,12 @@ class MessageInput extends StatelessWidget {
               )
             ),
             SizedBox(width: size.height * 0.02,),
-            SvgPicture.asset("assets/icons/send.svg")
+            InkWell(
+              onTap: () {
+                print("send");
+              },
+              child: SvgPicture.asset("assets/icons/send.svg")
+            )
           ],
         )
     );
