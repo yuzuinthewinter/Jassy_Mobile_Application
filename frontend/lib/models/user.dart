@@ -37,6 +37,15 @@ class Info {
       this.levelInterestedLanguage = ''});
 }
 
+class Filtering {
+  String langguageLevel, gender;
+
+  Filtering({
+    this.langguageLevel = '',
+    this.gender = '',
+  });
+}
+
 class UserSchema {
   String phoneNumber;
   String password;
