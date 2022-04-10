@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/models/demo_chat_message.dart';
-import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/chat/component/chat_card.dart';
-import 'package:flutter_application_1/screens/chat/message_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -22,7 +19,7 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
     return Container(
       child: Column(
         children: [
-          CurvedWidget(
+          const CurvedWidget(
             child: JassyGradientColor()
           ),
           Container(
@@ -57,10 +54,7 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
             padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
             itemCount: recentChats.length,
             itemBuilder: (context, int index) => 
-              ChatCard(
-                press: () {
-                 
-                }, 
+              ChatCard( 
                 chat: recentChats[index],
               )
           )
