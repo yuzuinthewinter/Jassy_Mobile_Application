@@ -15,7 +15,9 @@ class JassyHome extends StatefulWidget {
 
 class _JassyHomeState extends State<JassyHome> {
 
+
   int _currentIndex = 3;
+  
   final screens = [
     Center(child: Text('home'),),
     Center(child: Text('likes'),),

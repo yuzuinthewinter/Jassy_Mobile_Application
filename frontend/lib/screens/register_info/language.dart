@@ -8,12 +8,14 @@ class RegisterLanguage extends StatelessWidget {
   final Info uinfo;
 
   RegisterLanguage(this.name, this.uinfo);
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: BackAndCloseAppBar(text: "ลงทะเบียนผู้ใช้ใหม่",),
+      appBar: BackAndCloseAppBar(
+        text: "ลงทะเบียนผู้ใช้ใหม่",
+      ),
       body: Body(this.name, this.uinfo),
     );
   }

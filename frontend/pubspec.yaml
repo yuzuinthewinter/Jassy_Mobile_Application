@@ -46,11 +46,16 @@ dependencies:
   dependencies:
   flutter_facebook_auth: ^4.1.1
   file_picker: ^4.5.1
+  lottie: ^1.2.2
+  get: ^4.6.1
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_localizations:
+    sdk: flutter
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -73,6 +78,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/font/
+    - translations/
 
   fonts:
     - family: Kanit

@@ -6,6 +6,7 @@ import 'package:flutter_application_1/component/header_style/header_style2.dart'
 import 'package:flutter_application_1/component/input_feilds/required_text_field_label.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/landing/landing_page.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
@@ -344,10 +345,10 @@ class _BodyState extends State<Body> {
                       }
                     });
                   }
-                  Navigator.push(
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => SuccessPage('ลงทะเบียนสำเร็จ')),
+                    Routes.SuccessPage,
+                    arguments: ['RegisterSuccess'],
                   );
                 },
               ),
@@ -377,7 +378,7 @@ class _BodyState extends State<Body> {
                   .toList(),
               onSelectedItemChanged: (value) {
                 setState(() {
-                  this.countryIndex = value;
+                  countryIndex = value;
                 });
               },
             ),
