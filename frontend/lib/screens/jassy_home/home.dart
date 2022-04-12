@@ -15,7 +15,9 @@ class JassyHome extends StatefulWidget {
 
 class _JassyHomeState extends State<JassyHome> {
 
-  int _currentIndex = 0;
+
+  int _currentIndex = 3;
+  
   final screens = [
     Center(child: Text('home'),),
     Center(child: Text('likes'),),
@@ -28,10 +30,13 @@ class _JassyHomeState extends State<JassyHome> {
   Widget build(BuildContext context) {
     return Scaffold(  
       extendBodyBehindAppBar: true,
-      floatingActionButton: FloatingActionButton(
-        child: SvgPicture.asset('assets/icons/jassy_water.svg'),
-        backgroundColor: greyLightest,
-        onPressed: () {},
+      floatingActionButton: Visibility(
+        visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
+        child: FloatingActionButton(
+          child: SvgPicture.asset('assets/icons/jassy_water.svg'),
+          backgroundColor: greyLightest,
+          onPressed: () {},
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: screens[_currentIndex],
