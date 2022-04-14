@@ -88,7 +88,13 @@ class _JassyMainBodyState extends State<JassyMainBody> {
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Align(alignment: Alignment.topRight, child: SvgPicture.asset("assets/icons/close_circle.svg")),
+            child: InkWell(
+              onTap: () { print("x"); },
+              child: Align(
+                alignment: Alignment.topRight, 
+                child: SvgPicture.asset("assets/icons/close_circle.svg")
+              )
+            ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -101,33 +107,42 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                   borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20))
                 ),
                 child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      // mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(fontSize: 12, fontFamily: "kanit", fontWeight: FontWeight.w700),
-                            children: [TextSpan(text: data.country), const TextSpan(text: ", "), TextSpan(text: data.age)]
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(fontSize: 12, fontFamily: "kanit", fontWeight: FontWeight.w700),
+                              children: [TextSpan(text: data.country), const TextSpan(text: ", "), TextSpan(text: data.city), const TextSpan(text: " "), TextSpan(text: data.time)]
+                            ),
                           ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(fontSize: 24, fontFamily: "kanit", fontWeight: FontWeight.w900),
-                            children: [TextSpan(text: data.name), const TextSpan(text: ", "), TextSpan(text: data.age)]
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(fontSize: 24, fontFamily: "kanit", fontWeight: FontWeight.w900),
+                              children: [TextSpan(text: data.name), const TextSpan(text: ", "), TextSpan(text: data.age)]
+                            ),
                           ),
-                        ),
-                        RichText(
-                          text: const TextSpan(
-                            style: TextStyle(fontSize: 14, fontFamily: "kanit", fontWeight: FontWeight.w700),
-                            children: [TextSpan(text: "TH"), WidgetSpan(child: Icon(Icons.sync_alt, size: 20, color: textLight,)), TextSpan(text: "KR"),]
+                          RichText(
+                            text: const TextSpan(
+                              style: TextStyle(fontSize: 14, fontFamily: "kanit", fontWeight: FontWeight.w700),
+                              children: [TextSpan(text: "TH"), WidgetSpan(child: Icon(Icons.sync_alt, size: 20, color: textLight,)), TextSpan(text: "KR"),]
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    Expanded(child: SvgPicture.asset("assets/icons/heart_button.svg"))
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: InkWell(
+                        onTap: () { print("หัวใจ"); },
+                        child: Expanded(child: SvgPicture.asset("assets/icons/heart_button.svg"))
+                      ),
+                    )
                   ],
                 ),
               ),
