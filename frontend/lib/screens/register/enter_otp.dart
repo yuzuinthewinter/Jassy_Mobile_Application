@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/back_close_appbar.dart';
 import 'package:flutter_application_1/screens/register/component/otp.body.dart';
+import 'package:get/get.dart';
 
  class EnterOTP extends StatelessWidget {
    final String phoneNumber;
@@ -12,7 +13,7 @@ import 'package:flutter_application_1/screens/register/component/otp.body.dart';
      return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
-      appBar: BackAndCloseAppBar(text: 'ลงทะเบียนด้วยเบอร์โทรศัพท์'),
+      appBar: BackAndCloseAppBar(text: 'PhoneRegisterPage'.tr),
       body: Body(this.phoneNumber),
     );
    }

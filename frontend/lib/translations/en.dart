@@ -1,1 +1,0 @@
-//TODO: config with english languages

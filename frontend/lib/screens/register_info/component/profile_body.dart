@@ -8,8 +8,11 @@ import 'package:flutter_application_1/component/header_style/header_style2.dart'
 import 'package:flutter_application_1/component/input_feilds/required_text_field_label.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
+import 'package:flutter_application_1/screens/jassy_home/home.dart';
+import 'package:flutter_application_1/screens/landing/landing_page.dart';
 import 'package:flutter_application_1/screens/register_info/language.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:intl/intl.dart';
@@ -43,11 +46,17 @@ class _BodyState extends State<Body> {
 
     if (currentUser != null) {
       isLoading = true;
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SuccessPage('เข้าสู่ระบบสำเร็จ')),
-      );
+      await
+          // Navigator.pushNamed(
+          //   context,
+          //   Routes.SuccessPage,
+          //   arguments: ['LoginSuccess', Routes.JassyHome],
+          // );
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SuccessPage('RegisterSuccess'),
+              ));
     } else {
       isLoading = false;
     }
@@ -165,24 +174,24 @@ class _BodyState extends State<Body> {
                         vertical: 0, horizontal: 20.0),
                     child: TextFormField(
                       readOnly: true,
-                      onTap: () async {
-                        FocusScope.of(context).requestFocus(new FocusNode());
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (BuildContext builder) {
-                              return Container(
-                                  height: MediaQuery.of(context)
-                                          .copyWith()
-                                          .size
-                                          .height /
-                                      3,
-                                  child: CupertinoDatePicker(
-                                    initialDateTime: DateTime.now(),
-                                    mode: CupertinoDatePickerMode.date,
-                                    onDateTimeChanged: onBirthdayChange,
-                                  ));
-                            });
-                      },
+                      // onTap: () async {
+                      //   FocusScope.of(context).requestFocus(new FocusNode());
+                      //   showModalBottomSheet(
+                      //       context: context,
+                      //       builder: (BuildContext builder) {
+                      //         return Container(
+                      //             height: MediaQuery.of(context)
+                      //                     .copyWith()
+                      //                     .size
+                      //                     .height /
+                      //                 3,
+                      //             child: CupertinoDatePicker(
+                      //               initialDateTime: DateTime.now(),
+                      //               mode: CupertinoDatePickerMode.date,
+                      //               onDateTimeChanged: onBirthdayChange,
+                      //             ));
+                      //       });
+                      // },
                       decoration: InputDecoration(
                         labelText: DateFormat.yMd().format(_selectedDateTime),
                         fillColor: textLight,
@@ -245,12 +254,8 @@ class _BodyState extends State<Body> {
                       press: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    RegisterLanguage(name, userInfo)),
-                          );
+                          Navigator.pushNamed(context, Routes.RegisterLanguage,
+                              arguments: [name, userInfo]);
                         }
                       },
                     ),
