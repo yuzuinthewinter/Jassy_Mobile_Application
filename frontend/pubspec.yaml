@@ -48,6 +48,7 @@ dependencies:
   file_picker: ^4.5.1
   lottie: ^1.2.2
   get: ^4.6.1
+  carousel_slider: ^4.0.0
 
 
 dev_dependencies:
