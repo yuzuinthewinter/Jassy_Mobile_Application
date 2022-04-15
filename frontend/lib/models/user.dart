@@ -113,7 +113,7 @@ List<MainUser> dataLists = [
   ),MainUser(
     name: "Ammie",
     desc: "Hi im Ammie. Nice too meet you",
-    image: "assets/images/ammie.jpg",
+    image: "assets/images/user1.jpg",
     time: "11:16 PM",
     city: "Bangkok",
     country: "Thailand",
@@ -123,7 +123,7 @@ List<MainUser> dataLists = [
   ),MainUser(
     name: "Ammie",
     desc: "Hi im Ammie. Nice too meet you",
-    image: "assets/images/ammie.jpg",
+    image: "assets/images/user2.jpg",
     time: "11:16 PM",
     city: "Bangkok",
     country: "Thailand",
@@ -133,7 +133,7 @@ List<MainUser> dataLists = [
   ),MainUser(
     name: "Ammie",
     desc: "Hi im Ammie. Nice too meet you",
-    image: "assets/images/ammie.jpg",
+    image: "assets/images/user3.jpg",
     time: "11:16 PM",
     city: "Bangkok",
     country: "Thailand",
@@ -143,7 +143,7 @@ List<MainUser> dataLists = [
   ),MainUser(
     name: "Ammie",
     desc: "Hi im Ammie. Nice too meet you",
-    image: "assets/images/ammie.jpg",
+    image: "assets/images/user4.jpg",
     time: "11:16 PM",
     city: "Bangkok",
     country: "Thailand",
@@ -153,7 +153,7 @@ List<MainUser> dataLists = [
   ),MainUser(
     name: "Ammie",
     desc: "Hi im Ammie. Nice too meet you",
-    image: "assets/images/ammie.jpg",
+    image: "assets/images/user5.jpg",
     time: "11:16 PM",
     city: "Bangkok",
     country: "Thailand",
