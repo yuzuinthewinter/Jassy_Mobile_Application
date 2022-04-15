@@ -15,14 +15,19 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Column(
-          children: [
-            Expanded(
-              child: ConversationText(user: widget.user,)
-            ),
-            MessageInput(size: size)
-          ],
-        );
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Column(
+            children: [
+              Expanded(
+                child: ConversationText(user: widget.user,)
+              ),
+              MessageInput(size: size)
+            ],
+          ),
+    );
   }
 }
 
