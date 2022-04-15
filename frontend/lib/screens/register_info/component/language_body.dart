@@ -9,7 +9,7 @@ import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/landing/landing_page.dart';
-import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
+import 'package:flutter_application_1/component/popup_page/RegisterSuccessPopup.dart';
 import 'package:flutter_application_1/screens/jassy_home/home.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -347,8 +347,9 @@ class _BodyState extends State<Body> {
                   }
                   Navigator.pushNamed(
                     context,
-                    Routes.SuccessPage,
-                    arguments: ['RegisterSuccess'],
+                    //TODO: support success popup and go to face reg page
+                    Routes.RegisterSuccessPopup,
+                    arguments: 'RegisterSuccess',
                   );
                 },
               ),

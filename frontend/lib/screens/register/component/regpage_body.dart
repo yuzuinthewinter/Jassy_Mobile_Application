@@ -12,8 +12,22 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   bool isLoading = false;
+
+  Future getDocs() async {
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection("users").get();
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    print(allData);
+  }
 
   Future _facebookLogin(BuildContext context) async {
     try {
@@ -23,11 +37,30 @@ class Body extends StatelessWidget {
           facebookLoginResult.accessToken!.token);
       await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
 
-      Navigator.of(context).pushNamed(Routes.RegisterProfile);
+      var currentUser = FirebaseAuth.instance.currentUser;
+      // CollectionReference users = FirebaseFirestore.instance.collection('users');
+      // users.doc().map
+      if (currentUser != null) {
+        Navigator.pushNamed(
+          context,
+          Routes.RegisterSuccessPopup,
+          arguments: 'RegisterSuccess',
+        );
+      } else {
+        Navigator.of(context).pushNamed(Routes.RegisterProfile);
+      }
     } on FirebaseAuthException catch (e) {
       isLoading = false;
-      //TODO: failed
+      //TODO: handle failed
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getDocs();
+    print('hello');
+    // checkCurrentUser();
   }
 
   @override
@@ -80,7 +113,7 @@ class Body extends StatelessWidget {
                     'assets/icons/google.svg',
                     height: 21,
                   ),
-                  press: () {},
+                  press: () => {_googleLogin(context)},
                   color: textLight,
                   textColor: greyDarker,
                 ),

@@ -8,7 +8,7 @@ import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/user.dart';
-import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
+import 'package:flutter_application_1/component/popup_page/RegisterSuccessPopup.dart';
 import 'package:flutter_application_1/screens/jassy_home/home.dart';
 import 'package:flutter_application_1/screens/register_info/profile.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -173,8 +173,8 @@ class _BodyState extends State<Body> {
                   print("password: ${user.password}");
                   Navigator.pushNamed(
                     context,
-                    Routes.SuccessPage,
-                    arguments: ['RegisterSuccess'],
+                    Routes.RegisterSuccessPopup,
+                    arguments: 'RegisterSuccess',
                   );
                 }
               },

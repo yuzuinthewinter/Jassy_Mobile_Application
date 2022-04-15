@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
+import 'package:flutter_application_1/component/popup_page/RegisterSuccessPopup.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/chat/chat_screen.dart';
 import 'package:flutter_application_1/screens/jassy_home/home.dart';
@@ -28,7 +28,7 @@ class Routes extends RouteGenerator {
   static const String RegisterLanguage = '/RegisterLanguage';
 
   //Popup
-  static const String SuccessPage = '/SuccessPage';
+  static const String RegisterSuccessPopup = '/RegisterSuccessPopup';
   //other
   static const String LoginPage = '/LoginPage';
   static const String LandingPage = '/LandingPage';
@@ -59,9 +59,9 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => RegisterLanguage(data[0], data[1]));
 
-      case Routes.SuccessPage:
+      case Routes.RegisterSuccessPopup:
         var data = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => SuccessPage(data));
+        return MaterialPageRoute(builder: (_) => RegisterSuccessPopup(data));
 
       //other
       case Routes.LoginPage:
