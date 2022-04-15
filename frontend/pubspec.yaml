@@ -43,11 +43,11 @@ dependencies:
   firebase_auth: ^3.3.8
   pinput: ^2.0.2
   cloud_firestore: ^3.1.10
-  dependencies:
   flutter_facebook_auth: ^4.1.1
   file_picker: ^4.5.1
   lottie: ^1.2.2
   get: ^4.6.1
+  google_sign_in: ^5.2.4
 
 
 dev_dependencies:

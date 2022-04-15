@@ -1,15 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/background.dart';
 import 'package:flutter_application_1/component/button/icon_button.dart';
 import 'package:flutter_application_1/component/term_and_policies.dart';
 import 'package:flutter_application_1/constants/routes.dart';
-import 'package:flutter_application_1/screens/register/phone_register.dart';
-import 'package:flutter_application_1/screens/register_info/profile.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
 
 class Body extends StatelessWidget {
@@ -29,6 +27,62 @@ class Body extends StatelessWidget {
       //TODO: failed
     }
   }
+
+  Future _googleLogin(BuildContext context) async {
+    try {
+      // isLoading = true;
+      // final GoogleSignIn googleSignIn = GoogleSignIn();
+      // final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+      // final GoogleSignInAuthentication? googleSignInAuthentication = await googleSignInAccount?.authentication;
+      // final googleAuthCredential = GoogleAuthProvider.credential(
+      //   accessToken: googleSignInAuthentication?.accessToken
+      // );
+
+      // await FirebaseAuth.instance.signInWithCredential(googleAuthCredential);
+
+    } on FirebaseAuthException catch (e) {
+      isLoading = false;
+    }
+  }
+
+  // Future<String> _googleLogin() async {
+  //   final FirebaseAuth _auth = FirebaseAuth.instance;
+  //   final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  //   final GoogleSignInAccount? googleSignInAccount =
+  //       await googleSignIn.signIn();
+  //   final GoogleSignInAuthentication? googleSignInAuthentication =
+  //       await googleSignInAccount?.authentication;
+
+  //   final AuthCredential credential = GoogleAuthProvider.credential(
+  //     accessToken: googleSignInAuthentication?.accessToken,
+  //     idToken: googleSignInAuthentication?.idToken,
+  //   );
+
+  //   final UserCredential authResult =
+  //       await _auth.signInWithCredential(credential);
+  //   final User? user = authResult.user;
+
+  //   assert(!user!.isAnonymous);
+  //   assert(await user?.getIdToken() != null);
+
+  //   final User currentUser = await _auth.currentUser!;
+  //   assert(user?.uid == currentUser.uid);
+
+  //   return 'signInWithGoogle succeeded: $user';
+  // }
+
+  // Future _googleLogin(BuildContext context) async {
+  //   try {
+  //     isLoading = true;
+  //     GoogleSignIn _googleSignIn = GoogleSignIn(
+  //       scopes: [
+  //         'email',
+  //         'https://www.googleapis.com/auth/contacts.readonly',
+  //       ],
+  //     );
+  //   } on FirebaseAuthException catch (e) {}
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +134,9 @@ class Body extends StatelessWidget {
                     'assets/icons/google.svg',
                     height: 21,
                   ),
-                  press: () {},
+                  press: () {
+                    _googleLogin(context);
+                  },
                   color: textLight,
                   textColor: greyDarker,
                 ),
