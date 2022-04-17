@@ -63,7 +63,46 @@ final ChatUser albert = ChatUser(
   isActive: false,
 );
 
-final List<ChatMessage> recentChats  = [
+final List<ChatUser> listUser = [
+  ChatUser(
+    id: 2,
+    name: "Esther Howarddddddddddddddddddddddddddd",
+    image: "assets/images/header_img1.png",
+    isActive: true,
+  ),
+  ChatUser(
+    id: 4,
+    name: "Jacob Jones",
+    image: "assets/images/header_img1.png",
+    isActive: true,
+  ),
+  ChatUser(
+    id: 6,
+    name: "san",
+    image: "assets/images/header_img1.png",
+    isActive: true,
+  ),
+  ChatUser(
+    id: 8,
+    name: "Jas",
+    image: "assets/images/header_img1.png",
+    isActive: true,
+  ),
+  ChatUser(
+    id: 9,
+    name: "Estard",
+    image: "assets/images/header_img1.png",
+    isActive: true,
+  ),
+  ChatUser(
+    id: 13,
+    name: "Jacones",
+    image: "assets/images/header_img1.png",
+    isActive: true,
+  )
+];
+
+final List<ChatMessage> recentChats = [
   ChatMessage(
     sender: jenny,
     lastMessage: "Hope you are doing well...",
