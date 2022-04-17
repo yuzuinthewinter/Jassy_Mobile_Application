@@ -40,25 +40,29 @@ class _BodyState extends State<Body> {
 
   var currentUser = FirebaseAuth.instance.currentUser;
   void checkCurrentUser() async {
-    setState() {
-      isLoading = true;
-    }
-
+    //TODO: get currentuser check in users collecction in uid field
+    // that user profile exist
+    CollectionReference users = FirebaseFirestore.instance.collection('Users');
     if (currentUser != null) {
-      isLoading = true;
-      await
-          // Navigator.pushNamed(
-          //   context,
-          //   Routes.SuccessPage,
-          //   arguments: ['LoginSuccess', Routes.JassyHome],
-          // );
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SuccessPage('RegisterSuccess'),
-              ));
+      FirebaseFirestore.instance
+          .collection('Users')
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((result) {
+          if (currentUser == result.get('uid')) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SuccessPage('RegisterSuccess'),
+                ));
+                
+          } else {
+            Navigator.pushNamed(context, Routes.RegisterProfile);
+          }
+        });
+      });
     } else {
-      isLoading = false;
+      Navigator.pushNamed(context, Routes.RegisterProfile);
     }
   }
 
@@ -72,9 +76,9 @@ class _BodyState extends State<Body> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    checkCurrentUser();
+    //TODO: check current user
+    // checkCurrentUser();
     this.userInfo.genre = _choicesLists[0];
   }
 
