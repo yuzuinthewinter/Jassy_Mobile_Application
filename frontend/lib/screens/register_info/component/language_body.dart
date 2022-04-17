@@ -16,8 +16,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Body extends StatefulWidget {
-  final Name name;
-  final Info uinfo;
+  final NameType name;
+  final InfoType uinfo;
   Body(this.name, this.uinfo);
 
   @override
@@ -25,9 +25,10 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  Name name = Name();
-  Info userInfo = Info();
-  UserSchema user = UserSchema();
+  NameType name = NameType();
+  InfoType userInfo = InfoType();
+  LanguageType language = LanguageType();
+
   late FixedExtentScrollController countryScrollController;
   late FixedExtentScrollController defaultScrollController;
   late FixedExtentScrollController defaultLevelScrollController;
@@ -82,14 +83,14 @@ class _BodyState extends State<Body> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            CurvedWidget(
+            const CurvedWidget(
               child: HeaderStyle2(),
             ),
-            HeaderText(text: "ข้อมูลภาษา"),
-            DescriptionText(
+            const HeaderText(text: "ข้อมูลภาษา"),
+            const DescriptionText(
                 text:
                     "คุณไม่สามารถเปลี่ยนสัญชาติและภาษาแม่หลังจากนี้ได้ดังนั้นโปรดให้ข้อมูลส่วนบุคคลที่แท้จริง"),
-            RequiredTextFieldLabel(textLabel: "คุณเป็นคนประเทศ"),
+            const RequiredTextFieldLabel(textLabel: "คุณเป็นคนประเทศ"),
             Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
@@ -113,7 +114,7 @@ class _BodyState extends State<Body> {
                     labelText: languageItems[countryIndex],
                     fillColor: textLight,
                     filled: true,
-                    suffixIcon: Icon(
+                    suffixIcon: const Icon(
                       Icons.arrow_forward_ios,
                       size: 20,
                     ),
@@ -134,7 +135,7 @@ class _BodyState extends State<Body> {
                     userInfo.country = languageItems[countryIndex];
                   }),
             ),
-            RequiredTextFieldLabel(textLabel: "ภาษาแม่"),
+            const RequiredTextFieldLabel(textLabel: "ภาษาแม่"),
             Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
@@ -158,7 +159,7 @@ class _BodyState extends State<Body> {
                   labelText: languageItems[defaultIndex],
                   fillColor: textLight,
                   filled: true,
-                  suffixIcon: Icon(
+                  suffixIcon: const Icon(
                     Icons.arrow_forward_ios,
                     size: 20,
                   ),
@@ -176,11 +177,11 @@ class _BodyState extends State<Body> {
                   ),
                 ),
                 onSaved: (String? defaultLanguage) {
-                  userInfo.defaultLanguage = languageItems[defaultIndex];
+                  language.defaultLanguage = languageItems[defaultIndex];
                 },
               ),
             ),
-            RequiredTextFieldLabel(textLabel: "ระดับภาษาแม่"),
+            const RequiredTextFieldLabel(textLabel: "ระดับภาษาแม่"),
             Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
@@ -204,7 +205,7 @@ class _BodyState extends State<Body> {
                   labelText: languageLevelItems[defaultLevelIndex],
                   fillColor: textLight,
                   filled: true,
-                  suffixIcon: Icon(
+                  suffixIcon: const Icon(
                     Icons.arrow_forward_ios,
                     size: 20,
                   ),
@@ -222,12 +223,12 @@ class _BodyState extends State<Body> {
                   ),
                 ),
                 onSaved: (String? defaultLevel) {
-                  userInfo.levelDefaultLanguage =
+                  language.levelDefaultLanguage =
                       languageLevelItems[defaultLevelIndex];
                 },
               ),
             ),
-            RequiredTextFieldLabel(textLabel: "ภาษาที่สนใจ"),
+            const RequiredTextFieldLabel(textLabel: "ภาษาที่สนใจ"),
             Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
@@ -251,7 +252,7 @@ class _BodyState extends State<Body> {
                   labelText: languageItems[interestIndex],
                   fillColor: textLight,
                   filled: true,
-                  suffixIcon: Icon(
+                  suffixIcon: const Icon(
                     Icons.arrow_forward_ios,
                     size: 20,
                   ),
@@ -269,11 +270,11 @@ class _BodyState extends State<Body> {
                   ),
                 ),
                 onSaved: (String? interestLanguage) {
-                  userInfo.interestedLanguage = languageItems[interestIndex];
+                  language.interestedLanguage = languageItems[interestIndex];
                 },
               ),
             ),
-            RequiredTextFieldLabel(textLabel: "ระดับภาษาที่สนใจ"),
+            const RequiredTextFieldLabel(textLabel: "ระดับภาษาที่สนใจ"),
             Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
@@ -297,7 +298,7 @@ class _BodyState extends State<Body> {
                   labelText: languageLevelItems[interestLevelIndex],
                   fillColor: textLight,
                   filled: true,
-                  suffixIcon: Icon(
+                  suffixIcon: const Icon(
                     Icons.arrow_forward_ios,
                     size: 20,
                   ),
@@ -315,7 +316,7 @@ class _BodyState extends State<Body> {
                   ),
                 ),
                 onSaved: (String? interestLevel) {
-                  userInfo.levelInterestedLanguage =
+                  language.levelInterestedLanguage =
                       languageLevelItems[interestLevelIndex];
                 },
               ),
@@ -323,7 +324,7 @@ class _BodyState extends State<Body> {
             Center(
               child: DisableToggleButton(
                 text: "next",
-                minimumSize: Size(279, 36),
+                minimumSize: const Size(279, 36),
                 press: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
@@ -337,12 +338,17 @@ class _BodyState extends State<Body> {
                       'genre': widget.uinfo.genre,
                       'country': userInfo.country,
                       'language': {
-                        'defaultLanguage': userInfo.defaultLanguage,
-                        'levelDefaultLanguage': userInfo.levelDefaultLanguage,
-                        'interestedLanguage': userInfo.interestedLanguage,
+                        'defaultLanguage': language.defaultLanguage,
+                        'levelDefaultLanguage': language.levelDefaultLanguage,
+                        'interestedLanguage': language.interestedLanguage,
                         'levelInterestedLanguage':
-                            userInfo.levelInterestedLanguage,
-                      }
+                            language.levelInterestedLanguage,
+                      },
+                      'desc': userInfo.desc,
+                      'faceRegPic': userInfo.faceRegPic,
+                      'profilePic': userInfo.profilePic,
+                      'chats': userInfo.chats,
+                      'isActive': false,
                     });
                   }
                   Navigator.pushNamed(
@@ -407,7 +413,7 @@ class _BodyState extends State<Body> {
                   .toList(),
               onSelectedItemChanged: (value) {
                 setState(() {
-                  this.defaultIndex = value;
+                  defaultIndex = value;
                 });
               },
             ),
@@ -436,7 +442,7 @@ class _BodyState extends State<Body> {
                   .toList(),
               onSelectedItemChanged: (value) {
                 setState(() {
-                  this.defaultLevelIndex = value;
+                  defaultLevelIndex = value;
                 });
               },
             ),
@@ -465,7 +471,7 @@ class _BodyState extends State<Body> {
                   .toList(),
               onSelectedItemChanged: (value) {
                 setState(() {
-                  this.interestIndex = value;
+                  interestIndex = value;
                 });
               },
             ),
@@ -494,7 +500,7 @@ class _BodyState extends State<Body> {
                   .toList(),
               onSelectedItemChanged: (value) {
                 setState(() {
-                  this.interestLevelIndex = value;
+                  interestLevelIndex = value;
                 });
               },
             ),

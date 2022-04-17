@@ -31,9 +31,8 @@ class _BodyState extends State<Body> {
   // state of data's user
   final List<String> role = ["User", "Premium", "Admin"];
   final List<String> _choicesLists = ["ชาย", "หญิง", "LGBTQ+"];
-  Name name = Name();
-  Info userInfo = Info();
-  UserSchema user = UserSchema();
+  NameType name = NameType();
+  InfoType userInfo = InfoType();
   TextEditingController lastnameController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   bool isLoading = false;
@@ -55,7 +54,6 @@ class _BodyState extends State<Body> {
                 MaterialPageRoute(
                   builder: (context) => SuccessPage('RegisterSuccess'),
                 ));
-                
           } else {
             Navigator.pushNamed(context, Routes.RegisterProfile);
           }
@@ -79,7 +77,7 @@ class _BodyState extends State<Body> {
     super.initState();
     //TODO: check current user
     // checkCurrentUser();
-    this.userInfo.genre = _choicesLists[0];
+    userInfo.genre = _choicesLists[0];
   }
 
   @override
@@ -95,11 +93,11 @@ class _BodyState extends State<Body> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  CurvedWidget(
+                  const CurvedWidget(
                     child: HeaderStyle2(),
                   ),
                   HeaderText(text: "ข้อมูลส่วนตัว"),
-                  DescriptionText(
+                  const DescriptionText(
                       text:
                           "คุณไม่สามารถเปลี่ยนอายุและเพศหลังจากนี้ได้ดังนั้นโปรดให้ข้อมูลส่วนบุคคลที่แท้จริง"),
                   RequiredTextFieldLabel(textLabel: "ชื่อ"),
@@ -137,7 +135,7 @@ class _BodyState extends State<Body> {
                       },
                     ),
                   ),
-                  RequiredTextFieldLabel(textLabel: "นามสกุล"),
+                  const RequiredTextFieldLabel(textLabel: "นามสกุล"),
                   Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 0, horizontal: 20.0),
@@ -172,7 +170,7 @@ class _BodyState extends State<Body> {
                       },
                     ),
                   ),
-                  RequiredTextFieldLabel(textLabel: "วันเดือนปีเกิด"),
+                  const RequiredTextFieldLabel(textLabel: "วันเดือนปีเกิด"),
                   Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 0, horizontal: 20.0),
@@ -200,7 +198,7 @@ class _BodyState extends State<Body> {
                         labelText: DateFormat.yMd().format(_selectedDateTime),
                         fillColor: textLight,
                         filled: true,
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                           Icons.arrow_forward_ios,
                           size: 20,
                         ),
@@ -223,7 +221,7 @@ class _BodyState extends State<Body> {
                       },
                     ),
                   ),
-                  RequiredTextFieldLabel(textLabel: "เพศ"),
+                  const RequiredTextFieldLabel(textLabel: "เพศ"),
                   Center(
                     child: Wrap(
                         // alignment: WrapAlignment.spaceBetween,
@@ -254,7 +252,7 @@ class _BodyState extends State<Body> {
                   Center(
                     child: DisableToggleButton(
                       text: "next",
-                      minimumSize: Size(279, 36),
+                      minimumSize: const Size(279, 36),
                       press: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();

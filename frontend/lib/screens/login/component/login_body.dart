@@ -30,7 +30,6 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
-  UserSchema user = UserSchema();
   final phoneNumberController = TextEditingController();
   bool isHiddenPassword = true;
   RegExp regex = RegExp("(?=.*[A-Z])(?=.*[a-z])(?=.*?[!@#\$&*~.]).{8,}");
@@ -165,7 +164,6 @@ class _BodyState extends State<Body> {
               },
               onSaved: (String? phoneNumber) {
                 phoneNumber = phoneNumberController.text;
-                user.phoneNumber = phoneNumber;
               },
             ),
           ),
@@ -208,9 +206,6 @@ class _BodyState extends State<Body> {
                   return "กรุณากรอกตามpattern";
                 }
                 return null;
-              },
-              onSaved: (String? password) {
-                user.password = password!;
               },
             ),
           ),

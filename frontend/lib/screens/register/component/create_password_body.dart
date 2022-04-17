@@ -24,7 +24,6 @@ class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
   bool isHiddenPassword = true;
   bool isHiddenConfirmPassword = true;
-  UserSchema user = UserSchema();
   RegExp regex = RegExp("(?=.*[A-Z])(?=.*[a-z])(?=.*?[!@#\$&*~.]).{8,}");
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -95,9 +94,6 @@ class _BodyState extends State<Body> {
                     return "กรุณากรอกตามpattern";
                   }
                   return null;
-                },
-                onSaved: (String? password) {
-                  user.password = password!;
                 },
               ),
             ),
@@ -170,7 +166,6 @@ class _BodyState extends State<Body> {
               press: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  print("password: ${user.password}");
                   Navigator.pushNamed(
                     context,
                     Routes.SuccessPage,

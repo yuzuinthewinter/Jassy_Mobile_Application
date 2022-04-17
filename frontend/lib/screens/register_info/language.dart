@@ -4,8 +4,8 @@ import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/register_info/component/language_body.dart';
 
 class RegisterLanguage extends StatelessWidget {
-  final Name name;
-  final Info uinfo;
+  final NameType name;
+  final InfoType uinfo;
 
   RegisterLanguage(this.name, this.uinfo);
 
@@ -13,7 +13,7 @@ class RegisterLanguage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: BackAndCloseAppBar(
+      appBar: const BackAndCloseAppBar(
         text: "ลงทะเบียนผู้ใช้ใหม่",
       ),
       body: Body(this.name, this.uinfo),

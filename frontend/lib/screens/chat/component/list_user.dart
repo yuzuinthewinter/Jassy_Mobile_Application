@@ -10,62 +10,68 @@ import 'package:flutter_application_1/theme/index.dart';
 // NOTE: chat card in all chat page show name lastest message and unread notification
 // TODO: map profile image, name and lastest message here
 class ListUser extends StatelessWidget {
-  final ChatUser user;
-  // final VoidCallback press;
-
-  const ListUser({
-    Key? key,
-    // required this.press,
-    required this.user,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () {
-          Navigator.push(context, CupertinoPageRoute(builder: (context) {
-            // NOTE: click each card to go to chat room
-            return ChatRoom(
-              user: user,
-            );
-          }));
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: AssetImage(user.image),
-                    radius: 33,
-                  ),
-                  Positioned(
-                    right: 3,
-                    bottom: 3,
-                    child: Container(
-                      height: 16,
-                      width: 16,
-                      decoration: BoxDecoration(
-                          color: onlineColor,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                              color:
-                                  Theme.of(context).scaffoldBackgroundColor)),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: 70.0,
-                child: Text(
-                  user.name,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-        ));
+    Size size = MediaQuery.of(context).size;
+    return SizedBox(
+      width: size.width * 0.9,
+      height: size.height * 0.18,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 0.0),
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: listUser.length,
+            itemBuilder: (context, int index) => listUser[index].isActive
+                ? InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) {
+                        // NOTE: click each card to go to chat room
+                        return ChatRoom(
+                          user: listUser[index],
+                        );
+                      }));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Column(
+                        children: [
+                          Stack(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage:
+                                    AssetImage(listUser[index].image),
+                                radius: 33,
+                              ),
+                              Positioned(
+                                right: 3,
+                                bottom: 3,
+                                child: Container(
+                                  height: 16,
+                                  width: 16,
+                                  decoration: BoxDecoration(
+                                      color: onlineColor,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor)),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 70.0,
+                            child: Text(
+                              listUser[index].name,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ))
+                : Container()),
+      ),
+    );
   }
 }
