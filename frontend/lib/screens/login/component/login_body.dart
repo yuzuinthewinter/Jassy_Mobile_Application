@@ -1,4 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/component/background.dart';
@@ -15,6 +17,7 @@ import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/jassy_home/home.dart';
 import 'package:flutter_application_1/screens/register/phone_register.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
@@ -40,6 +43,38 @@ class _BodyState extends State<Body> {
     super.dispose();
   }
 
+  //TODO: signin service function - facebook, google, phone
+  Future _facebookLogin(BuildContext context) async {
+    try {
+      final facebookLoginResult = await FacebookAuth.instance.login();
+      final facebookAuthCredential = FacebookAuthProvider.credential(
+          facebookLoginResult.accessToken!.token);
+      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+
+      Navigator.of(context).pushNamed(Routes.JassyHome);
+    } on FirebaseAuthException catch (e) {
+      //TODO: handle failed
+    }
+  }
+
+  Future _googleLogin(BuildContext context) async {
+    late GoogleSignInAccount user;
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      Navigator.of(context).pushNamed(Routes.JassyHome);
+    } on FirebaseAuthException catch (e) {
+      //TODO: handle failed
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -62,7 +97,7 @@ class _BodyState extends State<Body> {
                 IconButtonComponent(
                   text: "Google",
                   minimumSize: Size(163, 36),
-                  press: () {},
+                  press: () => _googleLogin(context),
                   iconPicture:
                       SvgPicture.asset("assets/icons/google.svg", height: 21),
                   color: textLight,
@@ -71,7 +106,7 @@ class _BodyState extends State<Body> {
                 IconButtonComponent(
                   text: "Facebook",
                   minimumSize: Size(163, 36),
-                  press: () {},
+                  press: () => _facebookLogin(context),
                   iconPicture:
                       SvgPicture.asset("assets/icons/facebook.svg", height: 21),
                   color: facebookColor,

@@ -1,18 +1,24 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/background.dart';
 import 'package:flutter_application_1/component/button/icon_button.dart';
 import 'package:flutter_application_1/component/term_and_policies.dart';
 import 'package:flutter_application_1/constants/routes.dart';
-import 'package:flutter_application_1/screens/register/phone_register.dart';
-import 'package:flutter_application_1/screens/register_info/profile.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
   Future _facebookLogin(BuildContext context) async {
@@ -27,6 +33,25 @@ class Body extends StatelessWidget {
     } on FirebaseAuthException catch (e) {
       isLoading = false;
       //TODO: failed
+    }
+  }
+
+  Future _googleLogin(BuildContext context) async {
+    late GoogleSignInAccount user;
+    try {
+      isLoading = true;
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      Navigator.of(context).pushNamed(Routes.RegisterProfile);
+    } on FirebaseAuthException catch (e) {
+      isLoading = false;
     }
   }
 
@@ -80,7 +105,9 @@ class Body extends StatelessWidget {
                     'assets/icons/google.svg',
                     height: 21,
                   ),
-                  press: () {},
+                  press: () {
+                    _googleLogin(context);
+                  },
                   color: textLight,
                   textColor: greyDarker,
                 ),
