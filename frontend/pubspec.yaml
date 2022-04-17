@@ -49,6 +49,7 @@ dependencies:
   lottie: ^1.2.2
   get: ^4.6.1
   carousel_slider: ^4.0.0
+  intervalprogressbar: ^2.0.1
 
 
 dev_dependencies:
