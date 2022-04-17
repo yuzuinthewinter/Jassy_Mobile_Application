@@ -9,38 +9,37 @@ import 'package:flutter_application_1/theme/index.dart';
 
 // NOTE: chat card in all chat page show name lastest message and unread notification
 // TODO: map profile image, name and lastest message here
-class ChatCard extends StatelessWidget {
-  final ChatMessage chat;
+class ListUser extends StatelessWidget {
+  final ChatUser user;
   // final VoidCallback press;
 
-  const ChatCard({
+  const ListUser({
     Key? key,
     // required this.press,
-    required this.chat,
+    required this.user,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.push(context, CupertinoPageRoute(builder: (context) {
-          // NOTE: click each card to go to chat room
-          return ChatRoom(
-            user: chat.sender,
-          );
-        }));
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Stack(
-              children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage(chat.sender.image),
-                  radius: 33,
-                ),
-                if (chat.sender.isActive)
+        onTap: () {
+          Navigator.push(context, CupertinoPageRoute(builder: (context) {
+            // NOTE: click each card to go to chat room
+            return ChatRoom(
+              user: user,
+            );
+          }));
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: AssetImage(user.image),
+                    radius: 33,
+                  ),
                   Positioned(
                     right: 3,
                     bottom: 3,
@@ -55,25 +54,18 @@ class ChatCard extends StatelessWidget {
                                   Theme.of(context).scaffoldBackgroundColor)),
                     ),
                   ),
-              ],
-            ),
-            Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HeaderText(text: chat.sender.name),
-                DescriptionText(
-                  text: chat.lastMessage,
-                )
-              ],
-            )),
-            Text(
-              chat.time,
-              style: TextStyle(fontSize: 12, color: greyDark),
-            )
-          ],
-        ),
-      ),
-    );
+                ],
+              ),
+              SizedBox(
+                width: 70.0,
+                child: Text(
+                  user.name,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }
