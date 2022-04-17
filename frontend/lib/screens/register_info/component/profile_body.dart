@@ -76,9 +76,9 @@ class _BodyState extends State<Body> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    checkCurrentUser();
+    //TODO: check current user
+    // checkCurrentUser();
     this.userInfo.genre = _choicesLists[0];
   }
 

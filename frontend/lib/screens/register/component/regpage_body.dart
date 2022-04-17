@@ -10,7 +10,15 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
   Future _facebookLogin(BuildContext context) async {
@@ -29,60 +37,23 @@ class Body extends StatelessWidget {
   }
 
   Future _googleLogin(BuildContext context) async {
+    late GoogleSignInAccount user;
     try {
-      // isLoading = true;
-      // final GoogleSignIn googleSignIn = GoogleSignIn();
-      // final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-      // final GoogleSignInAuthentication? googleSignInAuthentication = await googleSignInAccount?.authentication;
-      // final googleAuthCredential = GoogleAuthProvider.credential(
-      //   accessToken: googleSignInAuthentication?.accessToken
-      // );
+      isLoading = true;
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
 
-      // await FirebaseAuth.instance.signInWithCredential(googleAuthCredential);
-
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      Navigator.of(context).pushNamed(Routes.RegisterProfile);
     } on FirebaseAuthException catch (e) {
       isLoading = false;
     }
   }
-
-  // Future<String> _googleLogin() async {
-  //   final FirebaseAuth _auth = FirebaseAuth.instance;
-  //   final GoogleSignIn googleSignIn = GoogleSignIn();
-
-  //   final GoogleSignInAccount? googleSignInAccount =
-  //       await googleSignIn.signIn();
-  //   final GoogleSignInAuthentication? googleSignInAuthentication =
-  //       await googleSignInAccount?.authentication;
-
-  //   final AuthCredential credential = GoogleAuthProvider.credential(
-  //     accessToken: googleSignInAuthentication?.accessToken,
-  //     idToken: googleSignInAuthentication?.idToken,
-  //   );
-
-  //   final UserCredential authResult =
-  //       await _auth.signInWithCredential(credential);
-  //   final User? user = authResult.user;
-
-  //   assert(!user!.isAnonymous);
-  //   assert(await user?.getIdToken() != null);
-
-  //   final User currentUser = await _auth.currentUser!;
-  //   assert(user?.uid == currentUser.uid);
-
-  //   return 'signInWithGoogle succeeded: $user';
-  // }
-
-  // Future _googleLogin(BuildContext context) async {
-  //   try {
-  //     isLoading = true;
-  //     GoogleSignIn _googleSignIn = GoogleSignIn(
-  //       scopes: [
-  //         'email',
-  //         'https://www.googleapis.com/auth/contacts.readonly',
-  //       ],
-  //     );
-  //   } on FirebaseAuthException catch (e) {}
-  // }
 
   @override
   Widget build(BuildContext context) {

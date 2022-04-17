@@ -47,7 +47,7 @@ dependencies:
   file_picker: ^4.5.1
   lottie: ^1.2.2
   get: ^4.6.1
-  google_sign_in: ^5.2.4
+  google_sign_in: ^5.3.0
 
 
 dev_dependencies:
