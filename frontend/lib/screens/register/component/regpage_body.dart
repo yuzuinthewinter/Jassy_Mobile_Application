@@ -76,7 +76,7 @@ class _BodyState extends State<Body> {
                 ),
                 IconButtonComponent(
                   text: 'RegisterByPhone'.tr,
-                  minimumSize: Size(279, 36),
+                  minimumSize: Size(size.width * 0.8, size.height * 0.05),
                   iconPicture: SvgPicture.asset(
                     'assets/icons/mobile.svg',
                     height: 21,
@@ -90,7 +90,7 @@ class _BodyState extends State<Body> {
                 ),
                 IconButtonComponent(
                   text: 'RegisterByFaceBook'.tr,
-                  minimumSize: Size(279, 36),
+                  minimumSize: Size(size.width * 0.8, size.height * 0.05),
                   iconPicture: SvgPicture.asset(
                     'assets/icons/facebook.svg',
                     height: 21,
@@ -100,7 +100,7 @@ class _BodyState extends State<Body> {
                 ),
                 IconButtonComponent(
                   text: 'RegisterByGoogle'.tr,
-                  minimumSize: Size(279, 36),
+                  minimumSize: Size(size.width * 0.8, size.height * 0.05),
                   iconPicture: SvgPicture.asset(
                     'assets/icons/google.svg',
                     height: 21,

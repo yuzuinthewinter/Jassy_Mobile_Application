@@ -110,13 +110,10 @@ class _BodyState extends State<Body> {
                 fontSize: 16, fontWeight: FontWeight.w500, color: greyDark),
           ),
         ),
-        SizedBox(
-          height: size.height * 0.02,
-        ),
         Expanded(
           child: Container(
             width: double.infinity,
-            height: 126,
+            height: size.height * 0.03,
             decoration: const BoxDecoration(
               color: greyLightest,
             ),
@@ -125,21 +122,20 @@ class _BodyState extends State<Body> {
               children: <Widget>[
                 Expanded(
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       buildCodeNumberBox(
-                          code.length > 0 ? code.substring(0, 1) : ""),
+                          code.length > 0 ? code.substring(0, 1) : "", context),
                       buildCodeNumberBox(
-                          code.length > 1 ? code.substring(1, 2) : ""),
+                          code.length > 1 ? code.substring(1, 2) : "", context),
                       buildCodeNumberBox(
-                          code.length > 2 ? code.substring(2, 3) : ""),
+                          code.length > 2 ? code.substring(2, 3) : "", context),
                       buildCodeNumberBox(
-                          code.length > 3 ? code.substring(3, 4) : ""),
+                          code.length > 3 ? code.substring(3, 4) : "", context),
                       buildCodeNumberBox(
-                          code.length > 4 ? code.substring(4, 5) : ""),
+                          code.length > 4 ? code.substring(4, 5) : "", context),
                       buildCodeNumberBox(
-                          code.length > 5 ? code.substring(5, 6) : ""),
+                          code.length > 5 ? code.substring(5, 6) : "", context),
                     ],
                   ),
                 ),
@@ -213,12 +209,13 @@ class _BodyState extends State<Body> {
   }
 }
 
-Widget buildCodeNumberBox(String codeNumber) {
+Widget buildCodeNumberBox(String codeNumber, BuildContext context) {
+  var size = MediaQuery.of(context).size;
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 2),
+    padding: EdgeInsets.symmetric(horizontal: size.width * 0.01),
     child: SizedBox(
-      width: 50,
-      height: 60,
+      width: size.width * 0.12,
+      height: size.height * 0.065,
       child: Container(
         decoration: const BoxDecoration(
           color: textLight,

@@ -85,14 +85,14 @@ class Body extends StatelessWidget {
           ),
           RoundButton(
             text: 'LandingRegister'.tr, //------------------------------
-            minimumSize: Size(339, 36),
+            minimumSize: Size(size.width * 0.8, size.height * 0.05),
             press: () {
               Navigator.pushNamed(context, Routes.RegisterPage);
             },
           ),
           AccountExistsLogin(),
           SizedBox(
-            height: size.height * 0.05,
+            height: size.height * 0.07,
           ),
           TermAndPolicies(),
           // TODO: change language button on landing page.

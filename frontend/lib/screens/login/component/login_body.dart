@@ -87,35 +87,32 @@ class _BodyState extends State<Body> {
           HeaderText(text: "ยินดีต้อนรับการกลับมา !"),
           DescriptionText(
               text: "เข้าสู่ระบบเพื่อเริ่มต้นการแลกเปลี่ยนภาษาของคุณ"),
-          SizedBox(
-            height: size.height * 0.03,
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
             child: Row(
               children: [
                 IconButtonComponent(
                   text: "Google",
-                  minimumSize: Size(163, 36),
+                  minimumSize: Size(size.width * 0.4, size.height * 0.05),
                   press: () => _googleLogin(context),
                   iconPicture:
-                      SvgPicture.asset("assets/icons/google.svg", height: 21),
+                      SvgPicture.asset("assets/icons/google.svg", height: size.height * 0.027),
                   color: textLight,
                   textColor: greyDarker,
                 ),
                 IconButtonComponent(
                   text: "Facebook",
-                  minimumSize: Size(163, 36),
+                  minimumSize: Size(size.width * 0.4, size.height * 0.05),
                   press: () => _facebookLogin(context),
                   iconPicture:
-                      SvgPicture.asset("assets/icons/facebook.svg", height: 21),
+                      SvgPicture.asset("assets/icons/facebook.svg", height: size.height * 0.027),
                   color: facebookColor,
                 ),
               ],
             ),
           ),
           SizedBox(
-            height: size.height * 0.01,
+            height: size.height * 0.02,
           ),
           Center(
               child: Text(
@@ -125,111 +122,56 @@ class _BodyState extends State<Body> {
           SizedBox(
             height: size.height * 0.01,
           ),
-          RequiredTextFieldLabel(textLabel: "เบอร์โทรศัพท์"),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-            child: TextFormField(
-              controller: phoneNumberController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [LengthLimitingTextInputFormatter(9)],
-              decoration: InputDecoration(
-                  // hintText: "869077768",
-                  fillColor: textLight,
-                  filled: true,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40),
-                      borderSide:
-                          const BorderSide(color: textLight, width: 0.0)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: textLight),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: textLight),
-                  ),
-                  prefixIcon: CountryCodePicker(
-                    initialSelection: "+66",
-                    countryFilter: const ["+66", "+62", "+82"],
-                  )),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                } else if (value.length < 9) {
-                  return "กรอกให้ครบ";
-                }
-                return null;
-              },
-              onSaved: (String? phoneNumber) {
-                phoneNumber = phoneNumberController.text;
-                user.phoneNumber = phoneNumber;
-              },
-            ),
-          ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
-          RequiredTextFieldLabel(textLabel: "รหัสผ่าน"),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-            child: TextFormField(
-              controller: passwordController,
-              obscureText: isHiddenPassword,
-              keyboardType: TextInputType.text,
-              inputFormatters: [LengthLimitingTextInputFormatter(9)],
-              decoration: InputDecoration(
-                suffixIcon: InkWell(
-                    onTap: _togglePasswordView,
-                    child: isHiddenPassword
-                        ? Icon(Icons.visibility_off)
-                        : Icon(Icons.visibility)),
-                fillColor: textLight,
-                // hintText: "กรุณากรอก",
-                filled: true,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40),
-                    borderSide: const BorderSide(color: textLight, width: 0.0)),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40.0),
-                  borderSide: const BorderSide(color: textLight),
+          Expanded(
+            child: Column(
+              children: [
+                RequiredTextFieldLabel(textLabel: "เบอร์โทรศัพท์"),
+                SizedBox(
+                  height: size.height * 0.01,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40.0),
-                  borderSide: const BorderSide(color: textLight),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+                  child: TextFormField(
+                    controller: phoneNumberController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [LengthLimitingTextInputFormatter(9)],
+                    decoration: InputDecoration(
+                        // hintText: "869077768",
+                        fillColor: textLight,
+                        filled: true,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40),
+                            borderSide:
+                                const BorderSide(color: textLight, width: 0.0)),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(40.0),
+                          borderSide: const BorderSide(color: textLight),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(40.0),
+                          borderSide: const BorderSide(color: textLight),
+                        ),
+                        prefixIcon: CountryCodePicker(
+                          initialSelection: "+66",
+                          countryFilter: const ["+66", "+62", "+82"],
+                        )),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      } else if (value.length < 9) {
+                        return "กรอกให้ครบ";
+                      }
+                      return null;
+                    },
+                    onSaved: (String? phoneNumber) {
+                      phoneNumber = phoneNumberController.text;
+                      user.phoneNumber = phoneNumber;
+                    },
+                  ),
                 ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                } else if (!regex.hasMatch(value)) {
-                  return "กรุณากรอกตามpattern";
-                }
-                return null;
-              },
-              onSaved: (String? password) {
-                user.password = password!;
-              },
+              ],
             ),
-          ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-            alignment: Alignment.centerRight,
-            child: InkWell(
-                onTap: () {},
-                child: Text(
-                  'ลืมรหัสผ่านใช่หรือไม่',
-                  style: TextStyle(
-                      color: secoundary, decoration: TextDecoration.underline),
-                )),
-          ),
-          SizedBox(
-            height: size.height * 0.02,
           ),
           Center(
             child: DisableToggleButton(
@@ -245,7 +187,10 @@ class _BodyState extends State<Body> {
           SizedBox(
             height: size.height * 0.01,
           ),
-          Center(child: NoAccountRegister())
+          Center(child: NoAccountRegister()),
+          SizedBox(
+            height: size.height * 0.08,
+          ),
         ],
       ),
     );

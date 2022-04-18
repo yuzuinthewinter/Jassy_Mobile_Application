@@ -35,7 +35,7 @@ class _DisableToggleButtonState extends State<DisableToggleButton> {
           )
         ]
       ),
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: EdgeInsets.symmetric(vertical: 20),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(25.0),
         child: ElevatedButton(
