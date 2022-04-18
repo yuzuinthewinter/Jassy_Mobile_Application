@@ -86,6 +86,8 @@ class _BodyState extends State<Body> {
                     countryFilter: const ["+66", "+62", "+82"],
                     onInit: getCountry,
                     onChanged: getCountry,
+                    showDropDownButton: true,
+                    flagWidth: 25,
                   )),
               validator: (value) {
                 if (value == null || value.isEmpty) {

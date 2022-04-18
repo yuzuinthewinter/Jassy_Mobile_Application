@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/account_exists_login.dart';
 import 'package:flutter_application_1/component/background.dart';
@@ -64,6 +65,21 @@ class Body extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          Align(
+            alignment: Alignment.topRight,
+            child: CountryCodePicker(
+              initialSelection: "+66",
+              countryFilter: const ["+66", "us"],
+              showCountryOnly: true,
+              padding: EdgeInsets.only(top: size.height * 0.02),
+              hideMainText: true,
+              showDropDownButton: true,
+              flagWidth: size.width * 0.07,
+              flagDecoration: BoxDecoration(
+                // shape: BoxShape.circle
+              ),
+            ),
+          ),
           SizedBox(
             height: size.height * 0.1,
           ),
@@ -81,7 +97,7 @@ class Body extends StatelessWidget {
                 fontSize: 18, fontWeight: FontWeight.w500, color: greyDark),
           ),
           SizedBox(
-            height: size.height * 0.2,
+            height: size.height * 0.15,
           ),
           RoundButton(
             text: 'LandingRegister'.tr, //------------------------------

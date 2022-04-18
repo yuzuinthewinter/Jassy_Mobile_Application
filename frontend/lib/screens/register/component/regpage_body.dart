@@ -65,14 +65,14 @@ class _BodyState extends State<Body> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: size.height * 0.1,
+                  height: size.height * 0.15,
                 ),
                 SvgPicture.asset(
                   'assets/icons/landing_logo.svg',
                   height: size.height * 0.2,
                 ),
                 SizedBox(
-                  height: size.height * 0.2,
+                  height: size.height * 0.15,
                 ),
                 IconButtonComponent(
                   text: 'RegisterByPhone'.tr,
