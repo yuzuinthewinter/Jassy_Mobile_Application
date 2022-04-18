@@ -77,8 +77,7 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    return SingleChildScrollView(
-      child: Form(
+    return Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,235 +89,243 @@ class _BodyState extends State<Body> {
             const DescriptionText(
                 text:
                     "คุณไม่สามารถเปลี่ยนสัญชาติและภาษาแม่หลังจากนี้ได้ดังนั้นโปรดให้ข้อมูลส่วนบุคคลที่แท้จริง"),
-            const RequiredTextFieldLabel(textLabel: "คุณเป็นคนประเทศ"),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-              child: TextFormField(
-                  readOnly: true,
-                  onTap: () {
-                    countryScrollController.dispose;
-                    countryScrollController =
-                        FixedExtentScrollController(initialItem: countryIndex);
-                    showCupertinoModalPopup(
-                        context: context,
-                        builder: (context) {
-                          return CupertinoActionSheet(
-                            actions: [countryalityPicker()],
-                          );
-                        });
-                  },
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15.0, horizontal: 10.0),
-                    labelText: languageItems[countryIndex],
-                    fillColor: textLight,
-                    filled: true,
-                    suffixIcon: const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 20,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    RequiredTextFieldLabel(textLabel: "คุณเป็นคนประเทศ"),
+                    Container(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+                      child: TextFormField(
+                          readOnly: true,
+                          onTap: () {
+                            countryScrollController.dispose;
+                            countryScrollController =
+                                FixedExtentScrollController(initialItem: countryIndex);
+                            showCupertinoModalPopup(
+                                context: context,
+                                builder: (context) {
+                                  return CupertinoActionSheet(
+                                    actions: [countryalityPicker()],
+                                  );
+                                });
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            labelText: languageItems[countryIndex],
+                            fillColor: textLight,
+                            filled: true,
+                            suffixIcon: Icon(
+                              Icons.arrow_forward_ios,
+                              size: 20,
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40),
+                                borderSide:
+                                    const BorderSide(color: textLight, width: 0.0)),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40.0),
+                              borderSide: const BorderSide(color: textLight),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40.0),
+                              borderSide: const BorderSide(color: textLight),
+                            ),
+                          ),
+                          onSaved: (String? country) {
+                            userInfo.country = languageItems[countryIndex];
+                          }),
                     ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(40),
-                        borderSide:
-                            const BorderSide(color: textLight, width: 0.0)),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0),
-                      borderSide: const BorderSide(color: textLight),
+                    RequiredTextFieldLabel(textLabel: "ภาษาแม่"),
+                    Container(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+                      child: TextFormField(
+                        readOnly: true,
+                        onTap: () {
+                          defaultScrollController.dispose;
+                          defaultScrollController =
+                              FixedExtentScrollController(initialItem: defaultIndex);
+                          showCupertinoModalPopup(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoActionSheet(
+                                  actions: [defaultLanguagePicker()],
+                                );
+                              });
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
+                          labelText: languageItems[defaultIndex],
+                          fillColor: textLight,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40),
+                              borderSide:
+                                  const BorderSide(color: textLight, width: 0.0)),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40.0),
+                            borderSide: const BorderSide(color: textLight),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40.0),
+                            borderSide: const BorderSide(color: textLight),
+                          ),
+                        ),
+                        onSaved: (String? defaultLanguage) {
+                          language.defaultLanguage = languageItems[defaultIndex];
+                        },
+                      ),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0),
-                      borderSide: const BorderSide(color: textLight),
+                    RequiredTextFieldLabel(textLabel: "ระดับภาษาแม่"),
+                    Container(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+                      child: TextFormField(
+                        readOnly: true,
+                        onTap: () {
+                          defaultLevelScrollController.dispose;
+                          defaultLevelScrollController = FixedExtentScrollController(
+                              initialItem: defaultLevelIndex);
+                          showCupertinoModalPopup(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoActionSheet(
+                                  actions: [defaultLanguageLevelPicker()],
+                                );
+                              });
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
+                          labelText: languageLevelItems[defaultLevelIndex],
+                          fillColor: textLight,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40),
+                              borderSide:
+                                  const BorderSide(color: textLight, width: 0.0)),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40.0),
+                            borderSide: const BorderSide(color: textLight),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40.0),
+                            borderSide: const BorderSide(color: textLight),
+                          ),
+                        ),
+                        onSaved: (String? defaultLevel) {
+                          language.levelDefaultLanguage =
+                              languageLevelItems[defaultLevelIndex];
+                        },
+                      ),
                     ),
-                  ),
-                  onSaved: (String? country) {
-                    userInfo.country = languageItems[countryIndex];
-                  }),
-            ),
-            const RequiredTextFieldLabel(textLabel: "ภาษาแม่"),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-              child: TextFormField(
-                readOnly: true,
-                onTap: () {
-                  defaultScrollController.dispose;
-                  defaultScrollController =
-                      FixedExtentScrollController(initialItem: defaultIndex);
-                  showCupertinoModalPopup(
-                      context: context,
-                      builder: (context) {
-                        return CupertinoActionSheet(
-                          actions: [defaultLanguagePicker()],
-                        );
-                      });
-                },
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 15.0, horizontal: 10.0),
-                  labelText: languageItems[defaultIndex],
-                  fillColor: textLight,
-                  filled: true,
-                  suffixIcon: const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40),
-                      borderSide:
-                          const BorderSide(color: textLight, width: 0.0)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: textLight),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: textLight),
-                  ),
+                    RequiredTextFieldLabel(textLabel: "ภาษาที่สนใจ"),
+                    Container(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+                      child: TextFormField(
+                        readOnly: true,
+                        onTap: () {
+                          interestScrollController.dispose;
+                          interestScrollController =
+                              FixedExtentScrollController(initialItem: interestIndex);
+                          showCupertinoModalPopup(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoActionSheet(
+                                  actions: [interestLanguagePicker()],
+                                );
+                              });
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
+                          labelText: languageItems[interestIndex],
+                          fillColor: textLight,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40),
+                              borderSide:
+                                  const BorderSide(color: textLight, width: 0.0)),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40.0),
+                            borderSide: const BorderSide(color: textLight),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40.0),
+                            borderSide: const BorderSide(color: textLight),
+                          ),
+                        ),
+                        onSaved: (String? interestLanguage) {
+                          language.interestedLanguage = languageItems[interestIndex];
+                        },
+                      ),
+                    ),
+                    RequiredTextFieldLabel(textLabel: "ระดับภาษาที่สนใจ"),
+                    Container(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+                      child: TextFormField(
+                        readOnly: true,
+                        onTap: () {
+                          interestLevelScrollController.dispose;
+                          interestLevelScrollController = FixedExtentScrollController(
+                              initialItem: interestLevelIndex);
+                          showCupertinoModalPopup(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoActionSheet(
+                                  actions: [interestLevelLanguagePicker()],
+                                );
+                              });
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
+                          labelText: languageLevelItems[interestLevelIndex],
+                          fillColor: textLight,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40),
+                              borderSide:
+                                  const BorderSide(color: textLight, width: 0.0)),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40.0),
+                            borderSide: const BorderSide(color: textLight),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40.0),
+                            borderSide: const BorderSide(color: textLight),
+                          ),
+                        ),
+                        onSaved: (String? interestLevel) {
+                          language.levelInterestedLanguage =
+                              languageLevelItems[interestLevelIndex];
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                onSaved: (String? defaultLanguage) {
-                  language.defaultLanguage = languageItems[defaultIndex];
-                },
-              ),
-            ),
-            const RequiredTextFieldLabel(textLabel: "ระดับภาษาแม่"),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-              child: TextFormField(
-                readOnly: true,
-                onTap: () {
-                  defaultLevelScrollController.dispose;
-                  defaultLevelScrollController = FixedExtentScrollController(
-                      initialItem: defaultLevelIndex);
-                  showCupertinoModalPopup(
-                      context: context,
-                      builder: (context) {
-                        return CupertinoActionSheet(
-                          actions: [defaultLanguageLevelPicker()],
-                        );
-                      });
-                },
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 15.0, horizontal: 10.0),
-                  labelText: languageLevelItems[defaultLevelIndex],
-                  fillColor: textLight,
-                  filled: true,
-                  suffixIcon: const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40),
-                      borderSide:
-                          const BorderSide(color: textLight, width: 0.0)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: textLight),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: textLight),
-                  ),
-                ),
-                onSaved: (String? defaultLevel) {
-                  language.levelDefaultLanguage =
-                      languageLevelItems[defaultLevelIndex];
-                },
-              ),
-            ),
-            const RequiredTextFieldLabel(textLabel: "ภาษาที่สนใจ"),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-              child: TextFormField(
-                readOnly: true,
-                onTap: () {
-                  interestScrollController.dispose;
-                  interestScrollController =
-                      FixedExtentScrollController(initialItem: interestIndex);
-                  showCupertinoModalPopup(
-                      context: context,
-                      builder: (context) {
-                        return CupertinoActionSheet(
-                          actions: [interestLanguagePicker()],
-                        );
-                      });
-                },
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 15.0, horizontal: 10.0),
-                  labelText: languageItems[interestIndex],
-                  fillColor: textLight,
-                  filled: true,
-                  suffixIcon: const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40),
-                      borderSide:
-                          const BorderSide(color: textLight, width: 0.0)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: textLight),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: textLight),
-                  ),
-                ),
-                onSaved: (String? interestLanguage) {
-                  language.interestedLanguage = languageItems[interestIndex];
-                },
-              ),
-            ),
-            const RequiredTextFieldLabel(textLabel: "ระดับภาษาที่สนใจ"),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-              child: TextFormField(
-                readOnly: true,
-                onTap: () {
-                  interestLevelScrollController.dispose;
-                  interestLevelScrollController = FixedExtentScrollController(
-                      initialItem: interestLevelIndex);
-                  showCupertinoModalPopup(
-                      context: context,
-                      builder: (context) {
-                        return CupertinoActionSheet(
-                          actions: [interestLevelLanguagePicker()],
-                        );
-                      });
-                },
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 15.0, horizontal: 10.0),
-                  labelText: languageLevelItems[interestLevelIndex],
-                  fillColor: textLight,
-                  filled: true,
-                  suffixIcon: const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40),
-                      borderSide:
-                          const BorderSide(color: textLight, width: 0.0)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: textLight),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: textLight),
-                  ),
-                ),
-                onSaved: (String? interestLevel) {
-                  language.levelInterestedLanguage =
-                      languageLevelItems[interestLevelIndex];
-                },
               ),
             ),
             Center(
@@ -361,7 +368,6 @@ class _BodyState extends State<Body> {
             )
           ],
         ),
-      ),
     );
   }
 

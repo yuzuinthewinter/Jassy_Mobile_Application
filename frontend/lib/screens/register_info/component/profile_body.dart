@@ -85,185 +85,210 @@ class _BodyState extends State<Body> {
     final _formKey = GlobalKey<FormState>();
     final String formattedDate = DateFormat.yMd().format(_selectedDateTime);
     final selectedText = Text('You selected: $formattedDate');
+    Size size = MediaQuery.of(context).size;
     return isLoading
         ? CircularProgressIndicator()
-        : SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const CurvedWidget(
-                    child: HeaderStyle2(),
-                  ),
-                  HeaderText(text: "ข้อมูลส่วนตัว"),
-                  const DescriptionText(
-                      text:
-                          "คุณไม่สามารถเปลี่ยนอายุและเพศหลังจากนี้ได้ดังนั้นโปรดให้ข้อมูลส่วนบุคคลที่แท้จริง"),
-                  RequiredTextFieldLabel(textLabel: "ชื่อ"),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 0, horizontal: 20.0),
-                    child: TextFormField(
-                      controller: firstNameController,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        fillColor: textLight,
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(40),
-                            borderSide:
-                                const BorderSide(color: textLight, width: 0.0)),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(40.0),
-                          borderSide: const BorderSide(color: textLight),
+        : Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CurvedWidget(child: HeaderStyle2()),
+                HeaderText(text: "ข้อมูลส่วนตัว"),
+                DescriptionText(
+                    text:
+                        "คุณไม่สามารถเปลี่ยนอายุและเพศหลังจากนี้ได้ดังนั้นโปรดให้ข้อมูลส่วนบุคคลที่แท้จริง"),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        RequiredTextFieldLabel(textLabel: "ชื่อ"),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 20.0),
+                          child: TextFormField(
+                            controller: firstNameController,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              hintText: "ชื่อ",
+                              hintStyle: TextStyle(color: greyDark),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              fillColor: textLight,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                  borderSide: const BorderSide(
+                                      color: textLight, width: 0.0)),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                            onSaved: (String? firstname) {
+                              firstname = firstNameController.text;
+                              name.firstname = firstname;
+                            },
+                          ),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(40.0),
-                          borderSide: const BorderSide(color: textLight),
+                        RequiredTextFieldLabel(textLabel: "นามสกุล"),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 20.0),
+                          child: TextFormField(
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              hintText: "นามสกุล",
+                              hintStyle: TextStyle(color: greyDark),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              fillColor: textLight,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                  borderSide: const BorderSide(
+                                      color: textLight, width: 0.0)),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                            controller: lastnameController,
+                            onChanged: (String lastname) {
+                              lastname = lastnameController.text;
+                              name.lastname = lastname;
+                            },
+                          ),
                         ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                      onSaved: (String? firstname) {
-                        firstname = firstNameController.text;
-                        name.firstname = firstname;
-                      },
+                        RequiredTextFieldLabel(textLabel: "วันเดือนปีเกิด"),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 20.0),
+                          child: TextFormField(
+                            readOnly: true,
+                            // onTap: () async {
+                            //   FocusScope.of(context).requestFocus(new FocusNode());
+                            //   showModalBottomSheet(
+                            //       context: context,
+                            //       builder: (BuildContext builder) {
+                            //         return Container(
+                            //             height: MediaQuery.of(context)
+                            //                     .copyWith()
+                            //                     .size
+                            //                     .height /
+                            //                 3,
+                            //             child: CupertinoDatePicker(
+                            //               initialDateTime: DateTime.now(),
+                            //               mode: CupertinoDatePickerMode.date,
+                            //               onDateTimeChanged: onBirthdayChange,
+                            //             ));
+                            //       });
+                            // },
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              labelText:
+                                  DateFormat.yMd().format(_selectedDateTime),
+                              // hintText: DateFormat.yMd().format(DateTime.now()),
+                              // hintStyle: TextStyle(color: greyDark),
+                              fillColor: textLight,
+                              filled: true,
+                              suffixIcon: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                  borderSide: const BorderSide(
+                                      color: textLight, width: 0.0)),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                            ),
+                            onSaved: (String? birthDate) {
+                              birthDate =
+                                  DateFormat.yMd().format(_selectedDateTime);
+                              userInfo.birthDate = birthDate;
+                            },
+                          ),
+                        ),
+                        RequiredTextFieldLabel(textLabel: "เพศ"),
+                        Center(
+                          child: Wrap(
+                              spacing: size.width * 0.03,
+                              alignment: WrapAlignment.spaceBetween,
+                              runAlignment: WrapAlignment.spaceBetween,
+                              children:
+                                  List.generate(_choicesLists.length, (index) {
+                                return ChoiceChip(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.04),
+                                  label: Text(_choicesLists[index]),
+                                  selected: _defaultChoiceIndex == index,
+                                  onSelected: (value) {
+                                    setState(() {
+                                      _defaultChoiceIndex =
+                                          value ? index : _defaultChoiceIndex;
+                                      if (_defaultChoiceIndex == null) {
+                                        _defaultChoiceIndex = 0;
+                                      }
+                                      userInfo.genre =
+                                          _choicesLists[_defaultChoiceIndex];
+                                    });
+                                  },
+                                  backgroundColor: textLight,
+                                  selectedColor: primaryLightest,
+                                  labelStyle: TextStyle(
+                                    color: _defaultChoiceIndex == index
+                                        ? primaryColor
+                                        : greyDark,
+                                  ),
+                                );
+                              })),
+                        ),
+                      ],
                     ),
                   ),
-                  const RequiredTextFieldLabel(textLabel: "นามสกุล"),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 0, horizontal: 20.0),
-                    child: TextFormField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        fillColor: textLight,
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(40),
-                            borderSide:
-                                const BorderSide(color: textLight, width: 0.0)),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(40.0),
-                          borderSide: const BorderSide(color: textLight),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(40.0),
-                          borderSide: const BorderSide(color: textLight),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                      controller: lastnameController,
-                      onChanged: (String lastname) {
-                        lastname = lastnameController.text;
-                        name.lastname = lastname;
-                      },
-                    ),
+                ),
+                Center(
+                  child: DisableToggleButton(
+                    text: "next",
+                    minimumSize: Size(size.width * 0.8, size.height * 0.05),
+                    press: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        Navigator.pushNamed(context, Routes.RegisterLanguage,
+                            arguments: [name, userInfo]);
+                      }
+                    },
                   ),
-                  const RequiredTextFieldLabel(textLabel: "วันเดือนปีเกิด"),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 0, horizontal: 20.0),
-                    child: TextFormField(
-                      readOnly: true,
-                      // onTap: () async {
-                      //   FocusScope.of(context).requestFocus(new FocusNode());
-                      //   showModalBottomSheet(
-                      //       context: context,
-                      //       builder: (BuildContext builder) {
-                      //         return Container(
-                      //             height: MediaQuery.of(context)
-                      //                     .copyWith()
-                      //                     .size
-                      //                     .height /
-                      //                 3,
-                      //             child: CupertinoDatePicker(
-                      //               initialDateTime: DateTime.now(),
-                      //               mode: CupertinoDatePickerMode.date,
-                      //               onDateTimeChanged: onBirthdayChange,
-                      //             ));
-                      //       });
-                      // },
-                      decoration: InputDecoration(
-                        labelText: DateFormat.yMd().format(_selectedDateTime),
-                        fillColor: textLight,
-                        filled: true,
-                        suffixIcon: const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 20,
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(40),
-                            borderSide:
-                                const BorderSide(color: textLight, width: 0.0)),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(40.0),
-                          borderSide: const BorderSide(color: textLight),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(40.0),
-                          borderSide: const BorderSide(color: textLight),
-                        ),
-                      ),
-                      onSaved: (String? birthDate) {
-                        birthDate = DateFormat.yMd().format(_selectedDateTime);
-                        userInfo.birthDate = birthDate;
-                      },
-                    ),
-                  ),
-                  const RequiredTextFieldLabel(textLabel: "เพศ"),
-                  Center(
-                    child: Wrap(
-                        // alignment: WrapAlignment.spaceBetween,
-                        children: List.generate(_choicesLists.length, (index) {
-                      return ChoiceChip(
-                        label: Text(_choicesLists[index]),
-                        selected: _defaultChoiceIndex == index,
-                        onSelected: (value) {
-                          setState(() {
-                            _defaultChoiceIndex =
-                                value ? index : _defaultChoiceIndex;
-                            if (_defaultChoiceIndex == null) {
-                              _defaultChoiceIndex = 0;
-                            }
-                            userInfo.genre = _choicesLists[_defaultChoiceIndex];
-                          });
-                        },
-                        backgroundColor: textLight,
-                        selectedColor: primaryLightest,
-                        labelStyle: TextStyle(
-                          color: _defaultChoiceIndex == index
-                              ? primaryColor
-                              : greyDark,
-                        ),
-                      );
-                    })),
-                  ),
-                  Center(
-                    child: DisableToggleButton(
-                      text: "next",
-                      minimumSize: const Size(279, 36),
-                      press: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          Navigator.pushNamed(context, Routes.RegisterLanguage,
-                              arguments: [name, userInfo]);
-                        }
-                      },
-                    ),
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
           );
   }
