@@ -69,7 +69,7 @@ class Body extends StatelessWidget {
             alignment: Alignment.topRight,
             child: CountryCodePicker(
               initialSelection: "+66",
-              countryFilter: const ["+66", "+82", "us"],
+              countryFilter: const ["+66", "us"],
               showCountryOnly: true,
               padding: EdgeInsets.only(top: size.height * 0.02),
               hideMainText: true,
