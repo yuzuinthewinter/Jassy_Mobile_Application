@@ -31,14 +31,12 @@ class App extends StatelessWidget {
       // future: Firebase.initializeApp(),
       future: _calculation,
       builder: (context, snapshot) {
-        // Check for errors
         if (snapshot.hasError) {
           return const Scaffold(
             body: Text('error'),
           );
         }
 
-        // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           return GetMaterialApp(
             navigatorKey: Get.key,
@@ -55,7 +53,7 @@ class App extends StatelessWidget {
             home: const AuthGate(),
           );
         }
-        // Otherwise, show something whilst waiting for initialization to complete
+        // TODO: loading
         return const CircularProgressIndicator();
       },
     );
@@ -70,7 +68,6 @@ class AuthGate extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        print(snapshot);
         if (!snapshot.hasData) {
           return const LandingPage();
         }
