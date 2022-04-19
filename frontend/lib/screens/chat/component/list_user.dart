@@ -30,11 +30,16 @@ class _ListUserBody extends State<ListUser> {
             .snapshots(includeMetadataChanges: true),
         builder: (context, snapshot) {
           var user = snapshot.data?.docs;
+
           if (user!.isEmpty) {
             return const Center(
               child: Text('Let\'s talk with the stranger!'),
             );
           } else {
+            int count = 0;
+            for (var doc in user) {
+              if (doc['isActive'] == true) count += 1;
+            }
             return ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: user.length,
@@ -62,7 +67,7 @@ class _ListUserBody extends State<ListUser> {
                                             : user[index]['profilePic'][0]),
                                     radius: 33,
                                   ),
-                                  user[index]['isActive'] == true
+                                  count > 0 && user[index]['isActive'] == true
                                       ? Positioned(
                                           right: 3,
                                           bottom: 3,
