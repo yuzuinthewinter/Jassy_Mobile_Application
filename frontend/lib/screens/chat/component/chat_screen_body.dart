@@ -51,7 +51,7 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
             ),
           ),
         ),
-        ListUser(),
+        const ListUser(),
         Expanded(
             child: ListView.builder(
                 padding:

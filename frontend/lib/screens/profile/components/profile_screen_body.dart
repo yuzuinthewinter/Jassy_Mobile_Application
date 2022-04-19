@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 
 class ProfileScreenBody extends StatefulWidget {
   const ProfileScreenBody({Key? key}) : super(key: key);
@@ -37,6 +39,15 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
             },
           ),
         ),
+        RoundButton(
+          text: 'Sign Out',
+          minimumSize: Size(size.width * 0.8, size.height * 0.05),
+          press: () async {
+            final FirebaseAuth _auth = FirebaseAuth.instance;
+            await _auth.signOut();
+            Navigator.pushNamed(context, Routes.LandingPage);
+          },
+        )
       ],
     );
   }
