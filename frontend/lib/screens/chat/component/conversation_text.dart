@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/demo_chat_message.dart';
 import 'package:flutter_application_1/models/user.dart';
@@ -14,13 +15,15 @@ class ConversationText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var currentUser = FirebaseAuth.instance.currentUser;
     return ListView.builder(
       reverse: true,
       physics: BouncingScrollPhysics(),
       itemCount: demoChatMessages.length,
       itemBuilder: (context, index) {
         final message = demoChatMessages[index];
-        bool isMe = message.sender.id == currentUser.id;
+        // ignore: unrelated_type_equality_checks
+        bool isMe = message.sender.id == currentUser?.uid;
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -32,9 +35,7 @@ class ConversationText extends StatelessWidget {
                   if (!isMe) ...[
                     CircleAvatar(
                       radius: 20,
-                      backgroundImage: AssetImage(user['profilePic'].isEmpty
-                          ? "assets/images/header_img1.png"
-                          : user['profilePic'][0]),
+                      backgroundImage: AssetImage(user.image),
                     ),
                     SizedBox(
                       width: size.height * 0.01,
@@ -42,7 +43,7 @@ class ConversationText extends StatelessWidget {
                   ],
                   if (isMe) ...[
                     // TODO: add isRead?
-                    const Text(
+                    Text(
                       "อ่านแล้ว",
                       style: TextStyle(color: grey, fontSize: 12),
                     ),
@@ -52,7 +53,7 @@ class ConversationText extends StatelessWidget {
                   ],
                   Container(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       decoration: BoxDecoration(
                           color: isMe ? primaryLighter : textLight,
                           borderRadius: BorderRadius.circular(20)),

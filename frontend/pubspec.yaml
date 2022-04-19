@@ -43,6 +43,7 @@ dependencies:
   file_picker: ^4.5.1
   lottie: ^1.2.2
   get: ^4.6.1
+  http: ^0.13.4
 
   # firebase
   firebase_storage: ^10.2.12

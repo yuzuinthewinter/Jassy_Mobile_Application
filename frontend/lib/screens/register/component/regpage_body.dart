@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/background.dart';
@@ -9,6 +10,8 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -18,18 +21,55 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
   Future _facebookLogin(BuildContext context) async {
     try {
       isLoading = true;
       final facebookLoginResult = await FacebookAuth.instance.login();
-      final facebookAuthCredential = FacebookAuthProvider.credential(
-          facebookLoginResult.accessToken!.token);
+
+      final token = facebookLoginResult.accessToken!.token;
+      final userId = facebookLoginResult.accessToken!.userId;
+      print(userId);
+      print(token);
+      final facebookAuthCredential = FacebookAuthProvider.credential(token);
+
       await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
 
-      Navigator.of(context).pushNamed(Routes.RegisterProfile);
+      final graphResponse = await http.get(Uri.parse(
+          'https://graph.facebook.com/v13.0/${userId}?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${token}'));
+      final profile = json.decode(graphResponse.body);
+
+      var currentUser = FirebaseAuth.instance.currentUser;
+      var users = FirebaseFirestore.instance.collection('Users');
+      var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
+      QuerySnapshot querySnapshot = await queryUser.get();
+      final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+      if (allData.isNotEmpty) {
+        Navigator.of(context).pushNamed(Routes.JassyHome);
+      } else {
+        await users.doc(currentUser.uid).set({
+          'name': {
+            'firstname': '${profile['first_name']}',
+            'lastname': '${profile['last_name']}',
+          },
+          'birthDate': '',
+          'genre': '',
+          'country': '',
+          'language': {
+            'defaultLanguage': '',
+            'levelDefaultLanguage': '',
+            'interestedLanguage': '',
+            'levelInterestedLanguage': '',
+          },
+          'desc': '',
+          'faceRegPic': const [],
+          'profilePic': ['${profile['picture']['data']['url']}'],
+          'chats': const [],
+          'isActive': true,
+        });
+        Navigator.of(context).pushNamed(Routes.RegisterProfile);
+      }
     } on FirebaseAuthException catch (e) {
       isLoading = false;
       //TODO: failed
@@ -59,7 +99,7 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return isLoading
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Background(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -114,7 +154,7 @@ class _BodyState extends State<Body> {
                 SizedBox(
                   height: size.height * 0.05,
                 ),
-                TermAndPolicies(),
+                const TermAndPolicies(),
               ],
             ),
           );

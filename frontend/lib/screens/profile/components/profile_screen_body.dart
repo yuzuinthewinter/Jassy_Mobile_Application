@@ -27,11 +27,11 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
           child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('Users')
-                .where('uid', isEqualTo: currentUser!.uid)
                 .snapshots(includeMetadataChanges: true),
             builder: (context, snapshot) {
-              var user = snapshot.data?.docs;
-              if (user!.isEmpty) {
+              var user = snapshot.data!.docs;
+              final userData = user.map((doc) => doc.data()).toList();
+              if (userData.isEmpty) {
                 return const Text('Please field your infomation!');
               } else {
                 return Text(user[0]['name']['firstname'].toString() +
