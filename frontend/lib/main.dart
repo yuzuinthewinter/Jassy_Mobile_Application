@@ -17,29 +17,7 @@ void main() async {
   runApp(App());
 }
 
-@deprecated // do not use this
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.5
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      translations: LocaleString(),
-      locale: Locale('en', 'US'),
-      title: 'Jassy-Languages-Community',
-      theme: ThemeData(
-          textTheme: GoogleFonts.kanitTextTheme(),
-          primaryColor: primaryColor,
-          scaffoldBackgroundColor: greyLightest),
-      onGenerateRoute: RouteGenerator.generateRoute,
-      initialRoute: Routes.LandingPage,
-      home: LandingPage(),
-    );
-  }
-}
-
+//use this
 class App extends StatelessWidget {
   final Future<String> _calculation = Future<String>.delayed(
     const Duration(seconds: 2),
@@ -55,7 +33,7 @@ class App extends StatelessWidget {
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
-          return Scaffold(
+          return const Scaffold(
             body: Text('error'),
           );
         }
@@ -67,19 +45,39 @@ class App extends StatelessWidget {
             navigatorObservers: [GetObserver()],
             debugShowCheckedModeBanner: false,
             translations: LocaleString(),
-            locale: Locale('th', 'TH'),
+            locale: const Locale('th', 'TH'),
             onGenerateRoute: RouteGenerator.generateRoute,
-            initialRoute: Routes.LandingPage,
             title: 'Jassy-Languages-Community',
             theme: ThemeData(
                 textTheme: GoogleFonts.kanitTextTheme(),
                 primaryColor: primaryColor,
                 scaffoldBackgroundColor: greyLightest),
-            home: LandingPage(),
+            home: const AuthGate(),
           );
         }
         // Otherwise, show something whilst waiting for initialization to complete
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
+      },
+    );
+  }
+}
+
+class AuthGate extends StatelessWidget {
+  const AuthGate({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        print(snapshot);
+        if (!snapshot.hasData) {
+          return const LandingPage();
+        }
+        if (snapshot.connectionState == ConnectionState.active) {
+          return const JassyHome();
+        }
+        return const LandingPage();
       },
     );
   }

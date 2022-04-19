@@ -9,8 +9,8 @@ import 'package:flutter_application_1/screens/register/create_password.dart';
 import 'package:flutter_application_1/screens/register/enter_otp.dart';
 import 'package:flutter_application_1/screens/register/phone_register.dart';
 import 'package:flutter_application_1/screens/register/register_page.dart';
-import 'package:flutter_application_1/screens/register_info/language.dart';
-import 'package:flutter_application_1/screens/register_info/profile.dart';
+import 'package:flutter_application_1/screens/register/register_info/language.dart';
+import 'package:flutter_application_1/screens/register/register_info/profile.dart';
 
 class Routes extends RouteGenerator {
   Routes._();

@@ -8,9 +8,6 @@ import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/user.dart';
-import 'package:flutter_application_1/screens/landing/landing_page.dart';
-import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
-import 'package:flutter_application_1/screens/jassy_home/home.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -352,16 +349,16 @@ class _BodyState extends State<Body> {
                             language.levelInterestedLanguage,
                       },
                       'desc': userInfo.desc,
-                      'faceRegPic': userInfo.faceRegPic,
+                      'faceRegPic': const [],
                       'profilePic': userInfo.profilePic,
-                      'chats': userInfo.chats,
+                      'chats': const [],
                       'isActive': false,
                     });
                   }
                   Navigator.pushNamed(
                     context,
                     Routes.SuccessPage,
-                    arguments: ['RegisterSuccess'],
+                    arguments: 'RegisterSuccess',
                   );
                 },
               ),
