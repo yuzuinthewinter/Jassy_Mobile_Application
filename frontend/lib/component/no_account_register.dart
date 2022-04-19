@@ -15,15 +15,15 @@ class NoAccountRegister extends StatelessWidget {
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
-            style: TextStyle(
+            style: const TextStyle(
               color: greyDark,
               fontFamily: 'Kanit',
             ),
             children: [
-              TextSpan(text: 'ยังไม่มีบัญชีผู้ใช้ ? '),
+              const TextSpan(text: 'ยังไม่มีบัญชีผู้ใช้ ? '),
               TextSpan(
                   text: 'ลงทะเบียนสำหรับผู้ใช้ใหม่ ',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: primaryColor,
                   ),
                   recognizer: TapGestureRecognizer()
@@ -32,7 +32,6 @@ class NoAccountRegister extends StatelessWidget {
                             context,
                             Routes.RegisterPage,
                           ),
-                          print('ลงทะเบียนสำหรับผู้ใช้ใหม่')
                         }),
             ]),
       ),

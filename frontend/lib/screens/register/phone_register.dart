@@ -12,7 +12,7 @@ import 'package:get/get.dart';
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       appBar: BackAndCloseAppBar(text: 'PhoneRegisterPage'.tr),
-      body: Body(),
+      body: const Body(),
       );
    }
  }

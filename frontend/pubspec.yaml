@@ -39,15 +39,19 @@ dependencies:
   flutter_datetime_picker: ^1.5.1
   cupertino_date_textbox: ^1.0.1
   language_picker: ^0.4.1
-  firebase_core: ^1.13.0
-  firebase_auth: ^3.3.8
   pinput: ^2.0.2
-  cloud_firestore: ^3.1.10
-  flutter_facebook_auth: ^4.1.1
   file_picker: ^4.5.1
   lottie: ^1.2.2
   get: ^4.6.1
+
+  # firebase
+  firebase_storage: ^10.2.12
+  firebase_core: ^1.13.0
+  firebase_auth: ^3.3.8
+  cloud_firestore: ^3.1.10
+  flutter_facebook_auth: ^4.1.1
   google_sign_in: ^5.3.0
+  firebase_storage_web: ^3.2.12
 
 
 dev_dependencies:

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/component/button/disable_toggle_button.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/success.dart';
 import 'package:flutter_application_1/constants/routes.dart';
-import 'package:flutter_application_1/screens/register_info/profile.dart';
 import 'package:get/get.dart';
 
 class Body extends StatelessWidget {
+  // ignore: non_constant_identifier_names
   final String SuccessWord;
-  Body(this.SuccessWord);
-  final _formKey = GlobalKey<FormState>();
+  const Body(this.SuccessWord);
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +31,10 @@ class Body extends StatelessWidget {
               //     MaterialPageRoute(
               //         builder: (context) => const JassyHome()),
               //   );
-              //   Navigator.pushNamed(
-              //     context,
-              //     Routes.JassyHome,
-              //   );
+                Navigator.pushNamed(
+                  context,
+                  Routes.JassyHome,
+                );
               // Navigator.pushNamed(
               //     context,
               //     Path

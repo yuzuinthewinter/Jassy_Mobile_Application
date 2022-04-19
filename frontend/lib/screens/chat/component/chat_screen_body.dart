@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
@@ -36,8 +35,8 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
               hintText: 'ค้นหา',
               filled: true,
               fillColor: textLight,
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+              // contentPadding:
+              //     const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(40),
                   borderSide: const BorderSide(color: textLight, width: 0.0)),
@@ -52,20 +51,7 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
             ),
           ),
         ),
-        SizedBox(
-          width: size.width * 0.9,
-          height: size.height * 0.18,
-          child: Container(
-            padding:
-                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 0.0),
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: listUser.length,
-                itemBuilder: (context, int index) => listUser[index].isActive
-                    ? ListUser(user: listUser[index])
-                    : Container()),
-          ),
-        ),
+        const ListUser(),
         Expanded(
             child: ListView.builder(
                 padding:

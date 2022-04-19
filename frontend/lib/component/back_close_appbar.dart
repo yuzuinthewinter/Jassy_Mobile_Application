@@ -16,8 +16,8 @@ class BackAndCloseAppBar extends StatelessWidget implements PreferredSizeWidget 
       centerTitle: true,
       elevation: 0,
       backgroundColor: Colors.transparent,
-      leading: new IconButton(
-        icon: Icon(Icons.arrow_back_ios, size: 20,),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios, size: 20,),
         color: primaryDarker,
         onPressed: () => Navigator.of(context).pop(),
       ),
@@ -31,5 +31,5 @@ class BackAndCloseAppBar extends StatelessWidget implements PreferredSizeWidget 
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(60.0);
+  Size get preferredSize => const Size.fromHeight(60.0);
 }
