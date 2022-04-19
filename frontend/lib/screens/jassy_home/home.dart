@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/back_close_appbar.dart';
 import 'package:flutter_application_1/component/buttom_appbar.dart';
+import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/chat/chat_screen.dart';
 import 'package:flutter_application_1/screens/jassy_home/component/home_body.dart';
 import 'package:flutter_application_1/screens/profile/profile_screen.dart';
@@ -17,6 +19,37 @@ class JassyHome extends StatefulWidget {
 }
 
 class _JassyHomeState extends State<JassyHome> {
+  
+  bool isLoading = false;
+
+  var currentUser = FirebaseAuth.instance.currentUser;
+  void checkCurrentUser() async {
+    //TODO: get currentuser check in users collecction in uid field
+    // that user profile exist
+    CollectionReference users = FirebaseFirestore.instance.collection('Users');
+    if (currentUser != null) {
+      FirebaseFirestore.instance
+          .collection('Users')
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((result) {
+          if (currentUser == result.get('uid')) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SuccessPage('RegisterSuccess'),
+                ));
+                
+          } else {
+            Navigator.pushNamed(context, Routes.JassyHome);
+          }
+        });
+      });
+    } else {
+      Navigator.pushNamed(context, Routes.JassyHome);
+    }
+  }
+
   int _currentIndex = 3;
 
   final screens = [
@@ -35,7 +68,9 @@ class _JassyHomeState extends State<JassyHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading 
+      ? CircularProgressIndicator()
+      : Scaffold(  
       extendBodyBehindAppBar: true,
       floatingActionButton: Visibility(
         visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
