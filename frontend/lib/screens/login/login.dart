@@ -7,7 +7,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       appBar: BackAndCloseAppBar(text: 'เข้าสู่ระบบ'),

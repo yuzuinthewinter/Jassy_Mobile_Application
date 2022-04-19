@@ -5,12 +5,12 @@ class NumericPad extends StatelessWidget {
 
   final Function(int) onNumberSelected;
 
-  const NumericPad({Key? key, required this.onNumberSelected}) : super(key: key);
+  NumericPad({required this.onNumberSelected});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-       decoration: const BoxDecoration(
+       decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),                   
@@ -22,7 +22,7 @@ class NumericPad extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
 
-          SizedBox(
+          Container(
             height: MediaQuery.of(context).size.height * 0.1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -35,7 +35,7 @@ class NumericPad extends StatelessWidget {
             ),
           ),
 
-          SizedBox(
+          Container(
             height: MediaQuery.of(context).size.height * 0.1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -48,7 +48,7 @@ class NumericPad extends StatelessWidget {
             ),
           ),
 
-          SizedBox(
+          Container(
             height: MediaQuery.of(context).size.height * 0.1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,7 +61,7 @@ class NumericPad extends StatelessWidget {
             ),
           ),
 
-          SizedBox(
+          Container(
             height: MediaQuery.of(context).size.height * 0.1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -88,7 +88,7 @@ class NumericPad extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: primaryColor,
               borderRadius: BorderRadius.all(
                 Radius.circular(15),
@@ -97,7 +97,7 @@ class NumericPad extends StatelessWidget {
             child: Center(
               child: Text(
                 number.toString(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: textLight,

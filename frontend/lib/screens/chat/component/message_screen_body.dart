@@ -8,8 +8,7 @@ class MessageScreenBody extends StatefulWidget {
 
   @override
   State<MessageScreenBody> createState() => _MessageScreenBodyState();
-  // ignore: prefer_typing_uninitialized_variables
-  final user;
+  final ChatUser user;
 }
 
 class _MessageScreenBodyState extends State<MessageScreenBody> {

@@ -19,7 +19,7 @@ class Sucess extends StatelessWidget {
           SizedBox(height: size.height * 0.03,),
           Text(
             text,
-            style: const TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 18),
           )
         ],
       ),

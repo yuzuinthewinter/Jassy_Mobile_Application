@@ -1,58 +1,64 @@
-class NameType {
+import 'package:flutter/cupertino.dart';
+
+class Name {
   String firstname;
   String lastname;
 
-  NameType({
-    this.firstname = '',
-    this.lastname = '',
-  });
+  Name({this.firstname = '', this.lastname = ''});
+
+  void updateFirstname(String firstname) {
+    this.firstname = firstname;
+  }
+
+  void updateLastname(String lastname) {
+    this.lastname = lastname;
+  }
 }
 
-class InfoType {
-  bool isActive;
+class Info {
+  // Name name;
   String birthDate;
   String genre;
   String country;
-  String desc;
-  String faceRegPic;
-  List<String> profilePic;
-  List<String> chats;
-
-  InfoType({
-    this.isActive = false,
-    this.birthDate = '',
-    this.genre = '',
-    this.country = '',
-    this.desc = '',
-    this.faceRegPic = '',
-    this.profilePic = const [],
-    this.chats = const [],
-  });
-}
-
-class LanguageType {
   String defaultLanguage;
   String levelDefaultLanguage;
   String interestedLanguage;
   String levelInterestedLanguage;
 
-  LanguageType({
-    this.defaultLanguage = '',
-    this.levelDefaultLanguage = '',
-    this.interestedLanguage = '',
-    this.levelInterestedLanguage = '',
-  });
+  Info(
+      {
+      // required this.name,
+      this.birthDate = '',
+      this.genre = '',
+      this.country = '',
+      this.defaultLanguage = '',
+      this.levelDefaultLanguage = '',
+      this.interestedLanguage = '',
+      this.levelInterestedLanguage = ''});
 }
 
-/* chatuser for demo @deprecated */
+class UserSchema {
+  String phoneNumber;
+  String password;
+  String role;
+  String phoneOtp;
+
+  UserSchema(
+      {this.phoneNumber = '',
+      this.password = '',
+      this.role = '',
+      this.phoneOtp = ''});
+}
+
 class ChatUser {
   final int id;
   final String name, image;
   final bool isActive;
 
-  ChatUser(
-      {required this.id,
-      this.name = '',
-      this.image = '',
-      this.isActive = false});
+  ChatUser({
+    required this.id,
+    this.name = '',
+    this.image = '',
+    this.isActive = false
+  });
 }

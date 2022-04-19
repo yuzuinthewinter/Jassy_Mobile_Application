@@ -13,7 +13,7 @@ class MessageInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor
       ),
@@ -21,7 +21,9 @@ class MessageInput extends StatelessWidget {
           children: [
             InkWell(
               // TODO: add add icon detail (ammie)
-              onTap: () {},
+              onTap: () {
+                print("add icon");
+              },
               child: SvgPicture.asset("assets/icons/add_circle.svg")
             ),
             SizedBox(width: size.height * 0.01,),
@@ -35,7 +37,7 @@ class MessageInput extends StatelessWidget {
                     onTap: () {
                       print("emoji");
                     },
-                    child: const Icon(Icons.sentiment_satisfied_alt, color: primaryColor,)
+                    child: Icon(Icons.sentiment_satisfied_alt, color: primaryColor,)
                   ),
                   filled: true,
                   fillColor: textLight,
@@ -57,7 +59,9 @@ class MessageInput extends StatelessWidget {
             ),
             SizedBox(width: size.height * 0.02,),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                print("send");
+              },
               child: SvgPicture.asset("assets/icons/send.svg")
             )
           ],

@@ -17,7 +17,7 @@ class AccountExistsLogin extends StatelessWidget {
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
-        style: const TextStyle(
+        style: TextStyle(
           color: greyDark,
           fontFamily: 'Kanit',
           ),
@@ -25,7 +25,7 @@ class AccountExistsLogin extends StatelessWidget {
           TextSpan(text: 'LandingHaveAccount'.tr),
           TextSpan(
             text: ' ${'LandingLogin'.tr}',
-            style: const TextStyle(color: primaryColor,),
+            style: TextStyle(color: primaryColor,),
             recognizer: TapGestureRecognizer()
               ..onTap = () => {
                 Navigator.pushNamed(

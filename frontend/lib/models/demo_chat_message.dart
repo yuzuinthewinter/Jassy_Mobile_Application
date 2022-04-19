@@ -4,7 +4,7 @@ enum ChatMessageType { text, audio, image, video }
 enum MessageStatus { not_sent, not_view, viewed }
 
 class ChatMessage {
-  final sender;
+  final ChatUser sender;
   final String text, image, time, lastMessage;
   final ChatMessageType messageType;
   final MessageStatus messageStatus;

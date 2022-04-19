@@ -7,6 +7,10 @@ import 'package:flutter_application_1/component/input_feilds/required_text_field
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/models/user.dart';
+import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
+import 'package:flutter_application_1/screens/jassy_home/home.dart';
+import 'package:flutter_application_1/screens/register_info/profile.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 class Body extends StatefulWidget {
@@ -20,6 +24,7 @@ class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
   bool isHiddenPassword = true;
   bool isHiddenConfirmPassword = true;
+  UserSchema user = UserSchema();
   RegExp regex = RegExp("(?=.*[A-Z])(?=.*[a-z])(?=.*?[!@#\$&*~.]).{8,}");
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -90,6 +95,9 @@ class _BodyState extends State<Body> {
                     return "กรุณากรอกตามpattern";
                   }
                   return null;
+                },
+                onSaved: (String? password) {
+                  user.password = password!;
                 },
               ),
             ),
@@ -162,6 +170,7 @@ class _BodyState extends State<Body> {
               press: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
+                  print("password: ${user.password}");
                   Navigator.pushNamed(
                     context,
                     Routes.SuccessPage,

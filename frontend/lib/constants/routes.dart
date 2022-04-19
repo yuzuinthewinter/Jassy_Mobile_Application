@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
+import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/chat/chat_screen.dart';
 import 'package:flutter_application_1/screens/jassy_home/home.dart';
 import 'package:flutter_application_1/screens/landing/landing_page.dart';
@@ -8,8 +9,8 @@ import 'package:flutter_application_1/screens/register/create_password.dart';
 import 'package:flutter_application_1/screens/register/enter_otp.dart';
 import 'package:flutter_application_1/screens/register/phone_register.dart';
 import 'package:flutter_application_1/screens/register/register_page.dart';
-import 'package:flutter_application_1/screens/register/register_info/language.dart';
-import 'package:flutter_application_1/screens/register/register_info/profile.dart';
+import 'package:flutter_application_1/screens/register_info/language.dart';
+import 'package:flutter_application_1/screens/register_info/profile.dart';
 
 class Routes extends RouteGenerator {
   Routes._();
@@ -41,18 +42,18 @@ class RouteGenerator {
       //case Routes. : return MaterialPageRoute(builder: (_) => ());
       //Register
       case Routes.RegisterPage:
-        return MaterialPageRoute(builder: (_) => const RegisterPage());
+        return MaterialPageRoute(builder: (_) => RegisterPage());
       case Routes.PhoneRegister:
-        return MaterialPageRoute(builder: (_) => const PhoneRegister());
+        return MaterialPageRoute(builder: (_) => PhoneRegister());
       case Routes.EnterOTP:
         var data = settings.arguments as String;
         return MaterialPageRoute(builder: (_) => EnterOTP(data));
       case Routes.CreatePassword:
-        return MaterialPageRoute(builder: (_) => const CreatePassword());
+        return MaterialPageRoute(builder: (_) => CreatePassword());
 
       //Register info
       case Routes.RegisterProfile:
-        return MaterialPageRoute(builder: (_) => const RegisterProfile());
+        return MaterialPageRoute(builder: (_) => RegisterProfile());
       case Routes.RegisterLanguage:
         List<dynamic> data = settings.arguments as List<dynamic>;
         return MaterialPageRoute(
@@ -64,13 +65,13 @@ class RouteGenerator {
 
       //other
       case Routes.LoginPage:
-        return MaterialPageRoute(builder: (_) => const LoginPage());
+        return MaterialPageRoute(builder: (_) => LoginPage());
       case Routes.LandingPage:
-        return MaterialPageRoute(builder: (_) => const LandingPage());
+        return MaterialPageRoute(builder: (_) => LandingPage());
       case Routes.JassyHome:
-        return MaterialPageRoute(builder: (_) => const JassyHome());
+        return MaterialPageRoute(builder: (_) => JassyHome());
       case Routes.ChatScreen:
-        return MaterialPageRoute(builder: (_) => const ChatScreen());
+        return MaterialPageRoute(builder: (_) => ChatScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
