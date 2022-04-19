@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/component/back_close_appbar.dart';
-import 'package:flutter_application_1/component/buttom_appbar.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/chat/chat_screen.dart';
-import 'package:flutter_application_1/screens/jassy_home/component/home_body.dart';
 import 'package:flutter_application_1/screens/profile/profile_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';

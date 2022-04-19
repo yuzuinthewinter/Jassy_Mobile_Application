@@ -1,4 +1,3 @@
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/account_exists_login.dart';
 import 'package:flutter_application_1/component/background.dart';

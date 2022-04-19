@@ -5,9 +5,9 @@ import 'package:flutter_application_1/constants/routes.dart';
 import 'package:get/get.dart';
 
 class Body extends StatelessWidget {
+  // ignore: non_constant_identifier_names
   final String SuccessWord;
-  Body(this.SuccessWord);
-  final _formKey = GlobalKey<FormState>();
+  const Body(this.SuccessWord);
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
  class EnterOTP extends StatelessWidget {
    final String phoneNumber;
-   EnterOTP(this.phoneNumber);
+   const EnterOTP(this.phoneNumber, {Key? key}) : super(key: key);
 
    @override
    Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ import 'package:get/get.dart';
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       appBar: BackAndCloseAppBar(text: 'PhoneRegisterPage'.tr),
-      body: Body(this.phoneNumber),
+      body: Body(phoneNumber),
     );
    }
  }

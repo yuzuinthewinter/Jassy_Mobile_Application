@@ -11,7 +11,6 @@ import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
-import 'package:flutter_application_1/screens/jassy_home/home.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:intl/intl.dart';
 

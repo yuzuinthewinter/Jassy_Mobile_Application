@@ -12,11 +12,11 @@ class _BottomAppbarMenuState extends State<BottomAppbarMenu> {
   
   int _currentIndex = 1;
   final screens = [
-    Center(child: Text('home'),),
-    Center(child: Text('likes'),),
-    Center(child: Text(''),),
-    Center(child: Text('chat'),),
-    Center(child: Text('profile'),),
+    const Center(child: Text('home'),),
+    const Center(child: Text('likes'),),
+    const Center(child: Text(''),),
+    const Center(child: Text('chat'),),
+    const Center(child: Text('profile'),),
   ];
 
   @override
@@ -28,7 +28,7 @@ class _BottomAppbarMenuState extends State<BottomAppbarMenu> {
         child: Container(
           height: 70,
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               // color: Colors.white,
               // border: Border(
               //   top: BorderSide(
@@ -47,7 +47,7 @@ class _BottomAppbarMenuState extends State<BottomAppbarMenu> {
                     _currentIndex = index;
                   });
                 },
-                items: [
+                items: const [
                   BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก',),
                   BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: 'ถูกใจ'),
                   BottomNavigationBarItem(icon: Icon(Icons.category), label: ''),

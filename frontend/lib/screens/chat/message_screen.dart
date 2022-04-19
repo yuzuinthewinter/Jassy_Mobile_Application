@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/text/report_choice.dart';
-import 'package:flutter_application_1/models/demo_chat_message.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/chat/component/message_screen_body.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -27,7 +26,7 @@ class _ChatRoomState extends State<ChatRoom> {
         title: Column(
           children: [
             // Note: map chat room name on appbar here
-            Text(widget.user.name, style: TextStyle(fontSize: 18, color: textDark),),
+            Text(widget.user.name, style: const TextStyle(fontSize: 18, color: textDark),),
             const Text('3 mins ago', style: TextStyle(fontSize: 14, color: greyDark),),
           ],
         ),

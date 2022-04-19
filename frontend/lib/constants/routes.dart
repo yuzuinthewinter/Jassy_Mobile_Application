@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
-import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/chat/chat_screen.dart';
 import 'package:flutter_application_1/screens/jassy_home/home.dart';
 import 'package:flutter_application_1/screens/landing/landing_page.dart';
@@ -42,18 +41,18 @@ class RouteGenerator {
       //case Routes. : return MaterialPageRoute(builder: (_) => ());
       //Register
       case Routes.RegisterPage:
-        return MaterialPageRoute(builder: (_) => RegisterPage());
+        return MaterialPageRoute(builder: (_) => const RegisterPage());
       case Routes.PhoneRegister:
-        return MaterialPageRoute(builder: (_) => PhoneRegister());
+        return MaterialPageRoute(builder: (_) => const PhoneRegister());
       case Routes.EnterOTP:
         var data = settings.arguments as String;
         return MaterialPageRoute(builder: (_) => EnterOTP(data));
       case Routes.CreatePassword:
-        return MaterialPageRoute(builder: (_) => CreatePassword());
+        return MaterialPageRoute(builder: (_) => const CreatePassword());
 
       //Register info
       case Routes.RegisterProfile:
-        return MaterialPageRoute(builder: (_) => RegisterProfile());
+        return MaterialPageRoute(builder: (_) => const RegisterProfile());
       case Routes.RegisterLanguage:
         List<dynamic> data = settings.arguments as List<dynamic>;
         return MaterialPageRoute(
@@ -65,13 +64,13 @@ class RouteGenerator {
 
       //other
       case Routes.LoginPage:
-        return MaterialPageRoute(builder: (_) => LoginPage());
+        return MaterialPageRoute(builder: (_) => const LoginPage());
       case Routes.LandingPage:
-        return MaterialPageRoute(builder: (_) => LandingPage());
+        return MaterialPageRoute(builder: (_) => const LandingPage());
       case Routes.JassyHome:
-        return MaterialPageRoute(builder: (_) => JassyHome());
+        return MaterialPageRoute(builder: (_) => const JassyHome());
       case Routes.ChatScreen:
-        return MaterialPageRoute(builder: (_) => ChatScreen());
+        return MaterialPageRoute(builder: (_) => const ChatScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

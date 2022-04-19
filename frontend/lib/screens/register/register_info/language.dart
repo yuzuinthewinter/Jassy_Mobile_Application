@@ -17,7 +17,7 @@ class RegisterLanguage extends StatelessWidget {
       appBar: const BackAndCloseAppBar(
         text: "ลงทะเบียนผู้ใช้ใหม่",
       ),
-      body: Body(this.name, this.uinfo),
+      body: Body(name, uinfo),
     );
   }
 }

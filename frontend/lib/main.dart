@@ -5,7 +5,6 @@ import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/constants/translations.dart';
 import 'package:flutter_application_1/screens/jassy_home/home.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
 import 'screens/landing/landing_page.dart';
