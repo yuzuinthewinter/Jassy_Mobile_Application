@@ -5,57 +5,33 @@ import 'package:flutter_application_1/component/background.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/term_and_policies.dart';
 import 'package:flutter_application_1/constants/routes.dart';
-import 'package:flutter_application_1/constants/translations.dart';
-import 'package:flutter_application_1/screens/register/register_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class Body extends StatelessWidget {
+  Body({Key? key}) : super(key: key);
+
   final List locale = [
-    {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
-    {'name': 'ภาษาไทย', 'locale': Locale('th', 'TH')},
+    {'name': 'ENGLISH', 'locale': const Locale('en', 'US'), 'code': 'US'},
+    {'name': 'ภาษาไทย', 'locale': const Locale('th', 'TH'), 'code': 'TH'},
   ];
+
+  List<String> listLocale = ['TH', 'US'];
+
+  onChangeLanguage(CountryCode? countryCode) async {
+    var getCoutryCode = countryCode?.code;
+    for (var local in locale) {
+      if (getCoutryCode == local['code']) {
+        updateLanguage(local['locale']);
+      }
+    }
+  }
 
   updateLanguage(Locale locale) {
     //TODO: setting delay popup
-    // Future.delayed(const Duration(milliseconds: 500));
     Get.back();
     Get.updateLocale(locale);
-  }
-
-  //TODO: pls re-design change languages button
-  buildLanguageDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (builder) {
-          return AlertDialog(
-            title: Text('Choose Your Language'),
-            content: Container(
-              width: double.maxFinite,
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        child: Text(locale[index]['name']),
-                        onTap: () {
-                          print(locale[index]['name']);
-                          updateLanguage(locale[index]['locale']);
-                        },
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      color: Colors.blue,
-                    );
-                  },
-                  itemCount: locale.length),
-            ),
-          );
-        });
   }
 
   @override
@@ -68,16 +44,17 @@ class Body extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: CountryCodePicker(
-              initialSelection: "+66",
-              countryFilter: const ["+66", "us"],
+              initialSelection: listLocale[0],
+              countryFilter: listLocale,
               showCountryOnly: true,
               padding: EdgeInsets.only(top: size.height * 0.02),
               hideMainText: true,
               showDropDownButton: true,
               flagWidth: size.width * 0.07,
-              flagDecoration: BoxDecoration(
-                // shape: BoxShape.circle
-              ),
+              flagDecoration: const BoxDecoration(
+                  // shape: BoxShape.circle
+                  ),
+              onChanged: onChangeLanguage,
             ),
           ),
           SizedBox(
