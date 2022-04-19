@@ -15,6 +15,7 @@ class ProfileScreenBody extends StatefulWidget {
 
 class _ProfileScreenBody extends State<ProfileScreenBody> {
   var currentUser = FirebaseAuth.instance.currentUser;
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +28,11 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
           child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('Users')
+                .where('uid', isEqualTo: currentUser!.uid)
                 .snapshots(includeMetadataChanges: true),
             builder: (context, snapshot) {
               var user = snapshot.data!.docs;
-              final userData = user.map((doc) => doc.data()).toList();
-              if (userData.isEmpty) {
+              if (user.isEmpty) {
                 return const Text('Please field your infomation!');
               } else {
                 return Text(user[0]['name']['firstname'].toString() +

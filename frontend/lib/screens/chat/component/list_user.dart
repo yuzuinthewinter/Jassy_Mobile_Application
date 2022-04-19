@@ -28,6 +28,7 @@ class _ListUserBody extends State<ListUser> {
       child: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('Users')
+            .where('uid', isNotEqualTo: currentUser!.uid)
             .snapshots(includeMetadataChanges: true),
         builder: (context, snapshot) {
           var user = snapshot.data!.docs;

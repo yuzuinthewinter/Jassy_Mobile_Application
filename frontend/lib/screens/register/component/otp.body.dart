@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/header_style1.dart';
@@ -17,9 +18,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   String verificationCode = '';
 
   @override
@@ -32,18 +31,9 @@ class _BodyState extends State<Body> {
   verifyPhoneNumber() async {
     await _auth.verifyPhoneNumber(
       phoneNumber: widget.phoneNumber,
-      timeout: Duration(seconds: 120),
+      timeout: const Duration(seconds: 120),
       verificationCompleted: (PhoneAuthCredential) async {
-        await FirebaseAuth.instance
-            .signInWithCredential(PhoneAuthCredential)
-            .then((value) async {
-          if (value.user != null) {
-            Navigator.pushNamed(
-              context,
-              Routes.RegisterProfile,
-            );
-          }
-        });
+        await FirebaseAuth.instance.signInWithCredential(PhoneAuthCredential);
       },
       verificationFailed: (FirebaseAuthException e) async {
         print(e.message);
@@ -63,17 +53,43 @@ class _BodyState extends State<Body> {
 
   checkOTP(code) async {
     try {
-      await FirebaseAuth.instance
-          .signInWithCredential(PhoneAuthProvider.credential(
-              verificationId: verificationCode, smsCode: code))
-          .then((value) async {
-        if (value.user != null) {
-          Navigator.pushNamed(
-            context,
-            Routes.RegisterProfile,
-          );
-        }
-      });
+      await FirebaseAuth.instance.signInWithCredential(
+          PhoneAuthProvider.credential(
+              verificationId: verificationCode, smsCode: code));
+      var currentUser = FirebaseAuth.instance.currentUser;
+
+      var users = FirebaseFirestore.instance.collection('Users');
+      var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
+
+      QuerySnapshot querySnapshot = await queryUser.get();
+      final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+      if (allData.isNotEmpty) {
+        Navigator.of(context).pushNamed(Routes.JassyHome);
+      } else {
+        await users.doc(currentUser.uid).set({
+          'uid': currentUser.uid,
+          'name': {
+            'firstname': '',
+            'lastname': '',
+          },
+          'birthDate': '',
+          'genre': '',
+          'country': '',
+          'language': {
+            'defaultLanguage': '',
+            'levelDefaultLanguage': '',
+            'interestedLanguage': '',
+            'levelInterestedLanguage': '',
+          },
+          'desc': '',
+          'faceRegPic': const [],
+          'profilePic': const [],
+          'chats': const [],
+          'isActive': true,
+        });
+        Navigator.of(context).pushNamed(Routes.RegisterProfile);
+      }
     } catch (e) {
       // TODO: return invalid popup
       Navigator.push(
@@ -104,7 +120,7 @@ class _BodyState extends State<Body> {
           child: Text(
             'OtpPageDesc'.tr,
             textAlign: TextAlign.left,
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 16, fontWeight: FontWeight.w500, color: greyDark),
           ),
         ),
@@ -144,7 +160,7 @@ class _BodyState extends State<Body> {
                     children: <Widget>[
                       Text(
                         'OtpTimeout'.tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: secoundary,
                         ),
@@ -163,7 +179,7 @@ class _BodyState extends State<Body> {
                         },
                         child: Text(
                           'OtpResend'.tr,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             color: primaryColor,
                           ),

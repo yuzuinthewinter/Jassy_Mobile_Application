@@ -23,6 +23,40 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   bool isLoading = false;
 
+  _facebookCurrentUser(profile) async {
+    var currentUser = FirebaseAuth.instance.currentUser;
+    var users = FirebaseFirestore.instance.collection('Users');
+    var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
+    QuerySnapshot querySnapshot = await queryUser.get();
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    if (allData.isNotEmpty) {
+      Navigator.of(context).pushNamed(Routes.JassyHome);
+    } else {
+      await users.doc(currentUser.uid).set({
+        'uid': currentUser.uid,
+        'name': {
+          'firstname': '${profile['first_name']}',
+          'lastname': '${profile['last_name']}',
+        },
+        'birthDate': '',
+        'genre': '',
+        'country': '',
+        'language': {
+          'defaultLanguage': '',
+          'levelDefaultLanguage': '',
+          'interestedLanguage': '',
+          'levelInterestedLanguage': '',
+        },
+        'desc': '',
+        'faceRegPic': const [],
+        'profilePic': ['${profile['picture']['data']['url']}'],
+        'chats': const [],
+        'isActive': true,
+      });
+      Navigator.of(context).pushNamed(Routes.RegisterProfile);
+    }
+  }
+
   Future _facebookLogin(BuildContext context) async {
     try {
       isLoading = true;
@@ -30,8 +64,6 @@ class _BodyState extends State<Body> {
 
       final token = facebookLoginResult.accessToken!.token;
       final userId = facebookLoginResult.accessToken!.userId;
-      print(userId);
-      print(token);
       final facebookAuthCredential = FacebookAuthProvider.credential(token);
 
       await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
@@ -39,19 +71,52 @@ class _BodyState extends State<Body> {
       final graphResponse = await http.get(Uri.parse(
           'https://graph.facebook.com/v13.0/${userId}?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${token}'));
       final profile = json.decode(graphResponse.body);
+      _facebookCurrentUser(profile);
+    } on FirebaseAuthException catch (e) {
+      isLoading = false;
+      //TODO: failed
+    }
+  }
+
+  Future _googleLogin(BuildContext context) async {
+    // ignore: unused_local_variable
+    late GoogleSignInAccount user;
+    try {
+      isLoading = true;
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+
+      final token = googleAuth.accessToken;
+      final userId = googleAuth.idToken;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: token,
+        idToken: userId,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      final user =
+          (await FirebaseAuth.instance.signInWithCredential(credential)).user;
+      print(user);
 
       var currentUser = FirebaseAuth.instance.currentUser;
       var users = FirebaseFirestore.instance.collection('Users');
       var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
       QuerySnapshot querySnapshot = await queryUser.get();
       final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+      var name = currentUser.displayName;
+      final splitname = name!.split(' ');
+
       if (allData.isNotEmpty) {
         Navigator.of(context).pushNamed(Routes.JassyHome);
       } else {
         await users.doc(currentUser.uid).set({
+          'uid': currentUser.uid,
           'name': {
-            'firstname': '${profile['first_name']}',
-            'lastname': '${profile['last_name']}',
+            'firstname': '${splitname[0]}',
+            'lastname': '${splitname[1]}',
           },
           'birthDate': '',
           'genre': '',
@@ -64,32 +129,12 @@ class _BodyState extends State<Body> {
           },
           'desc': '',
           'faceRegPic': const [],
-          'profilePic': ['${profile['picture']['data']['url']}'],
+          'profilePic': const [],
           'chats': const [],
           'isActive': true,
         });
         Navigator.of(context).pushNamed(Routes.RegisterProfile);
       }
-    } on FirebaseAuthException catch (e) {
-      isLoading = false;
-      //TODO: failed
-    }
-  }
-
-  Future _googleLogin(BuildContext context) async {
-    late GoogleSignInAccount user;
-    try {
-      isLoading = true;
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser!.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      Navigator.of(context).pushNamed(Routes.RegisterProfile);
     } on FirebaseAuthException catch (e) {
       isLoading = false;
     }
