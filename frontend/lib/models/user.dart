@@ -47,12 +47,13 @@ class LanguageType {
 /* chatuser for demo @deprecated */
 class ChatUser {
   final int id;
-  final String name, image;
+  final List name;
+  final String image;
   final bool isActive;
 
   ChatUser(
       {required this.id,
-      this.name = '',
+      this.name = const [],
       this.image = '',
       this.isActive = false});
 }

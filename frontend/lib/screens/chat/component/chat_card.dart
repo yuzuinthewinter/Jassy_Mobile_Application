@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/models/demo_chat_message.dart';
+import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/chat/message_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
@@ -60,7 +61,7 @@ class ChatCard extends StatelessWidget {
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HeaderText(text: chat.sender.name),
+                HeaderText(text: chat.sender.name[0]),
                 DescriptionText(
                   text: chat.lastMessage,
                 )

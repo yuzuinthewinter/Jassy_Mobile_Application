@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -45,9 +46,10 @@ class _BodyState extends State<Body> {
       final facebookLoginResult = await FacebookAuth.instance.login();
       final facebookAuthCredential = FacebookAuthProvider.credential(
           facebookLoginResult.accessToken!.token);
-      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+          print(facebookLoginResult.accessToken!.token);
+      // await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
 
-      Navigator.of(context).pushNamed(Routes.JassyHome);
+      // Navigator.of(context).pushNamed(Routes.JassyHome);
     } on FirebaseAuthException catch (e) {
       //TODO: handle failed
     }

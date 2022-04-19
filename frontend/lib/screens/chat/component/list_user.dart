@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/chat/message_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // NOTE: chat card in all chat page show name lastest message and unread notification
 // TODO: map profile image, name and lastest message here
@@ -29,9 +31,9 @@ class _ListUserBody extends State<ListUser> {
             .where('uid', isNotEqualTo: currentUser!.uid)
             .snapshots(includeMetadataChanges: true),
         builder: (context, snapshot) {
-          var user = snapshot.data?.docs;
-
-          if (user!.isEmpty) {
+          var user = snapshot.data!.docs;
+          final userData = user.map((doc) => doc.data()).toList();
+          if (user.isEmpty) {
             return const Center(
               child: Text('Let\'s talk with the stranger!'),
             );
@@ -40,6 +42,7 @@ class _ListUserBody extends State<ListUser> {
             for (var doc in user) {
               if (doc['isActive'] == true) count += 1;
             }
+
             return ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: user.length,
@@ -61,10 +64,13 @@ class _ListUserBody extends State<ListUser> {
                               Stack(
                                 children: [
                                   CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                        user[index]['profilePic'].isEmpty
-                                            ? "assets/images/header_img1.png"
-                                            : user[index]['profilePic'][0]),
+                                    backgroundImage: !user[index]['profilePic']
+                                            .isEmpty
+                                        ? NetworkImage(
+                                            user[index]['profilePic'][0])
+                                        : const AssetImage(
+                                                "assets/images/header_img1.png")
+                                            as ImageProvider,
                                     radius: 33,
                                   ),
                                   count > 0 && user[index]['isActive'] == true

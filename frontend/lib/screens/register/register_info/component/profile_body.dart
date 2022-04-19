@@ -34,33 +34,6 @@ class _BodyState extends State<Body> {
   TextEditingController firstNameController = TextEditingController();
   bool isLoading = false;
 
-  var currentUser = FirebaseAuth.instance.currentUser;
-  void checkCurrentUser() async {
-    //TODO: get currentuser check in users collecction in uid field
-    // that user profile exist
-    CollectionReference users = FirebaseFirestore.instance.collection('Users');
-    if (currentUser != null) {
-      FirebaseFirestore.instance
-          .collection('Users')
-          .get()
-          .then((querySnapshot) {
-        querySnapshot.docs.forEach((result) {
-          if (currentUser == result.get('uid')) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SuccessPage('RegisterSuccess'),
-                ));
-          } else {
-            Navigator.pushNamed(context, Routes.RegisterProfile);
-          }
-        });
-      });
-    } else {
-      Navigator.pushNamed(context, Routes.RegisterProfile);
-    }
-  }
-
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -72,8 +45,6 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    //TODO: check current user
-    // checkCurrentUser();
     userInfo.genre = _choicesLists[0];
   }
 
@@ -83,6 +54,7 @@ class _BodyState extends State<Body> {
     final String formattedDate = DateFormat.yMd().format(_selectedDateTime);
     final selectedText = Text('You selected: $formattedDate');
     Size size = MediaQuery.of(context).size;
+
     return isLoading
         ? CircularProgressIndicator()
         : Form(
@@ -90,16 +62,16 @@ class _BodyState extends State<Body> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CurvedWidget(child: HeaderStyle2()),
-                HeaderText(text: "ข้อมูลส่วนตัว"),
-                DescriptionText(
+                const CurvedWidget(child: HeaderStyle2()),
+                const HeaderText(text: "ข้อมูลส่วนตัว"),
+                const DescriptionText(
                     text:
                         "คุณไม่สามารถเปลี่ยนอายุและเพศหลังจากนี้ได้ดังนั้นโปรดให้ข้อมูลส่วนบุคคลที่แท้จริง"),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        RequiredTextFieldLabel(textLabel: "ชื่อ"),
+                        const RequiredTextFieldLabel(textLabel: "ชื่อ"),
                         Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 20.0),
@@ -108,7 +80,7 @@ class _BodyState extends State<Body> {
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               hintText: "ชื่อ",
-                              hintStyle: TextStyle(color: greyDark),
+                              hintStyle: const TextStyle(color: greyDark),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
                               fillColor: textLight,
@@ -184,7 +156,8 @@ class _BodyState extends State<Body> {
                           child: TextFormField(
                             readOnly: true,
                             onTap: () async {
-                              FocusScope.of(context).requestFocus(new FocusNode());
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
                               showModalBottomSheet(
                                   context: context,
                                   builder: (BuildContext builder) {

@@ -4,7 +4,7 @@ enum ChatMessageType { text, audio, image, video }
 enum MessageStatus { not_sent, not_view, viewed }
 
 class ChatMessage {
-  final sender;
+  final ChatUser sender;
   final String text, image, time, lastMessage;
   final ChatMessageType messageType;
   final MessageStatus messageStatus;
@@ -24,83 +24,31 @@ class ChatMessage {
   });
 }
 
-final ChatUser currentUser = ChatUser(
-  id: 0,
-  name: "Current User",
-  image: "assets/images/header_img1.png",
-  isActive: false,
-);
-
 final ChatUser jenny = ChatUser(
   id: 1,
-  name: "Jenny Wilson",
+  name: ["Jenny Wilson"],
   image: "assets/images/header_img1.png",
   isActive: false,
 );
 
 final ChatUser esther = ChatUser(
   id: 2,
-  name: "Esther Howard",
+  name: ["Esther Howard"],
   image: "assets/images/header_img1.png",
   isActive: true,
 );
 final ChatUser ralph = ChatUser(
   id: 3,
-  name: "Ralph Edwards",
+  name: ["Ralph Edwards"],
   image: "assets/images/header_img1.png",
   isActive: false,
 );
 final ChatUser jacob = ChatUser(
   id: 4,
-  name: "Jacob Jones",
+  name: ["Jacob Jones"],
   image: "assets/images/header_img1.png",
   isActive: true,
 );
-final ChatUser albert = ChatUser(
-  id: 5,
-  name: "Albert Flores",
-  image: "assets/images/header_img1.png",
-  isActive: false,
-);
-
-final List<ChatUser> listUser = [
-  ChatUser(
-    id: 2,
-    name: "Esther Howarddddddddddddddddddddddddddd",
-    image: "assets/images/header_img1.png",
-    isActive: true,
-  ),
-  ChatUser(
-    id: 4,
-    name: "Jacob Jones",
-    image: "assets/images/header_img1.png",
-    isActive: true,
-  ),
-  ChatUser(
-    id: 6,
-    name: "san",
-    image: "assets/images/header_img1.png",
-    isActive: true,
-  ),
-  ChatUser(
-    id: 8,
-    name: "Jas",
-    image: "assets/images/header_img1.png",
-    isActive: true,
-  ),
-  ChatUser(
-    id: 9,
-    name: "Estard",
-    image: "assets/images/header_img1.png",
-    isActive: true,
-  ),
-  ChatUser(
-    id: 13,
-    name: "Jacones",
-    image: "assets/images/header_img1.png",
-    isActive: true,
-  )
-];
 
 final List<ChatMessage> recentChats = [
   ChatMessage(
@@ -126,12 +74,6 @@ final List<ChatMessage> recentChats = [
     lastMessage: "You’re welcome :)",
     image: "assets/images/header_img1.png",
     time: "5d ago",
-  ),
-  ChatMessage(
-    sender: albert,
-    lastMessage: "Thanks",
-    image: "assets/images/header_img1.png",
-    time: "6d ago",
   ),
 ];
 
@@ -173,33 +115,6 @@ final List<ChatMessage> demoChatMessages = [
     unreadCount: 0,
   ),
   ChatMessage(
-    sender: albert,
-    text: "albert Error happend",
-    time: '10:41 AM',
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.not_sent,
-    isSender: true,
-    unreadCount: 4,
-  ),
-  ChatMessage(
-    sender: albert,
-    text: "This looks great man!!",
-    time: '10:41 AM',
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.viewed,
-    isSender: false,
-    unreadCount: 4,
-  ),
-  ChatMessage(
-    sender: albert,
-    text: "albert Glad you like it",
-    time: '10:41 AM',
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.not_view,
-    isSender: true,
-    unreadCount: 4,
-  ),
-  ChatMessage(
     sender: jenny,
     text: "jenny Glad you like it",
     time: '10:41 AM',
@@ -218,15 +133,6 @@ final List<ChatMessage> demoChatMessages = [
     unreadCount: 4,
   ),
   ChatMessage(
-    sender: albert,
-    text: "albert Glad you like it",
-    time: '10:41 AM',
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.not_view,
-    isSender: true,
-    unreadCount: 4,
-  ),
-  ChatMessage(
     sender: ralph,
     text: "ralph Glad you like it",
     time: '10:41 AM',
@@ -236,8 +142,8 @@ final List<ChatMessage> demoChatMessages = [
     unreadCount: 4,
   ),
   ChatMessage(
-    sender: currentUser,
-    text: "albert Glad you like it",
+    sender: jacob,
+    text: "jacob Glad you like it",
     time: '10:41 AM',
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
@@ -252,41 +158,5 @@ final List<ChatMessage> demoChatMessages = [
     messageStatus: MessageStatus.not_view,
     isSender: true,
     unreadCount: 4,
-  ),
-  ChatMessage(
-    sender: currentUser,
-    text: "albert Glad you like it",
-    time: '10:41 AM',
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.not_view,
-    isSender: true,
-    unreadCount: 4,
-  ),
-  ChatMessage(
-    sender: jacob,
-    text: "jacob Glad you like it",
-    time: '10:41 AM',
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.not_view,
-    isSender: true,
-    unreadCount: 4,
-  ),
-  ChatMessage(
-    sender: currentUser,
-    text: "currentUser Glad you like it",
-    time: '10:41 AM',
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.not_view,
-    isSender: true,
-    unreadCount: 7,
-  ),
-  ChatMessage(
-    sender: currentUser,
-    text: "currentUser Glad you like it",
-    time: '10:41 AM',
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.not_view,
-    isSender: true,
-    unreadCount: 2,
   ),
 ];
