@@ -30,12 +30,14 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                 .where('uid', isEqualTo: currentUser!.uid)
                 .snapshots(includeMetadataChanges: true),
             builder: (context, snapshot) {
-              var docs = snapshot.data?.docs;
-              final user = docs![0].data()!;
-              return Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Text(user.toString()),
-              );
+              var user = snapshot.data?.docs;
+              if (user!.isEmpty) {
+                return const Text('Please field your infomation!');
+              } else {
+                return Text(user[0]['name']['firstname'].toString() +
+                    ' ' +
+                    user[0]['name']['lastname'].toString());
+              }
             },
           ),
         ),
