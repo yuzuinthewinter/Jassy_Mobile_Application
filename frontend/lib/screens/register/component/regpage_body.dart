@@ -52,6 +52,7 @@ class _BodyState extends State<Body> {
         'profilePic': ['${profile['picture']['data']['url']}'],
         'chats': const [],
         'isActive': true,
+        'isAuth': false,
       });
       Navigator.of(context).pushNamed(Routes.RegisterProfile);
     }
@@ -115,8 +116,8 @@ class _BodyState extends State<Body> {
         await users.doc(currentUser.uid).set({
           'uid': currentUser.uid,
           'name': {
-            'firstname': '${splitname[0]}',
-            'lastname': '${splitname[1]}',
+            'firstname': splitname[0],
+            'lastname': splitname[1],
           },
           'birthDate': '',
           'genre': '',
@@ -132,6 +133,7 @@ class _BodyState extends State<Body> {
           'profilePic': const [],
           'chats': const [],
           'isActive': true,
+          'isAuth': false,
         });
         Navigator.of(context).pushNamed(Routes.RegisterProfile);
       }
