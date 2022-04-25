@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/constants/translations.dart';
-import 'package:flutter_application_1/screens/jassy_home/home.dart';
+import 'package:flutter_application_1/screens/jassy_home/main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 
@@ -22,6 +22,8 @@ class App extends StatelessWidget {
     const Duration(seconds: 2),
     () => 'Data Loaded',
   );
+
+  App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,9 @@ class App extends StatelessWidget {
           );
         }
         // TODO: loading
-        return const CircularProgressIndicator();
+        return const Center(
+          child: CircularProgressIndicator(),
+        ); // l
       },
     );
   }
@@ -61,6 +65,14 @@ class App extends StatelessWidget {
 
 class AuthGate extends StatelessWidget {
   const AuthGate({Key? key}) : super(key: key);
+
+  // void updateUserConnected(user, connected) async {
+  //   CollectionReference users = FirebaseFirestore.instance.collection('Users');
+
+  //   await users.doc(user!.uid).update({
+  //     'isActive': connected,
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

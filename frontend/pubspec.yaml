@@ -46,6 +46,8 @@ dependencies:
   carousel_slider: ^4.0.0
   intervalprogressbar: ^2.0.1
   http: ^0.13.4
+  flutter_offline: "^2.1.0"
+
   # firebase
   firebase_storage: ^10.2.12
   firebase_core: ^1.13.0
@@ -54,6 +56,7 @@ dependencies:
   flutter_facebook_auth: ^4.1.1
   google_sign_in: ^5.3.0
   firebase_storage_web: ^3.2.12
+  firebase_database: ^9.0.11
 
 
 

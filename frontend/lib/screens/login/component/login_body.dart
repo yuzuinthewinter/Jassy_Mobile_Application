@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,17 +48,22 @@ class _BodyState extends State<Body> {
       final facebookLoginResult = await FacebookAuth.instance.login();
       final facebookAuthCredential = FacebookAuthProvider.credential(
           facebookLoginResult.accessToken!.token);
-          print(facebookLoginResult.accessToken!.token);
-      // await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
 
-      // Navigator.of(context).pushNamed(Routes.JassyHome);
+      //TODO: check isAuth in Users database field is true, then show jassy home
+      // var currentUser = FirebaseAuth.instance.currentUser;
+
+      // CollectionReference users =
+      //     FirebaseFirestore.instance.collection('Users');
+      // var getUser = users.doc(currentUser!.uid).get();
+
+      Navigator.of(context).pushNamed(Routes.JassyHome);
     } on FirebaseAuthException catch (e) {
       //TODO: handle failed
     }
   }
 
   Future _googleLogin(BuildContext context) async {
-    late GoogleSignInAccount user;
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication googleAuth =
@@ -67,6 +74,13 @@ class _BodyState extends State<Body> {
         idToken: googleAuth.idToken,
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
+
+      //TODO: check isAuth in Users database field is true, then show jassy home
+      // var currentUser = FirebaseAuth.instance.currentUser;
+      // var users = FirebaseFirestore.instance
+      //     .collection('Users')
+      //     .where('uid', isEqualTo: currentUser!.uid);
+
       Navigator.of(context).pushNamed(Routes.JassyHome);
     } on FirebaseAuthException catch (e) {
       //TODO: handle failed

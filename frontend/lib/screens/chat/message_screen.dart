@@ -20,7 +20,6 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   bool isNotificationOn = true;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
