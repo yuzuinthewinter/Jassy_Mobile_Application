@@ -122,7 +122,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                     Container(
                       height: size.height * 0.25,
                       // color: greyDark,
-                        padding: EdgeInsets.symmetric(horizontal: 35, vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
                         child: TabBarView(
                           controller: tabController,
                           children: [
@@ -133,6 +133,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                   children: [
                                     const Padding(
                                       padding: EdgeInsets.only(left: 20),
+                                      // TODO widget.user.motherLanguage
                                       child: Text("Thai"),
                                     ),
                                     motherLanguageProgressBar(),
@@ -143,6 +144,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                   children: [
                                     const Padding(
                                       padding: EdgeInsets.only(left: 20),
+                                      // TODO widget.user.interestLanguage
                                       child: Text("korean"),
                                     ),
                                     interestLanguageProgressBar(),
@@ -150,6 +152,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                 ),
                               ],
                             ),
+                            // TODO widget.user.desc
                             Text("Descriptionnnnnnnn")
                           ]
                         ),
