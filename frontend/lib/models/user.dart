@@ -36,16 +36,12 @@ class LanguageType {
   String interestedLanguage;
   String levelInterestedLanguage;
 
-  Info(
-      {
-      // required this.name,
-      this.birthDate = '',
-      this.genre = '',
-      this.country = '',
-      this.defaultLanguage = '',
-      this.levelDefaultLanguage = '',
-      this.interestedLanguage = '',
-      this.levelInterestedLanguage = ''});
+  LanguageType({
+    this.defaultLanguage = '',
+    this.levelDefaultLanguage = '',
+    this.interestedLanguage = '',
+    this.levelInterestedLanguage = '',
+  });
 }
 
 class Filtering {
@@ -68,13 +64,6 @@ class UserSchema {
       this.password = '',
       this.role = '',
       this.phoneOtp = ''});
- 
-  LanguageType({
-    this.defaultLanguage = '',
-    this.levelDefaultLanguage = '',
-    this.interestedLanguage = '',
-    this.levelInterestedLanguage = '',
-  });
 }
 
 /* chatuser for demo @deprecated */
