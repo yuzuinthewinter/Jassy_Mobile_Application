@@ -16,17 +16,23 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Column(
-          children: [
-            Expanded(
-              child: ConversationText(user: widget.user,)
-            ),
-            MessageInput(size: size)
-          ],
-        );
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Column(
+            children: [
+              Expanded(
+                child: ConversationText(user: widget.user,)
+              ),
+              MessageInput(size: size)
+            ],
+          ),
+    );
   }
 }
 
+// อันเก่าเดี๋ยวค่อยลบเผื่อใช้
 // อันเก่าดี๋ยวค่อยลบเผื่อใช้
 // class MessageScreenBody extends StatelessWidget {
 //   const MessageScreenBody({ Key? key }) : super(key: key);
