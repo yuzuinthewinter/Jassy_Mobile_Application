@@ -48,6 +48,8 @@ class _BodyState extends State<Body> {
           'levelInterestedLanguage': '',
         },
         'desc': '',
+        'likesby': const [],
+        'liked': const [],
         'faceRegPic': const [],
         'profilePic': ['${profile['picture']['data']['url']}'],
         'chats': const [],

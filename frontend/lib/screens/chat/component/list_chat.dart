@@ -36,6 +36,9 @@ class _ListChatBody extends State<ListChat> {
             child: CircularProgressIndicator(),
           );
         }
+        if (snapshot.data!.docs[0]['chats'].length == 0) {
+          return const Center(child: Text('Let\'s start conversation'));
+        }
         return ListView.builder(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
           itemCount: snapshot.data!.docs[0]['chats'].length,
