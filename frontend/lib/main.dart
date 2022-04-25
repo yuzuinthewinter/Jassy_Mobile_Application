@@ -55,7 +55,9 @@ class App extends StatelessWidget {
           );
         }
         // TODO: loading
-        return const CircularProgressIndicator();
+        return const Center(
+          child: CircularProgressIndicator(),
+        ); // l
       },
     );
   }

@@ -31,14 +31,22 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                 .where('uid', isEqualTo: currentUser!.uid)
                 .snapshots(includeMetadataChanges: true),
             builder: (context, snapshot) {
+              
+              if (snapshot.hasError) {
+                return const Text('Something went wrong');
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
               var user = snapshot.data!.docs;
               if (user.isEmpty) {
                 return const Text('Please field your infomation!');
-              } else {
-                return Text(user[0]['name']['firstname'].toString() +
-                    ' ' +
-                    user[0]['name']['lastname'].toString());
               }
+              return Text(user[0]['name']['firstname'].toString() +
+                  ' ' +
+                  user[0]['name']['lastname'].toString());
             },
           ),
         ),

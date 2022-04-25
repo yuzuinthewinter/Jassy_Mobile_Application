@@ -35,6 +35,14 @@ class _ChatCardBody extends State<ChatCard> {
           .where('chatid', isEqualTo: widget.chatid)
           .snapshots(includeMetadataChanges: true),
       builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Text('Something went wrong');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: Text(''),
+          );
+        }
         var chat = snapshot.data!.docs[0];
         if (chat['member'].length >= 1) {
           for (var memberId in chat['member']) {
@@ -47,6 +55,14 @@ class _ChatCardBody extends State<ChatCard> {
                   .where('uid', isEqualTo: memberId)
                   .snapshots(includeMetadataChanges: true),
               builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('Something went wrong');
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: Text(''),
+                  );
+                }
                 var data = snapshot.data!.docs;
                 for (var user in data) {
                   return InkWell(
@@ -54,7 +70,6 @@ class _ChatCardBody extends State<ChatCard> {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
                         // NOTE: click each card to go to chat room
-                         print(user['name']);
                         return ChatRoom(
                           user: user,
                         );

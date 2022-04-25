@@ -78,84 +78,84 @@ class _HomeScreenBody extends State<HomeScreenBody> {
                 .where('uid', isNotEqualTo: currentUser!.uid)
                 .snapshots(includeMetadataChanges: true),
             builder: (context, snapshot) {
-              var user = snapshot.data!.docs;
-              if (user.isEmpty) {
-                return const Text('Invite your friend to join our community!');
-              } else {
-                return ListView.builder(
-                    itemCount: user.length,
-                    itemBuilder: (context, int index) => SizedBox(
-                          child: InkWell(
-                            onTap: () {
-                              // createChatRoom();
-                              Navigator.push(context,
-                                  CupertinoPageRoute(builder: (context) {
-                                // NOTE: click each card to go to chat room
-                                return ChatRoom(
-                                  user: user[index],
-                                );
-                              }));
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Stack(
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundImage: !user[index]
-                                                    ['profilePic']
-                                                .isEmpty
-                                            ? NetworkImage(
-                                                user[index]['profilePic'][0])
-                                            : const AssetImage(
-                                                    "assets/images/header_img1.png")
-                                                as ImageProvider,
-                                        radius: 33,
-                                      ),
-                                      user[index]['isActive'] == true
-                                          ? Positioned(
-                                              right: 3,
-                                              bottom: 3,
-                                              child: Container(
-                                                height: 16,
-                                                width: 16,
-                                                decoration: BoxDecoration(
-                                                    color: onlineColor,
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                        color: Theme.of(context)
-                                                            .scaffoldBackgroundColor)),
-                                              ),
-                                            )
-                                          : const Text(''),
-                                    ],
-                                  ),
-                                  Expanded(
-                                      child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      HeaderText(
-                                          text: user[index]['name']
-                                                  ['firstname'] +
-                                              ' ' +
-                                              user[index]['name']['lastname']),
-                                    ],
-                                  )),
-                                  RoundButton(
-                                      text: 'Messages',
-                                      minimumSize: const Size(36, 12),
-                                      press: () {
-                                        createChatRoom(
-                                            user[index]['uid'].toString());
-                                      })
-                                ],
-                              ),
-                            ),
-                          ),
-                        ));
+              if (snapshot.hasError) {
+                return const Text('Something went wrong');
               }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              var user = snapshot.data!.docs;
+              return ListView.builder(
+                itemCount: user.length,
+                itemBuilder: (context, int index) => SizedBox(
+                  child: InkWell(
+                    onTap: () {
+                      // createChatRoom();
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) {
+                        // NOTE: click each card to go to chat room
+                        return ChatRoom(
+                          user: user[index],
+                        );
+                      }));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Stack(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: !user[index]['profilePic']
+                                        .isEmpty
+                                    ? NetworkImage(user[index]['profilePic'][0])
+                                    : const AssetImage(
+                                            "assets/images/header_img1.png")
+                                        as ImageProvider,
+                                radius: 33,
+                              ),
+                              user[index]['isActive'] == true
+                                  ? Positioned(
+                                      right: 3,
+                                      bottom: 3,
+                                      child: Container(
+                                        height: 16,
+                                        width: 16,
+                                        decoration: BoxDecoration(
+                                            color: onlineColor,
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Theme.of(context)
+                                                    .scaffoldBackgroundColor)),
+                                      ),
+                                    )
+                                  : const Text(''),
+                            ],
+                          ),
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              HeaderText(
+                                  text: user[index]['name']['firstname'] +
+                                      ' ' +
+                                      user[index]['name']['lastname']),
+                            ],
+                          )),
+                          RoundButton(
+                              text: 'Messages',
+                              minimumSize: const Size(36, 12),
+                              press: () {
+                                createChatRoom(user[index]['uid'].toString());
+                              })
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
             },
           ),
         ),

@@ -21,25 +21,32 @@ class _ListChatBody extends State<ListChat> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return SizedBox(
-      child: StreamBuilder<QuerySnapshot>(
-          //call all chatroom
-          stream: FirebaseFirestore.instance
-              .collection('Users')
-              .where('uid', isEqualTo: currentUser!.uid)
-              .snapshots(includeMetadataChanges: true),
-          builder: (context, snapshot) {
+    return StreamBuilder<QuerySnapshot>(
+      //call all chatroom
+      stream: FirebaseFirestore.instance
+          .collection('Users')
+          .where('uid', isEqualTo: currentUser!.uid)
+          .snapshots(includeMetadataChanges: true),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Text('Something went wrong');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+          itemCount: snapshot.data!.docs[0]['chats'].length,
+          itemBuilder: (context, int index) {
             var data = snapshot.data!.docs[0];
-
-            return ListView.builder(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 20.0),
-                itemCount: data['chats'].length,
-                itemBuilder: (context, int index) => ChatCard(
-                      chatid: data['chats'][index],
-                    ));
-          }),
+            return ChatCard(
+              chatid: data['chats'][index],
+            );
+          },
+        );
+      },
     );
   }
 }
