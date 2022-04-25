@@ -27,18 +27,17 @@ class ButtonComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(25.0),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: buttonSize,
-            padding: EdgeInsets.symmetric(horizontal: 80 , vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 80 , vertical: 12),
             primary: buttonColor,
             onPrimary: textColor,
-            textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w300, fontFamily: 'Kanit')
+            textStyle: const TextStyle(fontSize: 16,fontWeight: FontWeight.w300, fontFamily: 'Kanit')
           ),
           onPressed: handlePress, 
           child: Row(

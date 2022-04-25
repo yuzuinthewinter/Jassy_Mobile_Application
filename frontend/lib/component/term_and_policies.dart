@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/constants/translations.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +14,7 @@ class TermAndPolicies extends StatelessWidget {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          style: TextStyle(
+          style: const TextStyle(
             color: greyDark,
             fontFamily: 'Kanit',
           ),
@@ -36,7 +35,7 @@ class TermAndPolicies extends StatelessWidget {
                     : ' ${'ConAnd'.tr} '),
             TextSpan(
                 text: 'LandingPrivacy'.tr,
-                style: TextStyle(color: secoundary),
+                style: const TextStyle(color: secoundary),
                 recognizer: TapGestureRecognizer()..onTap = () => {}),
           ]),
     );

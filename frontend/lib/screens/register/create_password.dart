@@ -7,7 +7,7 @@ import 'package:flutter_application_1/screens/register/component/create_password
    @override
    Widget build(BuildContext context) {
      Size size = MediaQuery.of(context).size;
-     return Scaffold(
+     return const Scaffold(
       extendBodyBehindAppBar: true,
       // resizeToAvoidBottomInset: false,
       appBar: BackAndCloseAppBar(text: 'ตั้งค่ารหัสผ่าน'),

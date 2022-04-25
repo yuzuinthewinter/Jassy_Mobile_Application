@@ -1,33 +1,73 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/component/back_close_appbar.dart';
-import 'package:flutter_application_1/component/buttom_appbar.dart';
+import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/chat/chat_screen.dart';
 import 'package:flutter_application_1/screens/jassy_home/component/home_body.dart';
 import 'package:flutter_application_1/screens/main/jassy_main.dart';
+import 'package:flutter_application_1/screens/profile/profile_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class JassyHome extends StatefulWidget {
-  const JassyHome({ Key? key }) : super(key: key);
+  const JassyHome({Key? key}) : super(key: key);
 
   @override
   State<JassyHome> createState() => _JassyHomeState();
 }
 
 class _JassyHomeState extends State<JassyHome> {
+  
+  bool isLoading = false;
 
-  int _currentIndex = 2;
+  var currentUser = FirebaseAuth.instance.currentUser;
+  void checkCurrentUser() async {
+    //TODO: get currentuser check in users collecction in uid field
+    // that user profile exist
+    CollectionReference users = FirebaseFirestore.instance.collection('Users');
+    if (currentUser != null) {
+      FirebaseFirestore.instance
+          .collection('Users')
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((result) {
+          if (currentUser == result.get('uid')) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SuccessPage('RegisterSuccess'),
+                ));
+                
+          } else {
+            Navigator.pushNamed(context, Routes.JassyHome);
+          }
+        });
+      });
+    } else {
+      Navigator.pushNamed(context, Routes.JassyHome);
+    }
+  }
+
+  int _currentIndex = 3;
+
   final screens = [
-    Center(child: Text('home'),),
-    Center(child: Text('likes'),),
-    JassyMain(),
-    ChatScreen(),
-    Center(child: Text('profile'),),
+    const JassyMain(),
+    Center(
+      child: Text('likes'),
+    ),
+    Center(
+      child: Text('community'),
+    ),
+    const ChatScreen(),
+    const ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(  
+    return isLoading 
+      ? CircularProgressIndicator()
+      : Scaffold(  
       extendBodyBehindAppBar: true,
       // floatingActionButton: Visibility(
       //   visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
@@ -45,10 +85,10 @@ class _JassyHomeState extends State<JassyHome> {
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: screens[_currentIndex],
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         notchMargin: 8.0,
         clipBehavior: Clip.antiAlias,
-        child: Container(
+        child: SizedBox(
           height: 70,
           child: Container(
             child: BottomNavigationBar(

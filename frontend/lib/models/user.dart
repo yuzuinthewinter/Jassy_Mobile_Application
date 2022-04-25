@@ -1,25 +1,36 @@
-import 'package:flutter/cupertino.dart';
-
-class Name {
+class NameType {
   String firstname;
   String lastname;
 
-  Name({this.firstname = '', this.lastname = ''});
-
-  void updateFirstname(String firstname) {
-    this.firstname = firstname;
-  }
-
-  void updateLastname(String lastname) {
-    this.lastname = lastname;
-  }
+  NameType({
+    this.firstname = '',
+    this.lastname = '',
+  });
 }
 
-class Info {
-  // Name name;
+class InfoType {
+  bool isActive;
   String birthDate;
   String genre;
   String country;
+  String desc;
+  String faceRegPic;
+  List<String> profilePic;
+  List<String> chats;
+
+  InfoType({
+    this.isActive = false,
+    this.birthDate = '',
+    this.genre = '',
+    this.country = '',
+    this.desc = '',
+    this.faceRegPic = '',
+    this.profilePic = const [],
+    this.chats = const [],
+  });
+}
+
+class LanguageType {
   String defaultLanguage;
   String levelDefaultLanguage;
   String interestedLanguage;
@@ -57,19 +68,27 @@ class UserSchema {
       this.password = '',
       this.role = '',
       this.phoneOtp = ''});
+ 
+  LanguageType({
+    this.defaultLanguage = '',
+    this.levelDefaultLanguage = '',
+    this.interestedLanguage = '',
+    this.levelInterestedLanguage = '',
+  });
 }
 
+/* chatuser for demo @deprecated */
 class ChatUser {
   final int id;
-  final String name, image;
+  final List name;
+  final String image;
   final bool isActive;
 
-  ChatUser({
-    required this.id,
-    this.name = '',
-    this.image = '',
-    this.isActive = false
-  });
+  ChatUser(
+      {required this.id,
+      this.name = const [],
+      this.image = '',
+      this.isActive = false});
 }
 
 class MainUser {

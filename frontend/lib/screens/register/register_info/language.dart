@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/back_close_appbar.dart';
 import 'package:flutter_application_1/models/user.dart';
-import 'package:flutter_application_1/screens/register_info/component/language_body.dart';
+import 'package:flutter_application_1/screens/register/register_info/component/language_body.dart';
 
 class RegisterLanguage extends StatelessWidget {
-  final Name name;
-  final Info uinfo;
+  final NameType name;
+  final InfoType uinfo;
 
-  RegisterLanguage(this.name, this.uinfo);
+  // ignore: use_key_in_widget_constructors
+  const RegisterLanguage(this.name, this.uinfo);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: BackAndCloseAppBar(
+      appBar: const BackAndCloseAppBar(
         text: "ลงทะเบียนผู้ใช้ใหม่",
       ),
-      body: Body(this.name, this.uinfo),
+      body: Body(name, uinfo),
     );
   }
 }

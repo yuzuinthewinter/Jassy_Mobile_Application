@@ -1,61 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/account_exists_login.dart';
 import 'package:flutter_application_1/component/background.dart';
+import 'package:flutter_application_1/component/button/change_languages_button.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/term_and_policies.dart';
 import 'package:flutter_application_1/constants/routes.dart';
-import 'package:flutter_application_1/constants/translations.dart';
-import 'package:flutter_application_1/screens/register/register_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class Body extends StatelessWidget {
-  final List locale = [
-    {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
-    {'name': 'ภาษาไทย', 'locale': Locale('th', 'TH')},
-  ];
-
-  updateLanguage(Locale locale) {
-    //TODO: setting delay popup
-    // Future.delayed(const Duration(milliseconds: 500));
-    Get.back();
-    Get.updateLocale(locale);
-  }
-
-  //TODO: pls re-design change languages button
-  buildLanguageDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (builder) {
-          return AlertDialog(
-            title: Text('Choose Your Language'),
-            content: Container(
-              width: double.maxFinite,
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        child: Text(locale[index]['name']),
-                        onTap: () {
-                          print(locale[index]['name']);
-                          updateLanguage(locale[index]['locale']);
-                        },
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      color: Colors.blue,
-                    );
-                  },
-                  itemCount: locale.length),
-            ),
-          );
-        });
-  }
+  Body({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +19,10 @@ class Body extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          Align(
+            alignment: Alignment.topRight,
+            child: ChangeLanguagesButton(),
+          ),
           SizedBox(
             height: size.height * 0.1,
           ),
@@ -77,24 +36,24 @@ class Body extends StatelessWidget {
           ),
           Text(
             'LandingWelcome'.tr, //------------------------------
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 18, fontWeight: FontWeight.w500, color: greyDark),
           ),
           SizedBox(
-            height: size.height * 0.2,
+            height: size.height * 0.15,
           ),
           RoundButton(
             text: 'LandingRegister'.tr, //------------------------------
-            minimumSize: Size(339, 36),
+            minimumSize: Size(size.width * 0.8, size.height * 0.05),
             press: () {
               Navigator.pushNamed(context, Routes.RegisterPage);
             },
           ),
-          AccountExistsLogin(),
+          const AccountExistsLogin(),
           SizedBox(
-            height: size.height * 0.05,
+            height: size.height * 0.07,
           ),
-          TermAndPolicies(),
+          const TermAndPolicies(),
           // TODO: change language button on landing page.
           // ElevatedButton(
           //    onPressed: () {

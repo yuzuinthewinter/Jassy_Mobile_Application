@@ -51,20 +51,11 @@ class _BodyState extends State<Body> {
           HeaderText(
             text: 'PhonePageFilled'.tr,
           ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
           DescriptionText(
             text: 'PhonePageDesc'.tr,
           ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
           RequiredTextFieldLabel(
             textLabel: 'PhonePagePhoneNumber'.tr,
-          ),
-          SizedBox(
-            height: size.height * 0.01,
           ),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
@@ -73,6 +64,8 @@ class _BodyState extends State<Body> {
               keyboardType: TextInputType.number,
               inputFormatters: [LengthLimitingTextInputFormatter(9)],
               decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 10.0),
                   // hintText: "869077768",
                   fillColor: textLight,
                   filled: true,
@@ -93,6 +86,8 @@ class _BodyState extends State<Body> {
                     countryFilter: const ["+66", "+62", "+82"],
                     onInit: getCountry,
                     onChanged: getCountry,
+                    showDropDownButton: true,
+                    flagWidth: 25,
                   )),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -104,13 +99,11 @@ class _BodyState extends State<Body> {
               },
             ),
           ),
-          SizedBox(
-            height: size.height * 0.35,
-          ),
+          Spacer(),
           Center(
               child: DisableToggleButton(
             text: "ตกลง",
-            minimumSize: const Size(279, 36),
+            minimumSize: Size(size.width * 0.8, size.height * 0.05),
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
@@ -119,7 +112,10 @@ class _BodyState extends State<Body> {
                 Navigator.pushNamed(context, Routes.EnterOTP, arguments: phone);
               }
             },
-          ))
+          )),
+          SizedBox(
+            height: size.height * 0.04,
+          ),
         ],
       ),
     );

@@ -5,12 +5,12 @@ class NumericPad extends StatelessWidget {
 
   final Function(int) onNumberSelected;
 
-  NumericPad({required this.onNumberSelected});
+  const NumericPad({Key? key, required this.onNumberSelected}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-       decoration: BoxDecoration(
+       decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),                   
@@ -22,8 +22,8 @@ class NumericPad extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
 
-          Container(
-            height: MediaQuery.of(context).size.height * 0.11,
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,8 +35,8 @@ class NumericPad extends StatelessWidget {
             ),
           ),
 
-          Container(
-            height: MediaQuery.of(context).size.height * 0.11,
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,8 +48,8 @@ class NumericPad extends StatelessWidget {
             ),
           ),
 
-          Container(
-            height: MediaQuery.of(context).size.height * 0.11,
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,8 +61,8 @@ class NumericPad extends StatelessWidget {
             ),
           ),
 
-          Container(
-            height: MediaQuery.of(context).size.height * 0.11,
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,7 +88,7 @@ class NumericPad extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: primaryColor,
               borderRadius: BorderRadius.all(
                 Radius.circular(15),
@@ -97,7 +97,7 @@ class NumericPad extends StatelessWidget {
             child: Center(
               child: Text(
                 number.toString(),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: textLight,

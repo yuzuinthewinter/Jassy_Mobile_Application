@@ -10,7 +10,6 @@ import 'package:flutter_application_1/theme/index.dart';
 // NOTE: chat card in all chat page show name lastest message and unread notification
 // TODO: map profile image, name and lastest message here
 class ChatCard extends StatelessWidget {
-
   final ChatMessage chat;
   // final VoidCallback press;
 
@@ -24,12 +23,12 @@ class ChatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-          CupertinoPageRoute(builder: (context) {
-            // NOTE: click each card to go to chat room
-            return ChatRoom(user: chat.sender,);
-          })
-        );
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          // NOTE: click each card to go to chat room
+          return ChatRoom(
+            user: chat.sender,
+          );
+        }));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -41,33 +40,37 @@ class ChatCard extends StatelessWidget {
                   backgroundImage: AssetImage(chat.sender.image),
                   radius: 33,
                 ),
-                if (chat.sender.isActive) Positioned(
-                  right: 3,
-                  bottom: 3,
-                  child: Container(
-                    height: 16,
-                    width: 16,
-                    decoration: BoxDecoration(
-                      color: onlineColor,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Theme.of(context).scaffoldBackgroundColor
-                      )
+                if (chat.sender.isActive)
+                  Positioned(
+                    right: 3,
+                    bottom: 3,
+                    child: Container(
+                      height: 16,
+                      width: 16,
+                      decoration: BoxDecoration(
+                          color: onlineColor,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              color:
+                                  Theme.of(context).scaffoldBackgroundColor)),
                     ),
                   ),
-                ),
               ],
             ),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HeaderText(text: chat.sender.name),
-                  DescriptionText(text: chat.lastMessage,)
-                ],
-              )
-            ),
-          Text(chat.time, style: TextStyle(fontSize: 12, color: greyDark),)
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HeaderText(text: chat.sender.name[0]),
+                DescriptionText(
+                  text: chat.lastMessage,
+                )
+              ],
+            )),
+            Text(
+              chat.time,
+              style: TextStyle(fontSize: 12, color: greyDark),
+            )
           ],
         ),
       ),

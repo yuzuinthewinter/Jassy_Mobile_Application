@@ -7,7 +7,7 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       extendBodyBehindAppBar: true,
       appBar: ChatSelectedAppBar(text: "สนทนา",),
       body: ChatScreenBody(),

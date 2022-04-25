@@ -8,14 +8,14 @@ class IconButtonComponent extends StatelessWidget {
   final Color color, textColor;
   final VoidCallback press;
   final SvgPicture iconPicture;
-   
+
   const IconButtonComponent({
-    Key? key, 
-    required this.text, 
-    required this.minimumSize, 
-    this.color = primaryColor, 
-    this.textColor = textLight, 
-    required this.press, 
+    Key? key,
+    required this.text,
+    required this.minimumSize,
+    this.color = primaryColor,
+    this.textColor = textLight,
+    required this.press,
     required this.iconPicture,
   }) : super(key: key);
 
@@ -24,17 +24,17 @@ class IconButtonComponent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(7.0),
       child: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            primary: color,
-            onPrimary: textColor,
-            minimumSize: minimumSize,
-            shape: const StadiumBorder(),
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(horizontal: 20 , vertical: 12),
-          ),
-          onPressed: press, 
-          icon: iconPicture, 
-          label: Text(text),
+        style: ElevatedButton.styleFrom(
+          primary: color,
+          onPrimary: textColor,
+          minimumSize: minimumSize,
+          shape: const StadiumBorder(),
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        ),
+        onPressed: press,
+        icon: iconPicture,
+        label: Text(text),
       ),
     );
   }
