@@ -4,14 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/chat/chat_screen.dart';
-<<<<<<< HEAD:frontend/lib/screens/jassy_home/main.dart
-import 'package:flutter_application_1/screens/jassy_home/home_screen.dart';
+import 'package:flutter_application_1/screens/jassy_home/likes.dart';
 import 'package:flutter_application_1/screens/jassy_home/profile_screen.dart';
-=======
-import 'package:flutter_application_1/screens/jassy_home/component/home_body.dart';
 import 'package:flutter_application_1/screens/main/jassy_main.dart';
-import 'package:flutter_application_1/screens/profile/profile_screen.dart';
->>>>>>> cced6ecab9504aa2bcb7173890602b33e1ba4e48:frontend/lib/screens/jassy_home/home.dart
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -59,7 +54,7 @@ class _JassyHomeState extends State<JassyHome> {
   final screens = [
     
     const JassyMain(),
-    const HomeScreen(),//likes page
+    const LikeScreen(),//likes page
     const Center(
       child: Text('community'),
     ),

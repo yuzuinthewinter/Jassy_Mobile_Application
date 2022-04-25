@@ -39,8 +39,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              }
-              var user = snapshot.data!.docs;
+              }var user = snapshot.data!.docs;
               if (user.isEmpty) {
                 return const Text('Please field your infomation!');
               }
