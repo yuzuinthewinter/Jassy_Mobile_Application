@@ -126,7 +126,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                       SizedBox(width: size.width * 0.03,),
                       Text("ออกจากระบบ", style: TextStyle(color: textMadatory),),
                       Spacer(),
-                      Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
+                      // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
                     ],
                   ),
                   onTap: () async {
