@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/component/text/text_field_label.dart';
@@ -74,6 +75,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
             child: TabBarView(
               controller: tabController,
               children: [
+                // Profile Tab information
                 SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,13 +214,22 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                     ],
                   ),
                 ),
+                // Language Tab information
                 Column(
                   children: [],
                 ),
               ]
             ),
           ),
-        )
+        ),
+        Center(
+          child: RoundButton(
+          text: "บันทึกการเปลี่ยนแปลง", 
+          minimumSize: Size(size.width * 0.8, size.height * 0.05), 
+          press: () {}
+          ),
+        ),
+        SizedBox(height: size.height * 0.02,)
       ],
     );
   }
