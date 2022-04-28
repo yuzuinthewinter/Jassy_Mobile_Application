@@ -12,6 +12,7 @@ import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class Body extends StatefulWidget {
@@ -27,7 +28,7 @@ class _BodyState extends State<Body> {
 
   // state of data's user
   final List<String> role = ["User", "Premium", "Admin"];
-  final List<String> _choicesLists = ["ชาย", "หญิง", "LGBTQ+"];
+  final List<String> _choicesLists = ["Male".tr, "Female".tr, "LGBTQ+".tr];
   NameType name = NameType();
   InfoType userInfo = InfoType();
   TextEditingController lastnameController = TextEditingController();

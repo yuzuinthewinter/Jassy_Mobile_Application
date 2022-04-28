@@ -35,6 +35,10 @@ class LocaleString extends Translations {
           //Popup
           "RegisterSuccess": "Success",
           "NextButton": "Next",
+          //Genre
+          "Male" : "Male",
+          "Female" : "Female",
+          "LGBTQ+" : "LGBTQ+",
         },
         'th_TH': {
           // Conjunction
@@ -66,6 +70,10 @@ class LocaleString extends Translations {
           //Popup
           "RegisterSuccess": "ลงทะเบียนสำเร็จ",
           "NextButton": "ต่อไป",
+          //Genre
+          "Male" : "ชาย",
+          "Female" : "หญิง",
+          "LGBTQ+" : "LGBTQ+",
         },
       };
 }
