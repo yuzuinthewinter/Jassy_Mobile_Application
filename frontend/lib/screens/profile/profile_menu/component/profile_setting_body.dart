@@ -107,7 +107,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                                   readOnly: true,
                                   decoration: InputDecoration(
                                       hintText: user[0]['name']['firstname'].toString() + ' ' + user[0]['name']['lastname'].toString(),
-                                      fillColor: textLight,
+                                      fillColor: grey,
                                       filled: true,
                                       contentPadding: const EdgeInsets.symmetric(
                                           vertical: 15.0, horizontal: 10.0),
@@ -130,7 +130,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                                   readOnly: true,
                                   decoration: InputDecoration(
                                       hintText: user[0]['birthDate'].toString(),
-                                      fillColor: textLight,
+                                      fillColor: grey,
                                       filled: true,
                                       contentPadding: const EdgeInsets.symmetric(
                                           vertical: 15.0, horizontal: 10.0),
