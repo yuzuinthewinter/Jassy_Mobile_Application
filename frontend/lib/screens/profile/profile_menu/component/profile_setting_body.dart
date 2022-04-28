@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
@@ -27,6 +28,23 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
   // state of data's user
   final List<String> _choicesLists = ["Male".tr, "Female".tr, "LGBTQ+".tr];
 
+  LanguageType language = LanguageType();
+  late FixedExtentScrollController countryScrollController;
+  late FixedExtentScrollController defaultScrollController;
+  late FixedExtentScrollController defaultLevelScrollController;
+  late FixedExtentScrollController interestScrollController;
+  late FixedExtentScrollController interestLevelScrollController;
+
+  final languageLevelItems = ['Beginner', 'Intermediate', 'Advance'];
+  final languageItems = ['Thai', 'Korean', 'Indonsian'];
+
+  int countryIndex = 0;
+  int defaultIndex = 0;
+  int defaultLevelIndex = 0;
+  int interestIndex = 0;
+  int interestLevelIndex = 0;
+
+
   void onTabChange() {
     setState(() {
       currentTabIndex = tabController.index;
@@ -43,6 +61,17 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
     tabController.addListener(() {
       onTabChange();
     });
+  
+    countryScrollController =
+        FixedExtentScrollController(initialItem: countryIndex);
+    defaultScrollController =
+        FixedExtentScrollController(initialItem: defaultIndex);
+    defaultLevelScrollController =
+        FixedExtentScrollController(initialItem: defaultLevelIndex);
+    interestScrollController =
+        FixedExtentScrollController(initialItem: interestIndex);
+    interestLevelScrollController =
+        FixedExtentScrollController(initialItem: interestLevelIndex);
     super.initState();
   }
 
@@ -53,6 +82,12 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
     });
 
     tabController.dispose();
+
+    countryScrollController.dispose();
+    defaultScrollController.dispose();
+    defaultLevelScrollController.dispose();
+    interestScrollController.dispose();
+    interestLevelScrollController.dispose();
 
     super.dispose();
   }
@@ -215,13 +250,223 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                   ),
                 ),
                 // Language Tab information
-                Column(
-                  children: [],
-                ),
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Users')
+                      .where('uid', isEqualTo: currentUser!.uid)
+                      .snapshots(includeMetadataChanges: true),
+                  builder: (context, snapshot) {
+                            
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                      );
+                    }
+                    var user = snapshot.data!.docs;
+                    if (user.isEmpty) {
+                      return const Text('Please field your infomation!');
+                    }
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const TextFieldLabel(textLabel: "คุณเป็นคนประเทศ"),
+                          TextFormField(
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                hintText: user[0]['country'].toString(),
+                                fillColor: textLight,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                    borderSide: const BorderSide(
+                                        color: textLight, width: 0.0)),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40.0),
+                                  borderSide: const BorderSide(color: textLight),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40.0),
+                                  borderSide: const BorderSide(color: textLight),
+                                ),
+                              ),
+                              onSaved: (String? country) {
+                                userInfo.country = languageItems[countryIndex];
+                              }),
+                          const TextFieldLabel(textLabel: "ภาษาแม่"),
+                          TextFormField(
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              hintText: user[0]['language']['defaltLanguage'].toString(),
+                              fillColor: textLight,
+                              filled: true,
+                              suffixIcon: const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                  borderSide:
+                                      const BorderSide(color: textLight, width: 0.0)),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                            ),
+                            onSaved: (String? defaultLanguage) {
+                              language.defaultLanguage = languageItems[defaultIndex];
+                            },
+                          ),
+                          const TextFieldLabel(textLabel: "ระดับภาษาแม่"),
+                          TextFormField(
+                            readOnly: true,
+                            onTap: () {
+                              defaultLevelScrollController.dispose;
+                              defaultLevelScrollController =
+                                  FixedExtentScrollController(
+                                      initialItem: defaultLevelIndex);
+                              showCupertinoModalPopup(
+                                  context: context,
+                                  builder: (context) {
+                                    return CupertinoActionSheet(
+                                      actions: [defaultLanguageLevelPicker()],
+                                    );
+                                  });
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              hintText: user[0]['language']['levelDefaltLanguage'].toString(),
+                              fillColor: textLight,
+                              filled: true,
+                              suffixIcon: const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                  borderSide:
+                                      const BorderSide(color: textLight, width: 0.0)),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                            ),
+                            onSaved: (String? defaultLevel) {
+                              language.levelDefaultLanguage =
+                                  languageLevelItems[defaultLevelIndex];
+                            },
+                          ),
+                          const TextFieldLabel(textLabel: "ภาษาที่สนใจ"),
+                          TextFormField(
+                            readOnly: true,
+                            onTap: () {
+                              interestScrollController.dispose;
+                              interestScrollController = FixedExtentScrollController(
+                                  initialItem: interestIndex);
+                              showCupertinoModalPopup(
+                                  context: context,
+                                  builder: (context) {
+                                    return CupertinoActionSheet(
+                                      actions: [interestLanguagePicker()],
+                                    );
+                                  });
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              labelText: languageItems[interestIndex],
+                              fillColor: textLight,
+                              filled: true,
+                              suffixIcon: const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                  borderSide:
+                                      const BorderSide(color: textLight, width: 0.0)),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                            ),
+                            onSaved: (String? interestLanguage) {
+                              language.interestedLanguage =
+                                  languageItems[interestIndex];
+                            },
+                          ),
+                          const TextFieldLabel(textLabel: "ระดับภาษาที่สนใจ"),
+                          TextFormField(
+                            readOnly: true,
+                            onTap: () {
+                              interestLevelScrollController.dispose;
+                              interestLevelScrollController =
+                                  FixedExtentScrollController(
+                                      initialItem: interestLevelIndex);
+                              showCupertinoModalPopup(
+                                  context: context,
+                                  builder: (context) {
+                                    return CupertinoActionSheet(
+                                      actions: [interestLevelLanguagePicker()],
+                                    );
+                                  });
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              labelText: languageLevelItems[interestLevelIndex],
+                              fillColor: textLight,
+                              filled: true,
+                              suffixIcon: const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                  borderSide:
+                                      const BorderSide(color: textLight, width: 0.0)),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                                borderSide: const BorderSide(color: textLight),
+                              ),
+                            ),
+                            onSaved: (String? interestLevel) {
+                              language.levelInterestedLanguage =
+                                  languageLevelItems[interestLevelIndex];
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                })
               ]
             ),
           ),
         ),
+        SizedBox(height: size.height * 0.015,),
         Center(
           child: RoundButton(
           text: "บันทึกการเปลี่ยนแปลง", 
@@ -233,4 +478,150 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
       ],
     );
   }
+
+  Widget countryalityPicker() {
+    return Center(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 150,
+            child: CupertinoPicker(
+              scrollController: countryScrollController,
+              itemExtent: 40,
+              children: languageItems
+                  .map((item) => Center(
+                        child: Text(
+                          item,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ))
+                  .toList(),
+              onSelectedItemChanged: (value) {
+                setState(() {
+                  countryIndex = value;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget defaultLanguagePicker() {
+    return Center(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 150,
+            child: CupertinoPicker(
+              scrollController: defaultScrollController,
+              itemExtent: 40,
+              children: languageItems
+                  .map((item) => Center(
+                        child: Text(
+                          item,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ))
+                  .toList(),
+              onSelectedItemChanged: (value) {
+                setState(() {
+                  defaultIndex = value;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget defaultLanguageLevelPicker() {
+    return Center(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 150,
+            child: CupertinoPicker(
+              scrollController: defaultLevelScrollController,
+              itemExtent: 40,
+              children: languageLevelItems
+                  .map((item) => Center(
+                        child: Text(
+                          item,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ))
+                  .toList(),
+              onSelectedItemChanged: (value) {
+                setState(() {
+                  defaultLevelIndex = value;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget interestLanguagePicker() {
+    return Center(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 150,
+            child: CupertinoPicker(
+              scrollController: interestScrollController,
+              itemExtent: 40,
+              children: languageItems
+                  .map((item) => Center(
+                        child: Text(
+                          item,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ))
+                  .toList(),
+              onSelectedItemChanged: (value) {
+                setState(() {
+                  interestIndex = value;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget interestLevelLanguagePicker() {
+    return Center(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 150,
+            child: CupertinoPicker(
+              scrollController: interestLevelScrollController,
+              itemExtent: 40,
+              children: languageLevelItems
+                  .map((item) => Center(
+                        child: Text(
+                          item,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ))
+                  .toList(),
+              onSelectedItemChanged: (value) {
+                setState(() {
+                  interestLevelIndex = value;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 }
