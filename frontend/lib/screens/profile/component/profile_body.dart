@@ -26,7 +26,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
         StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('Users')
-                .where('uid', isNotEqualTo: currentUser!.uid)
+                .where('uid', isEqualTo: currentUser!.uid)
                 .snapshots(includeMetadataChanges: true),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
@@ -58,7 +58,6 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                   ),
                 ],
               );
-              //
             }),
         SizedBox(
           height: size.height * 0.03,
