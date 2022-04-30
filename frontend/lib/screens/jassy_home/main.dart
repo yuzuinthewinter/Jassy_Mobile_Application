@@ -5,8 +5,8 @@ import 'package:flutter_application_1/component/popup_page/successWithButton.dar
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/chat/chat_screen.dart';
 import 'package:flutter_application_1/screens/jassy_home/likes.dart';
-import 'package:flutter_application_1/screens/jassy_home/profile_screen.dart';
 import 'package:flutter_application_1/screens/main/jassy_main.dart';
+import 'package:flutter_application_1/screens/profile/profile.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
