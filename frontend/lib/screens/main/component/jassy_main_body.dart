@@ -48,9 +48,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
     removeUserafterLike();
   }
 
-  removeUserafterLike() {
-    
-  }
+  removeUserafterLike() {}
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +89,15 @@ class _JassyMainBodyState extends State<JassyMainBody> {
   }
 
   Widget carouselView(user, int index) {
+    // return StreamBuilder<QuerySnapshot>(
+    //     stream: FirebaseFirestore.instance
+    //         .collection('Users')
+    //         .where('liked', isNotEqualTo: currentUser!.uid)
+    //         .snapshots(includeMetadataChanges: true),
+    //     builder: (context, snapshot) {
+    //TODO: remove user from liked
     return carouselCard(user[index]);
+    // });
   }
 
   // Widget carouselCard(MainUser data) {
@@ -136,9 +142,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                 child: Align(
                     alignment: Alignment.topRight,
                     child: InkWell(
-                        onTap: () {
-                          
-                        },
+                        onTap: () {},
                         child: SvgPicture.asset(
                             "assets/icons/close_circle.svg")))),
             Column(
@@ -193,14 +197,18 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                       fontFamily: "kanit",
                                       fontWeight: FontWeight.w700),
                                   children: [
-                                    TextSpan(text: user['language']['defaultLanguage']),
+                                    TextSpan(
+                                        text: user['language']
+                                            ['defaultLanguage']),
                                     WidgetSpan(
                                         child: Icon(
                                       Icons.sync_alt,
                                       size: 20,
                                       color: textLight,
                                     )),
-                                    TextSpan(text: user['language']['interestedLanguage']),
+                                    TextSpan(
+                                        text: user['language']
+                                            ['interestedLanguage']),
                                   ]),
                             ),
                           ],
