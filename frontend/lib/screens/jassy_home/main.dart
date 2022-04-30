@@ -31,7 +31,7 @@ class _JassyHomeState extends State<JassyHome> {
           .collection('Users')
           .get()
           .then((querySnapshot) {
-        querySnapshot.docs.forEach((result) {
+        for (var result in querySnapshot.docs) {
           if (currentUser == result.get('uid')) {
             Navigator.push(
                 context,
@@ -42,7 +42,7 @@ class _JassyHomeState extends State<JassyHome> {
           } else {
             Navigator.pushNamed(context, Routes.JassyHome);
           }
-        });
+        }
       });
     } else {
       Navigator.pushNamed(context, Routes.JassyHome);

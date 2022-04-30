@@ -24,31 +24,11 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
     return Column(
       children: [
         StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('Users')
-              .where('uid', isNotEqualTo: currentUser!.uid)
-              .snapshots(includeMetadataChanges: true),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Text('Something went wrong');
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            var user = snapshot.data!.docs[0];
-            return ProfilePictureWidget(size: size, user: user);
-          }
-        ),
-        SizedBox(height: size.height *0.01,),
-        StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('Users')
                 .where('uid', isEqualTo: currentUser!.uid)
                 .snapshots(includeMetadataChanges: true),
             builder: (context, snapshot) {
-              
               if (snapshot.hasError) {
                 return const Text('Something went wrong');
               }
@@ -57,26 +37,38 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                   child: CircularProgressIndicator(),
                 );
               }
-              var user = snapshot.data!.docs;
-              if (user.isEmpty) {
-                return const Text('Please field your infomation!');
-              }
-              return Text(
-                user[0]['name']['firstname'].toString() + ' ' + user[0]['name']['lastname'].toString(),
-                style: const TextStyle(fontSize: 20, fontFamily: 'kanit', fontWeight: FontWeight.w600),
+              var user = snapshot.data!.docs[0];
+              return Column(
+                children: [
+                  ProfilePictureWidget(size: size, user: user),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  Text(
+                    user['name']['firstname'].toString() +
+                        ' ' +
+                        user['name']['lastname'].toString(),
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'kanit',
+                        fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                ],
               );
-            },
+            }),
+        SizedBox(
+          height: size.height * 0.03,
         ),
-        SizedBox(height: size.height *0.03,),
         Container(
           margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
           padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
           width: size.width,
           height: size.height * 0.21,
           decoration: BoxDecoration(
-            color: textLight,
-            borderRadius: BorderRadius.circular(20)
-          ),
+              color: textLight, borderRadius: BorderRadius.circular(20)),
           child: Column(
             children: [
               ProfileMenu(
@@ -100,44 +92,46 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
             ],
           ),
         ),
-        SizedBox(height: size.height *0.03,),
+        SizedBox(
+          height: size.height * 0.03,
+        ),
         Container(
           margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
           padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
           width: size.width,
           height: size.height * 0.15,
           decoration: BoxDecoration(
-            color: textLight,
-            borderRadius: BorderRadius.circular(20)
-          ),
-          child: Column(
-            children: [
-              ProfileMenu(
-                size: size,
-                icon: SvgPicture.asset("assets/icons/about_jassy_icon.svg"),
-                text: "เกี่ยวกับแจสซี่",
-                onTab: () {},
-              ),
-              Expanded(
+              color: textLight, borderRadius: BorderRadius.circular(20)),
+          child: Column(children: [
+            ProfileMenu(
+              size: size,
+              icon: SvgPicture.asset("assets/icons/about_jassy_icon.svg"),
+              text: "เกี่ยวกับแจสซี่",
+              onTab: () {},
+            ),
+            Expanded(
                 child: InkWell(
-                  child: Row(
-                    children: [
-                      SvgPicture.asset("assets/icons/log_out_icon.svg"),
-                      SizedBox(width: size.width * 0.03,),
-                      Text("ออกจากระบบ", style: TextStyle(color: textMadatory),),
-                      Spacer(),
-                      // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
-                    ],
+              child: Row(
+                children: [
+                  SvgPicture.asset("assets/icons/log_out_icon.svg"),
+                  SizedBox(
+                    width: size.width * 0.03,
                   ),
-                  onTap: () async {
-                    final FirebaseAuth _auth = FirebaseAuth.instance;
-                    await _auth.signOut();
-                    Navigator.pushNamed(context, Routes.LandingPage);
-                  },
-                )
-              )
-            ]
-          ),
+                  Text(
+                    "ออกจากระบบ",
+                    style: TextStyle(color: textMadatory),
+                  ),
+                  Spacer(),
+                  // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
+                ],
+              ),
+              onTap: () async {
+                final FirebaseAuth _auth = FirebaseAuth.instance;
+                await _auth.signOut();
+                Navigator.pushNamed(context, Routes.LandingPage);
+              },
+            ))
+          ]),
         )
       ],
     );
