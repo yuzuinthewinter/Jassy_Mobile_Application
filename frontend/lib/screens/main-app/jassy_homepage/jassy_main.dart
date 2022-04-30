@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/appbar/main_appbar.dart';
-import 'package:flutter_application_1/screens/main-app/main/component/jassy_main_body.dart';
+import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/jassy_main_body.dart';
 
 class JassyMain extends StatelessWidget {
   const JassyMain({ Key? key }) : super(key: key);

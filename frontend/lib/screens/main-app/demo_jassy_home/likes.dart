@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/appbar/chat_selected_appbar.dart';
-import 'package:flutter_application_1/screens/main-app/jassy_home/component/likes_screen_body.dart';
+import 'package:flutter_application_1/screens/main-app/demo_jassy_home/component/likes_screen_body.dart';
 
 class LikeScreen extends StatelessWidget {
   const LikeScreen({Key? key}) : super(key: key);

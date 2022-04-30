@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/user.dart';
-import 'package:flutter_application_1/screens/main-app/main/component/desc_tabbar.dart';
+import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/desc_tabbar.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intervalprogressbar/intervalprogressbar.dart';
