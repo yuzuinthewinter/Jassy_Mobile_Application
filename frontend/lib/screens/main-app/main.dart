@@ -22,32 +22,6 @@ class _JassyHomeState extends State<JassyHome> {
   bool isLoading = false;
 
   var currentUser = FirebaseAuth.instance.currentUser;
-  void checkCurrentUser() async {
-    //TODO: get currentuser check in users collecction in uid field
-    // that user profile exist
-    CollectionReference users = FirebaseFirestore.instance.collection('Users');
-    if (currentUser != null) {
-      FirebaseFirestore.instance
-          .collection('Users')
-          .get()
-          .then((querySnapshot) {
-        for (var result in querySnapshot.docs) {
-          if (currentUser == result.get('uid')) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SuccessPage('RegisterSuccess'),
-                ));
-                
-          } else {
-            Navigator.pushNamed(context, Routes.JassyHome);
-          }
-        }
-      });
-    } else {
-      Navigator.pushNamed(context, Routes.JassyHome);
-    }
-  }
 
   int _currentIndex = 3;
 

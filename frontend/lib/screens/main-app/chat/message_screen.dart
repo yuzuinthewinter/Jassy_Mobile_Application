@@ -7,15 +7,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 enum MenuItem { item1, item2, item3 }
 
 class ChatRoom extends StatefulWidget {
+  // ignore: prefer_typing_uninitialized_variables
+  final chatid;
+  final user;
+
   const ChatRoom({
     Key? key,
+    required this.chatid,
     required this.user,
   }) : super(key: key);
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
-  // ignore: prefer_typing_uninitialized_variables
-  final user;
 }
 
 class _ChatRoomState extends State<ChatRoom> {
@@ -115,6 +118,7 @@ class _ChatRoomState extends State<ChatRoom> {
       ),
       body: MessageScreenBody(
         user: widget.user,
+        chatid: widget.chatid,
       ),
     );
   }
