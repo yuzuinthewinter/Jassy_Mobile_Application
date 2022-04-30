@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/routes.dart';
-import 'package:flutter_application_1/screens/register/register_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 class NoAccountRegister extends StatelessWidget {
