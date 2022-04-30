@@ -6,6 +6,7 @@ import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/screens/main-app/chat/message_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:intl/intl.dart';
 
 // NOTE: chat card in all chat page show name lastest message and unread notification
 // TODO: map profile image, name and lastest message here
@@ -62,6 +63,9 @@ class _ChatCardBody extends State<ChatCard> {
                     );
                   }
                   var data = snapshot.data!.docs;
+                  int ts = chat['lastTimestamp'].millisecondsSinceEpoch;
+                  DateTime tsdate = DateTime.fromMicrosecondsSinceEpoch(ts);
+                  String formatTime = DateFormat.jm().format(tsdate);
                   for (var user in data) {
                     return InkWell(
                       onTap: () {
@@ -119,11 +123,11 @@ class _ChatCardBody extends State<ChatCard> {
                                 )
                               ],
                             )),
-                            // Text(
-                            //   chat['lastTimestamp'].toString(),
-                            //   style:
-                            //       const TextStyle(fontSize: 12, color: greyDark),
-                            // )
+                            Text(
+                              formatTime,
+                              style: const TextStyle(
+                                  fontSize: 12, color: greyDark),
+                            )
                           ],
                         ),
                       ),
