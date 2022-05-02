@@ -35,6 +35,10 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
   late FixedExtentScrollController interestScrollController;
   late FixedExtentScrollController interestLevelScrollController;
 
+  bool isLevelDefaultLanguageClick = false;
+  bool isInterestLanguageClick = false;
+  bool isLevelInterestLanguageClick = false;
+
   final languageLevelItems = ['Beginner', 'Intermediate', 'Advance'];
   final languageItems = ['Thai', 'Korean', 'Indonsian'];
 
@@ -292,7 +296,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                                 contentPadding: const EdgeInsets.symmetric(
                                     vertical: 15.0, horizontal: 10.0),
                                 hintText: user[0]['country'].toString(),
-                                fillColor: textLight,
+                                fillColor: grey,
                                 filled: true,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(40),
@@ -316,13 +320,9 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
-                              hintText: user[0]['language']['defaltLanguage'].toString(),
-                              fillColor: textLight,
+                              hintText: user[0]['language']['defaultLanguage'].toString(),
+                              fillColor: grey,
                               filled: true,
-                              suffixIcon: const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 20,
-                              ),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40),
                                   borderSide:
@@ -344,6 +344,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                           TextFormField(
                             readOnly: true,
                             onTap: () {
+                              isLevelDefaultLanguageClick = true;
                               defaultLevelScrollController.dispose;
                               defaultLevelScrollController =
                                   FixedExtentScrollController(
@@ -359,12 +360,13 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
-                              hintText: user[0]['language']['levelDefaltLanguage'].toString(),
+                              hintText: isLevelDefaultLanguageClick ? languageLevelItems[defaultLevelIndex] : user[0]['language']['levelDefaultLanguage'].toString(),
                               fillColor: textLight,
                               filled: true,
                               suffixIcon: const Icon(
                                 Icons.arrow_forward_ios,
                                 size: 20,
+                                color: primaryColor,
                               ),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40),
@@ -388,6 +390,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                           TextFormField(
                             readOnly: true,
                             onTap: () {
+                              isInterestLanguageClick = true;
                               interestScrollController.dispose;
                               interestScrollController = FixedExtentScrollController(
                                   initialItem: interestIndex);
@@ -402,12 +405,13 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
-                              labelText: languageItems[interestIndex],
+                              hintText: isInterestLanguageClick ? languageItems[interestIndex] : user[0]['language']['interestedLanguage'].toString(),
                               fillColor: textLight,
                               filled: true,
                               suffixIcon: const Icon(
                                 Icons.arrow_forward_ios,
                                 size: 20,
+                                color: primaryColor,
                               ),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40),
@@ -431,6 +435,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                           TextFormField(
                             readOnly: true,
                             onTap: () {
+                              isLevelInterestLanguageClick = true;
                               interestLevelScrollController.dispose;
                               interestLevelScrollController =
                                   FixedExtentScrollController(
@@ -446,12 +451,13 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
-                              labelText: languageLevelItems[interestLevelIndex],
+                              hintText: isLevelInterestLanguageClick ? languageLevelItems[interestLevelIndex] : user[0]['language']['levelInterestedLanguage'].toString(),
                               fillColor: textLight,
                               filled: true,
                               suffixIcon: const Icon(
                                 Icons.arrow_forward_ios,
                                 size: 20,
+                                color: primaryColor,
                               ),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40),
