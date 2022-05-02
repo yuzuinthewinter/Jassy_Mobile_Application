@@ -23,7 +23,7 @@ class _ListUserBody extends State<ListUser> {
 
   getChat(chatid) {
     var getchat = chatRooms.doc(chatid).id.toString();
-    Text(getchat.toString());
+    return Text(chatid + getchat);
   }
 
   @override
@@ -55,13 +55,14 @@ class _ListUserBody extends State<ListUser> {
                       child: InkWell(
                         onTap: () {
                           // createChatRoom();
-                          Navigator.push(context,
-                              CupertinoPageRoute(builder: (context) {
-                            // NOTE: click each card to go to chat room
-                            return ChatRoom(
-                              user: user[index],
-                            );
-                          }));
+                          // Navigator.push(context,
+                          //     CupertinoPageRoute(builder: (context) {
+                          //   // NOTE: click each card to go to chat room
+                          //   return ChatRoom(
+                          //     chatid: '',
+                          //     user: user[index],
+                          //   );
+                          // }));
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
 import 'package:flutter_application_1/screens/main-app/chat/chat_screen.dart';
-import 'package:flutter_application_1/screens/main-app/demo_jassy_home/main.dart';
+import 'package:flutter_application_1/screens/main-app/main.dart';
 import 'package:flutter_application_1/screens/pre-app/landing/landing_page.dart';
 import 'package:flutter_application_1/screens/pre-app/login/login.dart';
 import 'package:flutter_application_1/screens/pre-app/register/create_password.dart';

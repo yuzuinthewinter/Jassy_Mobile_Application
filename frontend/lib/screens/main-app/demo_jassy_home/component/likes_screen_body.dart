@@ -24,22 +24,26 @@ class _LikeScreenBody extends State<LikeScreenBody> {
 
   createChatRoom(String userid) async {
     var chatMember = [userid, currentUser!.uid];
-    var reverse = [currentUser!.uid, userid];
 
-    var queryUser1 = chatRooms.where('member', isEqualTo: chatMember);
-    QuerySnapshot querySnapshot1 = await queryUser1.get();
-    final allData1 = querySnapshot1.docs.map((doc) => doc.data()).toList();
+    var queryChat = chatRooms.where('member', arrayContains: userid);
+    QuerySnapshot querySnapshot = await queryChat.get();
+    // ignore: prefer_typing_uninitialized_variables
+    var getChat;
+    for (var doc in querySnapshot.docs) {
+      var getdata = doc['chatid'];
+      var queryfromUser = users.where('chats', arrayContains: getdata);
+      QuerySnapshot querySnap = await queryfromUser.get();
+      getChat = querySnap.docs;
+    }
+    final allData = getChat.map((doc) => doc.data()).toList();
 
-    var queryUser2 = chatRooms.where('member', isEqualTo: reverse);
-    QuerySnapshot querySnapshot2 = await queryUser2.get();
-    final allData2 = querySnapshot2.docs.map((doc) => doc.data()).toList();
-
-    if (allData1.isEmpty && allData2.isEmpty) {
+    if (allData.isEmpty) {
       DocumentReference docRef = await chatRooms.add({
         'member': chatMember,
         'lastMessageSent': '',
         'lastTimestamp': '',
         'unseenCount': 0,
+        'message': [],
       });
       await chatRooms.doc(docRef.id).update({
         'chatid': docRef.id,
@@ -49,18 +53,18 @@ class _LikeScreenBody extends State<LikeScreenBody> {
           'chats': FieldValue.arrayUnion([docRef.id]),
         });
       }
-    } else {
-      var user = users.where('uid', isEqualTo: userid);
-      var snapshot = await user.get();
-      final data = snapshot.docs[0];
-
-      Navigator.push(context, CupertinoPageRoute(builder: (context) {
-        // NOTE: click each card to go to chat room
-        return ChatRoom(
-          user: data,
-        );
-      }));
     }
+    var user = users.where('uid', isEqualTo: userid);
+    var snapshot = await user.get();
+    final data = snapshot.docs[0];
+
+    Navigator.push(context, CupertinoPageRoute(builder: (context) {
+      // NOTE: click each card to go to chat room
+      return ChatRoom(
+        chatid: '',
+        user: data,
+      );
+    }));
   }
 
   @override

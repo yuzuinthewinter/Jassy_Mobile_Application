@@ -3,30 +3,38 @@ import 'package:flutter_application_1/screens/main-app/chat/component/conversati
 import 'package:flutter_application_1/screens/main-app/chat/component/message_input.dart';
 
 class MessageScreenBody extends StatefulWidget {
-  const MessageScreenBody({ Key? key, required this.user }) : super(key: key);
+  // ignore: prefer_typing_uninitialized_variables
+  final chatid;
+  final user;
+
+  const MessageScreenBody({Key? key, required this.chatid, required this.user})
+      : super(key: key);
 
   @override
   State<MessageScreenBody> createState() => _MessageScreenBodyState();
-  // ignore: prefer_typing_uninitialized_variables
-  final user;
 }
 
 class _MessageScreenBodyState extends State<MessageScreenBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return GestureDetector(
+    return
+        // Text(widget.chatid.toString());
+        GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Column(
-            children: [
-              Expanded(
-                child: ConversationText(user: widget.user,)
-              ),
-              MessageInput(size: size)
-            ],
+        children: [
+          Expanded(
+            child: ConversationText(
+              user: widget.user,
+              chatid: widget.chatid,
+            ),
           ),
+          MessageInput(size: size, chatid: widget.chatid)
+        ],
+      ),
     );
   }
 }
