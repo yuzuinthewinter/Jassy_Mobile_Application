@@ -74,9 +74,10 @@ class AuthGate extends StatelessWidget {
     final data = snapshot.docs[0];
 
     if (data['isAuth'] == true) {
-      Navigator.of(context).pushNamed(Routes.JassyHome);
+      return Navigator.of(context).pushNamed(Routes.JassyHome);
     } else {
-      Navigator.of(context).pushNamed(Routes.RegisterProfile);
+      //TODO: popup to user that register unfinish
+      return Navigator.of(context).pushNamed(Routes.RegisterProfile);
     }
   }
 
@@ -90,7 +91,6 @@ class AuthGate extends StatelessWidget {
         }
         if (snapshot.connectionState == ConnectionState.active) {
           checkUserAuth(context);
-          return const JassyHome();
         }
         return const LandingPage();
       },
