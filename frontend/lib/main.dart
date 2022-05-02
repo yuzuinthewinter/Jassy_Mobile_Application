@@ -3,11 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/constants/translations.dart';
-import 'package:flutter_application_1/screens/jassy_home/main.dart';
+import 'package:flutter_application_1/screens/main-app/main.dart';
+import 'package:flutter_application_1/screens/pre-app/landing/landing_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
-
-import 'screens/landing/landing_page.dart';
 import 'theme/index.dart';
 
 void main() async {
@@ -83,6 +82,8 @@ class AuthGate extends StatelessWidget {
           return const LandingPage();
         }
         if (snapshot.connectionState == ConnectionState.active) {
+          //TODO:check user has data profile and language
+          // return Text(snapshot.connectionState.toString());
           return const JassyHome();
         }
         return const LandingPage();

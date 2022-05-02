@@ -32,6 +32,8 @@ class LocaleString extends Translations {
               "Please enter the OTP you received via your phone number within the time limit.",
           "OtpTimeout": "This OTP will expire in 5 minutes.",
           "OtpResend": "Resend",
+          //Phone Login Page
+          "PhoneLoginPage": "Login with phone number",
           //Popup
           "RegisterSuccess": "Success",
           "NextButton": "Next",
@@ -67,6 +69,8 @@ class LocaleString extends Translations {
               "กรุณาใส่รหัส OTP ที่คุณได้รับผ่านหมายเลขโทรศัพท์ของคุณภายในเวลาที่กำหนด",
           "OtpTimeout": "รหัสนี้จะหมดเวลาภายใน 5 นาที",
           "OtpResend": " ส่งใหม่",
+          //Phone Login Page
+          "PhoneLoginPage": "เข้าสู่ระบบด้วยเบอร์โทรศัพท์",
           //Popup
           "RegisterSuccess": "ลงทะเบียนสำเร็จ",
           "NextButton": "ต่อไป",
