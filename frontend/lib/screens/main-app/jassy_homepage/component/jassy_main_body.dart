@@ -39,15 +39,23 @@ class _JassyMainBodyState extends State<JassyMainBody> {
 
   likeUser(userid) {
     users.doc(currentUser!.uid).update({
-      'liked': FieldValue.arrayUnion([userid]), //like โดย
+      'liked': FieldValue.arrayUnion([userid]), //current user like ใคร
     });
     users.doc(userid).update({
-      'likesby': FieldValue.arrayUnion([currentUser!.uid]), //like โดย
+      'likesby':
+          FieldValue.arrayUnion([currentUser!.uid]), //like โดย current user
     });
     removeUserafterLike();
   }
 
   removeUserafterLike() {}
+  getUser() {
+    // if ()
+    return FirebaseFirestore.instance
+        .collection('Users')
+        .where('uid', isNotEqualTo: currentUser!.uid)
+        .snapshots(includeMetadataChanges: true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +63,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
       children: [
         const CurvedWidget(child: JassyGradientColor()),
         StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('Users')
-              .where('uid', isNotEqualTo: currentUser!.uid)
-              .snapshots(includeMetadataChanges: true),
+          stream: getUser(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Text('Something went wrong');
