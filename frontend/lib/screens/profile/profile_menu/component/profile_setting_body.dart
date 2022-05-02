@@ -109,11 +109,11 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
             if (snapshot.hasError) {
               return const Text('Something went wrong');
             }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+            // if (snapshot.connectionState == ConnectionState.waiting) {
+            //   return const Center(
+            //     child: CircularProgressIndicator(),
+            //   );
+            // }
             var user = snapshot.data!.docs[0];
             return EditProfilePictureWidget(size: size, user: user);
           }
