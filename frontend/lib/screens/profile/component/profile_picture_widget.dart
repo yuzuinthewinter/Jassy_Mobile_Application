@@ -37,21 +37,6 @@ class ProfilePictureWidget extends StatelessWidget {
                 ),
               ),
             ),
-            //Todo move to edit profile
-            // Positioned(
-            //   top: size.height * 0.24,
-            //   right: size.width * 0.34,
-            //   child: Container(
-            //     width: size.width * 0.09,
-            //     height: size.height * 0.09,
-            //     decoration: BoxDecoration(
-            //       color: textLight,
-            //       shape: BoxShape.circle,
-            //       border: Border.all(width: 3, color: primaryLight)
-            //     ),
-            //     child: Icon(Icons.mode_edit_outline_rounded, size: 20, color: primaryLight,)
-            //   )
-            // ),
           ],
         ),
         
