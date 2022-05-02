@@ -28,6 +28,12 @@ class _ChatCardBody extends State<ChatCard> {
   CollectionReference chatRooms =
       FirebaseFirestore.instance.collection('ChatRooms');
 
+  getDate(timestamp) {
+    DateTime datatime = DateTime.parse(timestamp.toDate().toString());
+    String formattedTime = DateFormat('kk:mm:a').format(datatime);
+    return formattedTime.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -63,9 +69,6 @@ class _ChatCardBody extends State<ChatCard> {
                     );
                   }
                   var data = snapshot.data!.docs;
-                  int ts = chat['lastTimestamp'].millisecondsSinceEpoch;
-                  DateTime tsdate = DateTime.fromMicrosecondsSinceEpoch(ts);
-                  String formatTime = DateFormat.jm().format(tsdate);
                   for (var user in data) {
                     return InkWell(
                       onTap: () {
@@ -124,7 +127,8 @@ class _ChatCardBody extends State<ChatCard> {
                               ],
                             )),
                             Text(
-                              formatTime,
+                              // chat['lastTimestamp']
+                              getDate(chat['lastTimestamp']),
                               style: const TextStyle(
                                   fontSize: 12, color: greyDark),
                             )

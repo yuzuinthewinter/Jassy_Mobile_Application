@@ -35,15 +35,20 @@ class _LikeScreenBody extends State<LikeScreenBody> {
       QuerySnapshot querySnap = await queryfromUser.get();
       getChat = querySnap.docs;
     }
-    final allData = getChat.map((doc) => doc.data()).toList();
+    final allData;
+    if (getChat == null) {
+      allData = [];
+    } else {
+      allData = getChat.map((doc) => doc.data()).toList();
+    }
 
     if (allData.isEmpty) {
       DocumentReference docRef = await chatRooms.add({
         'member': chatMember,
         'lastMessageSent': '',
-        'lastTimestamp': '',
+        'lastTimestamp': DateTime.now(),
         'unseenCount': 0,
-        'message': [],
+        'messages': [],
       });
       await chatRooms.doc(docRef.id).update({
         'chatid': docRef.id,
