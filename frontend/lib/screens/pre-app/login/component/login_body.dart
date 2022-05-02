@@ -56,14 +56,17 @@ class _BodyState extends State<Body> {
           facebookLoginResult.accessToken!.token);
       await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
 
-      //TODO: check isAuth in Users database field is true, then show jassy home
-      // var currentUser = FirebaseAuth.instance.currentUser;
+      var currentUser = FirebaseAuth.instance.currentUser;
+      var users = FirebaseFirestore.instance.collection('Users');
+      var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
+      var snapshot = await queryUser.get();
+      final data = snapshot.docs[0];
 
-      // CollectionReference users =
-      //     FirebaseFirestore.instance.collection('Users');
-      // var getUser = users.doc(currentUser!.uid).get();
-
-      Navigator.of(context).pushNamed(Routes.JassyHome);
+      if (data['isAuth'] == true) {
+        Navigator.of(context).pushNamed(Routes.JassyHome);
+      } else {
+        Navigator.of(context).pushNamed(Routes.RegisterProfile);
+      }
     } on FirebaseAuthException catch (e) {
       //TODO: handle failed
     }
@@ -81,13 +84,17 @@ class _BodyState extends State<Body> {
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
 
-      //TODO: check isAuth in Users database field is true, then show jassy home
-      // var currentUser = FirebaseAuth.instance.currentUser;
-      // var users = FirebaseFirestore.instance
-      //     .collection('Users')
-      //     .where('uid', isEqualTo: currentUser!.uid);
+      var currentUser = FirebaseAuth.instance.currentUser;
+      var users = FirebaseFirestore.instance.collection('Users');
+      var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
+      var snapshot = await queryUser.get();
+      final data = snapshot.docs[0];
 
-      Navigator.of(context).pushNamed(Routes.JassyHome);
+      if (data['isAuth'] == true) {
+        Navigator.of(context).pushNamed(Routes.JassyHome);
+      } else {
+        Navigator.of(context).pushNamed(Routes.RegisterProfile);
+      }
     } on FirebaseAuthException catch (e) {
       //TODO: handle failed
     }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -65,13 +66,19 @@ class App extends StatelessWidget {
 class AuthGate extends StatelessWidget {
   const AuthGate({Key? key}) : super(key: key);
 
-  // void updateUserConnected(user, connected) async {
-  //   CollectionReference users = FirebaseFirestore.instance.collection('Users');
+  checkUserAuth(context) async {
+    var currentUser = FirebaseAuth.instance.currentUser;
+    var users = FirebaseFirestore.instance.collection('Users');
+    var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
+    var snapshot = await queryUser.get();
+    final data = snapshot.docs[0];
 
-  //   await users.doc(user!.uid).update({
-  //     'isActive': connected,
-  //   });
-  // }
+    if (data['isAuth'] == true) {
+      Navigator.of(context).pushNamed(Routes.JassyHome);
+    } else {
+      Navigator.of(context).pushNamed(Routes.RegisterProfile);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +89,7 @@ class AuthGate extends StatelessWidget {
           return const LandingPage();
         }
         if (snapshot.connectionState == ConnectionState.active) {
-          //TODO:check user has data profile and language
-          // return Text(snapshot.connectionState.toString());
+          checkUserAuth(context);
           return const JassyHome();
         }
         return const LandingPage();
