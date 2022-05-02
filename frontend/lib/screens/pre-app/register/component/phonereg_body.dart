@@ -64,7 +64,7 @@ class _BodyState extends State<Body> {
               inputFormatters: [LengthLimitingTextInputFormatter(9)],
               decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15.0, horizontal: 10.0),
+                      vertical: 15.0, horizontal: 10.0),
                   // hintText: "869077768",
                   fillColor: textLight,
                   filled: true,
@@ -106,9 +106,11 @@ class _BodyState extends State<Body> {
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
+                print(getCoutryCode);
                 String phone = getCoutryCode + '${phoneNumberController.text}';
                 print(phone);
-                Navigator.pushNamed(context, Routes.EnterOTP, arguments: phone);
+                Navigator.pushNamed(context, Routes.EnterOTP,
+                    arguments: [phone, 'PhoneRegisterPage'.tr]);
               }
             },
           )),

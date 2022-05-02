@@ -29,7 +29,11 @@ class _BodyState extends State<Body> {
     var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
     QuerySnapshot querySnapshot = await queryUser.get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    if (allData.isNotEmpty) {
+
+    var snapshot = await queryUser.get();
+    final data = snapshot.docs[0];
+
+    if (data['isAuth'] == true) {
       Navigator.of(context).pushNamed(Routes.JassyHome);
     } else {
       await users.doc(currentUser.uid).set({
@@ -112,7 +116,10 @@ class _BodyState extends State<Body> {
       var name = currentUser.displayName;
       final splitname = name!.split(' ');
 
-      if (allData.isNotEmpty) {
+      var snapshot = await queryUser.get();
+      final data = snapshot.docs[0];
+
+      if (data['isAuth'] == true) {
         Navigator.of(context).pushNamed(Routes.JassyHome);
       } else {
         await users.doc(currentUser.uid).set({

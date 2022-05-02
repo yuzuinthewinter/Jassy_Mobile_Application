@@ -45,8 +45,8 @@ class RouteGenerator {
       case Routes.PhoneRegister:
         return MaterialPageRoute(builder: (_) => const PhoneRegister());
       case Routes.EnterOTP:
-        var data = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => EnterOTP(data));
+        List<String> data = settings.arguments as List<String>;
+        return MaterialPageRoute(builder: (_) => EnterOTP(data[0], data[1]));
       case Routes.CreatePassword:
         return MaterialPageRoute(builder: (_) => const CreatePassword());
 
