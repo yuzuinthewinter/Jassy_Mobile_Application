@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,8 +33,13 @@ class _BodyState extends State<Body> {
   bool isHiddenPassword = true;
   RegExp regex = RegExp("(?=.*[A-Z])(?=.*[a-z])(?=.*?[!@#\$&*~.]).{8,}");
   TextEditingController passwordController = TextEditingController();
+
   CountryCode? countryCode = CountryCode();
   String getCoutryCode = '';
+
+  void getCountry(CountryCode? countryCode) {
+    getCoutryCode = countryCode.toString();
+  }
 
   @override
   void dispose() {
@@ -169,6 +175,10 @@ class _BodyState extends State<Body> {
                         prefixIcon: CountryCodePicker(
                           initialSelection: "+66",
                           countryFilter: const ["+66", "+62", "+82"],
+                          onInit: getCountry,
+                          onChanged: getCountry,
+                          showDropDownButton: true,
+                          flagWidth: 25,
                         )),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -191,19 +201,13 @@ class _BodyState extends State<Body> {
                 text: "เข้าสู่ระบบ",
                 minimumSize: const Size(339, 36),
                 press: () {
-                  // Todo: ไปหน้า otp ตรงนี้มันน่าจะใช่ร่วมกันได้ลองทำมั่วๆไปมันใช้ไม่ได้
-                  // Todo: ลองใส่พวกcheck current user ใน jassyHome ไปไม่รู้ว่าถูกหรือผิดยังไงมึงลองดูอีกที
-                  // Navigator.pushNamed(
-                  //   context,
-                  //   Routes.JassyHome,
-                  // );
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     String phone =
                         getCoutryCode + '${phoneNumberController.text}';
                     print(phone);
                     Navigator.pushNamed(context, Routes.EnterOTP,
-                        arguments: phone);
+                        arguments: [phone, 'PhoneLoginPage'.tr]);
                   }
                 }),
           ),

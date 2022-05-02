@@ -53,18 +53,21 @@ class _BodyState extends State<Body> {
 
   checkOTP(code) async {
     try {
-      await FirebaseAuth.instance.signInWithCredential(
-          PhoneAuthProvider.credential(
-              verificationId: verificationCode, smsCode: code));
-      var currentUser = FirebaseAuth.instance.currentUser;
+      var _credential = PhoneAuthProvider.credential(
+          verificationId: verificationCode, smsCode: code);
+      await FirebaseAuth.instance.signInWithCredential(_credential);
 
+      var currentUser = FirebaseAuth.instance.currentUser;
       var users = FirebaseFirestore.instance.collection('Users');
       var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
 
       QuerySnapshot querySnapshot = await queryUser.get();
       final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
-      if (allData.isNotEmpty) {
+      var snapshot = await queryUser.get();
+      final data = snapshot.docs[0];
+
+      if (data['isAuth'] == true) {
         Navigator.of(context).pushNamed(Routes.JassyHome);
       } else {
         await users.doc(currentUser.uid).set({
@@ -92,11 +95,12 @@ class _BodyState extends State<Body> {
         Navigator.of(context).pushNamed(Routes.RegisterProfile);
       }
     } catch (e) {
+      print('error');
       // TODO: return invalid popup
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => super.widget),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => super.widget),
+      // );
     }
   }
 
@@ -207,10 +211,9 @@ class _BodyState extends State<Body> {
               if (value != -1) {
                 if (code.length < 6) {
                   code = code + value.toString();
-                  print(code.length);
-                  if (code.length == 6) {
-                    checkOTP(code);
-                  }
+                }
+                if (code.length == 6) {
+                  checkOTP(code);
                 }
               } else {
                 code = code.substring(0, code.length - 1);

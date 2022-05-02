@@ -82,6 +82,8 @@ class AuthGate extends StatelessWidget {
           return const LandingPage();
         }
         if (snapshot.connectionState == ConnectionState.active) {
+          //TODO:check user has data profile and language
+          // return Text(snapshot.connectionState.toString());
           return const JassyHome();
         }
         return const LandingPage();

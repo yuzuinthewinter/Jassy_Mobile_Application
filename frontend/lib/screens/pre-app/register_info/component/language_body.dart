@@ -61,6 +61,7 @@ class _BodyState extends State<Body> {
         'interestedLanguage': language.interestedLanguage,
         'levelInterestedLanguage': language.levelInterestedLanguage,
       },
+      'isAuth': true,
     });
   }
 
