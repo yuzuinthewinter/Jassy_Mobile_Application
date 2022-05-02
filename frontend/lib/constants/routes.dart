@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
-import 'package:flutter_application_1/screens/chat/chat_screen.dart';
-import 'package:flutter_application_1/screens/jassy_home/main.dart';
-import 'package:flutter_application_1/screens/landing/landing_page.dart';
-import 'package:flutter_application_1/screens/login/login.dart';
-import 'package:flutter_application_1/screens/register/create_password.dart';
-import 'package:flutter_application_1/screens/register/enter_otp.dart';
-import 'package:flutter_application_1/screens/register/phone_register.dart';
-import 'package:flutter_application_1/screens/register/register_page.dart';
-import 'package:flutter_application_1/screens/register/register_info/language.dart';
-import 'package:flutter_application_1/screens/register/register_info/profile.dart';
+import 'package:flutter_application_1/screens/main-app/chat/chat_screen.dart';
+import 'package:flutter_application_1/screens/main-app/main.dart';
+import 'package:flutter_application_1/screens/pre-app/landing/landing_page.dart';
+import 'package:flutter_application_1/screens/pre-app/login/login.dart';
+import 'package:flutter_application_1/screens/pre-app/register/create_password.dart';
+import 'package:flutter_application_1/screens/pre-app/register/enter_otp.dart';
+import 'package:flutter_application_1/screens/pre-app/register/phone_register.dart';
+import 'package:flutter_application_1/screens/pre-app/register_info/language.dart';
+import 'package:flutter_application_1/screens/pre-app/register_info/profile.dart';
+import 'package:flutter_application_1/screens/pre-app/register/register_page.dart';
 
 class Routes extends RouteGenerator {
   Routes._();
@@ -45,8 +45,8 @@ class RouteGenerator {
       case Routes.PhoneRegister:
         return MaterialPageRoute(builder: (_) => const PhoneRegister());
       case Routes.EnterOTP:
-        var data = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => EnterOTP(data));
+        List<String> data = settings.arguments as List<String>;
+        return MaterialPageRoute(builder: (_) => EnterOTP(data[0], data[1]));
       case Routes.CreatePassword:
         return MaterialPageRoute(builder: (_) => const CreatePassword());
 
@@ -58,6 +58,7 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => RegisterLanguage(data[0], data[1]));
 
+      //popup
       case Routes.SuccessPage:
         var data = settings.arguments as String;
         return MaterialPageRoute(builder: (_) => SuccessPage(data));

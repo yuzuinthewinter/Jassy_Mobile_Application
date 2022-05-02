@@ -47,6 +47,7 @@ dependencies:
   intervalprogressbar: ^2.0.1
   http: ^0.13.4
   flutter_offline: "^2.1.0"
+  intl: ^0.17.0
 
   # firebase
   firebase_storage: ^10.2.12
