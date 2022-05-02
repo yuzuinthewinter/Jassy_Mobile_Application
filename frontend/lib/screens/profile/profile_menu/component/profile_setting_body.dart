@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
-import 'package:flutter_application_1/component/curved_widget.dart';
-import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/component/text/text_field_label.dart';
 import 'package:flutter_application_1/models/user.dart';
+import 'package:flutter_application_1/screens/profile/component/edit_profile_picture_widget.dart';
 import 'package:flutter_application_1/screens/profile/profile_menu/component/profile_setting_tabbar.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
 
+// Todo: disable gender
 class ProfileSettingBody extends StatefulWidget {
   const ProfileSettingBody({ Key? key }) : super(key: key);
 
@@ -65,9 +65,24 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
     var size = MediaQuery.of(context).size;
     return Column(
       children: [
-        const CurvedWidget(
-          child: JassyGradientColor()
-        ),
+        StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('Users')
+              .where('uid', isNotEqualTo: currentUser!.uid)
+              .snapshots(includeMetadataChanges: true),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            var user = snapshot.data!.docs[0];
+            return EditProfilePictureWidget(size: size, user: user);
+          }
+        ),        
         ProfileSettingTabBar(tabController: tabController),
         Expanded(
           child: Padding(
@@ -165,9 +180,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
                                             setState(() {
                                               _defaultChoiceIndex =
                                                   value ? index : _defaultChoiceIndex;
-                                              if (_defaultChoiceIndex == null) {
-                                                _defaultChoiceIndex = 0;
-                                              }
+                                              _defaultChoiceIndex;
                                               userInfo.genre =
                                                   _choicesLists[_defaultChoiceIndex];
                                             });
