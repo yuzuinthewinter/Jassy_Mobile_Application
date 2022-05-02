@@ -39,11 +39,6 @@ class _BodyState extends State<ConversationText> {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
         }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: Text(' '),
-          );
-        }
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -76,11 +71,6 @@ class _BodyState extends State<ConversationText> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: Text(' '),
-          );
         }
         if (snapshot.data!.docs[0]['message'] == null) {
           return const Center(child: Text(' '));

@@ -121,11 +121,6 @@ class _LikeScreenBody extends State<LikeScreenBody> {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
         }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
         var user = snapshot.data!.docs[0];
         return SizedBox(
           child: InkWell(
