@@ -63,7 +63,7 @@ class _AppSettingBodyState extends State<AppSettingBody> {
   }
 
   Widget buildOnlineSwitch() => Transform.scale(
-    scale: 1.0,
+    scale: 0.9,
     child: CupertinoSwitch(
       activeColor: primaryColor,
       value: online,
@@ -72,7 +72,7 @@ class _AppSettingBodyState extends State<AppSettingBody> {
   );
 
   Widget buildNotificationSwitch() => Transform.scale(
-    scale: 1.0,
+    scale: 0.9,
     child: CupertinoSwitch(
       activeColor: primaryColor,
       value: notification,
