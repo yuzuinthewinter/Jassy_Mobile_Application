@@ -25,37 +25,18 @@ class ProfilePictureWidget extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: Container(
                 margin: EdgeInsets.only(top: size.height * 0.17),
-                height: size.width * 0.3,
-                width: size.height * 0.3,
-                decoration:  BoxDecoration(
-                  color: textLight,
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(width: 3, color: primaryLighter),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: !user['profilePic'].isEmpty 
+                ),
+                child: CircleAvatar(
+                  backgroundImage: !user['profilePic'].isEmpty
                     ? NetworkImage(user['profilePic'][0])
-                    : const AssetImage("assets/images/header_img1.png")
-                        as ImageProvider,
-                  )
+                    : const AssetImage("assets/images/user3.jpg")as ImageProvider,
+                  radius: 60,
                 ),
               ),
             ),
-            //Todo move to edit profile
-            // Positioned(
-            //   top: size.height * 0.24,
-            //   right: size.width * 0.34,
-            //   child: Container(
-            //     width: size.width * 0.09,
-            //     height: size.height * 0.09,
-            //     decoration: BoxDecoration(
-            //       color: textLight,
-            //       shape: BoxShape.circle,
-            //       border: Border.all(width: 3, color: primaryLight)
-            //     ),
-            //     child: Icon(Icons.mode_edit_outline_rounded, size: 20, color: primaryLight,)
-            //   )
-            // ),
           ],
         ),
         

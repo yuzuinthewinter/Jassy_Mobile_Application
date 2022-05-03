@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/screens/profile/profile_menu/profile_setting.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_picture_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -75,7 +77,11 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                 size: size,
                 icon: SvgPicture.asset("assets/icons/profile_icon.svg"),
                 text: "ตั้งค่าโพรไฟล์",
-                onTab: () {},
+                onTab: () {
+                  Navigator.push(
+                    context, CupertinoPageRoute(builder: (context) { return ProfileSetting(); })
+                  );
+                },
               ),
               ProfileMenu(
                 size: size,
