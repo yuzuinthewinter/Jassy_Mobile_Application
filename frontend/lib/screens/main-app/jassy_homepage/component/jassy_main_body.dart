@@ -182,18 +182,18 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                   children: [
                                     TextSpan(text: user['name']['firstname']),
                                     const TextSpan(text: ", "),
-                                    TextSpan(text: user['birthDate']),
+                                    TextSpan(text: calculateAge(DateTime.parse(user['birthDate'].toString())).toString()),
                                   ]),
                             ),
                             RichText(
                               text: TextSpan(
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 14,
                                       fontFamily: "kanit",
                                       fontWeight: FontWeight.w700),
                                   children: [
                                     TextSpan(text: user['language']['defaultLanguage']),
-                                    WidgetSpan(
+                                    const WidgetSpan(
                                         child: Icon(
                                       Icons.sync_alt,
                                       size: 20,
@@ -225,4 +225,22 @@ class _JassyMainBodyState extends State<JassyMainBody> {
       ),
     );
   }
+
+  calculateAge(DateTime birthDate) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    int month1 = currentDate.month;
+    int month2 = birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+    return age;
+  }
+
 }
