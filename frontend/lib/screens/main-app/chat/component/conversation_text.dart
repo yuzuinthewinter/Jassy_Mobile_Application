@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/demo_chat_message.dart';
-import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:intl/intl.dart';
 
@@ -24,6 +22,12 @@ class _BodyState extends State<ConversationText> {
   CollectionReference chat = FirebaseFirestore.instance.collection('ChatRooms');
   var currentUser = FirebaseAuth.instance.currentUser;
 
+  getDate(timestamp) {
+    DateTime datatime = DateTime.parse(timestamp.toDate().toString());
+    String formattedTime = DateFormat('kk:mm:a').format(datatime);
+    return formattedTime.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -35,15 +39,11 @@ class _BodyState extends State<ConversationText> {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
         }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: Text(' '),
-          );
-        }
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (snapshot.data!.docs[0]['messages'].length == 0) {
+        var data = snapshot.data!.docs;
+        if (data.isEmpty) {
           return const Center(child: Text('Let\'s start conversation'));
         }
         return ListView.builder(
@@ -72,21 +72,12 @@ class _BodyState extends State<ConversationText> {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
         }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: Text(' '),
-          );
-        }
         if (snapshot.data!.docs[0]['message'] == null) {
           return const Center(child: Text(' '));
         }
         var currentMessage = snapshot.data!.docs[0];
         var sender = currentMessage['sentBy'];
         bool isCurrentUser = sender == currentUser!.uid;
-
-        int ts = currentMessage['time'].millisecondsSinceEpoch;
-        DateTime tsdate = DateTime.fromMicrosecondsSinceEpoch(ts);
-        String formatTime = DateFormat.jm().format(tsdate);
 
         return Padding(
           padding: const EdgeInsets.all(8.0),
@@ -143,7 +134,7 @@ class _BodyState extends State<ConversationText> {
                       width: size.height * 0.06,
                     ),
                   Text(
-                    formatTime.toString(),
+                    getDate(currentMessage['time']).toString(),
                     style: const TextStyle(color: grey, fontSize: 12),
                   ),
                   SizedBox(

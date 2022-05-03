@@ -48,7 +48,6 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
   int interestIndex = 0;
   int interestLevelIndex = 0;
 
-
   void onTabChange() {
     setState(() {
       currentTabIndex = tabController.index;
@@ -65,6 +64,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
     tabController.addListener(() {
       onTabChange();
     });
+
   
     countryScrollController =
         FixedExtentScrollController(initialItem: countryIndex);
@@ -76,6 +76,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
         FixedExtentScrollController(initialItem: interestIndex);
     interestLevelScrollController =
         FixedExtentScrollController(initialItem: interestLevelIndex);
+
     super.initState();
   }
 
@@ -92,6 +93,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
     defaultLevelScrollController.dispose();
     interestScrollController.dispose();
     interestLevelScrollController.dispose();
+
 
     super.dispose();
   }
@@ -642,5 +644,4 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody> with TickerProv
       ),
     );
   }
-
 }
