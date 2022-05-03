@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/screens/main-app/profile/app_setting/app_setting.dart';
 import 'package:flutter_application_1/screens/main-app/profile/profile_setting/profile_setting.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_picture_widget.dart';
@@ -93,7 +94,11 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                 size: size,
                 icon: SvgPicture.asset("assets/icons/app_setting_icon.svg"),
                 text: "การตั้งค่า",
-                onTab: () {},
+                onTab: () {
+                  Navigator.push(
+                    context, CupertinoPageRoute(builder: (context) { return AppSetting(); })
+                  );
+                },
               ),
             ],
           ),
