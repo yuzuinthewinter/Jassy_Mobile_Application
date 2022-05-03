@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/text/text_field_label.dart';
 import 'package:flutter_application_1/models/user.dart';
-import 'package:flutter_application_1/screens/main-app/profile/component/edit_profile_picture_widget.dart';
-import 'package:flutter_application_1/screens/profile/profile_menu/component/profile_setting_tabbar.dart';
+import 'package:flutter_application_1/screens/main-app/profile/profile_setting/component/edit_profile_picture_widget.dart';
+import 'package:flutter_application_1/screens/main-app/profile/profile_setting/component/profile_setting_tabbar.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
 
