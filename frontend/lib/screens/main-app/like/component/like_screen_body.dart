@@ -15,6 +15,10 @@ class LikeScreenBody extends StatefulWidget {
 }
 
 class _LikeScreenBodyState extends State<LikeScreenBody> {
+  // Todo: infinite scroll
+  // bool isLoading = true;
+  // bool allLoaded = false;
+  // int limit = 2;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -83,7 +87,7 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                 alignment: Alignment.topRight, 
                 child: InkWell(
                   onTap: () { print("x"); },
-                  child: SvgPicture.asset("assets/icons/close_circle.svg")
+                  child: SvgPicture.asset("assets/icons/close_circle.svg", width: size.width * 0.05,)
                 )
               )
             ),
