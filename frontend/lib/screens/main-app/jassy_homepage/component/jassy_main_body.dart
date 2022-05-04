@@ -126,7 +126,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                     image: DecorationImage(
                         image: !user['profilePic'].isEmpty
                             ? NetworkImage(user['profilePic'][0])
-                            : const AssetImage("assets/images/header_img1.png")
+                            : const AssetImage("assets/images/user3.jpg")
                                 as ImageProvider,
                         fit: BoxFit.cover)),
               ),
