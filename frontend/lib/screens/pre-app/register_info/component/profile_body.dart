@@ -202,8 +202,9 @@ class _BodyState extends State<Body> {
                               ),
                             ),
                             onSaved: (String? birthDate) {
+                              final DateFormat formatter = DateFormat('yyyy-MM-dd');
                               birthDate =
-                                  DateFormat.yMd().format(_selectedDateTime);
+                                  formatter.format(_selectedDateTime);
                               userInfo.birthDate = birthDate;
                             },
                           ),

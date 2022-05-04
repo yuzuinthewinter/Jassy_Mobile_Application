@@ -35,7 +35,6 @@ class ChangeLanguagesButton extends StatelessWidget {
       initialSelection: listLocale[0],
       countryFilter: listLocale,
       showCountryOnly: true,
-      padding: EdgeInsets.only(top: size.height * 0.02),
       hideMainText: true,
       showDropDownButton: true,
       flagWidth: size.width * 0.07,

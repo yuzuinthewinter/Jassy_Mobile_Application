@@ -19,6 +19,9 @@ class Body extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          SizedBox(
+            height: size.height * 0.02,
+          ),
           Align(
             alignment: Alignment.topRight,
             child: ChangeLanguagesButton(),
