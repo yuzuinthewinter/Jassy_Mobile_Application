@@ -15,6 +15,14 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
     return Column(
       children: [
         CurvedWidget(child: JassyGradientColor()),
+        Row(
+          children: [
+            Text("แนะนำสำหรับคุณ"),
+            Spacer(),
+            Text("ดูเพิ่มเติม"),
+          ]
+        ),
+        
       ],
     );
   }
