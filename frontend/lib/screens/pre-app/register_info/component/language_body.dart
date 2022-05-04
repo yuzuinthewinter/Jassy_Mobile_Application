@@ -106,7 +106,7 @@ class _BodyState extends State<Body> {
           const HeaderText(text: "ข้อมูลภาษา"),
           const DescriptionText(
               text:
-                  "คุณไม่สามารถเปลี่ยนสัญชาติและภาษาแม่หลังจากนี้ได้ดังนั้นโปรดให้ข้อมูลส่วนบุคคลที่แท้จริง"),
+                  "คุณไม่สามารถเปลี่ยนสัญชาติและภาษาที่หนึ่งหลังจากนี้ได้ดังนั้นโปรดให้ข้อมูลส่วนบุคคลที่แท้จริง"),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -156,7 +156,7 @@ class _BodyState extends State<Body> {
                           userInfo.country = languageItems[countryIndex];
                         }),
                   ),
-                  const RequiredTextFieldLabel(textLabel: "ภาษาแม่"),
+                  const RequiredTextFieldLabel(textLabel: "ภาษาที่หนึ่ง"),
                   Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 0, horizontal: 20.0),
@@ -202,7 +202,7 @@ class _BodyState extends State<Body> {
                       },
                     ),
                   ),
-                  const RequiredTextFieldLabel(textLabel: "ระดับภาษาแม่"),
+                  const RequiredTextFieldLabel(textLabel: "ระดับภาษาที่หนึ่ง"),
                   Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 0, horizontal: 20.0),

@@ -72,10 +72,11 @@ class _BodyState extends State<ConversationText> {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
         }
-        if (snapshot.data!.docs[0]['message'] == null) {
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return const Center(child: Text(' '));
         }
-        var currentMessage = snapshot.data!.docs[0];
+        List<dynamic> snap = snapshot.data!.docs;
+        var currentMessage = snap[0];
         var sender = currentMessage['sentBy'];
         bool isCurrentUser = sender == currentUser!.uid;
 

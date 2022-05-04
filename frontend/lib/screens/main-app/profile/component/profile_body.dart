@@ -58,49 +58,55 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                   SizedBox(
                     height: size.height * 0.03,
                   ),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: size.height * 0.025),
+                    width: size.width,
+                    height: size.height * 0.21,
+                    decoration: BoxDecoration(
+                        color: textLight,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Column(
+                      children: [
+                        ProfileMenu(
+                          size: size,
+                          icon:
+                              SvgPicture.asset("assets/icons/profile_icon.svg"),
+                          text: "ตั้งค่าโพรไฟล์",
+                          onTab: () {
+                            Navigator.push(context,
+                                CupertinoPageRoute(builder: (context) {
+                              return ProfileSetting(user: user);
+                            }));
+                          },
+                        ),
+                        ProfileMenu(
+                          size: size,
+                          icon: SvgPicture.asset(
+                              "assets/icons/help_center_icon.svg"),
+                          text: "ศูนย์ช่วยเหลือ",
+                          onTab: () {},
+                        ),
+                        ProfileMenu(
+                          size: size,
+                          icon: SvgPicture.asset(
+                              "assets/icons/app_setting_icon.svg"),
+                          text: "การตั้งค่า",
+                          onTab: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
                 ],
               );
             }),
-        SizedBox(
-          height: size.height * 0.03,
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
-          padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
-          width: size.width,
-          height: size.height * 0.21,
-          decoration: BoxDecoration(
-              color: textLight, borderRadius: BorderRadius.circular(20)),
-          child: Column(
-            children: [
-              ProfileMenu(
-                size: size,
-                icon: SvgPicture.asset("assets/icons/profile_icon.svg"),
-                text: "ตั้งค่าโพรไฟล์",
-                onTab: () {
-                  Navigator.push(
-                    context, CupertinoPageRoute(builder: (context) { return ProfileSetting(); })
-                  );
-                },
-              ),
-              ProfileMenu(
-                size: size,
-                icon: SvgPicture.asset("assets/icons/help_center_icon.svg"),
-                text: "ศูนย์ช่วยเหลือ",
-                onTab: () {},
-              ),
-              ProfileMenu(
-                size: size,
-                icon: SvgPicture.asset("assets/icons/app_setting_icon.svg"),
-                text: "การตั้งค่า",
-                onTab: () {},
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: size.height * 0.03,
-        ),
         Container(
           margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
           padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),

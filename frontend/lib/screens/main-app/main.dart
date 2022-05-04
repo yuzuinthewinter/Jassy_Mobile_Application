@@ -23,7 +23,7 @@ class _JassyHomeState extends State<JassyHome> {
 
   var currentUser = FirebaseAuth.instance.currentUser;
 
-  int _currentIndex = 3;
+  int _currentIndex = 4;
 
   final screens = [
     
