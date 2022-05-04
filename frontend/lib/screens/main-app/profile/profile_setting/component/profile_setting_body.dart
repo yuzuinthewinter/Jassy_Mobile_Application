@@ -309,11 +309,6 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
                 borderSide: const BorderSide(color: textLight),
               ),
             ),
-            onSaved: (String? desc) {
-              // print(desc);
-              // desc = descController.text;
-              // userInfo.desc = desc;
-            },
           ),
         ],
       ),
@@ -475,8 +470,6 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
               ),
             ),
             onSaved: (String? interestLanguage) {
-              // interestLanguage = interestScrollController.toString();
-              print('interestLanguage: $interestLanguage');
               language.interestedLanguage = isInterestLanguageClick
                   ? languageItems[interestIndex]
                   : language.interestedLanguage;
