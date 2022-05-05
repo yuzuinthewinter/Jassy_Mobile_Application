@@ -62,6 +62,11 @@ class _BodyState extends State<Body> {
       var snapshot = await queryUser.get();
       final data = snapshot.docs[0];
 
+      await users.doc(currentUser.uid).update({
+        'isActive': true,
+        'timeStamp': DateTime.now(),
+      });
+
       if (data['isAuth'] == true) {
         Navigator.of(context).pushNamed(Routes.JassyHome);
       } else {
@@ -89,6 +94,11 @@ class _BodyState extends State<Body> {
       var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
       var snapshot = await queryUser.get();
       final data = snapshot.docs[0];
+
+      await users.doc(currentUser.uid).update({
+        'isActive': true,
+        'timeStamp': DateTime.now(),
+      });
 
       if (data['isAuth'] == true) {
         Navigator.of(context).pushNamed(Routes.JassyHome);

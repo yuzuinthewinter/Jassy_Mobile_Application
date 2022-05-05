@@ -4,9 +4,10 @@ import 'package:flutter_application_1/component/button/change_languages_button.d
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 
 class AppSettingBody extends StatefulWidget {
-  const AppSettingBody({ Key? key }) : super(key: key);
+  const AppSettingBody({Key? key}) : super(key: key);
 
   @override
   State<AppSettingBody> createState() => _AppSettingBodyState();
@@ -29,7 +30,10 @@ class _AppSettingBodyState extends State<AppSettingBody> {
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   children: [
-                    const Text("การแสดงสถานะของคุณ", style: TextStyle(fontSize: 18),),
+                    Text(
+                      'ShowStatusSetting'.tr,
+                      style: const TextStyle(fontSize: 18),
+                    ),
                     const Spacer(),
                     buildOnlineSwitch()
                   ],
@@ -39,7 +43,10 @@ class _AppSettingBodyState extends State<AppSettingBody> {
                 padding: const EdgeInsets.only(top: 5, bottom: 0),
                 child: Row(
                   children: [
-                    const Text("การแจ้งเตือน", style: TextStyle(fontSize: 18),),
+                    Text(
+                      'NotificationSetting'.tr,
+                      style: const TextStyle(fontSize: 18),
+                    ),
                     const Spacer(),
                     buildNotificationSwitch()
                   ],
@@ -48,8 +55,11 @@ class _AppSettingBodyState extends State<AppSettingBody> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 0),
                 child: Row(
-                  children: [
-                    const Text("ภาษา", style: TextStyle(fontSize: 18),),
+                  children: <Widget>[
+                    Text(
+                      'LanguageSetting'.tr,
+                      style: const TextStyle(fontSize: 18),
+                    ),
                     const Spacer(),
                     ChangeLanguagesButton()
                   ],
@@ -63,21 +73,20 @@ class _AppSettingBodyState extends State<AppSettingBody> {
   }
 
   Widget buildOnlineSwitch() => Transform.scale(
-    scale: 0.9,
-    child: CupertinoSwitch(
-      activeColor: primaryColor,
-      value: online,
-      onChanged: (value) => setState(() => online = value),
-    ),
-  );
+        scale: 0.9,
+        child: CupertinoSwitch(
+          activeColor: primaryColor,
+          value: online,
+          onChanged: (value) => setState(() => online = value),
+        ),
+      );
 
   Widget buildNotificationSwitch() => Transform.scale(
-    scale: 0.9,
-    child: CupertinoSwitch(
-      activeColor: primaryColor,
-      value: notification,
-      onChanged: (value) => setState(() => notification = value),
-    ),
-  );
-
+        scale: 0.9,
+        child: CupertinoSwitch(
+          activeColor: primaryColor,
+          value: notification,
+          onChanged: (value) => setState(() => notification = value),
+        ),
+      );
 }
