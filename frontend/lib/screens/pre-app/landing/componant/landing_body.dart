@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/account_exists_login.dart';
 import 'package:flutter_application_1/component/background.dart';
@@ -9,9 +11,14 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class Body extends StatelessWidget {
-  Body({Key? key}) : super(key: key);
+class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
 
+  @override
+  State<Body> createState() => _Body();
+}
+
+class _Body extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -22,7 +29,7 @@ class Body extends StatelessWidget {
           SizedBox(
             height: size.height * 0.02,
           ),
-          Align(
+          const Align(
             alignment: Alignment.topRight,
             child: ChangeLanguagesButton(),
           ),

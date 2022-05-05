@@ -14,8 +14,6 @@ import 'package:flutter_application_1/screens/pre-app/register/register_page.dar
 class Routes extends RouteGenerator {
   Routes._();
 
-  //static const String  = '/';
-
   //Register
   static const String RegisterPage = '/RegisterPage';
   static const String PhoneRegister = '/PhoneRegister';

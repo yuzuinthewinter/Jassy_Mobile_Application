@@ -57,7 +57,7 @@ class _BodyState extends State<Body> {
         'faceRegPic': const [],
         'profilePic': ['${profile['picture']['data']['url']}'],
         'chats': const [],
-        'isActive': true,
+        'isActive': false,
         'isAuth': false,
       });
       Navigator.of(context).pushNamed(Routes.RegisterProfile);

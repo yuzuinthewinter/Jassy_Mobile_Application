@@ -3,6 +3,7 @@ import 'package:flutter_application_1/component/text/report_choice.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/message_screen_body.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 enum MenuItem { item1, item2, item3 }
 
@@ -23,6 +24,22 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   bool isNotificationOn = true;
+  getDifferance(timestamp) {
+    DateTime now = DateTime.now();
+    DateTime lastActive = DateTime.parse(timestamp.toDate().toString());
+    Duration diff = now.difference(lastActive);
+    var timeMin = diff.inMinutes;
+    var timeHour = diff.inHours;
+    if (diff.inMinutes < 3) {
+      return 'Active a few minutes ago';
+    } else if (diff.inMinutes < 60) {
+      return 'Active ${timeMin.toString()} minutes ago';
+    } else {
+      return 'Active ${timeHour.toString()}h ago';
+    }
+    // String formattedTime = DateFormat('kk:mm:a').format(datatime);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +53,10 @@ class _ChatRoomState extends State<ChatRoom> {
                   widget.user['name']['lastname'].toString(),
               style: const TextStyle(fontSize: 16, color: textDark),
             ),
-            const Text(
-              'online 3 minutes ago',
+            Text(
+              widget.user['isActive']
+                  ? 'Active now'
+                  : getDifferance(widget.user['timeStamp']),
               style: TextStyle(fontSize: 14, color: greyDark),
             ),
           ],
