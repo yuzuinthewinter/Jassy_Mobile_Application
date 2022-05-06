@@ -113,7 +113,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                           onTab: () {
                             Navigator.push(context,
                                 CupertinoPageRoute(builder: (context) {
-                              return const AppSetting();
+                              return AppSetting(user);
                             }));
                           },
                         ),
