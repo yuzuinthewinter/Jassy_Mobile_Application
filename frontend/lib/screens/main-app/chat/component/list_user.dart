@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/main-app/chat/message_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
+//@deprecated
 // NOTE: chat card in all chat page show name lastest message and unread notification
 // TODO: map profile image, name and lastest message here
 class ListUser extends StatefulWidget {
