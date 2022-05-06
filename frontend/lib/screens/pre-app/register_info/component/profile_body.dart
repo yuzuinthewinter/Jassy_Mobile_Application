@@ -12,6 +12,7 @@ import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class Body extends StatefulWidget {
@@ -27,7 +28,7 @@ class _BodyState extends State<Body> {
 
   // state of data's user
   final List<String> role = ["User", "Premium", "Admin"];
-  final List<String> _choicesLists = ["ชาย", "หญิง", "LGBTQ+"];
+  final List<String> _choicesLists = ["Male", "Female", "LGBTQ+"];
   NameType name = NameType();
   InfoType userInfo = InfoType();
   TextEditingController lastnameController = TextEditingController();
@@ -201,8 +202,9 @@ class _BodyState extends State<Body> {
                               ),
                             ),
                             onSaved: (String? birthDate) {
+                              final DateFormat formatter = DateFormat('yyyy-MM-dd');
                               birthDate =
-                                  DateFormat.yMd().format(_selectedDateTime);
+                                  formatter.format(_selectedDateTime);
                               userInfo.birthDate = birthDate;
                             },
                           ),

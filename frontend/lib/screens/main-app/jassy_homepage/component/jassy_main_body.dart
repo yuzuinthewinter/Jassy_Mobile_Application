@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/calculate/cal_age.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/detail_page.dart';
@@ -159,7 +160,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                     image: DecorationImage(
                         image: !user['profilePic'].isEmpty
                             ? NetworkImage(user['profilePic'][0])
-                            : const AssetImage("assets/images/header_img1.png")
+                            : const AssetImage("assets/images/user3.jpg")
                                 as ImageProvider,
                         fit: BoxFit.cover)),
               ),
@@ -214,20 +215,18 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                   children: [
                                     TextSpan(text: user['name']['firstname']),
                                     const TextSpan(text: ", "),
-                                    TextSpan(text: user['birthDate']),
+                                    TextSpan(text: calculateAge(DateTime.parse(user['birthDate'].toString())).toString()),
                                   ]),
                             ),
                             RichText(
                               text: TextSpan(
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 14,
                                       fontFamily: "kanit",
                                       fontWeight: FontWeight.w700),
                                   children: [
-                                    TextSpan(
-                                        text: user['language']
-                                            ['defaultLanguage']),
-                                    WidgetSpan(
+                                    TextSpan(text: user['language']['defaultLanguage']),
+                                    const WidgetSpan(
                                         child: Icon(
                                       Icons.sync_alt,
                                       size: 20,

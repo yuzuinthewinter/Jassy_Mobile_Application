@@ -3,28 +3,45 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
-class ChangeLanguagesButton extends StatelessWidget {
-  ChangeLanguagesButton({Key? key}) : super(key: key);
+class ChangeLanguagesButton extends StatefulWidget {
+  const ChangeLanguagesButton({Key? key}) : super(key: key);
+  @override
+  State<ChangeLanguagesButton> createState() => _ChangeLanguagesButton();
+}
 
+class _ChangeLanguagesButton extends State<ChangeLanguagesButton> {
   final List locale = [
     {'name': 'ENGLISH', 'locale': const Locale('en', 'US'), 'code': 'US'},
     {'name': 'ภาษาไทย', 'locale': const Locale('th', 'TH'), 'code': 'TH'},
   ];
 
   List<String> listLocale = ['TH', 'US'];
+  late String defaultLocale = 'TH';
 
-  onChangeLanguage(CountryCode? countryCode) async {
+  onChangeLanguage(CountryCode? countryCode) {
     var getCoutryCode = countryCode?.code;
-    for (var local in locale) {
-      if (getCoutryCode == local['code']) {
-        updateLanguage(local['locale']);
+    setState(() {
+      for (var local in locale) {
+        if (getCoutryCode == local['code']) {
+          defaultLocale = local['code'];
+          updateLanguage(local['locale']);
+        }
       }
-    }
+    });
   }
 
-  updateLanguage(Locale locale) {
-    //TODO: setting delay popup
-    Get.back();
+  @override
+  void initState() {
+    for (var local in locale) {
+      if (Get.locale == local['locale']) {
+        defaultLocale = local['code'];
+      }
+    }
+    super.initState();
+  }
+
+  updateLanguage(locale) {
+    //TODO: setting popup success
     Get.updateLocale(locale);
   }
 
@@ -32,17 +49,16 @@ class ChangeLanguagesButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return CountryCodePicker(
-      initialSelection: listLocale[0],
+      onChanged: onChangeLanguage,
+      initialSelection: defaultLocale,
       countryFilter: listLocale,
       showCountryOnly: true,
-      padding: EdgeInsets.only(top: size.height * 0.02),
       hideMainText: true,
       showDropDownButton: true,
       flagWidth: size.width * 0.07,
       flagDecoration: const BoxDecoration(
           // shape: BoxShape.circle
           ),
-      onChanged: onChangeLanguage,
     );
   }
 }

@@ -39,16 +39,11 @@ class _BodyState extends State<ConversationText> {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
         }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: Text(' '),
-          );
-        }
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
         var data = snapshot.data!.docs;
-        if (data.isEmpty) {
+        if (data[0]['messages'].isEmpty) {
           return const Center(child: Text('Let\'s start conversation'));
         }
         return ListView.builder(
@@ -77,15 +72,11 @@ class _BodyState extends State<ConversationText> {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
         }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: Text(' '),
-          );
-        }
-        if (snapshot.data!.docs[0]['message'] == null) {
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return const Center(child: Text(' '));
         }
-        var currentMessage = snapshot.data!.docs[0];
+        List<dynamic> snap = snapshot.data!.docs;
+        var currentMessage = snap[0];
         var sender = currentMessage['sentBy'];
         bool isCurrentUser = sender == currentUser!.uid;
 

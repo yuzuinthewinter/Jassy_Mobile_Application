@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/main-app/chat/chat_screen.dart';
-import 'package:flutter_application_1/screens/main-app/demo_jassy_home/likes.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/jassy_main.dart';
+import 'package:flutter_application_1/screens/main-app/like/like_screen.dart';
 import 'package:flutter_application_1/screens/main-app/profile/profile.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,13 +17,16 @@ class JassyHome extends StatefulWidget {
   State<JassyHome> createState() => _JassyHomeState();
 }
 
-class _JassyHomeState extends State<JassyHome> {
+class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
+  //boolean
   bool isLoading = false;
 
-  var currentUser = FirebaseAuth.instance.currentUser;
+  //firebasee
+  final currentUser = FirebaseAuth.instance.currentUser;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  int _currentIndex = 0;
-
+  //set default navigator
+  int _currentIndex = 4;
   final screens = [
     const JassyMain(),
     const LikeScreen(), //likes page
@@ -33,6 +36,45 @@ class _JassyHomeState extends State<JassyHome> {
     const ChatScreen(),
     const ProfileScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+    setStatus(true, DateTime.now());
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
+
+  void setStatus(bool status, DateTime timestamp) async {
+    await _firestore.collection('Users').doc(currentUser!.uid).update({
+      'isActive': status,
+      'timeStamp': timestamp,
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    print(currentUser);
+    print(state);
+    //is on screen
+    if (state == AppLifecycleState.resumed) {
+      if (currentUser != null) {
+        setStatus(true, DateTime.now());
+      } else {
+        setStatus(false, DateTime.now());
+      }
+    } else {
+      //is closed
+      //is bg
+      setStatus(false, DateTime.now());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

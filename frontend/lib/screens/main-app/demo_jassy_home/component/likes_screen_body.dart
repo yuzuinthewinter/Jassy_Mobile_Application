@@ -9,6 +9,7 @@ import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/screens/main-app/chat/message_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
+@deprecated
 class LikeScreenBody extends StatefulWidget {
   const LikeScreenBody({Key? key}) : super(key: key);
 
@@ -63,11 +64,16 @@ class _LikeScreenBody extends State<LikeScreenBody> {
     var snapshot = await user.get();
     final data = snapshot.docs[0];
 
+    var thisUser = users.where('uid', isEqualTo: currentUser!.uid);
+    var snapshotUser = await thisUser.get();
+    final userData = snapshotUser.docs[0];
+
     Navigator.push(context, CupertinoPageRoute(builder: (context) {
       // NOTE: click each card to go to chat room
       return ChatRoom(
         chatid: '',
         user: data,
+        currentUser: userData,
       );
     }));
   }
@@ -103,7 +109,7 @@ class _LikeScreenBody extends State<LikeScreenBody> {
               return ListView.builder(
                   itemCount: user[0]['likesby'].length,
                   itemBuilder: (context, int index) =>
-                      showLikeByList(user[0]['likesby'][index]));
+                      showLikeByList(user[0]['likesby'][index], user[0]));
             },
           ),
         ),
@@ -111,7 +117,7 @@ class _LikeScreenBody extends State<LikeScreenBody> {
     );
   }
 
-  Widget showLikeByList(user) {
+  Widget showLikeByList(user, currentUser) {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('Users')
@@ -120,11 +126,6 @@ class _LikeScreenBody extends State<LikeScreenBody> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
         }
         var user = snapshot.data!.docs[0];
         return SizedBox(
@@ -143,7 +144,9 @@ class _LikeScreenBody extends State<LikeScreenBody> {
                                 as ImageProvider,
                         radius: 33,
                       ),
-                      user['isActive'] == true
+                      user['isActive'] == true &&
+                              user['isShowActive'] == true &&
+                              currentUser['isShowActive'] == true
                           ? Positioned(
                               right: 3,
                               bottom: 3,
