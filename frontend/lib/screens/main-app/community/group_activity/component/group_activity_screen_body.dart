@@ -3,7 +3,7 @@ import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/models/community.dart';
-import 'package:flutter_application_1/screens/main-app/community/component/group_activity/component/group_news_widget.dart';
+import 'package:flutter_application_1/screens/main-app/community/group_activity/component/group_news_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

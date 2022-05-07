@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
-import 'package:flutter_application_1/screens/main-app/community/component/group_activity/component/group_activity_screen_body.dart';
-import 'package:flutter_application_1/screens/main-app/community/component/group_activity/group_activity_screen.dart';
+import 'package:flutter_application_1/screens/main-app/community/group_activity/group_activity_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
   Widget communityCard (GroupActivity data, context) {
