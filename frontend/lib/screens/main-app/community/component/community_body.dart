@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/like_button_widget.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/models/community.dart';
+import 'package:flutter_application_1/screens/main-app/community/community_search/community_search.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/community_card.widget.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/news_card_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -25,10 +27,18 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.03, vertical: size.height * 0.01),
           child: Row(
-            children: const [
-              Text("แนะนำสำหรับคุณ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
-              Spacer(),
-              Text("ดูเพิ่มเติม", style: TextStyle(fontSize: 16, color: primaryColor,)),
+            children: [
+              const Text("แนะนำสำหรับคุณ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
+              const Spacer(),
+              InkWell(
+                child: const Text("ดูเพิ่มเติม", style: TextStyle(fontSize: 16, color: primaryColor,)),
+                onTap: () {
+                  Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) {
+                    return const CommunitySearch();
+                  }));
+                },
+              ),
             ]
           ),
         ),

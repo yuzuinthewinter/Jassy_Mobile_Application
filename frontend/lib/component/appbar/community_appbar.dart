@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/main-app/community/community_search/community_search.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/filter.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,8 +28,10 @@ class CommunityAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           onPressed: () {
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => const Filter()));
+            Navigator.push(context,
+              CupertinoPageRoute(builder: (context) {
+              return const CommunitySearch();
+            }));
           },
           icon: SvgPicture.asset("assets/icons/search.svg"),
           color: primaryDarker,
