@@ -68,6 +68,10 @@ class _BodyState extends State<Body> {
       final data = snapshot.docs[0];
 
       if (data['isAuth'] == true) {
+        await users.doc(currentUser.uid).update({
+          'isActive': true,
+          'timeStamp': DateTime.now(),
+        });
         Navigator.of(context).pushNamed(Routes.JassyHome);
       } else {
         await users.doc(currentUser.uid).set({
@@ -89,7 +93,8 @@ class _BodyState extends State<Body> {
           'faceRegPic': const [],
           'profilePic': const [],
           'chats': const [],
-          'isActive': true,
+          'isShowActive': true,
+          'isActive': false,
           'isAuth': false,
         });
         Navigator.of(context).pushNamed(Routes.RegisterProfile);

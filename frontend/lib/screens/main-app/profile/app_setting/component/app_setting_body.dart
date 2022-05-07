@@ -1,12 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/change_languages_button.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 
 class AppSettingBody extends StatefulWidget {
-  const AppSettingBody({ Key? key }) : super(key: key);
+  final user;
+  const AppSettingBody(this.user, {Key? key}) : super(key: key);
 
   @override
   State<AppSettingBody> createState() => _AppSettingBodyState();
@@ -15,6 +19,9 @@ class AppSettingBody extends StatefulWidget {
 class _AppSettingBodyState extends State<AppSettingBody> {
   bool online = true;
   bool notification = true;
+
+  var currentUser = FirebaseAuth.instance.currentUser;
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +36,10 @@ class _AppSettingBodyState extends State<AppSettingBody> {
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   children: [
-                    const Text("การแสดงสถานะของคุณ", style: TextStyle(fontSize: 18),),
+                    Text(
+                      'ShowStatusSetting'.tr,
+                      style: const TextStyle(fontSize: 18),
+                    ),
                     const Spacer(),
                     buildOnlineSwitch()
                   ],
@@ -39,7 +49,10 @@ class _AppSettingBodyState extends State<AppSettingBody> {
                 padding: const EdgeInsets.only(top: 5, bottom: 0),
                 child: Row(
                   children: [
-                    const Text("การแจ้งเตือน", style: TextStyle(fontSize: 18),),
+                    Text(
+                      'NotificationSetting'.tr,
+                      style: const TextStyle(fontSize: 18),
+                    ),
                     const Spacer(),
                     buildNotificationSwitch()
                   ],
@@ -48,8 +61,11 @@ class _AppSettingBodyState extends State<AppSettingBody> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 0),
                 child: Row(
-                  children: [
-                    const Text("ภาษา", style: TextStyle(fontSize: 18),),
+                  children: <Widget>[
+                    Text(
+                      'LanguageSetting'.tr,
+                      style: const TextStyle(fontSize: 18),
+                    ),
                     const Spacer(),
                     ChangeLanguagesButton()
                   ],
@@ -63,21 +79,29 @@ class _AppSettingBodyState extends State<AppSettingBody> {
   }
 
   Widget buildOnlineSwitch() => Transform.scale(
-    scale: 0.9,
-    child: CupertinoSwitch(
-      activeColor: primaryColor,
-      value: online,
-      onChanged: (value) => setState(() => online = value),
-    ),
-  );
+        scale: 0.9,
+        child: CupertinoSwitch(
+          activeColor: primaryColor,
+          value: online,
+          onChanged: (value) async {
+            setState(() => online = value);
+            if (value == false) {
+              //popup
+            }
+            await users.doc(currentUser!.uid).update({
+              'isShowActive': value,
+              'timeStamp': DateTime.now(),
+            });
+          },
+        ),
+      );
 
   Widget buildNotificationSwitch() => Transform.scale(
-    scale: 0.9,
-    child: CupertinoSwitch(
-      activeColor: primaryColor,
-      value: notification,
-      onChanged: (value) => setState(() => notification = value),
-    ),
-  );
-
+        scale: 0.9,
+        child: CupertinoSwitch(
+          activeColor: primaryColor,
+          value: notification,
+          onChanged: (value) => setState(() => notification = value),
+        ),
+      );
 }

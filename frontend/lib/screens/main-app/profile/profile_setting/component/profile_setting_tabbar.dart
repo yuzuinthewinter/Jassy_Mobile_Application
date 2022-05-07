@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 class ProfileSettingTabBar extends StatelessWidget {
-
   final TabController tabController;
-  
-  const ProfileSettingTabBar({ Key? key, required this.tabController }) : super(key: key);
+
+  const ProfileSettingTabBar({Key? key, required this.tabController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

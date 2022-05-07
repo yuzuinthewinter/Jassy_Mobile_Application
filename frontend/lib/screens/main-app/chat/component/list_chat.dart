@@ -46,6 +46,7 @@ class _ListChatBody extends State<ListChat> {
             var data = snapshot.data!.docs[0];
             return ChatCard(
               chatid: data['chats'][index],
+              currentUser: data,
             );
           },
         );

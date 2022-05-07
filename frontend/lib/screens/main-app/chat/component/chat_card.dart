@@ -13,10 +13,12 @@ import 'package:intl/intl.dart';
 class ChatCard extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   final chatid;
+  final currentUser;
 
   const ChatCard({
     Key? key,
     required this.chatid,
+    required this.currentUser,
   }) : super(key: key);
 
   @override
@@ -78,6 +80,7 @@ class _ChatCardBody extends State<ChatCard> {
                           return ChatRoom(
                             chatid: chat['chatid'],
                             user: user,
+                            currentUser: widget.currentUser,
                           );
                         }));
                       },
@@ -95,7 +98,10 @@ class _ChatCardBody extends State<ChatCard> {
                                           as ImageProvider,
                                   radius: 33,
                                 ),
-                                user['isActive'] == true
+                                user['isActive'] == true &&
+                                        user['isShowActive'] == true &&
+                                        widget.currentUser['isShowActive'] ==
+                                            true
                                     ? Positioned(
                                         right: 3,
                                         bottom: 3,

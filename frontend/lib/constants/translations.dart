@@ -34,13 +34,18 @@ class LocaleString extends Translations {
           "OtpResend": "Resend",
           //Phone Login Page
           "PhoneLoginPage": "Login with phone number",
+          //Setting Page
+          "AppSetting": "Setting",
+          "ShowStatusSetting": "Status",
+          "NotificationSetting": "Notification",
+          "LanguageSetting": "Language",
           //Popup
           "RegisterSuccess": "Success",
           "NextButton": "Next",
           //Genre
-          "Male" : "Male",
-          "Female" : "Female",
-          "LGBTQ+" : "LGBTQ+",
+          "Male": "Male",
+          "Female": "Female",
+          "LGBTQ+": "LGBTQ+",
         },
         'th_TH': {
           // Conjunction
@@ -71,13 +76,18 @@ class LocaleString extends Translations {
           "OtpResend": " ส่งใหม่",
           //Phone Login Page
           "PhoneLoginPage": "เข้าสู่ระบบด้วยเบอร์โทรศัพท์",
+          //Setting Page
+          "AppSetting": "การตั้งค่า",
+          "ShowStatusSetting": "การแสดงสถานะของคุณ",
+          "NotificationSetting": "การแจ้งเตือน",
+          "LanguageSetting": "ภาษา",
           //Popup
           "RegisterSuccess": "ลงทะเบียนสำเร็จ",
           "NextButton": "ต่อไป",
           //Genre
-          "Male" : "ชาย",
-          "Female" : "หญิง",
-          "LGBTQ+" : "LGBTQ+",
+          "Male": "ชาย",
+          "Female": "หญิง",
+          "LGBTQ+": "LGBTQ+",
         },
       };
 }

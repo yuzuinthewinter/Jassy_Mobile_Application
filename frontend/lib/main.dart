@@ -2,10 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/background.dart';
+import 'package:flutter_application_1/component/popup_page/landingPopup.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/constants/translations.dart';
 import 'package:flutter_application_1/screens/main-app/main.dart';
 import 'package:flutter_application_1/screens/pre-app/landing/landing_page.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'theme/index.dart';
@@ -13,17 +16,23 @@ import 'theme/index.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(App());
+  runApp(const App());
 }
 
 //use this
-class App extends StatelessWidget {
-  final Future<String> _calculation = Future<String>.delayed(
+class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _AppScreen();
+}
+
+class _AppScreen extends State<App> {
+
+  final Future _calculation = Future.delayed(
     const Duration(seconds: 2),
     () => 'Data Loaded',
   );
-
-  App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +60,7 @@ class App extends StatelessWidget {
                 textTheme: GoogleFonts.kanitTextTheme(),
                 primaryColor: primaryColor,
                 scaffoldBackgroundColor: greyLightest),
-            home: const AuthGate(),
+            home: AuthGate(),
           );
         }
         // TODO: loading
@@ -64,10 +73,10 @@ class App extends StatelessWidget {
 }
 
 class AuthGate extends StatelessWidget {
-  const AuthGate({Key? key}) : super(key: key);
+  AuthGate({Key? key}) : super(key: key);
+  var currentUser = FirebaseAuth.instance.currentUser;
 
   checkUserAuth(context) async {
-    var currentUser = FirebaseAuth.instance.currentUser;
     var users = FirebaseFirestore.instance.collection('Users');
     var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
     var snapshot = await queryUser.get();
@@ -92,7 +101,12 @@ class AuthGate extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.active) {
           checkUserAuth(context);
         }
-        return const LandingPage();
+        if (currentUser!.uid == null) {
+          return const LandingPage();
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       },
     );
   }

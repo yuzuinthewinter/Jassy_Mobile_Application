@@ -3,6 +3,7 @@ import 'package:flutter_application_1/component/text/report_choice.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/message_screen_body.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 enum MenuItem { item1, item2, item3 }
 
@@ -10,11 +11,13 @@ class ChatRoom extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   final chatid;
   final user;
+  final currentUser;
 
   const ChatRoom({
     Key? key,
     required this.chatid,
     required this.user,
+    required this.currentUser,
   }) : super(key: key);
 
   @override
@@ -23,6 +26,27 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   bool isNotificationOn = true;
+  
+  getDifferance(timestamp) {
+    DateTime now = DateTime.now();
+    DateTime lastActive = DateTime.parse(timestamp.toDate().toString());
+    Duration diff = now.difference(lastActive);
+    var timeMin = diff.inMinutes;
+    var timeHour = diff.inHours;
+    var timeDay = diff.inDays;
+    if (timeMin < 3) {
+      return 'Active a few minutes ago';
+    } else if (timeMin < 60) {
+      return 'Active ${timeMin.toString()} minutes ago';
+    } else if (timeHour < 24) {
+      return 'Active ${timeHour.toString()}h ago';
+    } else if (timeDay < 3) {
+      return 'Active ${timeDay.toString()}d ago';
+    } else {
+      return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,10 +60,16 @@ class _ChatRoomState extends State<ChatRoom> {
                   widget.user['name']['lastname'].toString(),
               style: const TextStyle(fontSize: 16, color: textDark),
             ),
-            const Text(
-              'online 3 minutes ago',
-              style: TextStyle(fontSize: 14, color: greyDark),
-            ),
+            widget.user['isShowActive'] && widget.currentUser['isShowActive']
+                ? Text(
+                    widget.user['isActive']
+                        ? 'Active now'
+                        : getDifferance(widget.user['timeStamp']),
+                    style: const TextStyle(fontSize: 14, color: greyDark),
+                  )
+                : Container(
+                    height: 1,
+                  )
           ],
         ),
         centerTitle: true,
