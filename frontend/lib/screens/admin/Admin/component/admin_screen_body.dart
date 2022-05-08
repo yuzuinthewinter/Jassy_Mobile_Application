@@ -121,7 +121,7 @@ class _AdminScreenBody extends State<AdminScreenBody> {
                         padding: EdgeInsets.symmetric(
                             horizontal: size.height * 0.01),
                         width: size.width,
-                        height: size.height * 0.05,
+                        height: size.height * 0.07,
                         decoration: BoxDecoration(
                             color: textLight,
                             borderRadius: BorderRadius.circular(15)),

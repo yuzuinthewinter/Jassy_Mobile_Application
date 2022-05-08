@@ -32,7 +32,7 @@ class _AdminJassyHomeState extends State<AdminJassyHome>
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //set default navigator
-  int _currentIndex = 1;
+  int _currentIndex = 0;
   final screens = [
     const DashboardScreen(),
     const UserScreen(),

@@ -33,7 +33,7 @@ class UserCard extends StatelessWidget {
           ),
           Text(
             text,
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           ),
           reportIcon,
           Spacer(),

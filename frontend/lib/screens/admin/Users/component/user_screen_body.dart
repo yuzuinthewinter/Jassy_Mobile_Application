@@ -126,7 +126,7 @@ class _UserScreenBody extends State<UserScreenBody> {
                         padding: EdgeInsets.symmetric(
                             horizontal: size.height * 0.01),
                         width: size.width,
-                        height: size.height * 0.05,
+                        height: size.height * 0.07,
                         decoration: BoxDecoration(
                             color: textLight,
                             borderRadius: BorderRadius.circular(15)),
@@ -152,7 +152,7 @@ class _UserScreenBody extends State<UserScreenBody> {
                             reportIcon: IconButton(
                               onPressed: () {},
                               icon: Icon(data[index]['reportCount'] < 5
-                                  ? Icons.report_problem_rounded
+                                  ? Icons.warning_rounded
                                   : Icons.cancel_rounded),
                               color: data[index]['reportCount'] < 3
                                   ? textLight

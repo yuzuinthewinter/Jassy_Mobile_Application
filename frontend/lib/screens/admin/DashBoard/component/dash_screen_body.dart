@@ -103,16 +103,30 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
         decoration: BoxDecoration(
             color: textLight, borderRadius: BorderRadius.circular(20)),
         child: Column(children: [
-          MenuCard(
-            size: size,
-            icon: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.report_problem_rounded),
-              color: primaryColor,
+          Expanded(
+              child: InkWell(
+            onTap: () {},
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.warning_rounded),
+                  color: secoundary,
+                ),
+                SizedBox(
+                  width: size.width * 0.03,
+                ),
+                Text(
+                  "ตรวจสอบคำร้องเรียนจากผู้ใช้",
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      color: textMadatory),
+                ),
+                Spacer(),
+              ],
             ),
-            text: "คำร้องขอจากผู้ใช้งาน",
-            onTab: () {},
-          ),
+          ))
         ]),
       ),
     ]);

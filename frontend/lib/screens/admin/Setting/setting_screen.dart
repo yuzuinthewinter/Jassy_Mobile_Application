@@ -81,7 +81,7 @@ class SettingScreen extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
               padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
               width: size.width,
-              height: size.height * 0.2,
+              height: size.height * 0.24,
               decoration: BoxDecoration(
                   color: textLight, borderRadius: BorderRadius.circular(20)),
               child: Column(children: [
