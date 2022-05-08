@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
-Widget groupForSearchWidget (GroupActivity group, context) {
+Widget groupForSearchWidget(GroupActivity group, context, user) {
   var size = MediaQuery.of(context).size;
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
@@ -11,16 +11,15 @@ Widget groupForSearchWidget (GroupActivity group, context) {
       width: double.infinity,
       height: size.height * 0.15,
       decoration: BoxDecoration(
-        color: textLight,
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: grey.withOpacity(0.3),
-            blurRadius: 3,
-            offset: const Offset(0, 5),
-          )
-        ]
-      ),
+          color: textLight,
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          boxShadow: [
+            BoxShadow(
+              color: grey.withOpacity(0.3),
+              blurRadius: 3,
+              offset: const Offset(0, 5),
+            )
+          ]),
       child: Row(
         children: [
           // Group Picture
@@ -31,9 +30,8 @@ Widget groupForSearchWidget (GroupActivity group, context) {
               height: size.height * 0.1,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(group.groupName.image),
-                  fit: BoxFit.cover
-                ),
+                    image: AssetImage(group.groupName.image),
+                    fit: BoxFit.cover),
               ),
             ),
           ),
@@ -45,27 +43,52 @@ Widget groupForSearchWidget (GroupActivity group, context) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(group.groupName.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
-                  SizedBox(height: size.height * 0.01,),
+                  Text(
+                    group.groupName.name,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w700),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
                   RichText(
                       text: TextSpan(
-                      style: const TextStyle(fontSize: 14, color: greyDark, fontFamily: 'kanit'),
-                      children: [
-                        const WidgetSpan(child: Icon(Icons.person_rounded, color: grey,)),
-                        WidgetSpan(child: SizedBox(width: size.width * 0.01,),),
-                        TextSpan(text: group.groupName.member.toString(), style: const TextStyle(fontSize: 16),)
-                      ]
-                    )
-                  )
+                          style: const TextStyle(
+                              fontSize: 14,
+                              color: greyDark,
+                              fontFamily: 'kanit'),
+                          children: [
+                        const WidgetSpan(
+                            child: Icon(
+                          Icons.person_rounded,
+                          color: grey,
+                        )),
+                        WidgetSpan(
+                          child: SizedBox(
+                            width: size.width * 0.01,
+                          ),
+                        ),
+                        TextSpan(
+                          text: group.groupName.member.toString(),
+                          style: const TextStyle(fontSize: 16),
+                        )
+                      ]))
                 ],
               ),
             ),
           ),
           // add icon
-          InkWell(
-            onTap: () {},
-            child: Icon(Icons.add_circle_rounded, color: primaryColor, size: size.width * 0.1,)
-          )
+          user['userStatus'] == 'user'
+              ? InkWell(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.add_circle_rounded,
+                    color: primaryColor,
+                    size: size.width * 0.1,
+                  ))
+              : Container(
+                  width: 1,
+                )
         ],
       ),
     ),

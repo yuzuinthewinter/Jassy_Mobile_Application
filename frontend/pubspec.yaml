@@ -54,7 +54,7 @@ dependencies:
   image_cropper: ^2.0.2
 
   # firebase
-  firebase_storage: ^10.2.12
+  firebase_storage: ^10.2.15
   firebase_core: ^1.13.0
   firebase_auth: ^3.3.8
   cloud_firestore: ^3.1.10

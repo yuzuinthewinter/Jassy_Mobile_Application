@@ -83,10 +83,10 @@ class AuthGate extends StatelessWidget {
 
     if (data['isAuth'] == true) {
       if (data['userStatus'] == 'admin') {
-          Navigator.of(context).pushNamed(Routes.AdminJassyHome);
-        } else {
-          Navigator.of(context).pushNamed(Routes.JassyHome);
-        }
+        Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+      } else {
+        Navigator.of(context).pushNamed(Routes.JassyHome);
+      }
     } else {
       //TODO: popup to user that register unfinish
       return Navigator.of(context).pushNamed(Routes.RegisterProfile);

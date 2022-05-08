@@ -5,49 +5,68 @@ import 'package:flutter_application_1/screens/main-app/jassy_homepage/filter.dar
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CommunityAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String text;
+class CommunityAppBar extends StatefulWidget implements PreferredSizeWidget {
+  final text;
+  final user;
 
   const CommunityAppBar({
     Key? key,
-    this.text = '',
+    this.user,
+    this.text,
   }) : super(key: key);
+  @override
+  State<CommunityAppBar> createState() => _CommunityAppBarState();
 
+  @override
+  Size get preferredSize => Size.fromHeight(60.0);
+}
+
+class _CommunityAppBarState extends State<CommunityAppBar> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return AppBar(
       title: Text(
-        text,
+        widget.text,
         style: TextStyle(color: textDark),
       ),
       automaticallyImplyLeading: false,
       centerTitle: true,
       elevation: 0,
       backgroundColor: Colors.transparent,
+      leading: widget.user['userStatus'] == 'admin'
+          ? IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                size: 20,
+              ),
+              color: primaryDarker,
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          : Container(width: 1),
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.push(context,
-              CupertinoPageRoute(builder: (context) {
-              return const CommunitySearch();
+            Navigator.push(context, CupertinoPageRoute(builder: (context) {
+              return CommunitySearch(widget.user);
             }));
           },
           icon: SvgPicture.asset("assets/icons/search.svg"),
           color: primaryDarker,
         ),
-        IconButton(
-          onPressed: () {
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => const Filter()));
-          },
-          icon: SvgPicture.asset("assets/icons/notification_icon.svg"),
-          color: primaryDarker,
-        ),
+        widget.user['userStatus'] == 'user'
+            ? IconButton(
+                onPressed: () {
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => const Filter()));
+                },
+                icon: SvgPicture.asset("assets/icons/notification_icon.svg"),
+                color: primaryDarker,
+              )
+            : Container(
+                width: 1,
+              ),
       ],
     );
   }
-
-  @override
-  Size get preferredSize => Size.fromHeight(60.0);
 }

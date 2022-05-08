@@ -12,6 +12,7 @@ import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_car
 import 'package:flutter_application_1/screens/admin/Users/component/user_card.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_card.dart';
 import 'package:flutter_application_1/screens/main-app/chat/message_screen.dart';
+import 'package:flutter_application_1/screens/main-app/community/community.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_picture_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -88,7 +89,11 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
               color: primaryColor,
             ),
             text: 'การจัดการกลุ่มชุมชน',
-            onTab: () {},
+            onTab: () {
+              Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                return CommunityScreen();
+              }));
+            },
           ),
         ]),
       ),
@@ -99,7 +104,7 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
         margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
         padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
         width: size.width,
-        height: size.height * 0.075,
+        height: size.height * 0.15,
         decoration: BoxDecoration(
             color: textLight, borderRadius: BorderRadius.circular(20)),
         child: Column(children: [
@@ -118,6 +123,30 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
                 ),
                 Text(
                   "ตรวจสอบคำร้องเรียนจากผู้ใช้",
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      color: textMadatory),
+                ),
+                Spacer(),
+              ],
+            ),
+          )),
+          Expanded(
+              child: InkWell(
+            onTap: () {},
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.warning_rounded),
+                  color: secoundary,
+                ),
+                SizedBox(
+                  width: size.width * 0.03,
+                ),
+                Text(
+                  "ตรวจสอบคำร้องเรียนจากชุมชน",
                   style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w400,
