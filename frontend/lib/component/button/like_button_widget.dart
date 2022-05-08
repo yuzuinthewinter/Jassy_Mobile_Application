@@ -16,7 +16,7 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return LikeButton(
-      size: size.width * 0.05,
+      size: size.width * 0.07,
       // likeBuilder: (isLike) {
       //   final color = isLike ? Colors.red : Colors.grey;
       //   return Icon(Icons.favorite, color: color,);
