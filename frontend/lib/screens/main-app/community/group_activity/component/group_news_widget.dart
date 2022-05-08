@@ -4,6 +4,7 @@ import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+// news card in group
   Widget groupNewsCard (News data, context) {
     var size = MediaQuery.of(context).size;
     return Container(

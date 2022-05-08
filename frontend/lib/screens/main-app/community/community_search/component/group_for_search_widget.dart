@@ -12,12 +12,12 @@ Widget groupForSearchWidget (GroupActivity group, context) {
       height: size.height * 0.15,
       decoration: BoxDecoration(
         color: textLight,
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
         boxShadow: [
           BoxShadow(
             color: grey.withOpacity(0.3),
             blurRadius: 3,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           )
         ]
       ),
@@ -45,7 +45,7 @@ Widget groupForSearchWidget (GroupActivity group, context) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(group.groupName.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
+                  Text(group.groupName.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
                   SizedBox(height: size.height * 0.01,),
                   RichText(
                       text: TextSpan(
@@ -53,7 +53,7 @@ Widget groupForSearchWidget (GroupActivity group, context) {
                       children: [
                         const WidgetSpan(child: Icon(Icons.person_rounded, color: grey,)),
                         WidgetSpan(child: SizedBox(width: size.width * 0.01,),),
-                        TextSpan(text: group.groupName.member.toString(), style: TextStyle(fontSize: 16),)
+                        TextSpan(text: group.groupName.member.toString(), style: const TextStyle(fontSize: 16),)
                       ]
                     )
                   )

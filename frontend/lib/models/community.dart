@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Community {
   final String name, image;
   final int id, member;

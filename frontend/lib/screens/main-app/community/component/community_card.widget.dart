@@ -11,7 +11,7 @@ import 'package:flutter_application_1/theme/index.dart';
         print("group");
         Navigator.push(context,
           CupertinoPageRoute(builder: (context) {
-            // NOTE: click each card to go to chat room
+            // NOTE: click and then go to each commumity group
             return GroupActivityScreen(groupActivity: data,);
           })
         );
@@ -21,7 +21,6 @@ import 'package:flutter_application_1/theme/index.dart';
           Container(
             width: size.width * 0.25,
             decoration: BoxDecoration(
-              // color: primaryLight,
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
                 image: AssetImage(data.groupName.image),

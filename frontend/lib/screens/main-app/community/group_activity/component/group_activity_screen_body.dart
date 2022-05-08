@@ -56,6 +56,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
             itemCount: newsLists.length,
             separatorBuilder: (BuildContext context, int index) { return SizedBox(height: size.height * 0.03,); },
             itemBuilder: (context, index) {
+              // list of news card in group
               return groupNewsCard(newsLists[index], context);
             }
           ),

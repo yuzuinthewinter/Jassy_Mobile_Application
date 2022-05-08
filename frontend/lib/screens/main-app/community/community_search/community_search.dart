@@ -7,7 +7,7 @@ class CommunitySearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       extendBodyBehindAppBar: true,
       appBar: BackAndCloseAppBar(text: "ค้นหากลุ่ม",),
       body: CommunitySearchBody(),
