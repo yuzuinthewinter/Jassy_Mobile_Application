@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/calculate/cal_age.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/desc_tabbar.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -107,7 +108,11 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                               ' ' +
                                               widget.user['name']['lastname']),
                                       const TextSpan(text: ", "),
-                                      TextSpan(text: widget.user['birthDate'])
+                                      TextSpan(
+                                          text: calculateAge(DateTime.parse(
+                                                  widget.user['birthDate']
+                                                      .toString()))
+                                              .toString())
                                     ]),
                               ),
                               SizedBox(height: size.height * 0.01),
