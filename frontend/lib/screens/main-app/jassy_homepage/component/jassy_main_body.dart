@@ -39,12 +39,13 @@ class _JassyMainBodyState extends State<JassyMainBody> {
     _pageController.dispose();
   }
 
-  likeUser(userid) {
-    users.doc(currentUser!.uid).update({
-      'liked': FieldValue.arrayUnion([userid]), //like โดย
+  likeUser(userid) async {
+    await users.doc(currentUser!.uid).update({
+      'liked': FieldValue.arrayUnion([userid]), //current user like ใคร
     });
-    users.doc(userid).update({
-      'likesby': FieldValue.arrayUnion([currentUser!.uid]), //like โดย
+    await users.doc(userid).update({
+      'likesby':
+          FieldValue.arrayUnion([currentUser!.uid]), //like โดย current user
     });
   }
 
@@ -91,8 +92,8 @@ class _JassyMainBodyState extends State<JassyMainBody> {
     );
   }
 
-  Widget carouselView(user, int index) {
-    return carouselCard(user[index]);
+  Widget carouselView(users, int index) {
+    return carouselCard(users[index]);
   }
 
   // Widget carouselCard(MainUser data) {

@@ -28,7 +28,6 @@ class App extends StatefulWidget {
 }
 
 class _AppScreen extends State<App> {
-
   final Future _calculation = Future.delayed(
     const Duration(seconds: 2),
     () => 'Data Loaded',

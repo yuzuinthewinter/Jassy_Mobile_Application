@@ -31,7 +31,7 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               prefixIcon: SvgPicture.asset(
-                'assets/icons/search.svg',
+                'assets/icons/search_input.svg',
                 height: 16,
               ),
               hintText: 'ค้นหา',

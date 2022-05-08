@@ -48,6 +48,10 @@ dependencies:
   http: ^0.13.4
   flutter_offline: "^2.1.0"
   intl: ^0.17.0
+  like_button: ^2.0.4
+  keyboard_actions: ^3.4.7
+  image_picker: ^0.8.5
+  image_cropper: ^2.0.2
 
   # firebase
   firebase_storage: ^10.2.12

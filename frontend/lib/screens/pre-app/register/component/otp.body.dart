@@ -102,6 +102,8 @@ class _BodyState extends State<Body> {
           'isShowActive': true,
           'isActive': false,
           'isAuth': false,
+          'likesby': const [],
+          'liked': const [],
         });
         Navigator.of(context).pushNamed(Routes.RegisterProfile);
       }
