@@ -6,9 +6,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
+import 'package:flutter_application_1/component/popup_page/popup_no_button/success_popup_no_button.dart';
+import 'package:flutter_application_1/component/popup_page/popup_with_button/success_popup_with_button.dart';
+import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/screens/admin/Users/component/user_card.dart';
+import 'package:flutter_application_1/screens/admin/Users/component/user_info.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_card.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -29,6 +33,7 @@ class UserScreenBody extends StatefulWidget {
 class _UserScreenBody extends State<UserScreenBody> {
   var currentUser = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
+  bool isToggleShowUser = false;
 
   getDifferance(timestamp) {
     DateTime now = DateTime.now();
@@ -88,7 +93,7 @@ class _UserScreenBody extends State<UserScreenBody> {
           ),
         ),
         SizedBox(
-          height: size.height,
+          height: size.height * 0.6,
           width: size.width,
           child: StreamBuilder<QuerySnapshot>(
             //call all user
@@ -118,13 +123,13 @@ class _UserScreenBody extends State<UserScreenBody> {
                       Container(
                         // margin:
                         // EdgeInsets.symmetric(horizontal: size.width * 0.13),
-                        // padding: EdgeInsets.symmetric(
-                        //     horizontal: size.height * 0.025),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: size.height * 0.01),
                         width: size.width,
                         height: size.height * 0.05,
                         decoration: BoxDecoration(
                             color: textLight,
-                            borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(15)),
                         child: Column(children: [
                           UserCard(
                             size: size,
@@ -137,8 +142,13 @@ class _UserScreenBody extends State<UserScreenBody> {
                                       : greyDark
                                   : textLight,
                             ),
-                            text:
-                                '${data[index]['name']['firstname'].toString()} ${data[index]['name']['lastname'].toString()}',
+                            text: data[index]['name']['firstname'].toString() ==
+                                        '' &&
+                                    data[index]['name']['lastname']
+                                            .toString() ==
+                                        ''
+                                ? '-'
+                                : '${data[index]['name']['firstname'].toString()} ${data[index]['name']['lastname'].toString()}',
                             reportIcon: IconButton(
                               onPressed: () {},
                               icon: Icon(data[index]['reportCount'] < 5
@@ -150,12 +160,18 @@ class _UserScreenBody extends State<UserScreenBody> {
                                       ? tertiary
                                       : textLight,
                             ),
-                            onTab: () {},
+                            onTab: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    UserInfoPage(data[index]),
+                              );
+                            },
                           ),
                         ]),
                       ),
                       SizedBox(
-                        height: size.height * 0.03,
+                        height: size.height * 0.015,
                       ),
                     ]
                         // Text(data[index]['name'].toString());

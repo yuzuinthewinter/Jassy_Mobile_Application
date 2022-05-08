@@ -32,7 +32,7 @@ class _AdminJassyHomeState extends State<AdminJassyHome>
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //set default navigator
-  int _currentIndex = 3;
+  int _currentIndex = 1;
   final screens = [
     const DashboardScreen(),
     const UserScreen(),
@@ -70,11 +70,9 @@ class _AdminJassyHomeState extends State<AdminJassyHome>
                           label: 'ข้อมูล',
                         ),
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.people_alt),
-                            label: 'ผู้ใช้งาน'),
+                            icon: Icon(Icons.people_alt), label: 'ผู้ใช้งาน'),
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.security),
-                            label: 'จัดการระบบ'),
+                            icon: Icon(Icons.security), label: 'ผู้ดูแลระบบ'),
                         BottomNavigationBarItem(
                             icon: Icon(Icons.settings), label: 'ตั้งค่า')
                       ]),

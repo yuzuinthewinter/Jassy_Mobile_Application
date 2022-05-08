@@ -7,6 +7,7 @@ import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/main-app/profile/app_setting/app_setting.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_body.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
+import 'package:flutter_application_1/screens/main-app/profile/component/profile_picture_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -37,58 +38,95 @@ class SettingScreen extends StatelessWidget {
       appBar: NoActionAppBar(
         text: "การตั้งค่า",
       ),
-      body: Column(children: [
-        SizedBox(
-          height: size.height * 0.4,
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
-          padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
-          width: size.width,
-          height: size.height * 0.2,
-          decoration: BoxDecoration(
-              color: textLight, borderRadius: BorderRadius.circular(20)),
-          child: Column(children: [
-            ProfileMenu(
-              size: size,
-              icon: SvgPicture.asset("assets/icons/app_setting_icon.svg"),
-              text: 'AppSetting'.tr,
-              onTab: () {
-                // Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                //   return const AppSetting();
-                // }));
-              },
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('Users')
+            .where('uid', isEqualTo: currentUser!.uid)
+            .snapshots(includeMetadataChanges: true),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text('Something went wrong');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          var user = snapshot.data!.docs[0];
+          return Column(children: [
+            ProfilePictureWidget(size: size, user: user),
+            SizedBox(
+              height: size.height * 0.01,
             ),
-            ProfileMenu(
-              size: size,
-              icon: SvgPicture.asset("assets/icons/about_jassy_icon.svg"),
-              text: "เกี่ยวกับแจสซี่",
-              onTab: () {},
+            Text(
+              user['name']['firstname'].toString() +
+                  ' ' +
+                  user['name']['lastname'].toString(),
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'kanit',
+                  fontWeight: FontWeight.w600),
             ),
-            Expanded(
-                child: InkWell(
-              child: Row(
-                children: [
-                  SvgPicture.asset("assets/icons/log_out_icon.svg"),
-                  SizedBox(
-                    width: size.width * 0.03,
+            Text(
+              'Administrator',
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'kanit',
+                  fontWeight: FontWeight.w400),
+            ),
+            SizedBox(
+              height: size.height * 0.04,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
+              padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
+              width: size.width,
+              height: size.height * 0.2,
+              decoration: BoxDecoration(
+                  color: textLight, borderRadius: BorderRadius.circular(20)),
+              child: Column(children: [
+                ProfileMenu(
+                  size: size,
+                  icon: SvgPicture.asset("assets/icons/app_setting_icon.svg"),
+                  text: 'AppSetting'.tr,
+                  onTab: () {
+                    // Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                    //   return const AppSetting();
+                    // }));
+                  },
+                ),
+                ProfileMenu(
+                  size: size,
+                  icon: SvgPicture.asset("assets/icons/about_jassy_icon.svg"),
+                  text: "เกี่ยวกับแจสซี่",
+                  onTab: () {},
+                ),
+                Expanded(
+                    child: InkWell(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset("assets/icons/log_out_icon.svg"),
+                      SizedBox(
+                        width: size.width * 0.03,
+                      ),
+                      Text(
+                        "ออกจากระบบ",
+                        style: TextStyle(color: textMadatory),
+                      ),
+                      Spacer(),
+                      // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
+                    ],
                   ),
-                  Text(
-                    "ออกจากระบบ",
-                    style: TextStyle(color: textMadatory),
-                  ),
-                  Spacer(),
-                  // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
-                ],
-              ),
-              onTap: () async {
-                signOut();
-                Navigator.pushNamed(context, Routes.LandingPage);
-              },
-            ))
-          ]),
-        ),
-      ]),
+                  onTap: () async {
+                    signOut();
+                    Navigator.pushNamed(context, Routes.LandingPage);
+                  },
+                ))
+              ]),
+            ),
+          ]);
+        },
+      ),
     );
   }
 }

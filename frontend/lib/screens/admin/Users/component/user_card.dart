@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+enum MenuItem { item1, item2, item3 }
+
 class UserCard extends StatelessWidget {
   final String text;
   final VoidCallback onTab;
@@ -29,11 +31,14 @@ class UserCard extends StatelessWidget {
           SizedBox(
             width: size.width * 0.03,
           ),
-          Text(text),
+          Text(
+            text,
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+          ),
           reportIcon,
           Spacer(),
           Icon(
-            Icons.arrow_forward_ios,
+            Icons.more_vert_rounded,
             size: 20,
             color: primaryColor,
           )

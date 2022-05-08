@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/appbar/chat_selected_appbar.dart';
 import 'package:flutter_application_1/component/appbar/main_appbar.dart';
 import 'package:flutter_application_1/component/appbar/noaction_appbar.dart';
+import 'package:flutter_application_1/screens/admin/Admin/component/admin_screen_body.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_body.dart';
 
 class AdminScreen extends StatelessWidget {
@@ -12,9 +13,9 @@ class AdminScreen extends StatelessWidget {
     return const Scaffold(
       extendBodyBehindAppBar: true,
       appBar: NoActionAppBar(
-        text: "การจัดการระบบ",
+        text: "การจัดการผู้ดูแลระบบ",
       ),
-      // body: AdminScreenBody(),
+      body: AdminScreenBody(),
     );
   }
 }
