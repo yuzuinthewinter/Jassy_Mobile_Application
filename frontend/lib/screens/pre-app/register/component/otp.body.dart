@@ -97,6 +97,7 @@ class _BodyState extends State<Body> {
           'faceRegPic': const [],
           'profilePic': const [],
           'chats': const [],
+          'isShowActive': true,
           'isActive': false,
           'isAuth': false,
         });

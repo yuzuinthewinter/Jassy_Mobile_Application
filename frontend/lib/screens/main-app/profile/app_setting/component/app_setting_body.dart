@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/change_languages_button.dart';
@@ -7,7 +9,8 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
 
 class AppSettingBody extends StatefulWidget {
-  const AppSettingBody({Key? key}) : super(key: key);
+  final user;
+  const AppSettingBody(this.user, {Key? key}) : super(key: key);
 
   @override
   State<AppSettingBody> createState() => _AppSettingBodyState();
@@ -16,6 +19,9 @@ class AppSettingBody extends StatefulWidget {
 class _AppSettingBodyState extends State<AppSettingBody> {
   bool online = true;
   bool notification = true;
+
+  var currentUser = FirebaseAuth.instance.currentUser;
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +83,16 @@ class _AppSettingBodyState extends State<AppSettingBody> {
         child: CupertinoSwitch(
           activeColor: primaryColor,
           value: online,
-          onChanged: (value) => setState(() => online = value),
+          onChanged: (value) async {
+            setState(() => online = value);
+            if (value == false) {
+              //popup
+            }
+            await users.doc(currentUser!.uid).update({
+              'isShowActive': value,
+              'timeStamp': DateTime.now(),
+            });
+          },
         ),
       );
 
