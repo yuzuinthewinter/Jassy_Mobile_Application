@@ -43,6 +43,9 @@ class _BodyState extends State<ConversationText> {
           return const Center(child: CircularProgressIndicator());
         }
         var data = snapshot.data!.docs;
+        if (data.isEmpty) {
+          return Center(child: Text(data.toString()));
+        }
         if (data[0]['messages'].isEmpty) {
           return const Center(child: Text('Let\'s start conversation'));
         }

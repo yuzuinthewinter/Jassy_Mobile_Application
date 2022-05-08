@@ -38,18 +38,45 @@ class _JassyMainBodyState extends State<JassyMainBody> {
     _pageController.dispose();
   }
 
-  likeUser(userid) {
-    users.doc(currentUser!.uid).update({
-      'liked': FieldValue.arrayUnion([userid]), //like โดย
+  likeUser(userid) async {
+    await users.doc(currentUser!.uid).update({
+      'liked': FieldValue.arrayUnion([userid]), //current user like ใคร
     });
-    users.doc(userid).update({
-      'likesby': FieldValue.arrayUnion([currentUser!.uid]), //like โดย
+    await users.doc(userid).update({
+      'likesby':
+          FieldValue.arrayUnion([currentUser!.uid]), //like โดย current user
     });
-    removeUserafterLike();
   }
 
-  removeUserafterLike() {
-    
+  getListUser(list) async {
+    //TODO: remove user that liked or likes by
+    var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
+    var snapshot = await queryUser.get();
+    final data = snapshot.docs[0];
+
+    List listUser = [];
+    for (var getuser in list) {
+      if (getuser['isAuth'] == true) {
+        listUser.addAll({getuser});
+      }
+    }
+    if (listUser.isNotEmpty) {
+      for (var getuser in listUser) {
+        if (getuser['likesby'].isNotEmpty) {
+          for (var uid in getuser['likesby']) {
+            print(uid);
+            listUser.removeWhere((uid) => uid == currentUser!.uid);
+          }
+        }
+        if (getuser['liked'].isNotEmpty) {
+          for (var uid in getuser['liked']) {
+            print(uid);
+            listUser.removeWhere((uid) => uid == currentUser!.uid);
+          }
+        }
+      }
+      print(listUser);
+    }
   }
 
   @override
@@ -61,7 +88,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
           stream: FirebaseFirestore.instance
               .collection('Users')
               .where('uid', isNotEqualTo: currentUser!.uid)
-              .snapshots(includeMetadataChanges: true),
+              .snapshots(includeMetadataChanges: false),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Text('Something went wrong');
@@ -71,11 +98,18 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                 child: CircularProgressIndicator(),
               );
             }
-            var user = snapshot.data!.docs;
+            var data = snapshot.data!.docs;
+            var listUser = getListUser(data);
+
+            if (listUser.isEmpty) {
+              return const Center(
+                child: Text('Invites you friend to join community'),
+              );
+            }
             return CarouselSlider.builder(
-              itemCount: user.length,
+              itemCount: listUser.length,
               itemBuilder: (context, index, child) {
-                return carouselView(user, index);
+                return carouselView(listUser, index);
               },
               options: CarouselOptions(
                 // height: size.height * 0.70,
@@ -90,8 +124,8 @@ class _JassyMainBodyState extends State<JassyMainBody> {
     );
   }
 
-  Widget carouselView(user, int index) {
-    return carouselCard(user[index]);
+  Widget carouselView(users, int index) {
+    return carouselCard(users[index]);
   }
 
   // Widget carouselCard(MainUser data) {
@@ -136,9 +170,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                 child: Align(
                     alignment: Alignment.topRight,
                     child: InkWell(
-                        onTap: () {
-                          
-                        },
+                        onTap: () {},
                         child: SvgPicture.asset(
                             "assets/icons/close_circle.svg")))),
             Column(
@@ -200,7 +232,9 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                       size: 20,
                                       color: textLight,
                                     )),
-                                    TextSpan(text: user['language']['interestedLanguage']),
+                                    TextSpan(
+                                        text: user['language']
+                                            ['interestedLanguage']),
                                   ]),
                             ),
                           ],

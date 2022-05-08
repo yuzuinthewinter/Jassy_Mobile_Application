@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/calculate/cal_age.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/models/user.dart';
+import 'package:flutter_application_1/screens/main-app/chat/message_screen.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/detail_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -34,11 +36,13 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
     QuerySnapshot querySnapshot = await queryChat.get();
     // ignore: prefer_typing_uninitialized_variables
     var getChat;
+    var getChatid;
     for (var doc in querySnapshot.docs) {
       var getdata = doc['chatid'];
       var queryfromUser = users.where('chats', arrayContains: getdata);
       QuerySnapshot querySnap = await queryfromUser.get();
       getChat = querySnap.docs;
+      getChatid = getdata;
     }
     final allData;
     if (getChat == null) {
@@ -64,6 +68,22 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
         });
       }
     }
+    var user = users.where('uid', isEqualTo: userid);
+    var snapshot = await user.get();
+    final data = snapshot.docs[0];
+
+    var thisUser = users.where('uid', isEqualTo: currentUser!.uid);
+    var snapshotUser = await thisUser.get();
+    final userData = snapshotUser.docs[0];
+
+    Navigator.push(context, CupertinoPageRoute(builder: (context) {
+      // NOTE: click each card to go to chat room
+      return ChatRoom(
+        chatid: getChatid,
+        user: data,
+        currentUser: userData,
+      );
+    }));
   }
 
   @override
