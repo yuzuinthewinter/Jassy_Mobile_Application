@@ -24,6 +24,14 @@ class _AppSettingBodyState extends State<AppSettingBody> {
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
   @override
+  void initState() {
+    if (widget.user['isShowActive'] != true) {
+      online = widget.user['isShowActive'];
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
