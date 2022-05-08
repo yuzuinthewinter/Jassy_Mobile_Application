@@ -7,6 +7,7 @@ import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/main-app/community/community_search/community_search.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/community_card.widget.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/news_card_widget.dart';
+import 'package:flutter_application_1/screens/main-app/community/my_group/my_group.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -60,10 +61,18 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.03, vertical: size.height * 0.01),
           child: Row(
-            children: const [
-              Text("ข่าวสาร", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
-              Spacer(),
-              Text("กลุ่มของฉัน", style: TextStyle(fontSize: 16, color: primaryColor,)),
+            children: [
+              const Text("ข่าวสาร", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
+              const Spacer(),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) {
+                    return const MyGroup();
+                  }));
+                },
+                child: const Text("กลุ่มของฉัน", style: TextStyle(fontSize: 16, color: primaryColor,))
+              ),
             ]
           ),
         ),
