@@ -4,10 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/curved_widget.dart';
+import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/screens/admin/Users/component/user_card.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_card.dart';
+import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 // NOTE: chat card in all chat page show name lastest message and unread notification
@@ -30,12 +36,17 @@ class _UserScreenBody extends State<UserScreenBody> {
     Duration diff = now.difference(lastActive);
     var timeMin = diff.inMinutes;
     var timeHour = diff.inHours;
-    if (diff.inMinutes < 3) {
+    var timeDay = diff.inDays;
+    if (timeMin < 3) {
       return 'Active a few minutes ago';
-    } else if (diff.inMinutes < 60) {
+    } else if (timeMin < 60) {
       return 'Active ${timeMin.toString()} minutes ago';
-    } else {
+    } else if (timeHour < 24) {
       return 'Active ${timeHour.toString()}h ago';
+    } else if (timeDay < 3) {
+      return 'Active ${timeDay.toString()}d ago';
+    } else {
+      return '';
     }
   }
 
@@ -45,11 +56,39 @@ class _UserScreenBody extends State<UserScreenBody> {
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
-        SizedBox(
-          height: size.height * 0.2,
-        ),
+        const CurvedWidget(child: JassyGradientColor()),
         Container(
-          height: size.height * 0.5,
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+          child: TextFormField(
+            // controller: passwordController,
+            // obscureText: isHiddenPassword,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              prefixIcon: SvgPicture.asset(
+                'assets/icons/search.svg',
+                height: 16,
+              ),
+              hintText: 'ค้นหา',
+              filled: true,
+              fillColor: textLight,
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(40),
+                  borderSide: const BorderSide(color: textLight, width: 0.0)),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40.0),
+                borderSide: const BorderSide(color: textLight),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40.0),
+                borderSide: const BorderSide(color: textLight),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: size.height,
           width: size.width,
           child: StreamBuilder<QuerySnapshot>(
             //call all user
@@ -70,83 +109,58 @@ class _UserScreenBody extends State<UserScreenBody> {
                 return const Center(child: Text(''));
               }
               return ListView.builder(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 20.0),
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context, int index) {
-                  var data = snapshot.data!.docs;
-                  return InkWell(
-                    onTap: () {
-                      // Navigator.push(context,
-                      // CupertinoPageRoute(builder: (context) {
-                      // NOTE: click each card to go to chat room
-                      // return ChatRoom(
-                      //   chatid: chat['chatid'],
-                      //   user: user,
-                      // );
-                      // }));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Stack(
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: !data[index]['profilePic']
-                                        .isEmpty
-                                    ? NetworkImage(data[index]['profilePic'][0])
-                                    : const AssetImage(
-                                            "assets/images/header_img1.png")
-                                        as ImageProvider,
-                                radius: 33,
-                              ),
-                              data[index]['isActive'] == true
-                                  ? Positioned(
-                                      right: 3,
-                                      bottom: 3,
-                                      child: Container(
-                                        height: 16,
-                                        width: 16,
-                                        decoration: BoxDecoration(
-                                            color: onlineColor,
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor)),
-                                      ),
-                                    )
-                                  : const Text(''),
-                            ],
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 20.0),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, int index) {
+                    var data = snapshot.data!.docs;
+                    return Column(children: [
+                      Container(
+                        // margin:
+                        // EdgeInsets.symmetric(horizontal: size.width * 0.13),
+                        // padding: EdgeInsets.symmetric(
+                        //     horizontal: size.height * 0.025),
+                        width: size.width,
+                        height: size.height * 0.05,
+                        decoration: BoxDecoration(
+                            color: textLight,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Column(children: [
+                          UserCard(
+                            size: size,
+                            icon: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.verified_rounded),
+                              color: data[index]['isAuth'] == true
+                                  ? data[index]['reportCount'] < 5
+                                      ? primaryColor
+                                      : greyDark
+                                  : textLight,
+                            ),
+                            text:
+                                '${data[index]['name']['firstname'].toString()} ${data[index]['name']['lastname'].toString()}',
+                            reportIcon: IconButton(
+                              onPressed: () {},
+                              icon: Icon(data[index]['reportCount'] < 5
+                                  ? Icons.report_problem_rounded
+                                  : Icons.cancel_rounded),
+                              color: data[index]['reportCount'] < 3
+                                  ? textLight
+                                  : data[index]['reportCount'] < 5
+                                      ? tertiary
+                                      : textLight,
+                            ),
+                            onTab: () {},
                           ),
-                          Expanded(
-                              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              HeaderText(
-                                  text: data[index]['name']['firstname']
-                                          .toString() +
-                                      ' ' +
-                                      data[index]['name']['lastname']
-                                          .toString()),
-                              DescriptionText(
-                                text: getDifferance(data[index]['timeStamp']),
-                              )
-                            ],
-                          )),
-                          // Text(
-                          //   // chat['lastTimestamp']
-                          //   getDifferance(data[index]['timeStamp']),
-                          //   style:
-                          //       const TextStyle(fontSize: 12, color: greyDark),
-                          // )
-                        ],
+                        ]),
                       ),
-                    ),
-                  );
-                  // Text(data[index]['name'].toString());
-                },
-              );
+                      SizedBox(
+                        height: size.height * 0.03,
+                      ),
+                    ]
+                        // Text(data[index]['name'].toString());
+                        );
+                  });
             },
           ),
         ),

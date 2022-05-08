@@ -94,6 +94,8 @@ class _BodyState extends State<Body> {
             'levelInterestedLanguage': '',
           },
           'desc': '',
+          'userStatus': 'user',
+          'reportCount': 0,
           'faceRegPic': const [],
           'profilePic': const [],
           'chats': const [],

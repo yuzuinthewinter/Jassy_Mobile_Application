@@ -54,9 +54,9 @@ class SettingScreen extends StatelessWidget {
               icon: SvgPicture.asset("assets/icons/app_setting_icon.svg"),
               text: 'AppSetting'.tr,
               onTab: () {
-                Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                  return const AppSetting();
-                }));
+                // Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                //   return const AppSetting();
+                // }));
               },
             ),
             ProfileMenu(
