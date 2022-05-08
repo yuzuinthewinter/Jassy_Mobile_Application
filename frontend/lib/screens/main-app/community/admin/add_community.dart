@@ -198,22 +198,23 @@ class _NewCommunityState extends State<AddNewCommunity> {
                             SizedBox(
                               height: size.height * 0.01,
                             ),
-                            pickedFile != null
-                                ? Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Container(
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: pickedFile != null
+                                      ? Container(
                                           child: Text(
                                             pickedFile!.name,
                                             style: TextStyle(color: grey),
                                           ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : SizedBox(
-                                    height: size.height * 0.14,
-                                  ),
+                                        )
+                                      : Container(height: 3),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: size.height * 0.14,
+                            ),
                             Center(
                               child: RoundButton(
                                 text: "สร้างชุมชน",
