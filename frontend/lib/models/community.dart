@@ -74,66 +74,72 @@ class News {
   final String writer, news;
   final List comment, image;
   final int like;
-  // final DateTime date;
+  final DateTime date;
 
   News({
     required this.groupName,
-    this.writer = '',
+    this.writer = 'Nutchapa',
     this.news = '',
     this.comment = const [],
     this.image = const [],
     this.like = 0,
-    // required this.date,
+    required this.date,
   });
 }
 
 List<News> newsLists = [
   News(
-    writer: "",
-    news: "",
+    writer: "Nutchapa",
+    news: "อากาศที่ไทยวันนี้ดีมากค่ะ",
     comment: [],
     image: [],
     like: 100,
     groupName: thai,
+    date: DateTime.now(),
   ),
   News(
-    writer: "",
-    news: "",
+    writer: "Nutchapa",
+    news: "how to say hello in korean ?",
     comment: [],
     image: [],
     like: 100,
     groupName: korean,
+    date: DateTime.now(),
   ),
   News(
-    writer: "",
-    news: "",
+    writer: "Nutchapa",
+    news: "fuck you แปลว่าอะไรคะ",
     comment: [],
     image: [],
     like: 100,
     groupName: english,
+    date: DateTime.now(),
   ),
   News(
-    writer: "",
+    writer: "Nutchapa",
     news: "",
     comment: [],
     image: [],
     like: 100,
     groupName: indonesia,
+    date: DateTime.now(),
   ),
   News(
-    writer: "",
-    news: "",
+    writer: "Nutchapa",
+    news: "how to say Thank you in korean ?",
     comment: [],
     image: [],
     like: 100,
     groupName: korean,
+    date: DateTime.now(),
   ),
   News(
-    writer: "",
-    news: "",
+    writer: "Nutchapa",
+    news: "พรุ่งนี้ภาษาอังกฤษคือไรคะ",
     comment: [],
     image: [],
     like: 100,
     groupName: english,
+    date: DateTime.now(),
   ),
 ];
