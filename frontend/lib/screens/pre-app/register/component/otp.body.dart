@@ -72,7 +72,11 @@ class _BodyState extends State<Body> {
           'isActive': true,
           'timeStamp': DateTime.now(),
         });
-        Navigator.of(context).pushNamed(Routes.JassyHome);
+        if (data['userStatus'] == 'admin') {
+          Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+        } else {
+          Navigator.of(context).pushNamed(Routes.JassyHome);
+        }
       } else {
         await users.doc(currentUser.uid).set({
           'uid': currentUser.uid,

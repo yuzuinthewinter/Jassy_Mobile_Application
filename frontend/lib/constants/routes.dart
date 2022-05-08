@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
+import 'package:flutter_application_1/screens/admin/main.dart';
 import 'package:flutter_application_1/screens/main-app/chat/chat_screen.dart';
 import 'package:flutter_application_1/screens/main-app/main.dart';
 import 'package:flutter_application_1/screens/pre-app/landing/landing_page.dart';
@@ -31,6 +32,7 @@ class Routes extends RouteGenerator {
   static const String LandingPage = '/LandingPage';
   static const String JassyHome = '/JassyHome';
   static const String ChatScreen = '/ChatScreen';
+  static const String AdminJassyHome = '/AdminJassyHome';
 }
 
 class RouteGenerator {
@@ -70,6 +72,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const JassyHome());
       case Routes.ChatScreen:
         return MaterialPageRoute(builder: (_) => const ChatScreen());
+
+      case Routes.AdminJassyHome:
+        return MaterialPageRoute(builder: (_) => const AdminJassyHome());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
