@@ -78,6 +78,7 @@ class _BodyState extends State<MessageInput> {
             ),
             Expanded(
                 child: TextField(
+              maxLines: null,
               controller: messageController,
               textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
