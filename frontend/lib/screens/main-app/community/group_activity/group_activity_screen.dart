@@ -6,7 +6,7 @@ import 'package:flutter_application_1/screens/main-app/community/group_activity/
 import 'package:flutter_application_1/theme/index.dart';
 
 class GroupActivityScreen extends StatelessWidget {
-  final GroupActivity groupActivity;
+  final groupActivity;
   const GroupActivityScreen({ Key? key, required this.groupActivity }) : super(key: key);
 
   @override

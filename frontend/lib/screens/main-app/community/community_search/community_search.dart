@@ -4,7 +4,8 @@ import 'package:flutter_application_1/screens/main-app/community/community_searc
 
 class CommunitySearch extends StatelessWidget {
   final user;
-  CommunitySearch(this.user, {Key? key}) : super(key: key);
+  final groups;
+  CommunitySearch(this.user, this.groups, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class CommunitySearch extends StatelessWidget {
       appBar: BackAndCloseAppBar(
         text: "ค้นหากลุ่ม",
       ),
-      body: CommunitySearchBody(user),
+      body: CommunitySearchBody(user, groups),
     );
   }
 }

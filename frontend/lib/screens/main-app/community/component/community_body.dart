@@ -18,7 +18,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class CommunityScreenBody extends StatefulWidget {
   final user;
-  const CommunityScreenBody(this.user, {Key? key}) : super(key: key);
+  final community;
+  const CommunityScreenBody(this.user, this.community, {Key? key})
+      : super(key: key);
 
   @override
   State<CommunityScreenBody> createState() => _CommunityScreenBodyState();
@@ -58,7 +60,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                   )),
               onTap: () {
                 Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                  return CommunitySearch(widget.user);
+                  return CommunitySearch(widget.user, widget.community);
                 }));
               },
             ),
@@ -70,14 +72,14 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
             height: size.height * 0.1,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: groupLists.length,
+              itemCount: widget.community.length,
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(
                   width: size.width * 0.05,
                 );
               },
               itemBuilder: (context, index) {
-                return communityCard(groupLists[index], context);
+                return communityCard(widget.community[index], context);
               },
             ),
           ),
@@ -85,8 +87,67 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
         SizedBox(
           height: size.height * 0.03,
         ),
-        widget.user['userStatus'] == 'admin'
+        Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.03,
+                    vertical: size.height * 0.01),
+                child: widget.user['userStatus'] == 'user'
             ? Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.03,
+                          vertical: size.height * 0.01),
+                      child: Row(children: [
+                        const Text(
+                          "ข่าวสาร",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w700),
+                        ),
+                        const Spacer(),
+                        widget.user['userStatus'] == 'user'
+                            ? InkWell(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      CupertinoPageRoute(builder: (context) {
+                                    return MyGroup(widget.community, widget.user);
+                                  }));
+                                },
+                                child: const Text("กลุ่มของฉัน",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: primaryColor,
+                                    )))
+                            : Container(
+                                width: 1,
+                              ),
+                      ]),
+                    ),
+                    // Todo: isEmpty show NoNewsWidget
+                    // NoNewsWidget(
+                    //   headText: "ยังไม่มีข่าวสารสำหรับคุณ",
+                    //   descText: "เริ่มเข้ากลุ่มเพื่อรับข่าวสารและแลกเปลี่ยนกันเถอะ !",
+                    //   size: size
+                    // )
+                    SizedBox(
+                      width: size.width,
+                      height: size.height * 0.46,
+                      child: ListView.separated(
+                          padding: EdgeInsets.only(top: size.height * 0.02),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: newsLists.length,
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(
+                              height: size.height * 0.03,
+                            );
+                          },
+                          itemBuilder: (context, index) {
+                            return newsCard(newsLists[index], context);
+                          }),
+                    )
+                  ],
+                ) :Column(
                 children: [
                   SizedBox(
                     height: size.height * 0.04,
@@ -127,7 +188,8 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                         onTab: () {
                           Navigator.push(context,
                               CupertinoPageRoute(builder: (context) {
-                            return ManageCommunity(widget.user);
+                            return ManageCommunity(
+                                widget.user, widget.community);
                           }));
                         },
                       ),
@@ -174,60 +236,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                   ),
                 ],
               )
-            : Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.03,
-                        vertical: size.height * 0.01),
-                    child: Row(children: [
-                      const Text(
-                        "ข่าวสาร",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w700),
-                      ),
-                      const Spacer(),
-                      widget.user['userStatus'] == 'user'
-                          ? InkWell(
-                              onTap: () {
-                                Navigator.push(context,
-                                    CupertinoPageRoute(builder: (context) {
-                                  return const MyGroup();
-                                }));
-                              },
-                              child: const Text("กลุ่มของฉัน",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: primaryColor,
-                                  )))
-                          : Container(
-                              width: 1,
-                            ),
-                    ]),
-                  ),
-                  // Todo: isEmpty show NoNewsWidget
-                  // NoNewsWidget(
-                  //   headText: "ยังไม่มีข่าวสารสำหรับคุณ",
-                  //   descText: "เริ่มเข้ากลุ่มเพื่อรับข่าวสารและแลกเปลี่ยนกันเถอะ !",
-                  //   size: size
-                  // )
-                  Expanded(
-                    child: ListView.separated(
-                        padding: EdgeInsets.only(top: size.height * 0.02),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: newsLists.length,
-                        separatorBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            height: size.height * 0.03,
-                          );
-                        },
-                        itemBuilder: (context, index) {
-                          return newsCard(newsLists[index], context);
-                        }),
-                  )
-                ],
-              )
+              ),
       ],
     );
   }

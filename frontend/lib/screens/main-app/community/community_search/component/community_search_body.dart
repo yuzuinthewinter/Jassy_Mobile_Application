@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
@@ -10,7 +11,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class CommunitySearchBody extends StatefulWidget {
   final user;
-  CommunitySearchBody(this.user, {Key? key}) : super(key: key);
+  final groups;
+  CommunitySearchBody(this.user, this.groups, {Key? key}) : super(key: key);
 
   @override
   State<CommunitySearchBody> createState() => _CommunitySearchBodyState();
@@ -19,13 +21,11 @@ class CommunitySearchBody extends StatefulWidget {
 class _CommunitySearchBodyState extends State<CommunitySearchBody> {
   TextEditingController searchController = TextEditingController();
   bool isSearchEmpty = true;
-  late List<GroupActivity> grouplists;
   String query = '';
 
   @override
   void initState() {
     super.initState();
-    grouplists = groupLists;
 
     searchController = TextEditingController();
     searchController.addListener(() {
@@ -92,52 +92,57 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
               ),
-              const Spacer(),
-              widget.user['userStatus'] == 'user'
-                  ? Container(
-                      width: 1,
-                    )
-                  : InkWell(
-                      child: const Text("การจัดการกลุ่ม",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: primaryColor,
-                          )),
-                      onTap: () {
-                        Navigator.push(context,
-                            CupertinoPageRoute(builder: (context) {
-                          return ManageCommunity(widget.user);
-                        }));
-                      },
-                    )
+              // const Spacer(),
+              // widget.user['userStatus'] == 'user'
+              //     ? Container(
+              //         width: 1,
+              //       )
+              //     : InkWell(
+              //         child: const Text("การจัดการกลุ่ม",
+              //             style: TextStyle(
+              //               fontSize: 16,
+              //               color: primaryColor,
+              //             )),
+              //         onTap: () {
+              //           Navigator.push(context,
+              //               CupertinoPageRoute(builder: (context) {
+              //             return ManageCommunity(widget.user, widget.data);
+              //           }));
+              //         },
+              //       )
             ])),
         Expanded(
-            child: ListView.separated(
-                padding: EdgeInsets.only(
-                    top: size.height * 0.01, bottom: size.height * 0.01),
-                scrollDirection: Axis.vertical,
-                itemCount: grouplists.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(
+          child: ListView.builder(
+            padding: EdgeInsets.only(
+                top: size.height * 0.01, bottom: size.height * 0.01),
+            scrollDirection: Axis.vertical,
+            itemCount: widget.groups.length,
+            itemBuilder: (context, index) {
+              final group = widget.groups[index];
+              //todo: check user in group, will not show
+              return Column(
+                children: [
+                  groupForSearchWidget(group, context, widget.user),
+                  SizedBox(
                     height: size.height * 0.03,
-                  );
-                },
-                itemBuilder: (context, index) {
-                  final group = grouplists[index];
-                  return groupForSearchWidget(group, context, widget.user);
-                }))
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
       ],
     );
   }
 
   void searhGroup(String query) {
-    final suggestion = grouplists.where((group) {
-      final groupName = group.groupName.name.toLowerCase();
-      final searchInput = query.toLowerCase();
+    // final suggestion = grouplists.where((group) {
+    //   final groupName = group.groupName.name.toLowerCase();
+    //   final searchInput = query.toLowerCase();
 
-      return groupName.contains(searchInput);
-    }).toList();
+    //   return groupName.contains(searchInput);
+    // }).toList();
 
-    setState(() => grouplists = suggestion);
+    // setState(() => grouplists = suggestion);
   }
 }

@@ -6,12 +6,14 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CommunityAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final text;
   final user;
+  final group;
+  final text;
 
   const CommunityAppBar({
     Key? key,
     this.user,
+    this.group,
     this.text,
   }) : super(key: key);
   @override
@@ -48,7 +50,7 @@ class _CommunityAppBarState extends State<CommunityAppBar> {
         IconButton(
           onPressed: () {
             Navigator.push(context, CupertinoPageRoute(builder: (context) {
-              return CommunitySearch(widget.user);
+              return CommunitySearch(widget.user, widget.group);
             }));
           },
           icon: SvgPicture.asset("assets/icons/search.svg"),

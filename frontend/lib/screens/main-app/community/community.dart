@@ -26,14 +26,35 @@ class CommunityScreen extends StatelessWidget {
             );
           }
           var user = snapshot.data!.docs[0];
-          return Scaffold(
-            extendBodyBehindAppBar: true,
-            appBar: CommunityAppBar(
-              user: user,
-              text: user['userStatus'] == 'user' ? "ชุมชน" : "การจัดการชุมชน",
-            ),
-            body: CommunityScreenBody(user),
-          );
+          return StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('Community')
+                  .snapshots(includeMetadataChanges: true),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('Something went wrong');
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text(''));
+                }
+                var data = snapshot.data!.docs;
+                return Scaffold(
+                  extendBodyBehindAppBar: true,
+                  appBar: CommunityAppBar(
+                    user: user,
+                    group: data,
+                    text: user['userStatus'] == 'user'
+                        ? "ชุมชน"
+                        : "การจัดการชุมชน",
+                  ),
+                  body: CommunityScreenBody(user, data),
+                );
+              });
         });
   }
 }

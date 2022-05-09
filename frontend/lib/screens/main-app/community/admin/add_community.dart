@@ -62,6 +62,9 @@ class _NewCommunityState extends State<AddNewCommunity> {
       'namegroup': commu.namegroup,
       'coverPic': urlImage,
     });
+    await community.doc(docRef.id).update({
+      'groupid': docRef.id,
+    });
   }
 
   late FileImage _image;

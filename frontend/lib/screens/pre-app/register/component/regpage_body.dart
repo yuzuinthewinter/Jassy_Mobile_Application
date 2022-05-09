@@ -62,6 +62,7 @@ class _BodyState extends State<Body> {
         'isShowActive': true,
         'isActive': false,
         'isAuth': false,
+        'groups': const [],
       });
       Navigator.of(context).pushNamed(Routes.RegisterProfile);
     }
@@ -149,6 +150,7 @@ class _BodyState extends State<Body> {
           'isShowActive': true,
           'isActive': false,
           'isAuth': false,
+          'groups': const [],
         });
         Navigator.of(context).pushNamed(Routes.RegisterProfile);
       }

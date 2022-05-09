@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
-class CommunityActivityAppBar extends StatelessWidget implements PreferredSizeWidget {
-
+class CommunityActivityAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   const CommunityActivityAppBar({
     Key? key,
     required this.groupActivity,
   }) : super(key: key);
 
-  final GroupActivity groupActivity;
+  final groupActivity;
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +21,28 @@ class CommunityActivityAppBar extends StatelessWidget implements PreferredSizeWi
       backgroundColor: Colors.transparent,
       title: Column(
         children: [
-          Text(groupActivity.groupName.name, style: TextStyle(fontSize: 18, color: textDark),),
+          Text(
+            groupActivity['namegroup'],
+            style: TextStyle(fontSize: 18, color: textDark),
+          ),
           RichText(
-            text: TextSpan(
-              style: TextStyle(fontSize: 14, color: greyDark, fontFamily: 'kanit'),
-              children: [
-                const WidgetSpan(child: Icon(Icons.person_rounded, color: primaryColor,)),
-                WidgetSpan(child: SizedBox(width: size.width * 0.01,),),
+              text: TextSpan(
+                  style: TextStyle(
+                      fontSize: 14, color: greyDark, fontFamily: 'kanit'),
+                  children: [
+                const WidgetSpan(
+                    child: Icon(
+                  Icons.person_rounded,
+                  color: primaryColor,
+                )),
+                WidgetSpan(
+                  child: SizedBox(
+                    width: size.width * 0.01,
+                  ),
+                ),
                 const TextSpan(text: "สมาชิก "),
-                TextSpan(text: groupActivity.groupName.member.toString())
-              ]
-            )
-          )
+                TextSpan(text: groupActivity['membersID'].length.toString())
+              ]))
         ],
       ),
       leading: IconButton(

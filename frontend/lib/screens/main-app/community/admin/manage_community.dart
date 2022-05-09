@@ -10,19 +10,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ManageCommunity extends StatefulWidget {
   final user;
-  const ManageCommunity(this.user, {Key? key}) : super(key: key);
+  final groups;
+  const ManageCommunity(this.user, this.groups, {Key? key}) : super(key: key);
 
   @override
   State<ManageCommunity> createState() => _ManageCommunityState();
 }
 
 class _ManageCommunityState extends State<ManageCommunity> {
-  late List<GroupActivity> grouplists;
-
   @override
   void initState() {
     super.initState();
-    grouplists = groupLists;
   }
 
   @override
@@ -62,14 +60,14 @@ class _ManageCommunityState extends State<ManageCommunity> {
                 padding: EdgeInsets.only(
                     top: size.height * 0.01, bottom: size.height * 0.01),
                 scrollDirection: Axis.vertical,
-                itemCount: grouplists.length,
+                itemCount: widget.groups.length,
                 separatorBuilder: (BuildContext context, int index) {
                   return SizedBox(
                     height: size.height * 0.03,
                   );
                 },
                 itemBuilder: (context, index) {
-                  final group = grouplists[index];
+                  final group = widget.groups[index];
                   return groupForSearchWidget(group, context, widget.user);
                 },
               ),

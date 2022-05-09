@@ -36,7 +36,6 @@ class Routes extends RouteGenerator {
 
   //Admin
   static const String AdminJassyHome = '/AdminJassyHome';
-  static const String AdminManageCommunity = '/AdminManageCommunity';
 }
 
 class RouteGenerator {
@@ -79,9 +78,6 @@ class RouteGenerator {
 
       case Routes.AdminJassyHome:
         return MaterialPageRoute(builder: (_) => const AdminJassyHome());
-      case Routes.AdminManageCommunity:
-        var data = settings.arguments as dynamic;
-        return MaterialPageRoute(builder: (_) => ManageCommunity(data));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

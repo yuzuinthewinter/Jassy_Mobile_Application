@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
-Widget groupForSearchWidget(GroupActivity group, context, user) {
+Widget groupForSearchWidget(group, context, user) {
   var size = MediaQuery.of(context).size;
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
@@ -30,8 +30,7 @@ Widget groupForSearchWidget(GroupActivity group, context, user) {
               height: size.height * 0.1,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(group.groupName.image),
-                    fit: BoxFit.cover),
+                    image: NetworkImage(group['coverPic']), fit: BoxFit.cover),
               ),
             ),
           ),
@@ -44,9 +43,11 @@ Widget groupForSearchWidget(GroupActivity group, context, user) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    group.groupName.name,
+                    group['namegroup'],
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.w700),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(
                     height: size.height * 0.01,
@@ -69,7 +70,7 @@ Widget groupForSearchWidget(GroupActivity group, context, user) {
                           ),
                         ),
                         TextSpan(
-                          text: group.groupName.member.toString(),
+                          text: group['membersID'].length.toString(),
                           style: const TextStyle(fontSize: 16),
                         )
                       ]))
