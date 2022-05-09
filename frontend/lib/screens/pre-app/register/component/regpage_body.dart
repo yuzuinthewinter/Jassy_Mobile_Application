@@ -52,6 +52,8 @@ class _BodyState extends State<Body> {
           'levelInterestedLanguage': '',
         },
         'desc': '',
+        'userStatus': 'user',
+        'reportCount': 0,
         'likesby': const [],
         'liked': const [],
         'faceRegPic': const [],
@@ -60,6 +62,7 @@ class _BodyState extends State<Body> {
         'isShowActive': true,
         'isActive': false,
         'isAuth': false,
+        'groups': const [],
       });
       Navigator.of(context).pushNamed(Routes.RegisterProfile);
     }
@@ -139,12 +142,15 @@ class _BodyState extends State<Body> {
             'levelInterestedLanguage': '',
           },
           'desc': '',
+          'userStatus': 'user',
+          'reportCount': 0,
           'faceRegPic': const [],
           'profilePic': const [],
           'chats': const [],
           'isShowActive': true,
           'isActive': false,
           'isAuth': false,
+          'groups': const [],
         });
         Navigator.of(context).pushNamed(Routes.RegisterProfile);
       }

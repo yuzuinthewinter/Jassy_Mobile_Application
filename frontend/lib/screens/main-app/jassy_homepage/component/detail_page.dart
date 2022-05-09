@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/calculate/cal_age.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/desc_tabbar.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,10 +22,22 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
   late TabController tabController;
   int currentTabIndex = 0;
 
+  var currentUser = FirebaseAuth.instance.currentUser;
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
+
   void onTabChange() {
     setState(() {
       currentTabIndex = tabController.index;
       print(currentTabIndex);
+    });
+  }
+
+  likeUser(userid) {
+    users.doc(currentUser!.uid).update({
+      'liked': FieldValue.arrayUnion([userid]), //like โดย
+    });
+    users.doc(userid).update({
+      'likesby': FieldValue.arrayUnion([currentUser!.uid]), //like โดย
     });
   }
 
@@ -107,7 +122,11 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                               ' ' +
                                               widget.user['name']['lastname']),
                                       const TextSpan(text: ", "),
-                                      TextSpan(text: widget.user['birthDate'])
+                                      TextSpan(
+                                          text: calculateAge(DateTime.parse(
+                                                  widget.user['birthDate']
+                                                      .toString()))
+                                              .toString())
                                     ]),
                               ),
                               SizedBox(height: size.height * 0.01),
@@ -133,7 +152,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                           padding: const EdgeInsets.only(right: 20, top: 5),
                           child: InkWell(
                               onTap: () {
-                                print("หัวใจ");
+                                likeUser(widget.user['uid']);
                               },
                               child: Expanded(
                                   child: SvgPicture.asset(

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
@@ -7,7 +9,9 @@ import 'package:keyboard_actions/keyboard_actions.dart';
 
 // Todo: crop Image file + แจ้งเตือน + ออกกลุ่ม
 class WritePostBody extends StatefulWidget {
-  const WritePostBody({ Key? key }) : super(key: key);
+  final user;
+  final group;
+  const WritePostBody(this.user, this.group, {Key? key}) : super(key: key);
 
   @override
   State<WritePostBody> createState() => _WritePostBodyState();
@@ -20,6 +24,20 @@ class _WritePostBodyState extends State<WritePostBody> {
   final bool _isLoading = false;
   late File _postImageFile;
 
+  PlatformFile? pickedFile;
+  UploadTask? uploadTask;
+  String urlImage = '';
+
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles();
+
+    if (result == null) return;
+
+    setState(() {
+      pickedFile = result.files.first;
+    });
+  }
+
   KeyboardActionsConfig _buildConfig(BuildContext context) {
     return KeyboardActionsConfig(
       keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
@@ -27,28 +45,34 @@ class _WritePostBodyState extends State<WritePostBody> {
       nextFocus: true,
       actions: [
         KeyboardActionsItem(
-          displayArrows:false,
+          displayArrows: false,
           focusNode: _nodeText1,
         ),
         KeyboardActionsItem(
           displayArrows: false,
           focusNode: writingTextFocus,
           toolbarButtons: [
-                (node) {
+            (node) {
               return GestureDetector(
                 onTap: () {
-                  print('Select Image');
-                  // _getImageAndCrop();
+                  selectFile();
                 },
                 child: Container(
                   color: greyLightest,
                   padding: EdgeInsets.all(8.0),
                   child: Row(
-                    children: const <Widget>[
-                      Icon(Icons.add_photo_alternate, size:28, color: primaryColor,),
+                    children: <Widget>[
+                      Icon(
+                        Icons.add_photo_alternate,
+                        size: 28,
+                        color: primaryColor,
+                      ),
                       Text(
                         "Add Image",
-                        style: TextStyle(color: textDark,fontSize: 18,fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: textDark,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -71,18 +95,24 @@ class _WritePostBodyState extends State<WritePostBody> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CurvedWidget(child: JassyGradientColor(gradientHeight: size.height * 0.23,)),
+            CurvedWidget(
+                child: JassyGradientColor(
+              gradientHeight: size.height * 0.23,
+            )),
             Row(
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                   child: CircleAvatar(
-                    backgroundImage: const AssetImage("assets/images/user3.jpg"),
+                    backgroundImage:
+                        const AssetImage("assets/images/user3.jpg"),
                     radius: size.width * 0.05,
                   ),
                 ),
-                Text("Name ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),),
-                Text("Surname", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),)
+                Text(
+                  '${widget.user['name']['firstname']} ${widget.user['name']['lastname']}',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                ),
               ],
             ),
             Padding(
@@ -92,7 +122,7 @@ class _WritePostBodyState extends State<WritePostBody> {
                   autofocus: true,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
-                    hintText: "Ask something",
+                    hintText: "Write something",
                     hintMaxLines: 4,
                   ),
                   keyboardType: TextInputType.multiline,

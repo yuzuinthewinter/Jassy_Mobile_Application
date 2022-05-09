@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
@@ -9,7 +11,10 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MyGroupBody extends StatefulWidget {
-  const MyGroupBody({ Key? key }) : super(key: key);
+  final defaultGroups;
+  final user;
+  const MyGroupBody(this.defaultGroups, this.user, {Key? key})
+      : super(key: key);
 
   @override
   State<MyGroupBody> createState() => _MyGroupBodyState();
@@ -20,6 +25,9 @@ class _MyGroupBodyState extends State<MyGroupBody> {
   bool isSearchEmpty = true;
   late List<GroupActivity> grouplists;
   String query = '';
+
+  var currentUser = FirebaseAuth.instance.currentUser;
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
   @override
   void initState() {
@@ -47,8 +55,8 @@ class _MyGroupBodyState extends State<MyGroupBody> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-          const CurvedWidget(child: JassyGradientColor()),
-          Container(
+        const CurvedWidget(child: JassyGradientColor()),
+        Container(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
           child: TextFormField(
             controller: searchController,
@@ -85,8 +93,12 @@ class _MyGroupBodyState extends State<MyGroupBody> {
         //   size: size
         // )
         Padding(
-          padding: EdgeInsets.symmetric(vertical: size.height * 0.03, horizontal: size.width * 0.05),
-          child: Text("กลุ่มของฉัน", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
+          padding: EdgeInsets.symmetric(
+              vertical: size.height * 0.03, horizontal: size.width * 0.05),
+          child: Text(
+            "กลุ่มของฉัน",
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+          ),
         ),
         Expanded(
           child: ListView.separated(

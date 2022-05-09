@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/conversation_text.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/message_input.dart';
+import 'package:flutter_application_1/theme/index.dart';
 
 class MessageScreenBody extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
@@ -32,7 +33,14 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
               chatid: widget.chatid,
             ),
           ),
-          MessageInput(size: size, chatid: widget.chatid)
+          widget.user['reportCount'] < 3
+              ? MessageInput(size: size, chatid: widget.chatid)
+              : const Center(
+                  heightFactor: 5,
+                  child: Text(
+                    'ไม่สามารถส่งข้อความกับบุคคลนี้ได้อีก',
+                    style: TextStyle(color: greyDark),
+                  ))
         ],
       ),
     );
