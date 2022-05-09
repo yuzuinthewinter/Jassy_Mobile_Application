@@ -4,6 +4,7 @@ import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/comment_input.dart';
+import 'package:flutter_application_1/screens/main-app/community/component/comment_tree.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -39,68 +40,77 @@ class _PostDetailBodyState extends State<PostDetailBody> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CurvedWidget(child: JassyGradientColor(gradientHeight: size.height * 0.23,)),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // writer avatar
-              CircleAvatar(
-                backgroundImage: const AssetImage("assets/images/user3.jpg"),
-                radius: size.width * 0.07,
-              ),
-              // writer name and post date
-              // Todo: change date format
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.post.writer, style: const TextStyle(fontSize: 18),),
-                    SizedBox(height: size.height * 0.008,),
-                    Text(widget.post.date.toString().substring(0,10), style: const TextStyle(color: greyDark),),
-                  ],
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // writer avatar
+                      CircleAvatar(
+                        backgroundImage: const AssetImage("assets/images/user3.jpg"),
+                        radius: size.width * 0.07,
+                      ),
+                      // writer name and post date
+                      // Todo: change date format
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(widget.post.writer, style: const TextStyle(fontSize: 18),),
+                            SizedBox(height: size.height * 0.008,),
+                            Text(widget.post.date.toString().substring(0,10), style: const TextStyle(color: greyDark),),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(height: size.height * 0.02,),
+                // post text
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                  child: Container(
+                    constraints: const BoxConstraints(maxHeight: double.infinity),
+                    child: Text(widget.post.news, maxLines: null, style: TextStyle(fontSize: 18),),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.02,),
+                // like and comment icon
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                  child: Row(
+                    children: [
+                      const LikeButtonWidget(),
+                      SizedBox(width: size.width * 0.05),
+                      InkWell(
+                        onTap: () {
+                          FocusScope.of(context).requestFocus(myFocusNode);
+                        },
+                        child: SvgPicture.asset("assets/icons/comment_icon.svg", width: size.width * 0.07,)
+                      )
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(child: JassyCommentTree()),
+              ],
+            ),
           ),
         ),
-        SizedBox(height: size.height * 0.02,),
-        // post text
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-          child: Container(
-            constraints: const BoxConstraints(maxHeight: double.infinity),
-            child: Text(widget.post.news, maxLines: null, style: TextStyle(fontSize: 18),),
-          ),
-        ),
-        SizedBox(height: size.height * 0.02,),
-        // like and comment icon
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-          child: Row(
-            children: [
-              const LikeButtonWidget(),
-              SizedBox(width: size.width * 0.05),
-              InkWell(
-                onTap: () {
-                  FocusScope.of(context).requestFocus(myFocusNode);
-                },
-                child: SvgPicture.asset("assets/icons/comment_icon.svg", width: size.width * 0.07,)
-              )
-            ],
-          ),
-        ),
-        const Spacer(),
-        CommentInput(size: size, child: Input(myFocusNode: myFocusNode))
+        CommentInput(size: size, child: Input(myFocusNode: myFocusNode)),
       ],
     );
   }
 }
 
+// input text with nodefocus
 class Input extends StatelessWidget {
   const Input({
     Key? key,
