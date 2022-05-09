@@ -52,6 +52,7 @@ dependencies:
   keyboard_actions: ^3.4.7
   image_picker: ^0.8.5
   image_cropper: ^2.0.2
+  comment_tree: ^0.3.0
 
   # firebase
   firebase_storage: ^10.2.12
