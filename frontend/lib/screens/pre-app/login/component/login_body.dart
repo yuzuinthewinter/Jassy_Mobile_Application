@@ -133,9 +133,9 @@ class _BodyState extends State<Body> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const CurvedWidget(child: HeaderStyle3()),
-          const HeaderText(text: "ยินดีต้อนรับการกลับมา !"),
-          const DescriptionText(
-              text: "เข้าสู่ระบบเพื่อเริ่มต้นการแลกเปลี่ยนภาษาของคุณ"),
+          HeaderText(text: "WelcomeLoginPage".tr),
+          DescriptionText(
+              text: "DescLoginPage".tr),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
             child: Row(
@@ -163,9 +163,9 @@ class _BodyState extends State<Body> {
           SizedBox(
             height: size.height * 0.02,
           ),
-          const Center(
+          Center(
               child: Text(
-            "หรือเข้าสู่ระบบด้วย",
+            "LoginWith".tr,
             style: TextStyle(color: greyDark),
           )),
           SizedBox(
@@ -174,7 +174,7 @@ class _BodyState extends State<Body> {
           Expanded(
             child: Column(
               children: [
-                const RequiredTextFieldLabel(textLabel: "เบอร์โทรศัพท์"),
+                RequiredTextFieldLabel(textLabel: "PhoneLoginPage".tr),
                 SizedBox(
                   height: size.height * 0.01,
                 ),
@@ -215,6 +215,7 @@ class _BodyState extends State<Body> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter some text';
                       } else if (value.length < 9) {
+                        //todo: translate
                         return "กรอกให้ครบ";
                       }
                       return null;
@@ -229,7 +230,7 @@ class _BodyState extends State<Body> {
           ),
           Center(
             child: DisableToggleButton(
-                text: "เข้าสู่ระบบ",
+                text: "LoginPage".tr,
                 minimumSize: const Size(339, 36),
                 press: () {
                   if (_formKey.currentState!.validate()) {

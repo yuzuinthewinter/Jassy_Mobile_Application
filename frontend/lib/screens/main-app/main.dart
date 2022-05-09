@@ -10,6 +10,7 @@ import 'package:flutter_application_1/screens/main-app/like/like_screen.dart';
 import 'package:flutter_application_1/screens/main-app/profile/profile.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class JassyHome extends StatefulWidget {
   const JassyHome({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //set default navigator
-  int _currentIndex = 4;
+  int _currentIndex = 0;
   final screens = [
     const JassyMain(),
     const LikeScreen(),//likes page
@@ -59,8 +60,6 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    print(currentUser);
-    print(state);
     //is on screen
     if (state == AppLifecycleState.resumed) {
       if (currentUser != null) {
@@ -116,10 +115,10 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
                       items: [
                         BottomNavigationBarItem(
                           icon: Icon(Icons.home),
-                          label: 'หน้าหลัก',
+                          label: 'MainPage'.tr,
                         ),
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.favorite_border), label: 'ถูกใจ'),
+                            icon: Icon(Icons.favorite_border), label: 'LikePage'.tr),
                         BottomNavigationBarItem(
                             icon: SvgPicture.asset(
                               'assets/icons/jassy_water.svg',
@@ -127,9 +126,9 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
                             ),
                             label: ''),
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.forum_outlined), label: 'แชท'),
+                            icon: Icon(Icons.forum_outlined), label: 'ChatPage'.tr),
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.person), label: 'โพรไฟล์')
+                            icon: Icon(Icons.person), label: 'ProfilePage'.tr)
                       ]),
                 ),
               ),

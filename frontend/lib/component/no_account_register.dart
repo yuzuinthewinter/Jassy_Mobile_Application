@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 
 class NoAccountRegister extends StatelessWidget {
   const NoAccountRegister({
@@ -19,10 +20,10 @@ class NoAccountRegister extends StatelessWidget {
               fontFamily: 'Kanit',
             ),
             children: [
-              const TextSpan(text: 'ยังไม่มีบัญชีผู้ใช้ ? '),
+              TextSpan(text: '${'NoAccountLoginPage'.tr} '),
               TextSpan(
-                  text: 'ลงทะเบียนสำหรับผู้ใช้ใหม่ ',
-                  style: const TextStyle(
+                  text: 'LandingRegister'.tr,
+                  style: TextStyle(
                     color: primaryColor,
                   ),
                   recognizer: TapGestureRecognizer()

@@ -28,7 +28,7 @@ class _BodyState extends State<Body> {
 
   // state of data's user
   final List<String> role = ["User", "Premium", "Admin"];
-  final List<String> _choicesLists = ["Male", "Female", "LGBTQ+"];
+  final List<String> _choicesLists = ["InfoMale".tr, "InfoFemale".tr, "LGBTQ+"];
   NameType name = NameType();
   InfoType userInfo = InfoType();
   TextEditingController lastnameController = TextEditingController();
@@ -64,15 +64,13 @@ class _BodyState extends State<Body> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const CurvedWidget(child: HeaderStyle2()),
-                const HeaderText(text: "ข้อมูลส่วนตัว"),
-                const DescriptionText(
-                    text:
-                        "คุณไม่สามารถเปลี่ยนอายุและเพศหลังจากนี้ได้ดังนั้นโปรดให้ข้อมูลส่วนบุคคลที่แท้จริง"),
+                HeaderText(text: "InfoHeader".tr),
+                DescriptionText(text: "InfoDesc".tr),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        const RequiredTextFieldLabel(textLabel: "ชื่อ"),
+                        RequiredTextFieldLabel(textLabel: "InfoFirstname".tr),
                         Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 20.0),
@@ -80,7 +78,7 @@ class _BodyState extends State<Body> {
                             controller: firstNameController,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                              hintText: "ชื่อ",
+                              hintText: "InfoFirstname".tr,
                               hintStyle: const TextStyle(color: greyDark),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
@@ -101,7 +99,7 @@ class _BodyState extends State<Body> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
+                                return 'InfoPleaseFill'.tr;
                               }
                               return null;
                             },
@@ -111,14 +109,14 @@ class _BodyState extends State<Body> {
                             },
                           ),
                         ),
-                        RequiredTextFieldLabel(textLabel: "นามสกุล"),
+                        RequiredTextFieldLabel(textLabel: "InfoLastname".tr),
                         Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 20.0),
                           child: TextFormField(
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                              hintText: "นามสกุล",
+                              hintText: "InfoLastname".tr,
                               hintStyle: TextStyle(color: greyDark),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
@@ -150,7 +148,7 @@ class _BodyState extends State<Body> {
                             },
                           ),
                         ),
-                        RequiredTextFieldLabel(textLabel: "วันเดือนปีเกิด"),
+                        RequiredTextFieldLabel(textLabel: "InfoDateBirth"),
                         Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 20.0),
@@ -202,14 +200,14 @@ class _BodyState extends State<Body> {
                               ),
                             ),
                             onSaved: (String? birthDate) {
-                              final DateFormat formatter = DateFormat('yyyy-MM-dd');
-                              birthDate =
-                                  formatter.format(_selectedDateTime);
+                              final DateFormat formatter =
+                                  DateFormat('yyyy-MM-dd');
+                              birthDate = formatter.format(_selectedDateTime);
                               userInfo.birthDate = birthDate;
                             },
                           ),
                         ),
-                        RequiredTextFieldLabel(textLabel: "เพศ"),
+                        RequiredTextFieldLabel(textLabel: "InfoSex"),
                         Center(
                           child: Wrap(
                               spacing: size.width * 0.03,

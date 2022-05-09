@@ -105,10 +105,10 @@ class AuthGate extends StatelessWidget {
           return const LandingPage();
         }
         if (snapshot.connectionState == ConnectionState.active) {
-          if (currentUser!.uid == null) {
-            return const LandingPage();
-          }
           checkUserAuth(context);
+        }
+        if (currentUser!.uid == null) {
+          return const LandingPage();
         }
         return const Center(
           child: CircularProgressIndicator(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 
 class BottomAppbarMenu extends StatefulWidget {
   const BottomAppbarMenu({ Key? key }) : super(key: key);
@@ -47,12 +48,12 @@ class _BottomAppbarMenuState extends State<BottomAppbarMenu> {
                     _currentIndex = index;
                   });
                 },
-                items: const [
-                  BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก',),
-                  BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: 'ถูกใจ'),
+                items: [
+                  BottomNavigationBarItem(icon: Icon(Icons.home), label: 'MainPage'.tr,),
+                  BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: 'LikePage'.tr),
                   BottomNavigationBarItem(icon: Icon(Icons.category), label: ''),
-                  BottomNavigationBarItem(icon: Icon(Icons.forum_outlined), label: 'แชท'),
-                  BottomNavigationBarItem(icon: Icon(Icons.person), label: 'โพรไฟล์')
+                  BottomNavigationBarItem(icon: Icon(Icons.forum_outlined), label: 'ChatPage'.tr),
+                  BottomNavigationBarItem(icon: Icon(Icons.person), label: 'ProfilePage'.tr)
                 ]),
           ),
         ),
