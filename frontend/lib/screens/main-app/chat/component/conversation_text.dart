@@ -89,6 +89,7 @@ class _BodyState extends State<ConversationText> {
             children: [
               // Text(currentMessage['message']),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: isCurrentUser
                     ? MainAxisAlignment.end
                     : MainAxisAlignment.start,
@@ -120,6 +121,8 @@ class _BodyState extends State<ConversationText> {
                     ],
                   ),
                   Container(
+                      constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width * 0.6),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
                       decoration: BoxDecoration(
