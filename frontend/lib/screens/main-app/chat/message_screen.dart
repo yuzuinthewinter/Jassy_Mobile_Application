@@ -26,7 +26,7 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   bool isNotificationOn = true;
-  
+
   getDifferance(timestamp) {
     DateTime now = DateTime.now();
     DateTime lastActive = DateTime.parse(timestamp.toDate().toString());
@@ -60,16 +60,19 @@ class _ChatRoomState extends State<ChatRoom> {
                   widget.user['name']['lastname'].toString(),
               style: const TextStyle(fontSize: 16, color: textDark),
             ),
-            widget.user['isShowActive'] && widget.currentUser['isShowActive']
-                ? Text(
-                    widget.user['isActive']
-                        ? 'Active now'
-                        : getDifferance(widget.user['timeStamp']),
-                    style: const TextStyle(fontSize: 14, color: greyDark),
-                  )
-                : Container(
-                    height: 1,
-                  )
+            widget.user['reportCount'] < 3
+                ? widget.user['isShowActive'] &&
+                        widget.currentUser['isShowActive']
+                    ? Text(
+                        widget.user['isActive']
+                            ? 'Active now'
+                            : getDifferance(widget.user['timeStamp']),
+                        style: const TextStyle(fontSize: 14, color: greyDark),
+                      )
+                    : Container(
+                        height: 1,
+                      )
+                : Container(height: 1)
           ],
         ),
         centerTitle: true,

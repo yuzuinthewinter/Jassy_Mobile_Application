@@ -71,79 +71,83 @@ class _ChatCardBody extends State<ChatCard> {
                     );
                   }
                   var data = snapshot.data!.docs;
-                  for (var user in data) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            CupertinoPageRoute(builder: (context) {
-                          // NOTE: click each card to go to chat room
-                          return ChatRoom(
-                            chatid: chat['chatid'],
-                            user: user,
-                            currentUser: widget.currentUser,
-                          );
-                        }));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Stack(
-                              children: [
-                                CircleAvatar(
-                                  backgroundImage: !user['profilePic'].isEmpty
-                                      ? NetworkImage(user['profilePic'][0])
-                                      : const AssetImage(
-                                              "assets/images/header_img1.png")
-                                          as ImageProvider,
-                                  radius: 33,
-                                ),
-                                user['isActive'] == true &&
-                                        user['isShowActive'] == true &&
-                                        widget.currentUser['isShowActive'] ==
-                                            true
-                                    ? Positioned(
-                                        right: 3,
-                                        bottom: 3,
-                                        child: Container(
-                                          height: 16,
-                                          width: 16,
-                                          decoration: BoxDecoration(
-                                              color: onlineColor,
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                  color: Theme.of(context)
-                                                      .scaffoldBackgroundColor)),
-                                        ),
-                                      )
-                                    : const Text(''),
-                              ],
-                            ),
-                            Expanded(
-                                child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                HeaderText(
-                                    text: user['name']['firstname'].toString() +
-                                        ' ' +
-                                        user['name']['lastname'].toString()),
-                                DescriptionText(
-                                  text: chat['lastMessageSent'].toString(),
-                                )
-                              ],
-                            )),
-                            Text(
-                              // chat['lastTimestamp']
-                              getDate(chat['lastTimestamp']),
-                              style: const TextStyle(
-                                  fontSize: 12, color: greyDark),
-                            )
-                          ],
+                  if (data.length > 0) {
+                    for (var user in data) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(context,
+                              CupertinoPageRoute(builder: (context) {
+                            // NOTE: click each card to go to chat room
+                            return ChatRoom(
+                              chatid: chat['chatid'],
+                              user: user,
+                              currentUser: widget.currentUser,
+                            );
+                          }));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Stack(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage: !user['profilePic'].isEmpty
+                                        ? NetworkImage(user['profilePic'][0])
+                                        : const AssetImage(
+                                                "assets/images/header_img1.png")
+                                            as ImageProvider,
+                                    radius: 33,
+                                  ),
+                                  user['isActive'] == true &&
+                                          user['isShowActive'] == true &&
+                                          widget.currentUser['isShowActive'] ==
+                                              true
+                                      ? Positioned(
+                                          right: 3,
+                                          bottom: 3,
+                                          child: Container(
+                                            height: 16,
+                                            width: 16,
+                                            decoration: BoxDecoration(
+                                                color: onlineColor,
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .scaffoldBackgroundColor)),
+                                          ),
+                                        )
+                                      : const Text(''),
+                                ],
+                              ),
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  HeaderText(
+                                      text: user['name']['firstname']
+                                              .toString() +
+                                          ' ' +
+                                          user['name']['lastname'].toString()),
+                                  DescriptionText(
+                                    text: chat['lastMessageSent'].toString(),
+                                  )
+                                ],
+                              )),
+                              Text(
+                                // chat['lastTimestamp']
+                                getDate(chat['lastTimestamp']),
+                                style: const TextStyle(
+                                    fontSize: 12, color: greyDark),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   }
-                  return const Text('Let\'s exchange with the expert!');
+
+                  return const Text('hai');
                 },
               );
             }

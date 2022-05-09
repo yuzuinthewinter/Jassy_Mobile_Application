@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
-Widget myGroupWidget (GroupActivity group, context) {
+Widget myGroupWidget (group, context) {
   var size = MediaQuery.of(context).size;
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
@@ -31,7 +31,7 @@ Widget myGroupWidget (GroupActivity group, context) {
               height: size.height * 0.1,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(group.groupName.image),
+                  image: NetworkImage(group['coverPic']),
                   fit: BoxFit.cover
                 ),
               ),
@@ -45,7 +45,7 @@ Widget myGroupWidget (GroupActivity group, context) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(group.groupName.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
+                  Text(group['namegroup'], style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
                   SizedBox(height: size.height * 0.01,),
                   RichText(
                       text: TextSpan(
@@ -53,7 +53,7 @@ Widget myGroupWidget (GroupActivity group, context) {
                       children: [
                         const WidgetSpan(child: Icon(Icons.person_rounded, color: grey,)),
                         WidgetSpan(child: SizedBox(width: size.width * 0.01,),),
-                        TextSpan(text: group.groupName.member.toString(), style: const TextStyle(fontSize: 16),)
+                        TextSpan(text: group['membersID'].length.toString(), style: const TextStyle(fontSize: 16),)
                       ]
                     )
                   )

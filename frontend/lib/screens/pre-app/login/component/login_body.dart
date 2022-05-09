@@ -68,7 +68,11 @@ class _BodyState extends State<Body> {
       });
 
       if (data['isAuth'] == true) {
-        Navigator.of(context).pushNamed(Routes.JassyHome);
+        if (data['userStatus'] == 'admin') {
+          Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+        } else {
+          Navigator.of(context).pushNamed(Routes.JassyHome);
+        }
       } else {
         Navigator.of(context).pushNamed(Routes.RegisterProfile);
       }
@@ -101,7 +105,11 @@ class _BodyState extends State<Body> {
       });
 
       if (data['isAuth'] == true) {
-        Navigator.of(context).pushNamed(Routes.JassyHome);
+        if (data['userStatus'] == 'admin') {
+          Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+        } else {
+          Navigator.of(context).pushNamed(Routes.JassyHome);
+        }
       } else {
         Navigator.of(context).pushNamed(Routes.RegisterProfile);
       }

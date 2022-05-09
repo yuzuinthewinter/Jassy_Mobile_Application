@@ -8,6 +8,7 @@ import 'package:flutter_application_1/component/header_style/jassy_gradient_colo
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/detail_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:async/async.dart' show StreamGroup;
 
 class JassyMainBody extends StatefulWidget {
   const JassyMainBody({Key? key}) : super(key: key);
@@ -48,47 +49,16 @@ class _JassyMainBodyState extends State<JassyMainBody> {
     });
   }
 
-  getListUser(list) async {
-    //TODO: remove user that liked or likes by
-    var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
-    var snapshot = await queryUser.get();
-    final data = snapshot.docs[0];
-
-    List listUser = [];
-    for (var getuser in list) {
-      if (getuser['isAuth'] == true) {
-        listUser.addAll({getuser});
-      }
-    }
-    if (listUser.isNotEmpty) {
-      for (var getuser in listUser) {
-        if (getuser['likesby'].isNotEmpty) {
-          for (var uid in getuser['likesby']) {
-            print(uid);
-            listUser.removeWhere((uid) => uid == currentUser!.uid);
-          }
-        }
-        if (getuser['liked'].isNotEmpty) {
-          for (var uid in getuser['liked']) {
-            print(uid);
-            listUser.removeWhere((uid) => uid == currentUser!.uid);
-          }
-        }
-      }
-      print(listUser);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const CurvedWidget(child: JassyGradientColor()),
         StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('Users')
+          stream: users
+              // .where('isAuth', isEqualTo: true)
               .where('uid', isNotEqualTo: currentUser!.uid)
-              .snapshots(includeMetadataChanges: false),
+              .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Text('Something went wrong');
@@ -98,18 +68,16 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                 child: CircularProgressIndicator(),
               );
             }
-            var data = snapshot.data!.docs;
-            var listUser = getListUser(data);
 
-            if (listUser.isEmpty) {
-              return const Center(
-                child: Text('Invites you friend to join community'),
-              );
-            }
+            var user = snapshot.data!.docs;
+
+            int count = 0;
+            //query remove user that liked
+
             return CarouselSlider.builder(
-              itemCount: listUser.length,
+              itemCount: user.length - count,
               itemBuilder: (context, index, child) {
-                return carouselView(listUser, index);
+                return carouselView(user, index);
               },
               options: CarouselOptions(
                 // height: size.height * 0.70,
@@ -215,7 +183,10 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                   children: [
                                     TextSpan(text: user['name']['firstname']),
                                     const TextSpan(text: ", "),
-                                    TextSpan(text: calculateAge(DateTime.parse(user['birthDate'].toString())).toString()),
+                                    TextSpan(
+                                        text: calculateAge(DateTime.parse(
+                                                user['birthDate'].toString()))
+                                            .toString()),
                                   ]),
                             ),
                             RichText(
@@ -225,7 +196,9 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                       fontFamily: "kanit",
                                       fontWeight: FontWeight.w700),
                                   children: [
-                                    TextSpan(text: user['language']['defaultLanguage']),
+                                    TextSpan(
+                                        text: user['language']
+                                            ['defaultLanguage']),
                                     const WidgetSpan(
                                         child: Icon(
                                       Icons.sync_alt,
