@@ -60,6 +60,9 @@ class _BodyState extends State<Body> {
       var users = FirebaseFirestore.instance.collection('Users');
       var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
       var snapshot = await queryUser.get();
+      if (snapshot.docs.isEmpty) {
+        return Navigator.of(context).pushNamed(Routes.LandingPage);
+      }
       final data = snapshot.docs[0];
 
       await users.doc(currentUser.uid).update({
@@ -97,6 +100,9 @@ class _BodyState extends State<Body> {
       var users = FirebaseFirestore.instance.collection('Users');
       var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
       var snapshot = await queryUser.get();
+      if (snapshot.docs.isEmpty) {
+        return Navigator.of(context).pushNamed(Routes.LandingPage);
+      }
       final data = snapshot.docs[0];
 
       await users.doc(currentUser.uid).update({

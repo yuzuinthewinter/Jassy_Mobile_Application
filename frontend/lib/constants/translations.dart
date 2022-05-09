@@ -34,6 +34,7 @@ class LocaleString extends Translations {
           "OtpResend": "Resend",
           //Phone Login Page
           "PhoneLoginPage": "Login with phone number",
+          //Profile Setting Page
           //Setting Page
           "AppSetting": "Setting",
           "ShowStatusSetting": "Status",

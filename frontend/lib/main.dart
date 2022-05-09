@@ -79,6 +79,9 @@ class AuthGate extends StatelessWidget {
     var users = FirebaseFirestore.instance.collection('Users');
     var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
     var snapshot = await queryUser.get();
+    if (snapshot.docs.isEmpty) {
+      return Navigator.of(context).pushNamed(Routes.LandingPage);
+    }
     final data = snapshot.docs[0];
 
     if (data['isAuth'] == true) {
@@ -102,10 +105,10 @@ class AuthGate extends StatelessWidget {
           return const LandingPage();
         }
         if (snapshot.connectionState == ConnectionState.active) {
+          if (currentUser!.uid == null) {
+            return const LandingPage();
+          }
           checkUserAuth(context);
-        }
-        if (currentUser!.uid == null) {
-          return const LandingPage();
         }
         return const Center(
           child: CircularProgressIndicator(),
