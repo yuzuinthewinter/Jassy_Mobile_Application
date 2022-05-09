@@ -101,25 +101,28 @@ class _MyGroupBodyState extends State<MyGroupBody> {
           ),
         ),
         Expanded(
-          child: ListView.separated(
-            padding: EdgeInsets.only(top: size.height * 0.01, bottom: size.height * 0.01),
-            scrollDirection: Axis.vertical,
-            itemCount: grouplists.length,
-            separatorBuilder: (BuildContext context, int index) { return SizedBox(height: size.height * 0.03,); },
-            itemBuilder: (context, index) {
-              final group = grouplists[index];
-              return InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) {
-                    return GroupActivityScreen(groupActivity: group,);
-                  }));
+            child: ListView.separated(
+                padding: EdgeInsets.only(
+                    top: size.height * 0.01, bottom: size.height * 0.01),
+                scrollDirection: Axis.vertical,
+                itemCount: grouplists.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    height: size.height * 0.03,
+                  );
                 },
-                child: myGroupWidget(group, context)
-              );
-            }
-          )
-        )
+                itemBuilder: (context, index) {
+                  final group = grouplists[index];
+                  return InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            CupertinoPageRoute(builder: (context) {
+                          return GroupActivityScreen(
+                              groupActivity: group, user: widget.user);
+                        }));
+                      },
+                      child: myGroupWidget(group, context));
+                }))
       ],
     );
   }

@@ -31,6 +31,9 @@ class _BodyState extends State<Body> {
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
     var snapshot = await queryUser.get();
+    if (snapshot.docs.isEmpty) {
+      return Navigator.of(context).pushNamed(Routes.LandingPage);
+    }
     final data = snapshot.docs[0];
 
     if (data['isAuth'] == true) {
@@ -121,6 +124,10 @@ class _BodyState extends State<Body> {
       final splitname = name!.split(' ');
 
       var snapshot = await queryUser.get();
+      if (snapshot.docs.isEmpty) {
+        return Navigator.of(context).pushNamed(Routes.LandingPage);
+      }
+
       final data = snapshot.docs[0];
 
       if (data['isAuth'] == true) {
