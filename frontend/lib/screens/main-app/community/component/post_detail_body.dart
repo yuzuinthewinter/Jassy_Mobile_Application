@@ -59,17 +59,20 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                       ),
                       // writer name and post date
                       // Todo: change date format
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(widget.post.writer, style: const TextStyle(fontSize: 18),),
-                            SizedBox(height: size.height * 0.008,),
-                            Text(widget.post.date.toString().substring(0,10), style: const TextStyle(color: greyDark),),
-                          ],
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(widget.post.writer, style: const TextStyle(fontSize: 18),),
+                              SizedBox(height: size.height * 0.008,),
+                              Text(widget.post.date.toString().substring(0,10), style: const TextStyle(color: greyDark),),
+                            ],
+                          ),
                         ),
                       ),
+                      Icon(Icons.more_horiz, color: primaryColor, size: size.width * 0.08,)
                     ],
                   ),
                 ),
