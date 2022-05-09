@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/models/community.dart';
+import 'package:flutter_application_1/screens/main-app/community/group_activity/group_activity_screen.dart';
 import 'package:flutter_application_1/screens/main-app/community/my_group/component/my_group_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -94,7 +96,15 @@ class _MyGroupBodyState extends State<MyGroupBody> {
             separatorBuilder: (BuildContext context, int index) { return SizedBox(height: size.height * 0.03,); },
             itemBuilder: (context, index) {
               final group = grouplists[index];
-              return myGroupWidget(group, context);
+              return InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) {
+                    return GroupActivityScreen(groupActivity: group,);
+                  }));
+                },
+                child: myGroupWidget(group, context)
+              );
             }
           )
         )

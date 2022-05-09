@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/main-app/community/group_activity/component/group_news_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../post_detail.dart';
 
 class GroupActivityScreenBody extends StatefulWidget {
   final GroupActivity groupActivity;
@@ -57,7 +60,15 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
             separatorBuilder: (BuildContext context, int index) { return SizedBox(height: size.height * 0.03,); },
             itemBuilder: (context, index) {
               // list of news card in group
-              return groupNewsCard(newsLists[index], context);
+              return InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) {
+                    return PostDetail(post: newsLists[index],);
+                  }));
+                },
+                child: groupNewsCard(newsLists[index], context)
+              );
             }
           ),
         ),
