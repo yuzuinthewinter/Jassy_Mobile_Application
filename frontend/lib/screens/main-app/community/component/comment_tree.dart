@@ -101,7 +101,10 @@ class _JassyCommentTreeState extends State<JassyCommentTree> {
                           SizedBox(
                             width: size.width * 0.05,
                           ),
-                          const Text('Reply'),
+                          InkWell(
+                            onTap: () {},
+                            child: const Text('Reply')
+                          ),
                         ],
                       ),
                     ),
@@ -148,7 +151,10 @@ class _JassyCommentTreeState extends State<JassyCommentTree> {
                           SizedBox(
                             width: size.width * 0.05,
                           ),
-                          const Text('Reply'),
+                          InkWell(
+                            onTap: () {},
+                            child: const Text('Reply')
+                          ),
                         ],
                       ),
                     ),
