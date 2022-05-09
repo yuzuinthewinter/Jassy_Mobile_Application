@@ -89,10 +89,10 @@ class _BodyState extends State<ConversationText> {
             children: [
               // Text(currentMessage['message']),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: isCurrentUser
                     ? MainAxisAlignment.end
                     : MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Stack(
                     children: [
