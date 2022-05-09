@@ -72,7 +72,11 @@ class _BodyState extends State<Body> {
           'isActive': true,
           'timeStamp': DateTime.now(),
         });
-        Navigator.of(context).pushNamed(Routes.JassyHome);
+        if (data['userStatus'] == 'admin') {
+          Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+        } else {
+          Navigator.of(context).pushNamed(Routes.JassyHome);
+        }
       } else {
         await users.doc(currentUser.uid).set({
           'uid': currentUser.uid,
@@ -90,12 +94,17 @@ class _BodyState extends State<Body> {
             'levelInterestedLanguage': '',
           },
           'desc': '',
+          'userStatus': 'user',
+          'reportCount': 0,
           'faceRegPic': const [],
           'profilePic': const [],
           'chats': const [],
           'isShowActive': true,
           'isActive': false,
           'isAuth': false,
+          'likesby': const [],
+          'liked': const [],
+          'groups': const [],
         });
         Navigator.of(context).pushNamed(Routes.RegisterProfile);
       }

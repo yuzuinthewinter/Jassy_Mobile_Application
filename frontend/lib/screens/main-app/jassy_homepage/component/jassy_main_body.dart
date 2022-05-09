@@ -8,6 +8,7 @@ import 'package:flutter_application_1/component/header_style/jassy_gradient_colo
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/detail_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:async/async.dart' show StreamGroup;
 
 class JassyMainBody extends StatefulWidget {
   const JassyMainBody({Key? key}) : super(key: key);
@@ -38,18 +39,14 @@ class _JassyMainBodyState extends State<JassyMainBody> {
     _pageController.dispose();
   }
 
-  likeUser(userid) {
-    users.doc(currentUser!.uid).update({
-      'liked': FieldValue.arrayUnion([userid]), //like โดย
+  likeUser(userid) async {
+    await users.doc(currentUser!.uid).update({
+      'liked': FieldValue.arrayUnion([userid]), //current user like ใคร
     });
-    users.doc(userid).update({
-      'likesby': FieldValue.arrayUnion([currentUser!.uid]), //like โดย
+    await users.doc(userid).update({
+      'likesby':
+          FieldValue.arrayUnion([currentUser!.uid]), //like โดย current user
     });
-    removeUserafterLike();
-  }
-
-  removeUserafterLike() {
-    
   }
 
   @override
@@ -58,10 +55,10 @@ class _JassyMainBodyState extends State<JassyMainBody> {
       children: [
         const CurvedWidget(child: JassyGradientColor()),
         StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('Users')
+          stream: users
+              // .where('isAuth', isEqualTo: true)
               .where('uid', isNotEqualTo: currentUser!.uid)
-              .snapshots(includeMetadataChanges: true),
+              .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Text('Something went wrong');
@@ -71,9 +68,14 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                 child: CircularProgressIndicator(),
               );
             }
+
             var user = snapshot.data!.docs;
+
+            int count = 0;
+            //query remove user that liked
+
             return CarouselSlider.builder(
-              itemCount: user.length,
+              itemCount: user.length - count,
               itemBuilder: (context, index, child) {
                 return carouselView(user, index);
               },
@@ -90,8 +92,8 @@ class _JassyMainBodyState extends State<JassyMainBody> {
     );
   }
 
-  Widget carouselView(user, int index) {
-    return carouselCard(user[index]);
+  Widget carouselView(users, int index) {
+    return carouselCard(users[index]);
   }
 
   // Widget carouselCard(MainUser data) {
@@ -136,9 +138,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                 child: Align(
                     alignment: Alignment.topRight,
                     child: InkWell(
-                        onTap: () {
-                          
-                        },
+                        onTap: () {},
                         child: SvgPicture.asset(
                             "assets/icons/close_circle.svg")))),
             Column(
@@ -183,7 +183,10 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                   children: [
                                     TextSpan(text: user['name']['firstname']),
                                     const TextSpan(text: ", "),
-                                    TextSpan(text: calculateAge(DateTime.parse(user['birthDate'].toString())).toString()),
+                                    TextSpan(
+                                        text: calculateAge(DateTime.parse(
+                                                user['birthDate'].toString()))
+                                            .toString()),
                                   ]),
                             ),
                             RichText(
@@ -193,14 +196,18 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                       fontFamily: "kanit",
                                       fontWeight: FontWeight.w700),
                                   children: [
-                                    TextSpan(text: user['language']['defaultLanguage']),
+                                    TextSpan(
+                                        text: user['language']
+                                            ['defaultLanguage']),
                                     const WidgetSpan(
                                         child: Icon(
                                       Icons.sync_alt,
                                       size: 20,
                                       color: textLight,
                                     )),
-                                    TextSpan(text: user['language']['interestedLanguage']),
+                                    TextSpan(
+                                        text: user['language']
+                                            ['interestedLanguage']),
                                   ]),
                             ),
                           ],

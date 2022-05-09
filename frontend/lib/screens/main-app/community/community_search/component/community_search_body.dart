@@ -1,13 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/models/community.dart';
+import 'package:flutter_application_1/screens/main-app/community/admin/manage_community.dart';
 import 'package:flutter_application_1/screens/main-app/community/community_search/component/group_for_search_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CommunitySearchBody extends StatefulWidget {
-  const CommunitySearchBody({ Key? key }) : super(key: key);
+  final user;
+  final groups;
+  CommunitySearchBody(this.user, this.groups, {Key? key}) : super(key: key);
 
   @override
   State<CommunitySearchBody> createState() => _CommunitySearchBodyState();
@@ -16,13 +21,11 @@ class CommunitySearchBody extends StatefulWidget {
 class _CommunitySearchBodyState extends State<CommunitySearchBody> {
   TextEditingController searchController = TextEditingController();
   bool isSearchEmpty = true;
-  late List<GroupActivity> grouplists;
   String query = '';
 
   @override
   void initState() {
     super.initState();
-    grouplists = groupLists;
 
     searchController = TextEditingController();
     searchController.addListener(() {
@@ -31,7 +34,6 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
         this.isSearchEmpty = !isSearchEmpty;
       });
     });
-
   }
 
   @override
@@ -46,8 +48,8 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-          const CurvedWidget(child: JassyGradientColor()),
-          Container(
+        const CurvedWidget(child: JassyGradientColor()),
+        Container(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
           child: TextFormField(
             controller: searchController,
@@ -78,33 +80,69 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: size.height * 0.03, horizontal: size.width * 0.05),
-          child: Text(isSearchEmpty ? "แนะนำสำหรับคุณ" : "ผลลัพธ์การค้นหา", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
-        ),
+            padding: EdgeInsets.symmetric(
+                vertical: size.height * 0.03, horizontal: size.width * 0.05),
+            child: Row(children: [
+              Text(
+                isSearchEmpty
+                    ? widget.user['userStatus'] == 'user'
+                        ? "แนะนำสำหรับคุณ"
+                        : "กลุ่มทั้งหมด"
+                    : "ผลลัพธ์การค้นหา",
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+              ),
+              // const Spacer(),
+              // widget.user['userStatus'] == 'user'
+              //     ? Container(
+              //         width: 1,
+              //       )
+              //     : InkWell(
+              //         child: const Text("การจัดการกลุ่ม",
+              //             style: TextStyle(
+              //               fontSize: 16,
+              //               color: primaryColor,
+              //             )),
+              //         onTap: () {
+              //           Navigator.push(context,
+              //               CupertinoPageRoute(builder: (context) {
+              //             return ManageCommunity(widget.user, widget.data);
+              //           }));
+              //         },
+              //       )
+            ])),
         Expanded(
-          child: ListView.separated(
-            padding: EdgeInsets.only(top: size.height * 0.01, bottom: size.height * 0.01),
+          child: ListView.builder(
+            padding: EdgeInsets.only(
+                top: size.height * 0.01, bottom: size.height * 0.01),
             scrollDirection: Axis.vertical,
-            itemCount: grouplists.length,
-            separatorBuilder: (BuildContext context, int index) { return SizedBox(height: size.height * 0.03,); },
+            itemCount: widget.groups.length,
             itemBuilder: (context, index) {
-              final group = grouplists[index];
-              return groupForSearchWidget(group, context);
-            }
-          )
-        )
+              final group = widget.groups[index];
+              //todo: check user in group, will not show
+              return Column(
+                children: [
+                  groupForSearchWidget(group, context, widget.user),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
       ],
     );
   }
 
   void searhGroup(String query) {
-    final suggestion = grouplists.where((group) {
-      final groupName = group.groupName.name.toLowerCase();
-      final searchInput = query.toLowerCase();
+    // final suggestion = grouplists.where((group) {
+    //   final groupName = group.groupName.name.toLowerCase();
+    //   final searchInput = query.toLowerCase();
 
-      return groupName.contains(searchInput);
-    }).toList();
+    //   return groupName.contains(searchInput);
+    // }).toList();
 
-    setState(() => grouplists = suggestion);
+    // setState(() => grouplists = suggestion);
   }
 }

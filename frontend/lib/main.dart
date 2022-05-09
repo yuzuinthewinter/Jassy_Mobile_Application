@@ -28,7 +28,6 @@ class App extends StatefulWidget {
 }
 
 class _AppScreen extends State<App> {
-
   final Future _calculation = Future.delayed(
     const Duration(seconds: 2),
     () => 'Data Loaded',
@@ -83,7 +82,11 @@ class AuthGate extends StatelessWidget {
     final data = snapshot.docs[0];
 
     if (data['isAuth'] == true) {
-      return Navigator.of(context).pushNamed(Routes.JassyHome);
+      if (data['userStatus'] == 'admin') {
+        Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+      } else {
+        Navigator.of(context).pushNamed(Routes.JassyHome);
+      }
     } else {
       //TODO: popup to user that register unfinish
       return Navigator.of(context).pushNamed(Routes.RegisterProfile);
