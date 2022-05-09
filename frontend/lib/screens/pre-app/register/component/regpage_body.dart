@@ -30,15 +30,12 @@ class _BodyState extends State<Body> {
     QuerySnapshot querySnapshot = await queryUser.get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
-    var snapshot = await queryUser.get();
-    if (snapshot.docs.isEmpty) {
-      return Navigator.of(context).pushNamed(Routes.LandingPage);
-    }
-    final data = snapshot.docs[0];
-
-    if (data['isAuth'] == true) {
-      Navigator.of(context).pushNamed(Routes.JassyHome);
-    } else {
+    if (querySnapshot.docs.isNotEmpty) {
+        var data = querySnapshot.docs[0];
+        if (data['isAuth'] == true) {
+          Navigator.of(context).pushNamed(Routes.JassyHome);
+        }
+      } else {
       await users.doc(currentUser.uid).set({
         'uid': currentUser.uid,
         'name': {
@@ -67,6 +64,7 @@ class _BodyState extends State<Body> {
         'isAuth': false,
         'groups': const [],
       });
+      //todo: popup delay
       Navigator.of(context).pushNamed(Routes.RegisterProfile);
     }
   }
@@ -75,6 +73,11 @@ class _BodyState extends State<Body> {
     try {
       isLoading = true;
       final facebookLoginResult = await FacebookAuth.instance.login();
+
+      if (facebookLoginResult.accessToken == null) {
+        //todo: handle error
+        return Navigator.of(context).pushNamed(Routes.LandingPage);
+      }
 
       final token = facebookLoginResult.accessToken!.token;
       final userId = facebookLoginResult.accessToken!.userId;
@@ -110,9 +113,6 @@ class _BodyState extends State<Body> {
       );
 
       await FirebaseAuth.instance.signInWithCredential(credential);
-      final user =
-          (await FirebaseAuth.instance.signInWithCredential(credential)).user;
-      print(user);
 
       var currentUser = FirebaseAuth.instance.currentUser;
       var users = FirebaseFirestore.instance.collection('Users');
@@ -123,44 +123,46 @@ class _BodyState extends State<Body> {
       var name = currentUser.displayName;
       final splitname = name!.split(' ');
 
-      var snapshot = await queryUser.get();
-      if (snapshot.docs.isEmpty) {
-        return Navigator.of(context).pushNamed(Routes.LandingPage);
-      }
-
-      final data = snapshot.docs[0];
-
-      if (data['isAuth'] == true) {
-        Navigator.of(context).pushNamed(Routes.JassyHome);
+      if (querySnapshot.docs.isNotEmpty) {
+        var data = querySnapshot.docs[0];
+        if (data['isAuth'] == true) {
+          Navigator.of(context).pushNamed(Routes.JassyHome);
+        }
       } else {
         await users.doc(currentUser.uid).set({
-          'uid': currentUser.uid,
-          'name': {
-            'firstname': splitname[0],
-            'lastname': splitname[1],
-          },
-          'birthDate': '',
-          'genre': '',
-          'country': '',
-          'language': {
-            'defaultLanguage': '',
-            'levelDefaultLanguage': '',
-            'interestedLanguage': '',
-            'levelInterestedLanguage': '',
-          },
-          'desc': '',
-          'userStatus': 'user',
-          'reportCount': 0,
-          'faceRegPic': const [],
-          'profilePic': const [],
-          'chats': const [],
-          'isShowActive': true,
-          'isActive': false,
-          'isAuth': false,
-          'groups': const [],
-        });
-        Navigator.of(context).pushNamed(Routes.RegisterProfile);
-      }
+            'uid': currentUser.uid,
+            'name': {
+              'firstname': splitname[0],
+              'lastname': splitname[1],
+            },
+            'birthDate': '',
+            'genre': '',
+            'country': '',
+            'language': {
+              'defaultLanguage': '',
+              'levelDefaultLanguage': '',
+              'interestedLanguage': '',
+              'levelInterestedLanguage': '',
+            },
+            'desc': '',
+            'userStatus': 'user',
+            'reportCount': 0,
+            'faceRegPic': const [],
+            'profilePic': const [],
+            'chats': const [],
+            'isShowActive': true,
+            'isActive': false,
+            'isAuth': false,
+            'groups': const [],
+          });
+          if (currentUser.photoURL!.isNotEmpty) {
+            await users.doc(currentUser.uid).update({
+              'profilePic': FieldValue.arrayUnion([currentUser.photoURL]),
+            });
+          }
+          //todo: popup delay
+          Navigator.of(context).pushNamed(Routes.RegisterProfile);
+        }
     } on FirebaseAuthException catch (e) {
       isLoading = false;
     }

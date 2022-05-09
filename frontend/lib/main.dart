@@ -79,20 +79,21 @@ class AuthGate extends StatelessWidget {
     var users = FirebaseFirestore.instance.collection('Users');
     var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
     var snapshot = await queryUser.get();
-    if (snapshot.docs.isEmpty) {
-      return Navigator.of(context).pushNamed(Routes.LandingPage);
-    }
-    final data = snapshot.docs[0];
-
-    if (data['isAuth'] == true) {
+    
+    if (snapshot.docs.isNotEmpty) {
+      final data = snapshot.docs[0];
       if (data['userStatus'] == 'admin') {
         Navigator.of(context).pushNamed(Routes.AdminJassyHome);
       } else {
-        Navigator.of(context).pushNamed(Routes.JassyHome);
+        if (data['isAuth'] == true) {
+          Navigator.of(context).pushNamed(Routes.JassyHome);
+        } else {
+          //TODO: popup to user that register unfinish ** warning user
+          return Navigator.of(context).pushNamed(Routes.RegisterProfile);
+        }
       }
     } else {
-      //TODO: popup to user that register unfinish
-      return Navigator.of(context).pushNamed(Routes.RegisterProfile);
+      return Navigator.of(context).pushNamed(Routes.LandingPage);
     }
   }
 
