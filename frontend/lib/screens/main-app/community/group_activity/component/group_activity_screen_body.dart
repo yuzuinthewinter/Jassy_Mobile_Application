@@ -11,6 +11,8 @@ import 'package:flutter_application_1/screens/main-app/community/my_group/my_gro
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../post_detail.dart';
+
 class GroupActivityScreenBody extends StatefulWidget {
   final groupActivity;
 
@@ -82,18 +84,23 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
         ),
         Expanded(
           child: ListView.separated(
-              padding: EdgeInsets.only(top: size.height * 0.02),
-              scrollDirection: Axis.vertical,
-              itemCount: newsLists.length,
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  height: size.height * 0.03,
-                );
-              },
-              itemBuilder: (context, index) {
-                // list of news card in group
-                return groupNewsCard(newsLists[index], context);
-              }),
+            padding: EdgeInsets.only(top: size.height * 0.02),
+            scrollDirection: Axis.vertical,
+            itemCount: newsLists.length,
+            separatorBuilder: (BuildContext context, int index) { return SizedBox(height: size.height * 0.03,); },
+            itemBuilder: (context, index) {
+              // list of news card in group
+              return InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) {
+                    return PostDetail(post: newsLists[index],);
+                  }));
+                },
+                child: groupNewsCard(newsLists[index], context)
+              );
+            }
+          ),
         ),
       ],
     );

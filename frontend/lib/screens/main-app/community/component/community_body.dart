@@ -13,6 +13,7 @@ import 'package:flutter_application_1/screens/main-app/community/community_searc
 import 'package:flutter_application_1/screens/main-app/community/component/community_card.widget.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/news_card_widget.dart';
 import 'package:flutter_application_1/screens/main-app/community/my_group/my_group.dart';
+import 'package:flutter_application_1/screens/main-app/community/post_detail.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -143,7 +144,15 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                             );
                           },
                           itemBuilder: (context, index) {
-                            return newsCard(newsLists[index], context);
+                            return InkWell(
+                              onTap: () {
+                                  Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                  return PostDetail(post: newsLists[index],);
+                                }));
+                              },
+                              child: newsCard(newsLists[index], context)
+                            );
                           }),
                     )
                   ],

@@ -28,7 +28,7 @@ import 'package:flutter_svg/flutter_svg.dart';
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // group name
-                      const Text("THAI LANGUAGE", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),),
+                      Text(data.groupName.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),),
                       // post by
                       RichText(
                         text: const TextSpan(
@@ -43,13 +43,13 @@ import 'package:flutter_svg/flutter_svg.dart';
                       ),
                       // caption
                       SizedBox(height: size.height * 0.005),
-                      const Expanded(child: Text("data", style: TextStyle(fontSize: 18), maxLines: 3,)),
+                      Expanded(child: Text(data.news, style: TextStyle(fontSize: 18), maxLines: 3,)),
                       // like and comment
                       Row(
                         children: [
                           const LikeButtonWidget(),
                           SizedBox(width: size.width * 0.05),
-                          SvgPicture.asset("assets/icons/comment_icon.svg", width: size.width * 0.05,)
+                          SvgPicture.asset("assets/icons/comment_icon.svg", width: size.width * 0.07,)
                         ],
                       ),
                     ],
