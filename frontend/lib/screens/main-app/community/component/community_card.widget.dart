@@ -4,7 +4,7 @@ import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/main-app/community/group_activity/group_activity_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
-Widget communityCard(data, context) {
+Widget communityCard(user, data, context) {
   var size = MediaQuery.of(context).size;
   return InkWell(
     onTap: () {
@@ -12,6 +12,7 @@ Widget communityCard(data, context) {
       Navigator.push(context, CupertinoPageRoute(builder: (context) {
         // NOTE: click and then go to each commumity group
         return GroupActivityScreen(
+          user: user,
           groupActivity: data,
         );
       }));

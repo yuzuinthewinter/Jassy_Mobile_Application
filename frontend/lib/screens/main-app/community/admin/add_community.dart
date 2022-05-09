@@ -67,8 +67,6 @@ class _NewCommunityState extends State<AddNewCommunity> {
     });
   }
 
-  late FileImage _image;
-
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles();
 

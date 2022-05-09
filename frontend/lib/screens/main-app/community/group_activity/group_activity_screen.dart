@@ -7,18 +7,26 @@ import 'package:flutter_application_1/theme/index.dart';
 
 class GroupActivityScreen extends StatelessWidget {
   final groupActivity;
-  const GroupActivityScreen({ Key? key, required this.groupActivity }) : super(key: key);
+  final user;
+  const GroupActivityScreen(
+      {Key? key, required this.user, required this.groupActivity})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: CommunityActivityAppBar(groupActivity: groupActivity),
-      body: GroupActivityScreenBody(groupActivity: groupActivity,),
+      body: GroupActivityScreenBody(
+        groupActivity: groupActivity,
+      ),
       // Todo: if join group show if not join dont show
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const WritePost()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => WritePost(user, groupActivity)));
         },
         child: Icon(Icons.mode_edit_rounded),
         backgroundColor: primaryColor,

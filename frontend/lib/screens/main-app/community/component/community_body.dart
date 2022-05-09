@@ -79,7 +79,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                 );
               },
               itemBuilder: (context, index) {
-                return communityCard(widget.community[index], context);
+                return communityCard(widget.user, widget.community[index], context);
               },
             ),
           ),
