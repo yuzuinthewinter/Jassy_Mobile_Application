@@ -84,6 +84,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                 aspectRatio: 0.75,
                 enlargeCenterPage: true,
                 enlargeStrategy: CenterPageEnlargeStrategy.height,
+                enableInfiniteScroll: false
               ),
             );
           },
