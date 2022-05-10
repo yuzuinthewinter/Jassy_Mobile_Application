@@ -2,22 +2,23 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/appbar/write_post_appbar.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 // Todo: crop Image file + แจ้งเตือน + ออกกลุ่ม
-class WritePostBody extends StatefulWidget {
+class WritePost extends StatefulWidget {
   final user;
   final group;
-  const WritePostBody(this.user, this.group, {Key? key}) : super(key: key);
+  const WritePost(this.user, this.group, {Key? key}) : super(key: key);
 
   @override
-  State<WritePostBody> createState() => _WritePostBodyState();
+  State<WritePost> createState() => _WritePostState();
 }
 
-class _WritePostBodyState extends State<WritePostBody> {
+class _WritePostState extends State<WritePost> {
   TextEditingController writingTextController = TextEditingController();
   final FocusNode _nodeText1 = FocusNode();
   FocusNode writingTextFocus = FocusNode();
@@ -61,7 +62,7 @@ class _WritePostBodyState extends State<WritePostBody> {
                   color: greyLightest,
                   padding: EdgeInsets.all(8.0),
                   child: Row(
-                    children: <Widget>[
+                    children: const <Widget>[
                       Icon(
                         Icons.add_photo_alternate,
                         size: 28,
@@ -88,50 +89,56 @@ class _WritePostBodyState extends State<WritePostBody> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Container(
-      color: textLight,
-      child: KeyboardActions(
-        config: _buildConfig(context),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CurvedWidget(
-                child: JassyGradientColor(
-              gradientHeight: size.height * 0.23,
-            )),
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                  child: CircleAvatar(
-                    backgroundImage:
-                        const AssetImage("assets/images/user3.jpg"),
-                    radius: size.width * 0.05,
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: WritePostAppBar(
+        onPress: () {}
+      ),
+      body: Container(
+        color: textLight,
+        child: KeyboardActions(
+          config: _buildConfig(context),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CurvedWidget(
+                  child: JassyGradientColor(
+                gradientHeight: size.height * 0.23,
+              )),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    child: CircleAvatar(
+                      backgroundImage:
+                          const AssetImage("assets/images/user3.jpg"),
+                      radius: size.width * 0.05,
+                    ),
                   ),
-                ),
-                Text(
-                  '${widget.user['name']['firstname']} ${widget.user['name']['lastname']}',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
-              child: Expanded(
-                child: TextFormField(
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Write something",
-                    hintMaxLines: 4,
+                  Text(
+                    '${widget.user['name']['firstname']} ${widget.user['name']['lastname']}',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  focusNode: writingTextFocus,
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
+                child: Expanded(
+                  child: TextFormField(
+                    autofocus: true,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Write something",
+                      hintMaxLines: 4,
+                    ),
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    focusNode: writingTextFocus,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
