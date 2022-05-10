@@ -92,6 +92,7 @@ class _BodyState extends State<ConversationText> {
                 mainAxisAlignment: isCurrentUser
                     ? MainAxisAlignment.end
                     : MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Stack(
                     children: [
@@ -109,43 +110,64 @@ class _BodyState extends State<ConversationText> {
                         ),
                       ],
                       if (isCurrentUser) ...[
-                        const Text(
-                          "อ่านแล้ว",
-                          style: TextStyle(color: grey, fontSize: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            const Text(
+                              "อ่านแล้ว",
+                              style: TextStyle(color: grey, fontSize: 12),
+                              textAlign: TextAlign.right,
+                            ),
+                            Text(
+                              getDate(currentMessage['time']).toString(),
+                              style: const TextStyle(color: grey, fontSize: 12),
+                              textAlign: TextAlign.right,
+                            ),
+                          ],
                         ),
                         SizedBox(
-                          width: size.height * 0.06,
+                          width: size.height * 0.07,
                         ),
                       ]
                     ],
                   ),
                   Container(
+                      constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width * 0.6),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
                       decoration: BoxDecoration(
                           color: isCurrentUser ? primaryLighter : textLight,
                           borderRadius: BorderRadius.circular(20)),
-                      child: Text(currentMessage['message'])),
+                      child: Text(currentMessage['message'])
+                  ),
+                  SizedBox(width: size.height * 0.01,),
+                  if (!isCurrentUser) ...[
+                    Text(
+                      getDate(currentMessage['time']).toString(),
+                      style: const TextStyle(color: grey, fontSize: 12),
+                    ),
+                  ],
                 ],
               ),
-              Row(
-                mainAxisAlignment: isCurrentUser
-                    ? MainAxisAlignment.end
-                    : MainAxisAlignment.start,
-                children: [
-                  if (!isCurrentUser)
-                    SizedBox(
-                      width: size.height * 0.06,
-                    ),
-                  Text(
-                    getDate(currentMessage['time']).toString(),
-                    style: const TextStyle(color: grey, fontSize: 12),
-                  ),
-                  SizedBox(
-                    width: size.height * 0.01,
-                  ),
-                ],
-              )
+              // Row(
+              //   mainAxisAlignment: isCurrentUser
+              //       ? MainAxisAlignment.end
+              //       : MainAxisAlignment.start,
+              //   children: [
+              //     if (!isCurrentUser)
+              //       SizedBox(
+              //         width: size.height * 0.06,
+              //       ),
+              //     Text(
+              //       getDate(currentMessage['time']).toString(),
+              //       style: const TextStyle(color: grey, fontSize: 12),
+              //     ),
+              //     SizedBox(
+              //       width: size.height * 0.01,
+              //     ),
+              //   ],
+              // )
             ],
           ),
         );

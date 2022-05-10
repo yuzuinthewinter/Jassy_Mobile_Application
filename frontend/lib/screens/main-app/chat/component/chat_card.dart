@@ -38,6 +38,7 @@ class _ChatCardBody extends State<ChatCard> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('ChatRooms')
@@ -129,9 +130,14 @@ class _ChatCardBody extends State<ChatCard> {
                                               .toString() +
                                           ' ' +
                                           user['name']['lastname'].toString()),
-                                  DescriptionText(
-                                    text: chat['lastMessageSent'].toString(),
-                                  )
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                                    child: Text(
+                                      chat['lastMessageSent'].toString(), 
+                                      style: TextStyle(fontSize: 16, color: greyDark, overflow: TextOverflow.ellipsis),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
                                 ],
                               )),
                               Text(
