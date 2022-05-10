@@ -3,9 +3,10 @@ import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 class WritePostAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final VoidCallback onPress;
 
   const WritePostAppBar({
-    Key? key,
+    Key? key, required this.onPress,
   }) : super(key: key);
 
   @override
@@ -27,7 +28,7 @@ class WritePostAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () {}, 
+          onPressed: onPress, 
           child: Text("Post", style: TextStyle(color: primaryDark, fontFamily: 'kanit', fontSize: 18),)
         )
       ],
