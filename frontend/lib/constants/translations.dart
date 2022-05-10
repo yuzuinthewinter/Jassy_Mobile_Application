@@ -53,28 +53,126 @@ class LocaleString extends Translations {
           "InfoSex": "Sex",
           "InfoMale": "Male",
           "InfoFemale": "Female",
+          //Language Info
+          "InfoLangHeader": "Language Information",
+          "InfoLangDesc":
+              "You can not change your nationality and mother tongue after this, So please provide real personal information.",
+          "InfoCountry": "Country",
+          "InfoFirstLanguage": "First Language",
+          "InfoLevelFirstLanguage": "Level of First Language",
+          "InfoLanguageInterest": "Language Interest",
+          "InfoLevelLanguageInterest": "Level of Language Interest",
 
           //Main-Application
           //Jassy Main Page
           "MainPage": "Home",
+          "MainTabLanguage": "Level of Language",
+          "MainTabDesc": "Description",
+          //Filter
+          "FilterLevelLang": "Level of Language",
+          "FilterSex": "Sex",
+          "FilterNoneGenre": "None",
+          "FilterAge": "Age",
+          "FilterReset": "Reset",
+          "FilterPage": "Filter",
+          "FilterButton": "Filter",
 
           //Jassy Like Page
           "LikePage": "Like",
 
           //Jassy Community Page
-          "CommuPage": "",
+          "CommuPage": "Community",
+          "CommuRecommand": "Recommend for you",
+          "CommuMore": "See More",
+          "CommuFeed": "New Feed",
+          "CommuNoFeed": "There is no news for you yet.",
+          "CommuStartJoin":
+              "Let's start by joining the group to receive news and exchange!",
+          "CommuMyGroup": "My Groups",
+          "CommuSearch": "Search",
+          "CommuSearchGroup": "Search",
+          "CommuSearchInterest": "Find a Group of Interest",
+          "CommuFindGroup": "Find a Group",
+          "CommuResults": "Search Results",
+          //Group Activity
+          "GroupActivity": "Group Activities",
+          "GroupJoin": "Join Group",
+          "GroupMember": "Member",
+          "GroupNotificationOff": "Turn off group notifications",
+          "GroupNotificationOn": "Turn on group notifications",
+          "GroupLeave": "Leave group",
+          "GroupPostHeader": "Create Post",
+          "GroupPostButton": "Post",
+          "GroupPostHintText": "What's on your mind",
+          "GroupPostAddPic": "Photo/Video",
+          "GroupPostReport": "Report Post",
+          "GroupPostDelete": "Delete Post",
+          "GroupPostNotiOff": "Turn off notifications for this post",
+          "GroupPostNotiOn": "Turn on notifications for this post",
+          "GroupPostBy": "Posted by",
+          "GroupPostAt": "at",
+          "GroupPostMins": "m",
+          "GroupPostHours": "h",
+          "GroupPostDays": "d",
+          "GroupPostYesterday": "Yesterday",
+          "GroupPostCommentHintText": "Write a comment",
+
           //Jassy Chat Page
           "ChatPage": "Chat",
           "HeaderChatPage": "Conversations",
+          "SearchChat": "Search",
+          //Appbar Chat
+          "StatusActiveNow": "Active now",
+          "StatusActiveAfew": "Active a few minutes ago",
+          "StatusActive": "Active",
+          "StatusActiveMins": "minutes ago",
+          "StatusActiveHours": "h ago",
+          "StatusActiveDays": "d ago",
+          "MenuNotificationOn": "Turn on notifications",
+          "MenuNotificationOff": "Turn off notifications",
+          "MenuUnmatch": "Unmatch",
+          "MenuReport": "Report",
+          //Report
+          "ReportDetail": "Report Details",
+          "ReportFill": "Pleade Field",
+          "ReportAttach": "Attach Evidence of The Report.",
+          "ReportAddFile": "Add File",
+          "ReportChoose": "Please select an issue",
+          "ReportDesc":
+              "Before reporting the problem to Jassy.If you feel in danger, Please ask for help first.",
+          "ReportNudity": "Nudity",
+          "ReportVio": "Violence",
+          "ReportThreat": "Threat",
+          "ReportProfan": "Profanity",
+          "ReportTerro": "Terrorism",
+          "ReportChild": "Child Labor",
+          "ReportSexual": "Sexual Exploitation",
+          "ReportAnimal": "Animal Abuse",
+          "ReportScam": "Scammer",
+          "ReportAbuse": "Substance Abuse Support",
+          "ReportOther": "Other",
+
           //Jassy Profile Page
           "ProfilePage": "Profile",
+          "ProfileSetting": "Profile Settings",
+          "ProfileHelp": "Help Center",
+          "ProfileAppSetting": "Settings",
+          "ProfileMarkAsLike": "Mask as Like",
+          "ProfileAboutJassy": "About Jassy",
+          "ProfileLogOut": "Log Out",
 
           //Profile Setting Page
+          "ProfileDesc": "Description",
+          "ProfileSaveChange": "Save Change",
+          "ProfileTabInfo": "Personal Information",
+          "ProfileTabLang": "Language",
+
           //Setting Page
           "AppSetting": "Setting",
           "ShowStatusSetting": "Status",
           "NotificationSetting": "Notification",
           "LanguageSetting": "Language",
+
           //Popup
           "RegisterSuccess": "Success",
           "NextButton": "Next",
@@ -127,24 +225,126 @@ class LocaleString extends Translations {
           "InfoSex": "เพศ",
           "InfoMale": "ชาย",
           "InfoFemale": "หญิง",
+          //Language Info
+          "InfoLangHeader": "ข้อมูลภาษา",
+          "InfoLangDesc":
+              "คุณไม่สามารถเปลี่ยนสัญชาติและภาษาที่หนึ่งหลังจากนี้ได้ดังนั้นโปรดให้ข้อมูลส่วนบุคคลที่แท้จริง",
+          "InfoCountry": "คุณเป็นคนประเทศ",
+          "InfoFirstLanguage": "ภาษาที่หนึ่ง",
+          "InfoLevelFirstLanguage": "ระดับของภาษาที่หนึ่ง",
+          "InfoLanguageInterest": "ภาษาที่สนใจ",
+          "InfoLevelLanguageInterest": "ระดับของภาษาที่สนใจ",
 
           //Main-Application
           //Jassy Main Page
           "MainPage": "หน้าหลัก",
+          "MainTabLanguage": "ระดับภาษา",
+          "MainTabDesc": "คำบรรยาย",
+          //Filter
+          "FilterLevelLang": "ระดับภาษา",
+          "FilterSex": "เพศ",
+          "FilterNoneGenre": "ไม่ระบุ",
+          "FilterAge": "อายุ",
+          "FilterReset": "คืนค่า",
+          "FilterPage": "ตัวกรอง",
+          "FilterButton": "กรอง",
+
           //Jassy Like Page
           "LikePage": "ถูกใจ",
+
           //Jassy Community Page
-          "CommuPage": "",
+          "CommuPage": "ชุมขน",
+          "CommuRecommand": "แนะนำสำหรับคุณ",
+          "CommuMore": "ดูเพิ่มเติม",
+          "CommuFeed": "ข่าวสาร",
+          "CommuNoFeed": "ยังไม่มีข่าวสารสำหรับคุณ",
+          "CommuStartJoin":
+              "เริ่มเข้ากลุ่มเพื่อรับข่าวสารและแลกเปลี่ยนกันเถอะ !",
+          "CommuMyGroup": "กลุ่มของฉัน",
+          "CommuSearch": "ค้นหา",
+          "CommuSearchGroup": "ค้นหากลุ่ม",
+          "CommuSearchInterest": "ค้นหากลุ่มที่สนใจ",
+          "CommuFindGroup": "ค้นหากลุ่ม",
+          "CommuResults": "ผลลัพธ์การค้นหา",
+          //Group Activity
+          "GroupActivity": "กิจกรรมของกลุ่ม",
+          "GroupJoin": "เข้าร่วมกลุ่ม",
+          "GroupMember": "สมาชิก",
+          "GroupNotificationOff": "ปิดการแจ้งเตือนกลุ่ม",
+          "GroupNotificationOn": "เปิดการแจ้งเตือนกลุ่ม",
+          "GroupLeave": "ออกจากกลุ่ม",
+          "GroupPostHeader": "เขียนโพสต์",
+          "GroupPostButton": "โพสต์",
+          "GroupPostHintText": "คุณกำลังคิดอะไรอยู่",
+          "GroupPostAddPic": "รูปภาพ/วิดีโอ",
+          "GroupPostReport": "รายงานโพสต์",
+          "GroupPostDelete": "ลบโพสต์",
+          "GroupPostNotiOff": "ปิดการแจ้งเตือนสำหรับโพสต์นี้",
+          "GroupPostNotiOn": "เปิดการแจ้งเตือนสำหรับโพสต์นี้",
+          "GroupPostBy": "เขียนโดย",
+          "GroupPostAt": "เมื่อ",
+          "GroupPostMins": "นาทีที่แล้ว",
+          "GroupPostHours": "ชั่วโมงที่แล้ว",
+          "GroupPostDays": "วันที่แล้ว",
+          "GroupPostYesterday": "เมื่อวานนี้",
+          "GroupPostCommentHintText": "เขียนคอมเมนต์",
+
           //Jassy Chat Page
           "ChatPage": "แชท",
           "HeaderChatPage": "สนทนา",
+          "SearchChat": "ค้นหา",
+          //Appbar Chat
+          "StatusActiveNow": "กำลังใช้งาน",
+          "StatusActiveAfew": "ใช้งานเมื่อไม่กี่นาทีที่แล้ว",
+          "StatusActive": "ใช้งานเมื่อ",
+          "StatusActiveMins": " นาทีที่แล้ว",
+          "StatusActiveHours": " ชั่วโมงที่แล้ว",
+          "StatusActiveDays": " วันที่แล้ว",
+          "MenuNotificationOn": "เปิดการแจ้งเตือน",
+          "MenuNotificationOff": "ปิดการแจ้งเตือน",
+          "MenuUnmatch": "ยกเลิกการจับคู่",
+          "MenuReport": "รายงาน",
+          //Report
+          "ReportDetail": "รายละเอียดการรายงาน",
+          "ReportFill": "กรุณากรอก",
+          "ReportAttach": "แนบหลักฐานการรายงาน",
+          "ReportAddFile": "เพิ่มไฟล์",
+          "ReportChoose": "โปรดเลือกปัญหา",
+          "ReportDesc":
+              "หากท่านรู้สึกตกอยู่ในอันตราย โปรดขอความช่วยเหลือก่อนรายงานปัญหาให้กับแจสซี่ทราบ",
+          "ReportNudity": "ภาพโป๊เปลือย",
+          "ReportVio": "ความรุนแรง",
+          "ReportThreat": "การคุกคาม",
+          "ReportProfan": "คำหยาบคาย",
+          "ReportTerro": "การก่อการร้าย",
+          "ReportChild": "การใช้แรงงานเด็ก",
+          "ReportSexual": "การแสวงหาผลประโยชน์ทางเพศ",
+          "ReportAnimal": "การทำร้ายทารุณสัตว์",
+          "ReportScam": "หลอกลวงต้มตุ๋น",
+          "ReportAbuse": "สนับสนุนการใช้สารเสพติด",
+          "ReportOther": "อื่น ๆ",
+
           //Jassy Profile Page
           "ProfilePage": "โพรไฟล์",
+          "ProfileSetting": "ตั้งค่าโพรไฟล์",
+          "ProfileHelp": "ศูนย์ช่วยเหลือ",
+          "ProfileAppSetting": "การตั้งค่า",
+          "ProfileMarkAsLike": "ข้อความที่ชื่นชอบ",
+          "ProfileAboutJassy": "เกี่ยวกับแจสซี่",
+          "ProfileLogOut": "ออกจากระบบ",
+
+          //Profile Setting Page
+          "ProfileDesc": "คำบรรยายของคุณ",
+          "ProfileSaveChange": "บันทึกการเปลี่ยนแปลง",
+          "ProfileTabInfo": "ข้อมูลส่วนตัว",
+          "ProfileTabLang": "ภาษา",
+
           //Setting Page
-          "AppSetting": "การตั้งค่า",
+          "AppSetting": "ศูนย์ช่วยเหลือ",
           "ShowStatusSetting": "การแสดงสถานะของคุณ",
           "NotificationSetting": "การแจ้งเตือน",
           "LanguageSetting": "ภาษา",
+
           //Popup
           "RegisterSuccess": "ลงทะเบียนสำเร็จ",
           "NextButton": "ต่อไป",

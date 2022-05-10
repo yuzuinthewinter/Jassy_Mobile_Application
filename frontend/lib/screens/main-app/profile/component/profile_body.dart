@@ -85,7 +85,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                   ProfileMenu(
                     size: size,
                     icon: SvgPicture.asset("assets/icons/profile_icon.svg"),
-                    text: "ตั้งค่าโพรไฟล์",
+                    text: "ProfileSetting".tr,
                     onTab: () {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
@@ -96,13 +96,13 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                   ProfileMenu(
                     size: size,
                     icon: SvgPicture.asset("assets/icons/help_center_icon.svg"),
-                    text: "ศูนย์ช่วยเหลือ",
+                    text: "ProfileHelp".tr,
                     onTab: () {},
                   ),
                   ProfileMenu(
                     size: size,
                     icon: SvgPicture.asset("assets/icons/app_setting_icon.svg"),
-                    text: 'AppSetting'.tr,
+                    text: 'ProfileAppSetting'.tr,
                     onTab: () {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
@@ -127,7 +127,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                 ProfileMenu(
                   size: size,
                   icon: SvgPicture.asset("assets/icons/about_jassy_icon.svg"),
-                  text: "เกี่ยวกับแจสซี่",
+                  text: "ProfileAboutJassy".tr,
                   onTab: () {},
                 ),
                 Expanded(
@@ -139,7 +139,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                         width: size.width * 0.03,
                       ),
                       Text(
-                        "ออกจากระบบ",
+                        "ProfileLogOut".tr,
                         style: TextStyle(color: textMadatory),
                       ),
                       Spacer(),

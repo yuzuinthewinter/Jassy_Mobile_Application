@@ -11,6 +11,7 @@ import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 class Body extends StatefulWidget {
   final NameType name;
@@ -33,7 +34,7 @@ class _BodyState extends State<Body> {
   late FixedExtentScrollController interestScrollController;
   late FixedExtentScrollController interestLevelScrollController;
 
-  final languageLevelItems = ['Beginner', 'Intermediate', 'Advance'];
+  final languageLevelItems = ["Beginner", "Elementary", "Intermidiate", "Upper Intermidiate", "Advanced", "Proficiency"];
   final languageItems = ['Thai', 'Korean', 'Indonsian'];
 
   int countryIndex = 0;
@@ -105,15 +106,15 @@ class _BodyState extends State<Body> {
           const CurvedWidget(
             child: HeaderStyle2(),
           ),
-          const HeaderText(text: "ข้อมูลภาษา"),
-          const DescriptionText(
+          HeaderText(text: "InfoLangHeader".tr),
+          DescriptionText(
               text:
-                  "คุณไม่สามารถเปลี่ยนสัญชาติและภาษาที่หนึ่งหลังจากนี้ได้ดังนั้นโปรดให้ข้อมูลส่วนบุคคลที่แท้จริง"),
+                  "InfoLangDesc".tr),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const RequiredTextFieldLabel(textLabel: "คุณเป็นคนประเทศ"),
+                  RequiredTextFieldLabel(textLabel: "InfoCountry".tr),
                   Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 0, horizontal: 20.0),
@@ -158,7 +159,7 @@ class _BodyState extends State<Body> {
                           userInfo.country = languageItems[countryIndex];
                         }),
                   ),
-                  const RequiredTextFieldLabel(textLabel: "ภาษาที่หนึ่ง"),
+                  RequiredTextFieldLabel(textLabel: "InfoFirstLanguage".tr),
                   Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 0, horizontal: 20.0),
@@ -204,7 +205,7 @@ class _BodyState extends State<Body> {
                       },
                     ),
                   ),
-                  const RequiredTextFieldLabel(textLabel: "ระดับภาษาที่หนึ่ง"),
+                  RequiredTextFieldLabel(textLabel: "InfoLevelFirstLanguage".tr),
                   Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 0, horizontal: 20.0),
@@ -252,7 +253,7 @@ class _BodyState extends State<Body> {
                       },
                     ),
                   ),
-                  const RequiredTextFieldLabel(textLabel: "ภาษาที่สนใจ"),
+                  RequiredTextFieldLabel(textLabel: "InfoLanguageInterest".tr),
                   Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 0, horizontal: 20.0),
@@ -299,7 +300,7 @@ class _BodyState extends State<Body> {
                       },
                     ),
                   ),
-                  const RequiredTextFieldLabel(textLabel: "ระดับภาษาที่สนใจ"),
+                  RequiredTextFieldLabel(textLabel: "InfoLevelLanguageInterest".tr),
                   Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 0, horizontal: 20.0),
@@ -353,7 +354,7 @@ class _BodyState extends State<Body> {
           ),
           Center(
             child: DisableToggleButton(
-              text: "next",
+              text: "NextButton".tr,
               minimumSize: const Size(279, 36),
               press: () async {
                 if (_formKey.currentState!.validate()) {

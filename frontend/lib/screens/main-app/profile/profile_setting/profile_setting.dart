@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/back_close_appbar.dart';
 import 'package:flutter_application_1/screens/main-app/profile/profile_setting/component/profile_setting_body.dart';
+import 'package:get/get.dart';
 
 class ProfileSetting extends StatelessWidget {
   final user;
@@ -11,8 +12,8 @@ class ProfileSetting extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: const BackAndCloseAppBar(
-        text: "ตั้งค่าโพรโฟล์",
+      appBar: BackAndCloseAppBar(
+        text: "ProfileSetting".tr,
       ),
       body: ProfileSettingBody(user),
     );

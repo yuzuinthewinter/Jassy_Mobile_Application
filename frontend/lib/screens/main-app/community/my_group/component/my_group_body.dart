@@ -9,6 +9,7 @@ import 'package:flutter_application_1/screens/main-app/community/group_activity/
 import 'package:flutter_application_1/screens/main-app/community/my_group/component/my_group_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class MyGroupBody extends StatefulWidget {
   final defaultGroups;
@@ -23,7 +24,6 @@ class MyGroupBody extends StatefulWidget {
 class _MyGroupBodyState extends State<MyGroupBody> {
   TextEditingController searchController = TextEditingController();
   bool isSearchEmpty = true;
-  late List<GroupActivity> grouplists;
   String query = '';
 
   var currentUser = FirebaseAuth.instance.currentUser;
@@ -32,7 +32,7 @@ class _MyGroupBodyState extends State<MyGroupBody> {
   @override
   void initState() {
     super.initState();
-    grouplists = groupLists;
+    // grouplists = groupLists;
 
     searchController = TextEditingController();
     searchController.addListener(() {
@@ -66,7 +66,7 @@ class _MyGroupBodyState extends State<MyGroupBody> {
                 'assets/icons/search_input.svg',
                 height: 16,
               ),
-              hintText: 'ค้นหา',
+              hintText: 'CommuSearchGroup'.tr,
               filled: true,
               fillColor: textLight,
               contentPadding:
@@ -96,45 +96,44 @@ class _MyGroupBodyState extends State<MyGroupBody> {
           padding: EdgeInsets.symmetric(
               vertical: size.height * 0.03, horizontal: size.width * 0.05),
           child: Text(
-            "กลุ่มของฉัน",
+            "CommuMyGroup".tr,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
           ),
         ),
         Expanded(
-            child: ListView.separated(
+            child: ListView.builder(
                 padding: EdgeInsets.only(
                     top: size.height * 0.01, bottom: size.height * 0.01),
                 scrollDirection: Axis.vertical,
-                itemCount: grouplists.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    height: size.height * 0.03,
-                  );
-                },
+                itemCount: widget.user['groups'].length,
                 itemBuilder: (context, index) {
-                  final group = grouplists[index];
-                  return InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            CupertinoPageRoute(builder: (context) {
-                          return GroupActivityScreen(
-                              groupActivity: group, user: widget.user);
-                        }));
-                      },
-                      child: myGroupWidget(group, context));
+                  final groupid = widget.user['groups'][index];
+                  for (var group in widget.defaultGroups) {
+                    if (group['groupid'] == groupid) {
+                      return Column(
+                        children: [
+                          myGroupWidget(group, context),
+                          SizedBox(
+                            height: size.height * 0.03,
+                          )
+                        ],
+                      );
+                    }
+                  }
+                  return const SizedBox(width: 0, height: 0);
                 }))
       ],
     );
   }
 
   void searhGroup(String query) {
-    final suggestion = grouplists.where((group) {
-      final groupName = group.groupName.name.toLowerCase();
-      final searchInput = query.toLowerCase();
+    // final suggestion = grouplists.where((group) {
+    //   final groupName = group.groupName.name.toLowerCase();
+    //   final searchInput = query.toLowerCase();
 
-      return groupName.contains(searchInput);
-    }).toList();
+    //   return groupName.contains(searchInput);
+    // }).toList();
 
-    setState(() => grouplists = suggestion);
+    // setState(() => grouplists = suggestion);
   }
 }

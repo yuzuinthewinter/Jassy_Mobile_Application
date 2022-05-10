@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 
 class ProfileSettingTabBar extends StatelessWidget {
   final TabController tabController;
@@ -21,10 +22,10 @@ class ProfileSettingTabBar extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             )),
-        tabs: const [
+        tabs: [
           Tab(
             icon: Text(
-              'ข้อมูลส่วนตัว ',
+              'ProfileTabInfo'.tr,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -34,7 +35,7 @@ class ProfileSettingTabBar extends StatelessWidget {
           ),
           Tab(
             icon: Text(
-              'ภาษา',
+              'ProfileTabLang'.tr,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,

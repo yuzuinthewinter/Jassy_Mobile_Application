@@ -247,7 +247,7 @@ class _BodyState extends State<Body> {
                 ),
                 Center(
                   child: DisableToggleButton(
-                    text: "next",
+                    text: "NextButton".tr,
                     minimumSize: Size(size.width * 0.8, size.height * 0.05),
                     press: () {
                       if (_formKey.currentState!.validate()) {

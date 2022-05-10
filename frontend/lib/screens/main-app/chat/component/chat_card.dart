@@ -72,7 +72,7 @@ class _ChatCardBody extends State<ChatCard> {
                     );
                   }
                   var data = snapshot.data!.docs;
-                  if (data.length > 0) {
+                  if (data.isNotEmpty) {
                     for (var user in data) {
                       return InkWell(
                         onTap: () {
@@ -131,10 +131,14 @@ class _ChatCardBody extends State<ChatCard> {
                                           ' ' +
                                           user['name']['lastname'].toString()),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: size.width * 0.05),
                                     child: Text(
-                                      chat['lastMessageSent'].toString(), 
-                                      style: TextStyle(fontSize: 16, color: greyDark, overflow: TextOverflow.ellipsis),
+                                      chat['lastMessageSent'].toString(),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: greyDark,
+                                          overflow: TextOverflow.ellipsis),
                                       textAlign: TextAlign.left,
                                     ),
                                   ),
@@ -152,8 +156,7 @@ class _ChatCardBody extends State<ChatCard> {
                       );
                     }
                   }
-
-                  return const Text('hai');
+                  return const Text('');
                 },
               );
             }

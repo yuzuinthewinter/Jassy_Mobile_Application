@@ -7,6 +7,7 @@ import 'package:flutter_application_1/screens/main-app/community/component/comme
 import 'package:flutter_application_1/screens/main-app/community/component/comment_tree.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class PostDetailBody extends StatefulWidget {
   final News post;
@@ -129,7 +130,7 @@ class Input extends StatelessWidget {
       focusNode: myFocusNode,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
-        hintText: "เขียนคอมเมนต์",
+        hintText: "GroupPostCommentHintText".tr,
         suffixIcon: InkWell(
             // TODO : add emoji picker (ammie)
             onTap: () {

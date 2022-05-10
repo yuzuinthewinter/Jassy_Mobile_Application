@@ -13,7 +13,7 @@ class AppSetting extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: BackAndCloseAppBar(
-        text: 'AppSetting'.tr,
+        text: 'ProfileAppSetting'.tr,
       ),
       body: AppSettingBody(user),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 
 class PostDetailAppBar extends StatelessWidget implements PreferredSizeWidget {
 
@@ -28,7 +29,7 @@ class PostDetailAppBar extends StatelessWidget implements PreferredSizeWidget {
               children: [
                 const WidgetSpan(child: Icon(Icons.person_rounded, color: primaryColor,)),
                 WidgetSpan(child: SizedBox(width: size.width * 0.01,),),
-                const TextSpan(text: "สมาชิก "),
+                TextSpan(text: "${'GroupMember'.tr} "),
                 TextSpan(text: post.groupName.member.toString())
               ]
             )

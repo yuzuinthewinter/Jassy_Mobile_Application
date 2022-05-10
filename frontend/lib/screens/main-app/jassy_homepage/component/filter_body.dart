@@ -4,6 +4,7 @@ import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 
 class FilterBody extends StatefulWidget {
   const FilterBody({ Key? key }) : super(key: key);
@@ -18,7 +19,7 @@ class _FilterBodyState extends State<FilterBody> {
   int _languageLevelIndex = 0;
   int _genderIndex = 0;
   final List<String> _LanguageLevelChoicesLists = ["Beginner", "Elementary", "Intermidiate", "Upper Intermidiate", "Advanced", "Proficiency"];
-  final List<String> _GenderChoicesLists = ["ชาย", "หญิง", "LGBTQ+", "ไม่ระบุ"];
+  final List<String> _GenderChoicesLists = ["InfoMale".tr, "InfoFemale".tr, "LGBTQ+", "FilterNoneGenre".tr];
 
   RangeValues _currentRangeValues = const RangeValues(20, 30);
 
@@ -40,7 +41,7 @@ class _FilterBodyState extends State<FilterBody> {
         // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const HeaderText(text: "ระดับภาษา"),
+          HeaderText(text: "FilterLevelLang".tr),
           Container(
             padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
             child: SingleChildScrollView(
@@ -69,7 +70,7 @@ class _FilterBodyState extends State<FilterBody> {
               ),
             ),
           ),
-          const HeaderText(text: "เพศ"),
+          HeaderText(text: "FilterSex".tr),
           Container(
             padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
             child: SingleChildScrollView(
@@ -100,7 +101,7 @@ class _FilterBodyState extends State<FilterBody> {
               ),
             ),
           ),
-          const HeaderText(text: "อายุ"),
+          const HeaderText(text: "FilterAge"),
           SliderTheme(
             data: const SliderThemeData(
               valueIndicatorColor: primaryColor,
@@ -150,12 +151,12 @@ class _FilterBodyState extends State<FilterBody> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               OutlinedButtonComponent(
-                text: "คืนค่า", 
+                text: "FilterReset".tr, 
                 minimumSize: Size(size.width * 0.45, size.height *0.05), 
                 press: () {}
               ),
               RoundButton(
-                text: "กรอง", 
+                text: "FilterButton".tr, 
                 minimumSize: Size(size.width * 0.45, size.height *0.05), 
                 press: () {}
               )

@@ -113,7 +113,6 @@ class _JassyMainBodyState extends State<JassyMainBody> {
             child: DetailPage(user: user, animation: animation),
           );
         }));
-        print("each card");
       }),
       child: Padding(
         padding: const EdgeInsets.all(8.0),

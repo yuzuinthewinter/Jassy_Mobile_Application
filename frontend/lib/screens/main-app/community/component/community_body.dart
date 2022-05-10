@@ -16,6 +16,7 @@ import 'package:flutter_application_1/screens/main-app/community/my_group/my_gro
 import 'package:flutter_application_1/screens/main-app/community/post_detail.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class CommunityScreenBody extends StatefulWidget {
   final user;
@@ -44,8 +45,8 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
               horizontal: size.width * 0.03, vertical: size.height * 0.01),
           child: Row(children: [
             widget.user['userStatus'] == 'user'
-                ? const Text(
-                    "แนะนำสำหรับคุณ",
+                ? Text(
+                    "CommuRecommand".tr,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                   )
                 : const Text(
@@ -54,7 +55,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                   ),
             const Spacer(),
             InkWell(
-              child: const Text("ดูเพิ่มเติม",
+              child: Text("CommuMore".tr,
                   style: TextStyle(
                     fontSize: 16,
                     color: primaryColor,
@@ -100,8 +101,8 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                           horizontal: size.width * 0.03,
                           vertical: size.height * 0.01),
                       child: Row(children: [
-                        const Text(
-                          "ข่าวสาร",
+                        Text(
+                          "CommuFeed".tr,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w700),
                         ),
@@ -114,7 +115,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                     return MyGroup(widget.community, widget.user);
                                   }));
                                 },
-                                child: const Text("กลุ่มของฉัน",
+                                child: Text("CommuMyGroup".tr,
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: primaryColor,
