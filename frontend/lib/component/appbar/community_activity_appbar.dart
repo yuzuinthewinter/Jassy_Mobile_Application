@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 
 class CommunityActivityAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -40,7 +41,7 @@ class CommunityActivityAppBar extends StatelessWidget
                     width: size.width * 0.01,
                   ),
                 ),
-                const TextSpan(text: "สมาชิก "),
+                TextSpan(text: "${'GroupMember'.tr} "),
                 TextSpan(text: groupActivity['membersID'].length.toString())
               ]))
         ],

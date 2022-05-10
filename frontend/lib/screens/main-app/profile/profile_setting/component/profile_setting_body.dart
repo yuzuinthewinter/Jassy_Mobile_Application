@@ -35,7 +35,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
   int currentTabIndex = 0;
 
   // state of data's user
-  final List<String> _choicesLists = ["Male", "Female", "LGBTQ+"];
+  final List<String> _choicesLists = ["InfoMale".tr, "InfoFemale".tr, "LGBTQ+"];
 
   //controller
   TextEditingController descController = TextEditingController();
@@ -57,7 +57,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
 
   //array data
   final languageItems = ['Thai', 'Korean', 'Indonsian'];
-  final languageLevelItems = ['Beginner', 'Intermediate', 'Advance'];
+  final languageLevelItems = ["Beginner", "Elementary", "Intermidiate", "Upper Intermidiate", "Advanced", "Proficiency"];
 
   //default index
   int countryIndex = 0;
@@ -183,7 +183,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
         ),
         Center(
           child: DisableToggleButton(
-              text: "บันทึกการเปลี่ยนแปลง",
+              text: "ProfileSaveChange".tr,
               minimumSize: Size(size.width * 0.8, size.height * 0.05),
               press: () {
                 if (_formKey.currentState!.validate()) {
@@ -205,7 +205,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const TextFieldLabel(textLabel: "ชื่อ-นามสกุล"),
+          TextFieldLabel(textLabel: "${'InfoFirstname'.tr}-${'InfoLastname'.tr}"),
           TextFormField(
             readOnly: true,
             decoration: InputDecoration(
@@ -229,7 +229,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
               ),
             ),
           ),
-          const TextFieldLabel(textLabel: "วันเดือนปีเกิด"),
+          TextFieldLabel(textLabel: "InfoDateBirth".tr),
           TextFormField(
             readOnly: true,
             decoration: InputDecoration(
@@ -251,7 +251,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
               ),
             ),
           ),
-          const TextFieldLabel(textLabel: "เพศ"),
+          TextFieldLabel(textLabel: "InfoSex".tr),
           Center(
             child: Wrap(
                 spacing: size.width * 0.03,
@@ -283,7 +283,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
                   );
                 })),
           ),
-          const TextFieldLabel(textLabel: "คำบรรยายของคุณ"),
+          TextFieldLabel(textLabel: "ProfileDesc".tr),
           TextFormField(
             keyboardType: TextInputType.multiline,
             maxLines: 5,
@@ -319,7 +319,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
     return SingleChildScrollView(
       child: Column(
         children: [
-          const TextFieldLabel(textLabel: "คุณเป็นคนประเทศ"),
+          TextFieldLabel(textLabel: "InfoCountry".tr),
           TextFormField(
             readOnly: true,
             initialValue: widget.user['country'],
@@ -342,7 +342,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
               ),
             ),
           ),
-          const TextFieldLabel(textLabel: "ภาษาที่หนึ่ง"),
+          TextFieldLabel(textLabel: "InfoFirstLanguage".tr),
           TextFormField(
             readOnly: true,
             initialValue: widget.user['language']["defaultLanguage"],
@@ -365,7 +365,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
               ),
             ),
           ),
-          const TextFieldLabel(textLabel: "ระดับภาษาที่หนึ่ง"),
+          TextFieldLabel(textLabel: "InfoLevelFirstLanguage".tr),
           TextFormField(
             readOnly: true,
             onChanged: (levelDefaultLanguage) {
@@ -420,7 +420,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
                   : language.levelDefaultLanguage;
             },
           ),
-          const TextFieldLabel(textLabel: "ภาษาที่สนใจ"),
+          TextFieldLabel(textLabel: "InfoLanguageInterest".tr),
           TextFormField(
             readOnly: true,
             onChanged: (interestedLanguage) {
@@ -475,7 +475,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
                   : language.interestedLanguage;
             },
           ),
-          const TextFieldLabel(textLabel: "ระดับภาษาที่สนใจ"),
+          TextFieldLabel(textLabel: "InfoLevelLanguageInterest".tr),
           TextFormField(
             readOnly: true,
             onChanged: (levelInterestedLanguage) {

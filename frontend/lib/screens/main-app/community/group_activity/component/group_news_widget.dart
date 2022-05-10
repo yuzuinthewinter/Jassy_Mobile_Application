@@ -3,6 +3,7 @@ import 'package:flutter_application_1/component/button/like_button_widget.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 // news card in group
   Widget groupNewsCard (News data, context) {
@@ -36,12 +37,12 @@ import 'package:flutter_svg/flutter_svg.dart';
                         SizedBox(height: size.height * 0.025,),
                         // post by
                         RichText(
-                          text: const TextSpan(
+                          text: TextSpan(
                             style: TextStyle(color: greyDark, fontSize: 14, fontFamily: 'kanit'),
                             children: [
-                              TextSpan(text: "เขียนโดย "),
+                              TextSpan(text: "${'GroupPostBy'.tr} "),
                               TextSpan(text: "Ammie "),
-                              TextSpan(text: "เมื่อ "),
+                              TextSpan(text: "${'GroupPostAt'.tr} "),
                               TextSpan(text: "10:24 AM "),
                             ]                      
                           ),

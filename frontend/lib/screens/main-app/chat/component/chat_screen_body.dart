@@ -6,6 +6,7 @@ import 'package:flutter_application_1/component/header_style/jassy_gradient_colo
 import 'package:flutter_application_1/screens/main-app/chat/component/list_chat.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class ChatScreenBody extends StatefulWidget {
   const ChatScreenBody({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
                 'assets/icons/search_input.svg',
                 height: 16,
               ),
-              hintText: 'ค้นหา',
+              hintText: 'SearchChat'.tr,
               filled: true,
               fillColor: textLight,
               // contentPadding:

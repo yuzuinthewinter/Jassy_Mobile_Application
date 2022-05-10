@@ -10,6 +10,7 @@ import 'package:flutter_application_1/screens/main-app/community/group_activity/
 import 'package:flutter_application_1/screens/main-app/community/my_group/my_group.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 import '../../post_detail.dart';
 
@@ -53,7 +54,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
         // Todo: if now join show button if not join dont show button
         Center(
           child: RoundButton(
-              text: "เข้าร่วมกลุ่ม",
+              text: "GroupJoin".tr,
               minimumSize: Size(size.width * 0.8, size.height * 0.05),
               press: () {
                 joinGroup();
@@ -79,7 +80,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                     width: size.width * 0.01,
                   ),
                 ),
-                const TextSpan(text: "กิจกรรมของกลุ่ม")
+                TextSpan(text: "GroupActivity".tr)
               ])),
         ),
         Expanded(

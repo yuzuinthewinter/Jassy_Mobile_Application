@@ -8,6 +8,7 @@ import 'package:flutter_application_1/screens/main-app/community/admin/manage_co
 import 'package:flutter_application_1/screens/main-app/community/community_search/component/group_for_search_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class CommunitySearchBody extends StatefulWidget {
   final user;
@@ -59,7 +60,7 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
                 'assets/icons/search_input.svg',
                 height: 16,
               ),
-              hintText: 'ค้นหา',
+              hintText: 'CommuSearchInterest'.tr,
               filled: true,
               fillColor: textLight,
               contentPadding:
@@ -86,9 +87,9 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
               Text(
                 isSearchEmpty
                     ? widget.user['userStatus'] == 'user'
-                        ? "แนะนำสำหรับคุณ"
+                        ? "CommuRecommand".tr
                         : "กลุ่มทั้งหมด"
-                    : "ผลลัพธ์การค้นหา",
+                    : "CommuResults".tr,
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
               ),

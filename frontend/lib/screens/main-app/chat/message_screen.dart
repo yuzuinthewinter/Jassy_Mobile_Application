@@ -3,6 +3,7 @@ import 'package:flutter_application_1/component/text/report_choice.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/message_screen_body.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 enum MenuItem { item1, item2, item3 }
@@ -35,13 +36,13 @@ class _ChatRoomState extends State<ChatRoom> {
     var timeHour = diff.inHours;
     var timeDay = diff.inDays;
     if (timeMin < 3) {
-      return 'Active a few minutes ago';
+      return 'StatusActiveAfew'.tr;
     } else if (timeMin < 60) {
-      return 'Active ${timeMin.toString()} minutes ago';
+      return '${'StatusActive'.tr} ${timeMin.toString()} ${'StatusActiveMins'.tr}';
     } else if (timeHour < 24) {
-      return 'Active ${timeHour.toString()}h ago';
+      return '${'StatusActive'.tr} ${timeHour.toString()}${'StatusActiveHours'.tr}';
     } else if (timeDay < 3) {
-      return 'Active ${timeDay.toString()}d ago';
+      return '${'StatusActive'.tr} ${timeDay.toString()}${'StatusActiveDays'.tr}';
     } else {
       return '';
     }
@@ -65,7 +66,7 @@ class _ChatRoomState extends State<ChatRoom> {
                         widget.currentUser['isShowActive']
                     ? Text(
                         widget.user['isActive']
-                            ? 'Active now'
+                            ? 'StatusActiveNow'.tr
                             : getDifferance(widget.user['timeStamp']),
                         style: const TextStyle(fontSize: 14, color: greyDark),
                       )
@@ -121,8 +122,8 @@ class _ChatRoomState extends State<ChatRoom> {
                           : SvgPicture.asset(
                               "assets/icons/notification_off.svg"),
                       isNotificationOn
-                          ? const Text("เปิดการแจ้งเตือน")
-                          : const Text("ปิดการแจ้งเตือน"),
+                          ? Text("MenuNotificationOn".tr)
+                          : Text("MenuNotificationOff".tr),
                     ],
                   )),
               PopupMenuItem(
@@ -130,7 +131,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   child: Row(
                     children: [
                       SvgPicture.asset("assets/icons/cancel_pairing.svg"),
-                      const Text("ยกเลิกการจับคู่"),
+                      Text("MenuUnmatch".tr),
                     ],
                   )),
               PopupMenuItem(
@@ -138,7 +139,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   child: Row(
                     children: [
                       SvgPicture.asset("assets/icons/report.svg"),
-                      const Text("รายงาน"),
+                      Text("MenuReport".tr),
                     ],
                   )),
             ],
@@ -173,57 +174,57 @@ class _ChatRoomState extends State<ChatRoom> {
               padding:
                   const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
               child: Column(
-                children: const [
+                children: [
                   Text(
-                    "รายงาน",
+                    "MenuReport".tr,
                     style: TextStyle(fontSize: 16),
                   ),
                   Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        "โปรดเลือกปัญหา",
+                        "ReportChoose".tr,
                         style: TextStyle(fontSize: 16),
                       )),
                   Padding(
                     padding:
                         EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
                     child: Text(
-                      "หากท่านรู้สึกตกอยู่ในอันตราย โปรดขอความช่วยเหลือก่อนรายงานปัญหาให้กับแจสซี่ทราบ",
+                      "ReportDesc".tr,
                       style: TextStyle(fontSize: 14, color: greyDark),
                     ),
                   ),
                   ReportTypeChoice(
-                    text: 'ภาพโป๊เปลือย',
+                    text: 'ReportNudity'.tr,
                   ),
                   ReportTypeChoice(
-                    text: 'ความรุนแรง',
+                    text: 'ReportVio'.tr,
                   ),
                   ReportTypeChoice(
-                    text: 'การคุกคาม',
+                    text: 'ReportThreat'.tr,
                   ),
                   ReportTypeChoice(
-                    text: 'คำหยาบคาย',
+                    text: 'ReportProfan'.tr,
                   ),
                   ReportTypeChoice(
-                    text: 'การก่อการร้าย',
+                    text: 'ReportTerro'.tr,
                   ),
                   ReportTypeChoice(
-                    text: 'การใช้แรงงานเด็ก',
+                    text: 'ReportChild'.tr,
                   ),
                   ReportTypeChoice(
-                    text: 'การแสวงหาผลประโยชน์ทางเพศ',
+                    text: 'ReportSexual'.tr,
                   ),
                   ReportTypeChoice(
-                    text: 'การทำร้ายทารุณสัตว์',
+                    text: 'ReportAnimal'.tr,
                   ),
                   ReportTypeChoice(
-                    text: 'หลอกลวงต้มตุ๋น',
+                    text: 'ReportScam'.tr,
                   ),
                   ReportTypeChoice(
-                    text: 'สนับสนุนการใช้สารเสพติด',
+                    text: 'ReportAbuse'.tr,
                   ),
                   ReportTypeChoice(
-                    text: 'สนับสนุนการใช้สารเสพติด',
+                    text: 'ReportOther'.tr,
                   ),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 
 class DescTabBar extends StatelessWidget {
 
@@ -21,10 +22,10 @@ class DescTabBar extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             )),
-        tabs: const [
+        tabs: [
           Tab(
             icon: Text(
-              'ระดับภาษา',
+              'MainTabLanguage'.tr,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -34,7 +35,7 @@ class DescTabBar extends StatelessWidget {
           ),
           Tab(
             icon: Text(
-              'คำบรรยาย',
+              'MainTabDesc'.tr,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,

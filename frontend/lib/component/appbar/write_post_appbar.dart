@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 
 class WritePostAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onPress;
@@ -17,7 +18,7 @@ class WritePostAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       elevation: 0,
       backgroundColor: Colors.transparent,
-      title: Text("เขียนโพสต์", style: TextStyle(color: textDark),),
+      title: Text("GroupPostHeader".tr, style: TextStyle(color: textDark),),
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios,

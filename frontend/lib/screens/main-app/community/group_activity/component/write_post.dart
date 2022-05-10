@@ -6,6 +6,7 @@ import 'package:flutter_application_1/component/appbar/write_post_appbar.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 // Todo: crop Image file + แจ้งเตือน + ออกกลุ่ม
@@ -62,14 +63,14 @@ class _WritePostState extends State<WritePost> {
                   color: greyLightest,
                   padding: EdgeInsets.all(8.0),
                   child: Row(
-                    children: const <Widget>[
+                    children: <Widget>[
                       Icon(
                         Icons.add_photo_alternate,
                         size: 28,
                         color: primaryColor,
                       ),
                       Text(
-                        "Add Image",
+                        "GroupPostAddPic".tr,
                         style: TextStyle(
                             color: textDark,
                             fontSize: 18,
@@ -126,9 +127,9 @@ class _WritePostState extends State<WritePost> {
                 child: Expanded(
                   child: TextFormField(
                     autofocus: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "Write something",
+                      hintText: "GroupPostHintText".tr,
                       hintMaxLines: 4,
                     ),
                     keyboardType: TextInputType.multiline,

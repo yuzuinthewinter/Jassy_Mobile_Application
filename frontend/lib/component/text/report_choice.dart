@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 
 class ReportTypeChoice extends StatelessWidget {
   final String text;
@@ -28,24 +29,24 @@ class ReportTypeChoice extends StatelessWidget {
                 // mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Center(child: Text("รายงาน", style: TextStyle(fontSize: 16),)),
-                  const Padding(
+                  Center(child: Text("MenuReport".tr, style: TextStyle(fontSize: 16),)),
+                  Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
-                    child: Text("รายละเอียดการรายงาน", style: TextStyle(fontSize: 16),),
+                    child: Text("ReportDetail".tr, style: TextStyle(fontSize: 16),),
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: "กรุณากรอก",
+                    decoration: InputDecoration(
+                      hintText: "ReportFill".tr,
                     ),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
-                    child: Text("แนบหลักฐานการรายงาน", style: TextStyle(fontSize: 16),),
+                    child: Text("ReportAttach".tr, style: TextStyle(fontSize: 16),),
                   ),
                   OutlinedButton.icon(
                     onPressed: selectFile, 
                     icon: const Icon(Icons.file_upload, color: primaryColor,),
-                    label: const Text("เพิ่มไฟล์", style: TextStyle(color: primaryColor),),
+                    label: Text("ReportAddFile".tr, style: TextStyle(color: primaryColor),),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(159, 36),
                       side: const BorderSide(color: primaryColor),
@@ -55,7 +56,7 @@ class ReportTypeChoice extends StatelessWidget {
                   const Spacer(),
                   Center(
                     child: RoundButton(
-                      text: "รายงาน", 
+                      text: "MenuReport".tr, 
                       minimumSize: const Size(339, 36), 
                       press: () {},
                     ),
