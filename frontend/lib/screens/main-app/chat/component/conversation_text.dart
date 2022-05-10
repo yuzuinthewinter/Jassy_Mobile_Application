@@ -178,55 +178,52 @@ class _BodyState extends State<ConversationText> {
 
     Size size = MediaQuery.of(context).size;
     return Container(
-      // borderRadius: BorderRadius.circular(5),
-      child: Container(
-        width: size.width * 0.6,
-        height: size.height * 0.08,
-        decoration: const BoxDecoration(
-          color: primaryDark,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: GridView.count(
-          padding: const EdgeInsets.symmetric(vertical: 0),
-            crossAxisCount: 4,     
-            children: menuItems
-              .map((item) => 
-              Container(
-                decoration: const BoxDecoration(
-                  border: Border(right: BorderSide(color: textLight, width: 0.1))
-                ),
-                child: InkWell(
-                  onTap: () {
-                    // Todo: add onTab here
-                    if(item.id == item1) {
-                      return print("reply");
-                    } else if (item.id == item2) {
-                      return print("copy");
-                    } else if (item.id == item3) {
-                      return print("translate");
-                    } else {
-                      print("favorite");
-                    }
-                  },
-                  child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          SvgPicture.asset(item.icon),
-                          Container(
-                            margin: EdgeInsets.only(top: 2),
-                            child: Text(
-                              item.text,
-                              style: TextStyle(color: Colors.white, fontSize: 12),
-                            ),
-                          ),
-                        ],
-                      ),
-                ),
-              ))
-              .toList(),
-          ),
+      width: size.width * 0.6,
+      height: size.height * 0.08,
+      decoration: const BoxDecoration(
+        color: primaryDark,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
+      child: GridView.count(
+        padding: const EdgeInsets.symmetric(vertical: 0),
+          crossAxisCount: 4,     
+          children: menuItems
+            .map((item) => 
+            Container(
+              decoration: const BoxDecoration(
+                border: Border(right: BorderSide(color: textLight, width: 0.1))
+              ),
+              child: InkWell(
+                onTap: () {
+                  // Todo: add onTab here
+                  if(item.id == item1) {
+                    return print("reply");
+                  } else if (item.id == item2) {
+                    return print("copy");
+                  } else if (item.id == item3) {
+                    return print("translate");
+                  } else {
+                    print("favorite");
+                  }
+                },
+                child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SvgPicture.asset(item.icon),
+                        Container(
+                          margin: EdgeInsets.only(top: 2),
+                          child: Text(
+                            item.text,
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    ),
+              ),
+            ))
+            .toList(),
+        ),
     );
   }
 }
