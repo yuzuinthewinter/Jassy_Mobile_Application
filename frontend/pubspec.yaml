@@ -53,6 +53,7 @@ dependencies:
   image_picker: ^0.8.5
   image_cropper: ^2.0.2
   comment_tree: ^0.3.0
+  custom_pop_up_menu: ^1.2.3+1
 
   # firebase
   firebase_storage: ^10.2.15
