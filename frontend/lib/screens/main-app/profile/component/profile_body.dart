@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/main-app/profile/app_setting/app_setting.dart';
+import 'package:flutter_application_1/screens/main-app/profile/mark_as_like/mark_message_as_like.dart';
 import 'package:flutter_application_1/screens/main-app/profile/profile_setting/profile_setting.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_picture_widget.dart';
@@ -70,14 +71,11 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
             SizedBox(
               height: size.height * 0.03,
             ),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
               padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
               width: size.width,
-              height: size.height * 0.21,
+              height: size.height * 0.31,
               decoration: BoxDecoration(
                   color: textLight, borderRadius: BorderRadius.circular(20)),
               child: Column(
@@ -110,6 +108,29 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                       }));
                     },
                   ),
+                  ProfileMenu(
+                    size: size,
+                    icon: SvgPicture.asset("assets/icons/mark_as_like.svg"),
+                    text: 'ProfileMarkAsLike'.tr,
+                    onTab: () {
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) {
+                        return MarkMessageAsLike();
+                      }));
+                    },
+                  ),
+                  ProfileMenu(
+                    size: size,
+                    icon: SvgPicture.asset("assets/icons/saved_lists.svg"),
+                    // Todo: add translation
+                    text: "รายการที่บันทึกไว้",
+                    onTab: () {
+                      // Navigator.push(context,
+                      //     CupertinoPageRoute(builder: (context) {
+                      //   return AppSetting(user);
+                      // }));
+                    },
+                  ),
                 ],
               ),
             ),
@@ -120,7 +141,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
               margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
               padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
               width: size.width,
-              height: size.height * 0.15,
+              height: size.height * 0.13,
               decoration: BoxDecoration(
                   color: textLight, borderRadius: BorderRadius.circular(20)),
               child: Column(children: [
