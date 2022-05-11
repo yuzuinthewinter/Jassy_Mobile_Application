@@ -137,6 +137,7 @@ class _BodyState extends State<ConversationText> {
                   CustomPopupMenu(
                     menuBuilder: _buildLongPressMenu, 
                     pressType: PressType.longPress,
+                    arrowColor: primaryDarker,
                     child: Container(
                         constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width * 0.6),
@@ -181,7 +182,7 @@ class _BodyState extends State<ConversationText> {
       width: size.width * 0.6,
       height: size.height * 0.08,
       decoration: const BoxDecoration(
-        color: primaryDark,
+        color: primaryDarker,
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: GridView.count(
