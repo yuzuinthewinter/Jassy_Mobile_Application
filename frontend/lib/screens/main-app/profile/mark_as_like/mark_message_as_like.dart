@@ -38,7 +38,7 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: size.height * 0.02, vertical: size.height * 0.02),
+                    padding: EdgeInsets.only(bottom: size.height * 0.02, left: size.height * 0.02, right: size.height * 0.02),
                     child: const Text("รายการที่ปักหมุดไว้", style: TextStyle(fontSize: 20, color: greyDark),),
                   ),
                   Container(
