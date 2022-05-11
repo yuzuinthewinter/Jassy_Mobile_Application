@@ -7,10 +7,10 @@ class MarkMessageAsLikeAppBar extends StatelessWidget implements PreferredSizeWi
 
   const MarkMessageAsLikeAppBar({
     Key? key,
-    required this.onPress,
+    required this.actionWidget
   }) : super(key: key);
 
-  final VoidCallback onPress;
+  final Widget actionWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class MarkMessageAsLikeAppBar extends StatelessWidget implements PreferredSizeWi
       centerTitle: true,
       elevation: 0,
       backgroundColor: Colors.transparent,
-      title: const Text("ข้อความที่ชื่อชอบ"),
+      title: const Text("ข้อความที่ชื่อชอบ", style: TextStyle(color: textDark),),
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios,
@@ -30,11 +30,7 @@ class MarkMessageAsLikeAppBar extends StatelessWidget implements PreferredSizeWi
         onPressed: () => Navigator.of(context).pop(),
       ),
       actions: [
-        IconButton(
-          onPressed: onPress,
-          icon: const Icon(Icons.check_circle_outline_rounded),
-          color: primaryDarker,
-        )
+        actionWidget
       ],
     );
   }
