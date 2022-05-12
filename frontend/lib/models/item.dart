@@ -9,3 +9,21 @@ class ItemModel {
   });
 }
 
+class FavMassage {
+  final String text;
+  late int id;
+
+  FavMassage({
+    required this.id,
+    this.text = '',
+  });
+
+  void forEach(CustomPopupMenuController Function(dynamic app) param0) {}
+}
+List<FavMassage> test = [
+  FavMassage(id: 1, text: "sawasdee ka im thai"),
+  FavMassage(id: 2, text: "sawasdee ka im thai"),
+  FavMassage(id: 3, text: "sawasdee ka im thai"),
+  FavMassage(id: 4, text: "sawasdee ka im thai"),
+];
+
