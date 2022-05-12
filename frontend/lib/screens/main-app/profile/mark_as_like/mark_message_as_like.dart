@@ -1,7 +1,10 @@
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/appbar/mark_message_as_like_appbar.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
+import 'package:flutter_application_1/component/popup_page/popup_no_button/error_popup_no_button.dart';
+import 'package:flutter_application_1/models/item.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -13,7 +16,14 @@ class MarkMessageAsLike extends StatefulWidget {
 }
 
 List colors = [primaryLightest, tertiaryLightest, secoundaryLightest];
-
+List<ItemModel> menuItems = [
+  ItemModel(id: 1, text: "ปักหมุด"),
+  ItemModel(id: 2, text: "ลบ"),
+];
+List<ItemModel> pinMenuItems = [
+  ItemModel(id: 1, text: "ยกเลิกการปักหมุด"),
+  ItemModel(id: 2, text: "ลบ"),
+];
 
 class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
   @override
@@ -53,33 +63,9 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                           crossAxisSpacing: size.height * 0.02,
                           mainAxisSpacing: size.height * 0.02,
                         ),
-                        itemCount: 3,
+                        itemCount: test.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            padding: EdgeInsets.all(size.height * 0.015),
-                            color: colors[index % colors.length],
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    SvgPicture.asset("assets/icons/pin.svg"),
-                                    SizedBox(width: size.width * 0.01),
-                                    const Icon(Icons.more_horiz, color: primaryDarker,),
-                                  ],
-                                ),
-                                SizedBox(height: size.height * 0.01),
-                                // Todo: add pin like text
-                                const Text(
-                                  "ยืมมาจากภาษาบาลีภาษาสันสกฤต และ",
-                                  style: TextStyle(fontSize: 16),
-                                  maxLines: 2, 
-                                  overflow: TextOverflow.ellipsis,
-                                )
-                              ],
-                            ),
-                          );
+                          return pinFavMessage(test[index] ,index);
                         }
                       ),
                     ),
@@ -100,29 +86,9 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                           crossAxisSpacing: size.height * 0.02,
                           mainAxisSpacing: size.height * 0.02
                         ),
-                        itemCount: 5,
+                        itemCount: test.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            padding: EdgeInsets.all(size.height * 0.015),
-                            color: colors[index % colors.length],
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Align(
-                                  alignment: Alignment.topRight,
-                                  child: Icon(Icons.more_horiz, color: primaryDarker,)
-                                ),
-                                SizedBox(height: size.height * 0.01),
-                                // Todo: add like text
-                                const Text(
-                                  "ยืมมาจากภาษาบาลีภาษาสันสกฤต และ",
-                                  style: TextStyle(fontSize: 16),
-                                  maxLines: 2, 
-                                  overflow: TextOverflow.ellipsis,
-                                )
-                              ],
-                            ),
-                          );
+                          return favMessage(test[index] ,index);
                         }
                       ),
                   ),
@@ -134,4 +100,165 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
       ),
     );
   }
+
+  // Fav Message Note Widget
+  Widget favMessage (FavMassage test, int index) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      padding: EdgeInsets.all(size.height * 0.015),
+      color: colors[index % colors.length],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: CustomPopupMenu(
+              pressType: PressType.singleClick,
+              menuBuilder: _buildPopUpMenu,
+              arrowColor: textLight,
+              child: Icon(Icons.more_horiz, color: primaryDarker,)
+            )
+          ),
+          SizedBox(height: size.height * 0.01),
+          // Todo: add like text
+          Text(
+            test.text,
+            style: TextStyle(fontSize: 16),
+            maxLines: 2, 
+            overflow: TextOverflow.ellipsis,
+          )
+        ],
+      ),
+    );
+  }
+
+  // Pin Fav Message Note Widget
+  Widget pinFavMessage (FavMassage test, int index) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      padding: EdgeInsets.all(size.height * 0.015),
+      color: colors[index % colors.length],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: CustomPopupMenu(
+              pressType: PressType.singleClick,
+              menuBuilder: _buildPinPopUpMenu,
+              arrowColor: textLight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SvgPicture.asset("assets/icons/pin.svg"),
+                  SizedBox(width: size.width * 0.01),
+                  const Icon(Icons.more_horiz, color: primaryDarker,),
+                ],
+              )
+            )
+          ),
+          SizedBox(height: size.height * 0.01),
+          // Todo: add like text
+          Text(
+            test.text,
+            style: TextStyle(fontSize: 16),
+            maxLines: 2, 
+            overflow: TextOverflow.ellipsis,
+          )
+        ],
+      ),
+    );
+  }
+
+ Widget _buildPopUpMenu() {
+    var item1 = menuItems[0].id;
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      width: size.width * 0.4,
+      height: size.height * 0.12,
+      decoration: const BoxDecoration(
+        color: textLight,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Column(
+          children: menuItems
+              .map(
+                (item) => GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    // _controller.hideMenu();
+                    if(item.id == item1) {
+                    return print("ปักหมุด");
+                    } else {
+                      print("ลบ");
+                    }
+                  },
+                  child: Expanded(
+                    child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(bottom: BorderSide(color: item.id == item1 ? greyLight : Colors.transparent, width: 1))
+                        ),
+                        height: size.height * 0.06,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(item.text, style: TextStyle(color: item.id == item1 ? primaryDarker : textMadatory, fontSize: 14),),
+                          ],
+                        ),
+                      ),
+                  ),
+                  ),
+              )
+            .toList(),
+          ),
+      
+    );
+  }
+
+   Widget _buildPinPopUpMenu() {
+    var item1 = pinMenuItems[0].id;
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      width: size.width * 0.4,
+      height: size.height * 0.12,
+      decoration: const BoxDecoration(
+        color: textLight,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Column(
+          children: pinMenuItems
+              .map(
+                (item) => GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    // Todo: hide menu after click
+                    // _controller.hideMenu();
+                    if(item.id == item1) {
+                    return print("ปักหมุด");
+                    } else {
+                      print("ลบ");
+                    }
+                  },
+                  child: Expanded(
+                    child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(bottom: BorderSide(color: item.id == item1 ? greyLight : Colors.transparent, width: 1))
+                        ),
+                        height: size.height * 0.06,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(item.text, style: TextStyle(color: item.id == item1 ? primaryDarker : textMadatory, fontSize: 14),),
+                          ],
+                        ),
+                      ),
+                  ),
+                  ),
+              )
+            .toList(),
+          ),
+      
+    );
+  }
+
 }
