@@ -17,8 +17,6 @@ class FavMassage {
     required this.id,
     this.text = '',
   });
-
-  void forEach(CustomPopupMenuController Function(dynamic app) param0) {}
 }
 List<FavMassage> test = [
   FavMassage(id: 1, text: "sawasdee ka im thai"),
