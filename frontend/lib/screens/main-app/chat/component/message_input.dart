@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class MessageInput extends StatefulWidget {
@@ -20,7 +21,8 @@ class MessageInput extends StatefulWidget {
 }
 
 class _BodyState extends State<MessageInput> {
-  List<String> status = ['sending', 'sent', 'read'];
+  //list flow message
+  List<String> status = ['unread', 'read'];
   var currentUser = FirebaseAuth.instance.currentUser;
 
   TextEditingController messageController = TextEditingController();
@@ -48,7 +50,7 @@ class _BodyState extends State<MessageInput> {
       'date': DateTime.now(),
       'time': DateTime.now(),
       'type': '',
-      'status': '',
+      'status': 'unread',
     });
     await messages.doc(docRef.id).update({
       'messageID': docRef.id,
@@ -82,7 +84,7 @@ class _BodyState extends State<MessageInput> {
               controller: messageController,
               textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
-                hintText: "พิมพ์ข้อความ",
+                hintText: "ChatHintText".tr,
                 suffixIcon: InkWell(
                     // TODO : add emoji picker (ammie)
                     onTap: () {

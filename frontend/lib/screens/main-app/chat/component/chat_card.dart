@@ -32,7 +32,7 @@ class _ChatCardBody extends State<ChatCard> {
 
   getDate(timestamp) {
     DateTime datatime = DateTime.parse(timestamp.toDate().toString());
-    String formattedTime = DateFormat('kk:mm:a').format(datatime);
+    String formattedTime = DateFormat('KK:mm:a').format(datatime);
     return formattedTime.toString();
   }
 
@@ -136,10 +136,12 @@ class _ChatCardBody extends State<ChatCard> {
                                     child: Text(
                                       chat['lastMessageSent'].toString(),
                                       style: TextStyle(
-                                          fontSize: 16,
-                                          color: greyDark,
-                                          overflow: TextOverflow.ellipsis),
+                                        fontSize: 16,
+                                        color: greyDark,
+                                      ),
                                       textAlign: TextAlign.left,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
                                     ),
                                   ),
                                 ],
