@@ -26,8 +26,6 @@ class GroupActivityScreen extends StatelessWidget {
           user: user,
           groupActivity: groupActivity,
         ),
-        // Todo: if join group show if not join dont show
-
         floatingActionButton: isMember == true
             ? FloatingActionButton(
                 onPressed: () {

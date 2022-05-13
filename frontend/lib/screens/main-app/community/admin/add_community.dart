@@ -204,11 +204,10 @@ class _NewCommunityState extends State<AddNewCommunity> {
                                 Expanded(
                                   child: pickedFile != null
                                       ? Container(
-                                          child: Text(
-                                            pickedFile!.name,
-                                            style: TextStyle(color: grey),
-                                          ),
-                                        )
+                                          child: Image.file(
+                                          File(pickedFile!.path!),
+                                          height: size.height * 0.2,
+                                        ))
                                       : Container(height: 3),
                                 ),
                               ],

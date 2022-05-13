@@ -13,7 +13,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class JassyHome extends StatefulWidget {
-  const JassyHome({Key? key}) : super(key: key);
+  final indexpage;
+  JassyHome(this.indexpage);
 
   @override
   State<JassyHome> createState() => _JassyHomeState();
@@ -31,7 +32,7 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
   int _currentIndex = 3;
   final screens = [
     const JassyMain(),
-    const LikeScreen(),//likes page
+    const LikeScreen(), //likes page
     const CommunityScreen(),
     const ChatScreen(),
     const ProfileScreen(),
@@ -40,13 +41,14 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    _currentIndex = widget.indexpage;
+    WidgetsBinding.instance.addObserver(this);
     setStatus(true, DateTime.now());
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -118,7 +120,8 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
                           label: 'MainPage'.tr,
                         ),
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.favorite_border), label: 'LikePage'.tr),
+                            icon: Icon(Icons.favorite_border),
+                            label: 'LikePage'.tr),
                         BottomNavigationBarItem(
                             icon: SvgPicture.asset(
                               'assets/icons/jassy_water.svg',
@@ -126,7 +129,8 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
                             ),
                             label: ''),
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.forum_outlined), label: 'ChatPage'.tr),
+                            icon: Icon(Icons.forum_outlined),
+                            label: 'ChatPage'.tr),
                         BottomNavigationBarItem(
                             icon: Icon(Icons.person), label: 'ProfilePage'.tr)
                       ]),

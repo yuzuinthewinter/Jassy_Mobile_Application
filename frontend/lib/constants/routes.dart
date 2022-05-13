@@ -72,7 +72,8 @@ class RouteGenerator {
       case Routes.LandingPage:
         return MaterialPageRoute(builder: (_) => const LandingPage());
       case Routes.JassyHome:
-        return MaterialPageRoute(builder: (_) => const JassyHome());
+        var data = settings.arguments ?? 0;
+        return MaterialPageRoute(builder: (_) => JassyHome(data));
       case Routes.ChatScreen:
         return MaterialPageRoute(builder: (_) => const ChatScreen());
 

@@ -10,6 +10,8 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../component/community_card.widget.dart';
+
 class CommunitySearchBody extends StatefulWidget {
   final user;
   final groups;
@@ -81,36 +83,60 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
           ),
         ),
         Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: size.width * 0.05, vertical: size.height * 0.02),
+          child: Row(children: [
+            Text(
+              "CommuRecommand".tr,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            )
+          ]),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: size.width * 0.02),
+          child: SizedBox(
+            height: size.height * 0.1,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: widget.groups.length,
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(
+                  width: size.width * 0.05,
+                );
+              },
+              itemBuilder: (context, index) {
+                var group = widget.groups[index];
+                bool isMember = false;
+                for (var groupid in widget.user['groups']) {
+                  if (groupid == group['groupid']) {
+                    isMember = true;
+                  }
+                }
+                return isMember == true
+                    ? const SizedBox.shrink()
+                    : communityCard(widget.user, group, context);
+              },
+            ),
+          ),
+        ),
+        SizedBox(
+          height: size.height * 0.03,
+        ),
+        Padding(
             padding: EdgeInsets.symmetric(
-                vertical: size.height * 0.03, horizontal: size.width * 0.05),
-            child: Row(children: [
-              Text(
-                isSearchEmpty
-                    ? widget.user['userStatus'] == 'user'
-                        ? "CommuRecommand".tr
-                        : "กลุ่มทั้งหมด"
-                    : "CommuResults".tr,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-              ),
-              // const Spacer(),
-              // widget.user['userStatus'] == 'user'
-              //     ? Container(
-              //         width: 1,
-              //       )
-              //     : InkWell(
-              //         child: const Text("การจัดการกลุ่ม",
-              //             style: TextStyle(
-              //               fontSize: 16,
-              //               color: primaryColor,
-              //             )),
-              //         onTap: () {
-              //           Navigator.push(context,
-              //               CupertinoPageRoute(builder: (context) {
-              //             return ManageCommunity(widget.user, widget.data);
-              //           }));
-              //         },
-              //       )
+                horizontal: size.width * 0.03, vertical: size.height * 0.01),
+            child: Column(children: [
+              Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.03,
+                      vertical: size.height * 0.01),
+                  child: Row(children: [
+                    Text(
+                      isSearchEmpty ? "CommuMyGroup".tr : "CommuResults".tr,
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                    ),
+                  ]))
             ])),
         Expanded(
           child: ListView.builder(
@@ -120,18 +146,62 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
             itemCount: widget.groups.length,
             itemBuilder: (context, index) {
               final group = widget.groups[index];
-              //todo: check user in group, will not show
-              return Column(
-                children: [
-                  groupForSearchWidget(group, context, widget.user),
-                  SizedBox(
-                    height: size.height * 0.03,
-                  ),
-                ],
-              );
+              bool isMember = false;
+              for (var groupid in widget.user['groups']) {
+                if (groupid == group['groupid']) {
+                  isMember = true;
+                }
+              }
+              return isMember == true
+                  ? Column(
+                      children: [
+                        groupForSearchWidget(group, context, widget.user),
+                        SizedBox(
+                          height: size.height * 0.03,
+                        ),
+                      ],
+                    )
+                  : const SizedBox.shrink();
             },
           ),
         ),
+        // Padding(
+        //     padding: EdgeInsets.symmetric(
+        //         vertical: size.height * 0.03, horizontal: size.width * 0.05),
+        //     child: Row(children: [
+        //       Text(
+        //         isSearchEmpty ? "CommuRecommand".tr : "CommuResults".tr,
+        //         style:
+        //             const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+        //       ),
+        //     ])),
+        // Expanded(
+        //   child: ListView.builder(
+        //     padding: EdgeInsets.only(
+        //         top: size.height * 0.01, bottom: size.height * 0.01),
+        //     scrollDirection: Axis.vertical,
+        //     itemCount: widget.groups.length,
+        //     itemBuilder: (context, index) {
+        //       final group = widget.groups[index];
+        //       bool isMember = false;
+        //       for (var groupid in widget.user['groups']) {
+        //         if (groupid == group['groupid']) {
+        //           isMember = true;
+        //         }
+        //       }
+        //       return isMember == true
+        //           ? const SizedBox.shrink()
+        //           : Column(
+        //               children: [
+        //                 groupForSearchWidget(group, context, widget.user),
+        //                 SizedBox(
+        //                   height: size.height * 0.03,
+        //                 ),
+        //               ],
+        //             );
+        //     },
+        //   ),
+        // ),
       ],
     );
   }

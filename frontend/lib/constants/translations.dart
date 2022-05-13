@@ -256,7 +256,7 @@ class LocaleString extends Translations {
           "LikePage": "ถูกใจ",
 
           //Jassy Community Page
-          "CommuPage": "ชุมขน",
+          "CommuPage": "ชุมชน",
           "CommuRecommand": "แนะนำสำหรับคุณ",
           "CommuMore": "ดูเพิ่มเติม",
           "CommuFeed": "ข่าวสาร",
