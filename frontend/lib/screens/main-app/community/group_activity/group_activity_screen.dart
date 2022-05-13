@@ -13,23 +13,33 @@ class GroupActivityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isMember = false;
+    for (var groupid in user['groups']) {
+      if (groupid == groupActivity['groupid']) {
+        isMember = true;
+      }
+    }
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: CommunityActivityAppBar(groupActivity: groupActivity),
-      body: GroupActivityScreenBody(
-        groupActivity: groupActivity,
-      ),
-      // Todo: if join group show if not join dont show
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => WritePost(user, groupActivity)));
-        },
-        child: Icon(Icons.mode_edit_rounded),
-        backgroundColor: primaryColor,
-      ),
-    );
+        extendBodyBehindAppBar: true,
+        appBar: CommunityActivityAppBar(groupActivity: groupActivity),
+        body: GroupActivityScreenBody(
+          user: user,
+          groupActivity: groupActivity,
+        ),
+        // Todo: if join group show if not join dont show
+
+        floatingActionButton: isMember == true
+            ? FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              WritePost(user, groupActivity)));
+                },
+                child: Icon(Icons.mode_edit_rounded),
+                backgroundColor: primaryColor,
+              )
+            : const SizedBox.shrink());
   }
 }
