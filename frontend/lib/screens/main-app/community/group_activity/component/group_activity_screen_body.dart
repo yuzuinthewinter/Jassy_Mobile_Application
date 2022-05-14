@@ -97,6 +97,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
               ])),
         ),
         Expanded(
+          //TODO: use stream
           child: ListView.separated(
               padding: EdgeInsets.only(top: size.height * 0.02),
               scrollDirection: Axis.vertical,
@@ -115,7 +116,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
                         return PostDetail(
-                          post: widget.groupActivity['postsID'][reversedindex],
+                          postid: widget.groupActivity['postsID'][reversedindex],
                         );
                       }));
                     },

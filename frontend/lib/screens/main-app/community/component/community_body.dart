@@ -154,16 +154,15 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                               );
                             },
                             itemBuilder: (context, index) {
-                              return InkWell(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        CupertinoPageRoute(builder: (context) {
-                                      return PostDetail(
-                                        post: newsLists[index],
-                                      );
-                                    }));
-                                  },
-                                  child: newsCard(newsLists[index], context));
+                              return InkWell(onTap: () {
+                                // Navigator.push(context,
+                                //     CupertinoPageRoute(builder: (context) {
+                                //   return PostDetail(
+                                //     post: post,
+                                //   );
+                                // }));
+                              });
+                              // child: newsCard(newsLists[index], context));
                             }),
                       )
                     ],

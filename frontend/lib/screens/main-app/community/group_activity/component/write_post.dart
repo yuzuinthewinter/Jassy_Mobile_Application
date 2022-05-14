@@ -77,8 +77,8 @@ class _WritePostState extends State<WritePost> {
       'picture': urlImage,
       'date': DateTime.now(),
       'reported': const [],
-      'like': const [],
-      'comment': const [],
+      'likes': const [],
+      'comments': const [],
     });
     await posts.doc(docRef.id).update({
       'postid': docRef.id,

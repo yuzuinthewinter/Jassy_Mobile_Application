@@ -137,36 +137,32 @@ Widget groupNewsCard(postid, context) {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                   child: Container(
-                    constraints:
-                        const BoxConstraints(maxHeight: double.infinity),
-                    child: Text(
-                      post['text'],
-                      maxLines: null,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                ),
-                post['picture'] == ''
-                    ? const SizedBox.shrink()
-                    : Row(
+                      constraints:
+                          const BoxConstraints(maxHeight: double.infinity),
+                      child: Column(
                         children: [
-                          SizedBox(
-                            height: size.height * 0.03,
+                          Text(
+                            post['text'],
+                            maxLines: null,
+                            style: TextStyle(fontSize: 18),
                           ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: Container(
-                              width: size.width * 0.5,
-                              height: size.height * 0.3,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(post['picture']),
-                                    fit: BoxFit.cover),
-                              ),
-                            ),
-                          ),
+                          post['picture'].isNotEmpty
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Container(
+                                    width: size.width * 0.5,
+                                    height: size.height * 0.3,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(post['picture']),
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
                         ],
-                      ),
+                      )),
+                ),
                 SizedBox(
                   height: size.height * 0.03,
                 ),
@@ -175,7 +171,7 @@ Widget groupNewsCard(postid, context) {
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                   child: Row(
                     children: [
-                      const LikeButtonWidget(),
+                      LikeButtonWidget(post, user['uid']),
                       SizedBox(width: size.width * 0.05),
                       InkWell(
                           onTap: () {

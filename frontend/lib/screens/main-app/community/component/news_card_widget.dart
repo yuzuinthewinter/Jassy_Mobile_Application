@@ -71,7 +71,7 @@ import 'package:get/get.dart';
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
             child: Row(
               children: [
-                const LikeButtonWidget(),
+                // const LikeButtonWidget(),
                 SizedBox(width: size.width * 0.05),
                 InkWell(
                   onTap: () {
