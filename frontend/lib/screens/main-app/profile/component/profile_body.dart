@@ -8,6 +8,7 @@ import 'package:flutter_application_1/screens/main-app/profile/mark_as_like/mark
 import 'package:flutter_application_1/screens/main-app/profile/profile_setting/profile_setting.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_picture_widget.dart';
+import 'package:flutter_application_1/screens/main-app/profile/saved_post/saved_post.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -108,10 +109,10 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                     // Todo: add translation
                     text: "รายการที่บันทึกไว้",
                     onTab: () {
-                      // Navigator.push(context,
-                      //     CupertinoPageRoute(builder: (context) {
-                      //   return AppSetting(user);
-                      // }));
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) {
+                        return SavedPost();
+                      }));
                     },
                   ),                  
                 ],

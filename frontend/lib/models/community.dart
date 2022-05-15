@@ -108,7 +108,7 @@ List<News> newsLists = [
   ),
   News(
     writer: "Nutchapa",
-    news: "fuck you แปลว่าอะไรคะ",
+    news: "Good Morning แปลว่าอะไรคะ",
     comment: [],
     image: [],
     like: 100,
@@ -117,7 +117,7 @@ List<News> newsLists = [
   ),
   News(
     writer: "Nutchapa",
-    news: "",
+    news: "Hi indonesiaa i love indonesia mak mak mak mak the weather is so good and so hot",
     comment: [],
     image: [],
     like: 100,
