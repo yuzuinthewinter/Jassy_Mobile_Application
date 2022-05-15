@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/item.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
@@ -22,20 +23,22 @@ class ConversationText extends StatefulWidget {
 }
 
 class _BodyState extends State<ConversationText> {
-  CollectionReference chat = FirebaseFirestore.instance.collection('ChatRooms');
+  CollectionReference chats =
+      FirebaseFirestore.instance.collection('ChatRooms');
+  CollectionReference messagesdb =
+      FirebaseFirestore.instance.collection('Messages');
   var currentUser = FirebaseAuth.instance.currentUser;
 
-  getDate(timestamp) {
+  getTime(timestamp) {
     DateTime datatime = DateTime.parse(timestamp.toDate().toString());
-    String formattedTime = DateFormat('kk:mm:a').format(datatime);
+    String formattedTime = DateFormat('KK:mm:a').format(datatime);
     return formattedTime.toString();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('ChatRooms')
+      stream: chats
           .where('chatid', isEqualTo: widget.chatid)
           .snapshots(includeMetadataChanges: true),
       builder: (context, snapshot) {
@@ -59,20 +62,19 @@ class _BodyState extends State<ConversationText> {
           itemBuilder: (context, index) {
             int reversedIndex =
                 snapshot.data!.docs[0]['messages'].length - 1 - index;
-            final messageid = snapshot.data!.docs[0]['messages'][reversedIndex];
-            return getMessage(messageid);
+            return getMessage(
+                snapshot.data!.docs[0]['messages'][reversedIndex]);
           },
         );
       },
     );
   }
 
-  Widget getMessage(messageid) {
+  Widget getMessage(message) {
     Size size = MediaQuery.of(context).size;
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('Messages')
-          .where('messageID', isEqualTo: messageid)
+      stream: messagesdb
+          .where('messageID', isEqualTo: message)
           .snapshots(includeMetadataChanges: true),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -85,12 +87,10 @@ class _BodyState extends State<ConversationText> {
         var currentMessage = snap[0];
         var sender = currentMessage['sentBy'];
         bool isCurrentUser = sender == currentUser!.uid;
-
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              // Text(currentMessage['message']),
               Row(
                 mainAxisAlignment: isCurrentUser
                     ? MainAxisAlignment.end
@@ -116,13 +116,13 @@ class _BodyState extends State<ConversationText> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            const Text(
-                              "อ่านแล้ว",
+                            Text(
+                              "ChatRead".tr,
                               style: TextStyle(color: grey, fontSize: 12),
                               textAlign: TextAlign.right,
                             ),
                             Text(
-                              getDate(currentMessage['time']).toString(),
+                              getTime(currentMessage['time']).toString(),
                               style: const TextStyle(color: grey, fontSize: 12),
                               textAlign: TextAlign.right,
                             ),
@@ -149,10 +149,9 @@ class _BodyState extends State<ConversationText> {
                         child: Text(currentMessage['message'])
                     ),
                   ),
-                  SizedBox(width: size.height * 0.01,),
                   if (!isCurrentUser) ...[
                     Text(
-                      getDate(currentMessage['time']).toString(),
+                      getTime(currentMessage['time']).toString(),
                       style: const TextStyle(color: grey, fontSize: 12),
                     ),
                   ],
