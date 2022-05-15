@@ -14,9 +14,10 @@ class MarkMessageAsLike extends StatefulWidget {
   State<MarkMessageAsLike> createState() => _MarkMessageAsLikeState();
 }
 
-List colors = [primaryLightest, tertiaryLightest, secoundaryLightest];
-
 class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
+  List colors = [primaryLightest, tertiaryLightest, secoundaryLightest];
+  bool isSelected = false;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -24,8 +25,13 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
       extendBodyBehindAppBar: true,
       appBar: MarkMessageAsLikeAppBar(
         actionWidget: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.check_circle_outline_rounded),
+          onPressed: () {
+            print(isSelected);
+            setState(() {
+              isSelected = !isSelected;
+            });
+          },
+          icon: isSelected ? Text("ลบ", style: TextStyle(fontSize: 18, color: textMadatory),) : const Icon(Icons.check_circle_outline_rounded),
           color: primaryDarker,
         ),
       ),
@@ -56,48 +62,8 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                         ),
                         itemCount: test.length,
                         itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              // go to detail page
-                              var color = index % colors.length;
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MessageAsLikeDetail(color: color, data: test[index],)
-                                )
-                              );
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(size.height * 0.015),
-                              color: colors[index % colors.length],
-                              child: Stack(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        // Todo: delete
-                                        print("del");
-                                      },
-                                      child: Align(
-                                        alignment: Alignment.topRight,
-                                        child: SvgPicture.asset("assets/icons/del_bin.svg")
-                                      ),
-                                    ),
-                                    SizedBox(height: size.height * 0.01),
-                                    Expanded(
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          test[index].text,
-                                          style: TextStyle(fontSize: 16),
-                                          maxLines: 2, 
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                              ),
-                            ),
-                          );
+                          var isSelect = isSelected;
+                          return favMassageItem(context, index);
                         }
                       ),
                   ),
@@ -109,4 +75,62 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
       ),
     );
   }
+  
+   Widget favMassageItem (context, int index) {
+   List colors = [primaryLightest, tertiaryLightest, secoundaryLightest];
+   Size size = MediaQuery.of(context).size;
+   return InkWell(
+    onTap: () {
+      // go to detail page
+      var color = index % colors.length;
+      isSelected ? Container() :
+       Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MessageAsLikeDetail(color: color, data: test[index],)
+        )
+      );
+    },
+    child: Container(
+      padding: EdgeInsets.all(size.height * 0.015),
+      color: colors[index % colors.length],
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: isSelected
+              ? InkWell(
+                onTap: () {
+                  // Todo: setState is not update
+                  print(test[index].isIndexCheck);
+                  setState(() {
+                    test[index].isIndexCheck == !test[index].isIndexCheck;
+                  });
+                  print(!test[index].isIndexCheck);
+                  print(test[index].isIndexCheck);
+                 },
+                child: test[index].isIndexCheck ? SvgPicture.asset("assets/icons/check_circle.svg") : SvgPicture.asset("assets/icons/uncheck_circle.svg")
+              )
+              : InkWell(
+                onTap: () {
+                  print("del");
+                },
+                child: SvgPicture.asset("assets/icons/del_bin.svg")
+              )
+            ),
+          SizedBox(height: size.height * 0.01),
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              test[index].text,
+              style: TextStyle(fontSize: 16),
+                maxLines: 2, 
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+        ],
+        ),
+      ),
+    );
+ }
 }
