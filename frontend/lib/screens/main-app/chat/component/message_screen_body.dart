@@ -34,7 +34,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
               chatid: widget.chatid,
             ),
           ),
-          widget.user['reportCount'] < 3
+          widget.user['report'].length < 3
               ? MessageInput(size: size, chatid: widget.chatid)
               : Center(
                   heightFactor: 5,

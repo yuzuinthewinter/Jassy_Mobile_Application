@@ -61,7 +61,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   widget.user['name']['lastname'].toString(),
               style: const TextStyle(fontSize: 16, color: textDark),
             ),
-            widget.user['reportCount'] < 3
+            widget.user['report'].length < 3
                 ? widget.user['isShowActive'] &&
                         widget.currentUser['isShowActive']
                     ? Text(
