@@ -55,6 +55,7 @@ dependencies:
   comment_tree: ^0.3.0
   custom_pop_up_menu: ^1.2.3+1
   basic_utils: ^4.2.2
+  collection: ^1.16.0
 
   # firebase
   firebase_storage: ^10.2.15

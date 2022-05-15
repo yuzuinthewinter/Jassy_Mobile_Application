@@ -1,5 +1,6 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/calculate/cal_age.dart';
@@ -25,6 +26,15 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
 
   var currentUser = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
+
+  final List _LanguageLevelChoicesLists = [
+    "Beginner",
+    "Elementary",
+    "Intermidiate",
+    "Upper Intermidiate",
+    "Advance", //advanced
+    "Proficiency"
+  ];
 
   void onTabChange() {
     setState(() {
@@ -153,6 +163,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                         Padding(
                           padding: const EdgeInsets.only(right: 20, top: 5),
                           child: InkWell(
+                              //todo: for like page
                               onTap: () {
                                 likeUser(widget.user['uid']);
                               },
@@ -179,7 +190,8 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                 child: Text(
                                     widget.user['language']['defaultLanguage']),
                               ),
-                              motherLanguageProgressBar(),
+                              motherLanguageProgressBar(widget.user['language']
+                                  ['levelDefaultLanguage']),
                             ],
                           ),
                           Row(
@@ -191,7 +203,8 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                 child: Text(widget.user['language']
                                     ['interestedLanguage']),
                               ),
-                              interestLanguageProgressBar(),
+                              interestLanguageProgressBar(widget
+                                  .user['language']['levelInterestedLanguage']),
                             ],
                           ),
                         ],
@@ -209,12 +222,22 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget motherLanguageProgressBar() {
+  Widget motherLanguageProgressBar(leveldefault) {
     var size = MediaQuery.of(context).size;
+    int level = 0;
+    _LanguageLevelChoicesLists.forEachIndexed((index, str) => {
+          if (leveldefault.toLowerCase() ==
+              _LanguageLevelChoicesLists[index].toLowerCase())
+            {
+              print(_LanguageLevelChoicesLists[index]),
+              level = index + 1,
+            }
+        });
+
     return IntervalProgressBar(
         direction: IntervalProgressDirection.horizontal,
         max: 6,
-        progress: 6,
+        progress: level,
         intervalSize: 2,
         size: Size(size.width * 0.5, size.height * 0.015),
         highlightColor: primaryColor,
@@ -224,12 +247,20 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
         radius: 20);
   }
 
-  Widget interestLanguageProgressBar() {
+  Widget interestLanguageProgressBar(levelInt) {
     var size = MediaQuery.of(context).size;
+    int level = 0;
+    _LanguageLevelChoicesLists.forEachIndexed((index, str) => {
+          if (levelInt.toLowerCase() ==
+              _LanguageLevelChoicesLists[index].toLowerCase())
+            {
+              level = index + 1,
+            }
+        });
     return IntervalProgressBar(
         direction: IntervalProgressDirection.horizontal,
         max: 6,
-        progress: 3,
+        progress: level,
         intervalSize: 2,
         size: Size(size.width * 0.5, size.height * 0.015),
         highlightColor: secoundary,
