@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -117,10 +118,11 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                         fontWeight: FontWeight.w900),
                                     children: [
                                       TextSpan(
-                                          text: widget.user['name']
-                                                  ['firstname'] +
+                                          text: StringUtils.capitalize(widget
+                                                  .user['name']['firstname']) +
                                               ' ' +
-                                              widget.user['name']['lastname']),
+                                              StringUtils.capitalize(widget
+                                                  .user['name']['lastname'])),
                                       const TextSpan(text: ", "),
                                       TextSpan(
                                           text: calculateAge(DateTime.parse(

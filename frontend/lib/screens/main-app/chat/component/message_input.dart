@@ -57,8 +57,10 @@ class _BodyState extends State<MessageInput> {
     });
     await chats.doc(widget.chatid).update({
       'messages': FieldValue.arrayUnion([docRef.id]),
+      'sentBy': currentUser!.uid,
       'lastMessageSent': message,
       'lastTimestamp': DateTime.now(),
+      'unseenCount': FieldValue.increment(1),
     });
     messageController.clear();
   }

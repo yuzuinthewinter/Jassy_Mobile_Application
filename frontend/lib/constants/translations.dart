@@ -128,18 +128,23 @@ class LocaleString extends Translations {
           "StatusActiveNow": "Active now",
           "StatusActiveAfew": "Active a few minutes ago",
           "StatusActive": "Active",
-          "StatusActiveMins": "minutes ago",
+          "StatusActiveMins": "m ago",
           "StatusActiveHours": "h ago",
           "StatusActiveDays": "d ago",
           "MenuNotificationOn": "Turn on notifications",
           "MenuNotificationOff": "Turn off notifications",
           "MenuUnmatch": "Unmatch",
           "MenuReport": "Report",
+          //unmatch
+          "WarningUnmatch": "Are you sure you want to unmatch?",
+          "WarningReport": "Are you sure you want to report this user?",
           //Report
           "ReportDetail": "Report Details",
+          "ReportWarning":
+              "You will no longer be able to see this user. Are you sure to report?",
           "ReportFill": "Pleade Field",
           "ReportAttach": "Attach Evidence of The Report.",
-          "ReportAddFile": "Add File",
+          "ReportAddFile": "Add Image",
           "ReportChoose": "Please select an issue",
           "ReportDesc":
               "Before reporting the problem to Jassy.If you feel in danger, Please ask for help first.",
@@ -310,11 +315,16 @@ class LocaleString extends Translations {
           "MenuNotificationOff": "ปิดการแจ้งเตือน",
           "MenuUnmatch": "ยกเลิกการจับคู่",
           "MenuReport": "รายงาน",
+          //unmatch
+          "WarningUnmatch": "คุณต้องการยกเลิกการจับคู่ใช่หรือไม่ ?",
+          "WarningReport": "คุณต้องการรายงานผู้ใช้รายนี้ใช่หรือไม่ ?",
           //Report
           "ReportDetail": "รายละเอียดการรายงาน",
+          "ReportWarning":
+              "คุณจะไม่สามารถเห็นผู้ใช้งานนี้ได้อีก แน่ใจหรือไม่ที่จะรายงาน",
           "ReportFill": "กรุณากรอก",
           "ReportAttach": "แนบหลักฐานการรายงาน",
-          "ReportAddFile": "เพิ่มไฟล์",
+          "ReportAddFile": "เพิ่มรูปภาพ",
           "ReportChoose": "โปรดเลือกปัญหา",
           "ReportDesc":
               "หากท่านรู้สึกตกอยู่ในอันตราย โปรดขอความช่วยเหลือก่อนรายงานปัญหาให้กับแจสซี่ทราบ",
