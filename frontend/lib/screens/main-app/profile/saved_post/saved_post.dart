@@ -133,10 +133,8 @@ class _SavedPostState extends State<SavedPost> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         context: context,
-        builder: (context) => Container(
+        builder: (context) => SizedBox(
           height: size.height * 0.25,
-          // padding:
-          //     const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -147,7 +145,7 @@ class _SavedPostState extends State<SavedPost> {
                   children: [
                     IconButton(
                       onPressed: () {}, 
-                      icon: Icon(Icons.close, color: primaryDarker,)
+                      icon: const Icon(Icons.close, color: primaryDarker,)
                     ),
                   ],
                 ),
