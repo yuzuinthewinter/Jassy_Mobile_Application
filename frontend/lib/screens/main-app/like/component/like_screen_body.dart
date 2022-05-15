@@ -11,6 +11,7 @@ import 'package:flutter_application_1/screens/main-app/chat/message_screen.dart'
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/detail_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class LikeScreenBody extends StatefulWidget {
   const LikeScreenBody({Key? key}) : super(key: key);
@@ -96,8 +97,38 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                     );
                   }
                   if (snapshot.data!.docs[0]['likesby'].length == 0) {
-                    return const Center(
-                        child: Text('Someone who likes you will show here'));
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.28,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 270,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              alignment: Alignment.center,
+                              image: AssetImage(
+                                  "assets/images/no_likes_image.png"),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: size.height * 0.05,
+                        ),
+                        Text(
+                          'NoLikesTitle'.tr,
+                          style: const TextStyle(fontSize: 18, color: textDark),
+                        ),
+                        SizedBox(
+                          height: size.height * 0.012,
+                        ),
+                        Text(
+                          'NoLikesDesc'.tr,
+                          style: const TextStyle(fontSize: 14, color: greyDark),
+                        ),
+                      ],
+                    );
                   }
                   var user = snapshot.data!.docs;
                   return GridView.builder(
@@ -222,7 +253,8 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                                             fontWeight: FontWeight.w900),
                                         children: [
                                           TextSpan(
-                                              text: StringUtils.capitalize(user['name']['firstname'])),
+                                              text: StringUtils.capitalize(
+                                                  user['name']['firstname'])),
                                           const TextSpan(text: ", "),
                                           TextSpan(
                                               text: calculateAge(DateTime.parse(

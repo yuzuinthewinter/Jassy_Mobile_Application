@@ -79,6 +79,9 @@ class LocaleString extends Translations {
 
           //Jassy Like Page
           "LikePage": "Like",
+          "NoLikesTitle":
+              "No one want to share their language\n with you at this time",
+          "NoLikesDesc": "Let's start searching for the person you like.!",
 
           //Jassy Community Page
           "CommuPage": "Community",
@@ -259,6 +262,8 @@ class LocaleString extends Translations {
 
           //Jassy Like Page
           "LikePage": "ถูกใจ",
+          "NoLikesTitle": "ยังไม่มีคนถูกใจคุณในขณะนี้",
+          "NoLikesDesc": "เริ่มต้นค้นหาคนที่คุณถูกใจกันเถอะ !",
 
           //Jassy Community Page
           "CommuPage": "ชุมขน",
