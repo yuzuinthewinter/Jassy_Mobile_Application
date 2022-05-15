@@ -292,7 +292,7 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                                   },
                                   child: Expanded(
                                       child: SvgPicture.asset(
-                                    "assets/icons/heart_button.svg",
+                                    "assets/icons/ms_button.svg",
                                     width: size.width * 0.12,
                                   ))),
                             )
