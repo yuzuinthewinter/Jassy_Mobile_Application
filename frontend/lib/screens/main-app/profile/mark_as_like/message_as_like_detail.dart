@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/appbar/back_and_delete_appbar.dart';
+import 'package:flutter_application_1/component/popup_page/delete_popup.dart';
 import 'package:flutter_application_1/models/item.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
@@ -22,6 +23,14 @@ class _MessageAsLikeDetailState extends State<MessageAsLikeDetail> {
         color: colors[widget.color],
         delete: () {
           // Todo: delete item
+          showDialog(
+            context: context, 
+            builder: (context) {
+              return DeleteWarningPopUp(
+                onPress: () {}
+              );
+            }
+          );
         }
       ),
       body: Container(

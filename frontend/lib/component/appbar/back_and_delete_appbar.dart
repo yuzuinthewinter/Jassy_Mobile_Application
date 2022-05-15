@@ -33,7 +33,7 @@ class BackAndDeleteAppBar extends StatelessWidget implements PreferredSizeWidget
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: delete,
           icon: SvgPicture.asset('assets/icons/del_bin.svg', width: size.width * 0.045,),
         )
       ],
