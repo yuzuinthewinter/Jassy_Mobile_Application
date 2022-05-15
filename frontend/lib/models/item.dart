@@ -20,8 +20,8 @@ class FavMassage {
 }
 List<FavMassage> test = [
   FavMassage(id: 1, text: "sawasdee ka im thai"),
-  FavMassage(id: 2, text: "sawasdee ka im thai"),
-  FavMassage(id: 3, text: "sawasdee ka im thai"),
-  FavMassage(id: 4, text: "sawasdee ka im thai"),
+  FavMassage(id: 2, text: "sawasdee ka im thaii"),
+  FavMassage(id: 3, text: "sawasdee ka im thaiiii"),
+  FavMassage(id: 4, text: "sawasdee ka im thaiiiii"),
 ];
 
