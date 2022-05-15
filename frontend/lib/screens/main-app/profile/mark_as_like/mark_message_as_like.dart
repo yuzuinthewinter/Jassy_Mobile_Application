@@ -24,7 +24,8 @@ List<ItemModel> pinMenuItems = [
   ItemModel(id: 2, text: "ลบ"),
 ];
 
-Map<int, CustomPopupMenuController> _controller = new Map();
+Map<int, CustomPopupMenuController> _pinController = new Map();
+Map<int, CustomPopupMenuController> _notPinController = new Map();
 
 class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
   @override
@@ -67,83 +68,92 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                         itemCount: test.length,
                         itemBuilder: (context, index) {
                           for (var val in test) {
-                            _controller[val.id] = new CustomPopupMenuController();
+                            _pinController[val.id] = new CustomPopupMenuController();
                           }
                           var item1 = pinMenuItems[0].id;
-                          return Container(
-                            padding: EdgeInsets.all(size.height * 0.015),
-                            color: colors[index % colors.length],
-                            // Todo: change column to stack
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Align(
-                                  alignment: Alignment.topRight,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        SvgPicture.asset("assets/icons/pin.svg"),
-                                        SizedBox(width: size.width * 0.01),
-                                        CustomPopupMenu(
-                                          pressType: PressType.singleClick,
-                                          menuBuilder: () => Container(
-                                            width: size.width * 0.4,
-                                            height: size.height * 0.12,
-                                            decoration: const BoxDecoration(
-                                              color: textLight,
-                                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                          return InkWell(
+                            onTap: () {
+                              print("next");
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(size.height * 0.015),
+                              color: colors[index % colors.length],
+                              // Todo: change column to stack
+                              child: Stack(
+                                // crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          SvgPicture.asset("assets/icons/pin.svg"),
+                                          SizedBox(width: size.width * 0.01),
+                                          // start custom menu pop up
+                                          CustomPopupMenu(
+                                            arrowColor: textLight,
+                                            controller: _pinController[test[index].id],
+                                            pressType: PressType.singleClick,
+                                            menuBuilder: () => Container(
+                                              width: size.width * 0.4,
+                                              height: size.height * 0.12,
+                                              decoration: const BoxDecoration(
+                                                color: textLight,
+                                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                              ),
+                                              child: Column(
+                                                  children: pinMenuItems
+                                                      .map(
+                                                        (item) => GestureDetector(
+                                                          behavior: HitTestBehavior.translucent,
+                                                          onTap: () {
+                                                            // Todo: hide menu after click
+                                                            _pinController[test[index].id]!.hideMenu();
+                                                            print(test[index].id);
+                                                            if(item.id == item1) {
+                                                            return print("ยกเลิกปักหมุด");
+                                                            } else {
+                                                              print("ลบ");
+                                                            }
+                                                          },
+                                                          child: Expanded(
+                                                            child: Container(
+                                                                decoration: BoxDecoration(
+                                                                  border: Border(bottom: BorderSide(color: item.id == item1 ? greyLight : Colors.transparent, width: 1))
+                                                                ),
+                                                                height: size.height * 0.06,
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                  children: [
+                                                                    Text(item.text, style: TextStyle(color: item.id == item1 ? primaryDarker : textMadatory, fontSize: 14),),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                          ),
+                                                          ),
+                                                      )
+                                                    .toList(),
+                                                  ),
                                             ),
-                                            child: Column(
-                                                children: pinMenuItems
-                                                    .map(
-                                                      (item) => GestureDetector(
-                                                        behavior: HitTestBehavior.translucent,
-                                                        onTap: () {
-                                                          // Todo: hide menu after click
-                                                          // _controller.hideMenu();
-                                                          _controller[test[index].id]!.hideMenu();
-                                                          print(test[index].id);
-                                                          if(item.id == item1) {
-                                                          return print("ยกเลิกปักหมุด");
-                                                          } else {
-                                                            print("ลบ");
-                                                          }
-                                                        },
-                                                        child: Expanded(
-                                                          child: Container(
-                                                              decoration: BoxDecoration(
-                                                                border: Border(bottom: BorderSide(color: item.id == item1 ? greyLight : Colors.transparent, width: 1))
-                                                              ),
-                                                              height: size.height * 0.06,
-                                                              child: Row(
-                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                children: [
-                                                                  Text(item.text, style: TextStyle(color: item.id == item1 ? primaryDarker : textMadatory, fontSize: 14),),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                        ),
-                                                        ),
-                                                    )
-                                                  .toList(),
-                                                ),
+                                            child: const Icon(Icons.more_horiz, color: primaryDarker,)
                                           ),
-                                          arrowColor: textLight,
-                                          controller: _controller[test[index].id],
-                                          child: const Icon(Icons.more_horiz, color: primaryDarker,)
-                                        ),
-                                      ],
-                                    )
-                                ),
-                                SizedBox(height: size.height * 0.01),
-                                // Todo: add like text
-                                Text(
-                                  test[index].text,
-                                  style: TextStyle(fontSize: 16),
-                                  maxLines: 2, 
-                                  overflow: TextOverflow.ellipsis,
-                                )
-                              ],
+                                          // end custom menu pop up
+                                        ],
+                                      )
+                                  ),
+                                  SizedBox(height: size.height * 0.01),
+                                  // Todo: add like text
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      test[index].text,
+                                      style: TextStyle(fontSize: 16),
+                                      maxLines: 2, 
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           );
                         }
@@ -167,7 +177,89 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                         ),
                         itemCount: test.length,
                         itemBuilder: (context, index) {
-                          return favMessage(test[index] ,index);
+                           for (var val in test) {
+                            _notPinController[val.id] = new CustomPopupMenuController();
+                          }
+                          var item1 = menuItems[0].id;
+                          return Container(
+                            padding: EdgeInsets.all(size.height * 0.015),
+                            color: colors[index % colors.length],
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          SvgPicture.asset("assets/icons/pin.svg"),
+                                          SizedBox(width: size.width * 0.01),
+                                          // start custom menu pop up
+                                          CustomPopupMenu(
+                                            arrowColor: textLight,
+                                            controller: _notPinController[test[index].id],
+                                            pressType: PressType.singleClick,
+                                            menuBuilder: () => Container(
+                                              width: size.width * 0.4,
+                                              height: size.height * 0.12,
+                                              decoration: const BoxDecoration(
+                                                color: textLight,
+                                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                              ),
+                                              child: Column(
+                                                  children: menuItems
+                                                      .map(
+                                                        (item) => GestureDetector(
+                                                          behavior: HitTestBehavior.translucent,
+                                                          onTap: () {
+                                                            // Todo: hide menu after click
+                                                            // setState(() {
+                                                            //   _notPinController[test[index].id]!.hideMenu();
+                                                            // });
+                                                            _notPinController[test[index].id]!.hideMenu();
+                                                            print(test[index].id);
+                                                            if(item.id == item1) {
+                                                            return print("ปักหมุด");
+                                                            } else {
+                                                              print("ลบ");
+                                                            }
+                                                          },
+                                                          child: Expanded(
+                                                            child: Container(
+                                                                decoration: BoxDecoration(
+                                                                  border: Border(bottom: BorderSide(color: item.id == item1 ? greyLight : Colors.transparent, width: 1))
+                                                                ),
+                                                                height: size.height * 0.06,
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                  children: [
+                                                                    Text(item.text, style: TextStyle(color: item.id == item1 ? primaryDarker : textMadatory, fontSize: 14),),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                          ),
+                                                          ),
+                                                      )
+                                                    .toList(),
+                                                  ),
+                                            ),
+                                            child: const Icon(Icons.more_horiz, color: primaryDarker,)
+                                          ),
+                                          // end custom menu pop up
+                                        ],
+                                      )
+                                  ),
+                                  SizedBox(height: size.height * 0.01),
+                                  // Todo: add like text
+                                  Text(
+                                    test[index].text,
+                                    style: TextStyle(fontSize: 16),
+                                    maxLines: 2, 
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                ],
+                            ),
+                          );
                         }
                       ),
                   ),
@@ -179,169 +271,4 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
       ),
     );
   }
-
-  // Pin Fav Message Note Widget
-  Widget pinFavMessage (FavMassage test, int index, void pinController,) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      padding: EdgeInsets.all(size.height * 0.015),
-      color: colors[index % colors.length],
-      // Todo: change column to stack
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: CustomPopupMenu(
-              pressType: PressType.singleClick,
-              menuBuilder: _buildPinPopUpMenu,
-              arrowColor: textLight,
-              // controller: pinController[test[]],
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SvgPicture.asset("assets/icons/pin.svg"),
-                  SizedBox(width: size.width * 0.01),
-                  const Icon(Icons.more_horiz, color: primaryDarker,),
-                ],
-              )
-            )
-          ),
-          SizedBox(height: size.height * 0.01),
-          // Todo: add like text
-          Text(
-            test.text,
-            style: TextStyle(fontSize: 16),
-            maxLines: 2, 
-            overflow: TextOverflow.ellipsis,
-          )
-        ],
-      ),
-    );
-  }
-
-// Fav Message Note Widget
-  Widget favMessage (FavMassage test, int index,) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      padding: EdgeInsets.all(size.height * 0.015),
-      color: colors[index % colors.length],
-      // Todo: change column to stack
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: CustomPopupMenu(
-              pressType: PressType.singleClick,
-              menuBuilder: _buildPopUpMenu,
-              arrowColor: textLight,
-              // controller: ,
-              child: Icon(Icons.more_horiz, color: primaryDarker,)
-            )
-          ),
-          SizedBox(height: size.height * 0.01),
-          // Todo: add like text
-          Text(
-            test.text,
-            style: TextStyle(fontSize: 16),
-            maxLines: 2, 
-            overflow: TextOverflow.ellipsis,
-          )
-        ],
-      ),
-    );
-  }
-
- Widget _buildPopUpMenu() {
-    var item1 = menuItems[0].id;
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width * 0.4,
-      height: size.height * 0.12,
-      decoration: const BoxDecoration(
-        color: textLight,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Column(
-          children: menuItems
-              .map(
-                (item) => GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    // _controller[test[index].id]!.hideMenu();
-                    if(item.id == item1) {
-                    return print("ปักหมุด");
-                    } else {
-                      print("ลบ");
-                    }
-                  },
-                  child: Expanded(
-                    child: Container(
-                        decoration: BoxDecoration(
-                          border: Border(bottom: BorderSide(color: item.id == item1 ? greyLight : Colors.transparent, width: 1))
-                        ),
-                        height: size.height * 0.06,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(item.text, style: TextStyle(color: item.id == item1 ? primaryDarker : textMadatory, fontSize: 14),),
-                          ],
-                        ),
-                      ),
-                  ),
-                  ),
-              )
-            .toList(),
-          ),
-      
-    );
-  }
-
-   Widget _buildPinPopUpMenu() {
-    var item1 = pinMenuItems[0].id;
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width * 0.4,
-      height: size.height * 0.12,
-      decoration: const BoxDecoration(
-        color: textLight,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Column(
-          children: pinMenuItems
-              .map(
-                (item) => GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    // Todo: hide menu after click
-                    // _controller.hideMenu();
-                    if(item.id == item1) {
-                    return print("ปักหมุด");
-                    } else {
-                      print("ลบ");
-                    }
-                  },
-                  child: Expanded(
-                    child: Container(
-                        decoration: BoxDecoration(
-                          border: Border(bottom: BorderSide(color: item.id == item1 ? greyLight : Colors.transparent, width: 1))
-                        ),
-                        height: size.height * 0.06,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(item.text, style: TextStyle(color: item.id == item1 ? primaryDarker : textMadatory, fontSize: 14),),
-                          ],
-                        ),
-                      ),
-                  ),
-                  ),
-              )
-            .toList(),
-          ),
-      
-    );
-  }
-
 }
