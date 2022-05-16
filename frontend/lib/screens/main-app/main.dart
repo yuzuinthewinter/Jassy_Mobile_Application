@@ -11,7 +11,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class JassyHome extends StatefulWidget {
-  const JassyHome({Key? key}) : super(key: key);
+  final indexpage;
+  JassyHome(this.indexpage);
 
   @override
   State<JassyHome> createState() => _JassyHomeState();
@@ -38,6 +39,7 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    _currentIndex = widget.indexpage;
     WidgetsBinding.instance.addObserver(this);
     setStatus(true, DateTime.now());
   }

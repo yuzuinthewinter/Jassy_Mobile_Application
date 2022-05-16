@@ -97,7 +97,7 @@ class _JassyCommentTreeState extends State<JassyCommentTree> {
                           SizedBox(
                             width: size.width * 0.03,
                           ),
-                          const LikeButtonWidget(),
+                          // const LikeButtonWidget(),
                           SizedBox(
                             width: size.width * 0.05,
                           ),
@@ -147,7 +147,7 @@ class _JassyCommentTreeState extends State<JassyCommentTree> {
                           SizedBox(
                             width: size.width * 0.03,
                           ),
-                          const LikeButtonWidget(),
+                          // const LikeButtonWidget(),
                           SizedBox(
                             width: size.width * 0.05,
                           ),

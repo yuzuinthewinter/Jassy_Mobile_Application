@@ -52,7 +52,7 @@ class _AppScreen extends State<App> {
             navigatorObservers: [GetObserver()],
             debugShowCheckedModeBanner: false,
             translations: LocaleString(),
-            locale: const Locale('th', 'TH'),
+            locale: const Locale('en', 'US'),
             onGenerateRoute: RouteGenerator.generateRoute,
             title: 'Jassy-Languages-Community',
             theme: ThemeData(
@@ -79,14 +79,14 @@ class AuthGate extends StatelessWidget {
     var users = FirebaseFirestore.instance.collection('Users');
     var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
     var snapshot = await queryUser.get();
-    
+
     if (snapshot.docs.isNotEmpty) {
       final data = snapshot.docs[0];
       if (data['userStatus'] == 'admin') {
         Navigator.of(context).pushNamed(Routes.AdminJassyHome);
       } else {
         if (data['isAuth'] == true) {
-          Navigator.of(context).pushNamed(Routes.JassyHome);
+          Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 2);
         } else {
           //TODO: popup to user that register unfinish ** warning user
           return Navigator.of(context).pushNamed(Routes.RegisterProfile);

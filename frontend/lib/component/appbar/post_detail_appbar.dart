@@ -1,16 +1,16 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
 
 class PostDetailAppBar extends StatelessWidget implements PreferredSizeWidget {
-
   const PostDetailAppBar({
     Key? key,
-    required this.post,
+    required this.group,
   }) : super(key: key);
 
-  final News post;
+  final group;
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +22,29 @@ class PostDetailAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       title: Column(
         children: [
-          Text(post.groupName.name, style: TextStyle(fontSize: 18, color: textDark),),
+          Text(
+            StringUtils.capitalize(group['namegroup']),
+            style: TextStyle(fontSize: 18, color: textDark),
+          ),
           RichText(
-            text: TextSpan(
-              style: TextStyle(fontSize: 14, color: greyDark, fontFamily: 'kanit'),
-              children: [
-                const WidgetSpan(child: Icon(Icons.person_rounded, color: primaryColor,)),
-                WidgetSpan(child: SizedBox(width: size.width * 0.01,),),
+              text: TextSpan(
+                  style: TextStyle(
+                      fontSize: 14, color: greyDark, fontFamily: 'kanit'),
+                  children: [
+                const WidgetSpan(
+                    child: Icon(
+                  Icons.person_rounded,
+                  color: primaryColor,
+                )),
+                WidgetSpan(
+                  child: SizedBox(
+                    width: size.width * 0.01,
+                  ),
+                ),
                 TextSpan(text: "${'GroupMember'.tr} "),
-                TextSpan(text: post.groupName.member.toString())
-              ]
-            )
-          )
+                //todo: group['member'].length
+                TextSpan(text: group['membersID'].length.toString())
+              ]))
         ],
       ),
       leading: IconButton(
