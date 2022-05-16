@@ -352,10 +352,10 @@ class TypeFileMessage extends StatelessWidget {
       },
       child: Container(
           constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.6,
+              maxWidth: MediaQuery.of(context).size.width * 0.5,
               maxHeight: MediaQuery.of(context).size.width * 0.4,),
           padding: const EdgeInsets.symmetric(
-              horizontal: 20, vertical: 10),
+              horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
               color: isCurrentUser ? primaryLighter : textLight,
               borderRadius: BorderRadius.circular(20)),
@@ -363,7 +363,7 @@ class TypeFileMessage extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.01),
-                child: SvgPicture.asset("assets/icons/file.svg"),
+                child: Icon(Icons.description, size: MediaQuery.of(context).size.height * 0.04,),
               ),
               Padding(
                 padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1),
