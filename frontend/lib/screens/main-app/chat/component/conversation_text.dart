@@ -45,9 +45,6 @@ class _BodyState extends State<ConversationText> {
       await messagesdb.doc(messageid).update({
         'status': 'read',
       });
-      await chats.doc(widget.chatid).update({
-        'unseenCount': 0,
-      });
     }
   }
 
@@ -159,7 +156,9 @@ class _BodyState extends State<ConversationText> {
         var currentMessage = snap[0];
         var sender = currentMessage['sentBy'];
         bool isCurrentUser = sender == currentUser!.uid;
-        checkReadMessage(currentMessage['messageID']);
+        if (currentMessage['status'] == 'unread') {
+          checkReadMessage(currentMessage['messageID']);
+        }
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(

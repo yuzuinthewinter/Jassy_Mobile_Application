@@ -52,7 +52,7 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
   }
 
   Future uploadFile() async {
-    final path = 'community/${pickedFile!.name}';
+    final path = 'report/${pickedFile!.name}';
     final file = File(pickedFile!.path!);
 
     final ref = FirebaseStorage.instance.ref().child(path);
@@ -73,6 +73,8 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
   }
 
   sendReport() async {
+    print(widget.text);
+    print(reportFilled);
     DocumentReference docRef = await reportUser.add({
       'reportHeader': widget.text,
       'reportDetail': reportFilled,
@@ -98,7 +100,7 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
       'liked': FieldValue.arrayRemove([widget.userid]),
     });
     await chats.doc(widget.chatid).delete();
-    Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 3);
+    Navigator.of(context).popAndPushNamed(Routes.JassyHome, arguments: 3);
   }
 
   @override
@@ -204,7 +206,7 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
                             minimumSize: const Size(339, 36),
                             press: () async {
                               await uploadFile();
-                              showDialog(
+                              return showDialog(
                                   context: context,
                                   builder: (context) {
                                     return WarningPopUpWithButton(
@@ -214,7 +216,6 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
                                       },
                                     );
                                   });
-                              Navigator.pop(context);
                             },
                           ),
                         ),

@@ -176,7 +176,7 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                 );
                 return FadeTransition(
                   opacity: curvedAnimation,
-                  child: DetailPage(user: user, animation: animation),
+                  child: DetailPage(user: user, isMainPage: false, animation: animation),
                 );
               }));
               print("each card");

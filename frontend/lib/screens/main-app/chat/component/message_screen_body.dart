@@ -23,6 +23,24 @@ class MessageScreenBody extends StatefulWidget {
 }
 
 class _MessageScreenBodyState extends State<MessageScreenBody> {
+
+  CollectionReference chats =
+      FirebaseFirestore.instance.collection('ChatRooms');
+
+  updateUnseen() async {
+    await chats.doc(widget.chatid).update({
+      'unseenCount': 0,
+    });
+  }
+
+  @override
+  void initState() {
+    if (widget.inRoom == true) {
+      updateUnseen();
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

@@ -110,7 +110,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
           );
           return FadeTransition(
             opacity: curvedAnimation,
-            child: DetailPage(user: user, animation: animation),
+            child: DetailPage(user: user, isMainPage: true, animation: animation),
           );
         }));
       }),
