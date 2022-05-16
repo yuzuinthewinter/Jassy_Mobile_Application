@@ -125,7 +125,7 @@ class LocaleString extends Translations {
           "HeaderChatPage": "Conversations",
           "SearchChat": "Search",
           "ChatRead": "Read",
-          "ChatHintText": "Aa",
+          "ChatHintText": "Enter a message",
           "ChatShowReport": "You can not message this account.",
           //Appbar Chat
           "StatusActiveNow": "Active now",
@@ -307,7 +307,7 @@ class LocaleString extends Translations {
           "HeaderChatPage": "สนทนา",
           "SearchChat": "ค้นหา",
           "ChatRead": "อ่านแล้ว",
-          "ChatHintText": "Aa",
+          "ChatHintText": "พิมพ์ข้อความ",
           "ChatShowReport": "ไม่สามารถส่งข้อความกับบุคคลนี้ได้อีก",
           //Appbar Chat
           "StatusActiveNow": "กำลังใช้งาน",
