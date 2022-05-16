@@ -3,11 +3,13 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/component/appbar/write_post_appbar.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 // Todo: crop Image file + แจ้งเตือน + ออกกลุ่ม
@@ -25,7 +27,6 @@ class _WritePostState extends State<WritePost> {
   final FocusNode _nodeText1 = FocusNode();
   FocusNode writingTextFocus = FocusNode();
   final bool _isLoading = false;
-  late File _postImageFile;
 
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
@@ -39,6 +40,21 @@ class _WritePostState extends State<WritePost> {
     setState(() {
       pickedFile = result.files.first;
     });
+  }
+
+  File? image;
+  Future pickImage () async {
+    try{
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print('Fail to pick image $e');
+    }
   }
 
   KeyboardActionsConfig _buildConfig(BuildContext context) {
@@ -58,21 +74,21 @@ class _WritePostState extends State<WritePost> {
             (node) {
               return GestureDetector(
                 onTap: () {
-                  selectFile();
+                  pickImage();
                 },
                 child: Container(
                   color: greyLightest,
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: <Widget>[
-                      Icon(
+                      const Icon(
                         Icons.add_photo_alternate,
                         size: 28,
                         color: primaryColor,
                       ),
                       Text(
                         "GroupPostAddPic".tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: textDark,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
@@ -96,64 +112,59 @@ class _WritePostState extends State<WritePost> {
       appBar: WritePostAppBar(onPress: () {}),
       body: Container(
         color: textLight,
-        child: KeyboardActions(
-          config: _buildConfig(context),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CurvedWidget(
-                  child: JassyGradientColor(
-                gradientHeight: size.height * 0.23,
-              )),
-              Row(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                    child: CircleAvatar(
-                      backgroundImage:
-                          const AssetImage("assets/images/user3.jpg"),
-                      radius: size.width * 0.05,
+        child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CurvedWidget(
+                    child: JassyGradientColor(
+                  gradientHeight: size.height * 0.23,
+                )),
+                Expanded(
+                  child: KeyboardActions(
+                    config: _buildConfig(context),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    const AssetImage("assets/images/user3.jpg"),
+                                radius: size.width * 0.05,
+                              ),
+                            ),
+                            Text(
+                              '${StringUtils.capitalize(widget.user['name']['firstname'])} ${StringUtils.capitalize(widget.user['name']['lastname'])}',
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
+                          child: TextFormField(
+                            autofocus: true,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "GroupPostHintText".tr,
+                              hintMaxLines: 4,
+                            ),
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            focusNode: writingTextFocus,
+                          ),
+                        ),
+                        image != null 
+                        ? Image.file(image!, fit: BoxFit.cover, height: MediaQuery.of(context).size.height * 0.6, width: double.infinity,)
+                        : Container(),
+                      ],
                     ),
                   ),
-                  Text(
-                    '${StringUtils.capitalize(widget.user['name']['firstname'])} ${StringUtils.capitalize(widget.user['name']['lastname'])}',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
-                child: Expanded(
-                  child: TextFormField(
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "GroupPostHintText".tr,
-                      hintMaxLines: 4,
-                    ),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    focusNode: writingTextFocus,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+                )
+              ],
+            ),
       ),
     );
   }
-
-  // Future<void> _getImageAndCrop() async {
-  //   File imageFileFromGallery = await ImagePicker.pickImage(source: ImageSource.gallery);
-  //   if (imageFileFromGallery != null) {
-  //     File cropImageFile = await Utils.cropImageFile(imageFileFromGallery);//await cropImageFile(imageFileFromGallery);
-  //     if (cropImageFile != null) {
-  //       setState(() {
-  //         _postImageFile = cropImageFile;
-  //       });
-  //     }
-  //   }
-  // }
 }
