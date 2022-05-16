@@ -38,7 +38,8 @@ class _EditChatListState extends State<EditChatList> {
         action: TextButton(
           onPressed: () {
             // Todo: read all
-          }, 
+          },
+          // Todo อ่าน(1) 
           child: Text("อ่านทั้งหมด", style: TextStyle(color: secoundary, fontSize: 16),)
         )
       ),
