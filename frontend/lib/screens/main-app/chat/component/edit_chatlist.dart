@@ -48,8 +48,6 @@ class _EditChatListState extends State<EditChatList> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
             child: TextFormField(
-              // controller: passwordController,
-              // obscureText: isHiddenPassword,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 prefixIcon: SvgPicture.asset(
@@ -59,8 +57,8 @@ class _EditChatListState extends State<EditChatList> {
                 hintText: 'SearchChat'.tr,
                 filled: true,
                 fillColor: textLight,
-                // contentPadding:
-                //     const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40),
                     borderSide: const BorderSide(color: textLight, width: 0.0)),
@@ -274,11 +272,14 @@ class _EditChatListState extends State<EditChatList> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               OutlinedButtonComponent(
+                // Todo: unpair
                 text: "ยกเลิกการจับคู่", 
                 minimumSize: Size(size.width * 0.45, size.height *0.05), 
-                press: () {}
+                press: ()
+                 {}
               ),
               RoundButton(
+                // Todo: del chat 
                 text: "ลบการสนทนา", 
                 minimumSize: Size(size.width * 0.45, size.height *0.05), 
                 press: () {}

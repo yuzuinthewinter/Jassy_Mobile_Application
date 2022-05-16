@@ -46,6 +46,7 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
         text: "HeaderChatPage".tr,
         action: IconButton(
           onPressed: () {
+            // Todo: go to edit chat list
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const EditChatList()),
