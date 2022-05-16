@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/component/popup_page/successWithButton.dart';
-import 'package:flutter_application_1/constants/routes.dart';
-import 'package:flutter_application_1/screens/main-app/chat/chat_screen.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_screen_body.dart';
 import 'package:flutter_application_1/screens/main-app/community/community.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/jassy_main.dart';
