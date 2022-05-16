@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
@@ -19,12 +20,12 @@ class MessageScreenAppBar extends StatelessWidget
       title: Column(
         children: [
           Text(
-            user['name']['firstname'].toString(),
+            StringUtils.capitalize(user['name']['firstname']),
             style: const TextStyle(fontSize: 18, color: textDark),
           ),
           const Text(' '),
           Text(
-            user['name']['lastname'].toString(),
+            StringUtils.capitalize(user['name']['lastname']),
             style: const TextStyle(fontSize: 18, color: textDark),
           ),
           const Text(

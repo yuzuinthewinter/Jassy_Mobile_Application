@@ -50,8 +50,8 @@ class _BodyState extends State<Body> {
 
     await users.doc(currentUser!.uid).update({
       'name': {
-        'firstname': widget.name.firstname,
-        'lastname': widget.name.lastname
+        'firstname': widget.name.firstname.toLowerCase(),
+        'lastname': widget.name.lastname.toLowerCase(),
       },
       'birthDate': widget.uinfo.birthDate,
       'genre': widget.uinfo.genre,

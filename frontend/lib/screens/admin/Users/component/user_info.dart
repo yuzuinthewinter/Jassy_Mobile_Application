@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/back_close_appbar.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
@@ -33,19 +34,20 @@ class _UserInfoPage extends State<UserInfoPage> {
             height: size.height * 0.01,
           ),
           Text(
-            widget.user['name']['firstname'].toString() +
+            StringUtils.capitalize(widget.user['name']['firstname']) +
                 ' ' +
-                widget.user['name']['lastname'].toString(),
+                StringUtils.capitalize(widget.user['name']['lastname']),
             style: const TextStyle(
                 fontSize: 20, fontFamily: 'kanit', fontWeight: FontWeight.w600),
           ),
           Text(
-            'จำนวนการร้องเรียนโดยผู้ใช้ : ${widget.user['reportCount']}',
+            'จำนวนการร้องเรียนโดยผู้ใช้ : ${widget.user['report'].length}',
             style: TextStyle(
               fontSize: 16,
               fontFamily: 'kanit',
               fontWeight: FontWeight.w400,
-              color: widget.user['reportCount'] >= 3 ? textMadatory : textDark,
+              color:
+                  widget.user['report'].length >= 3 ? textMadatory : textDark,
             ),
           ),
           SizedBox(

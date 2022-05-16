@@ -39,8 +39,8 @@ class _BodyState extends State<Body> {
       await users.doc(currentUser.uid).set({
         'uid': currentUser.uid,
         'name': {
-          'firstname': '${profile['first_name']}',
-          'lastname': '${profile['last_name']}',
+          'firstname': '${profile['first_name'].toLowerCase()}',
+          'lastname': '${profile['last_name'].toLowerCase()}',
         },
         'birthDate': '',
         'genre': '',
@@ -53,7 +53,7 @@ class _BodyState extends State<Body> {
         },
         'desc': '',
         'userStatus': 'user',
-        'reportCount': 0,
+        'report': const [],
         'likesby': const [],
         'liked': const [],
         'faceRegPic': const [],
@@ -132,8 +132,8 @@ class _BodyState extends State<Body> {
         await users.doc(currentUser.uid).set({
             'uid': currentUser.uid,
             'name': {
-              'firstname': splitname[0],
-              'lastname': splitname[1],
+              'firstname': splitname[0].toLowerCase(),
+              'lastname': splitname[1].toLowerCase(),
             },
             'birthDate': '',
             'genre': '',
@@ -146,7 +146,7 @@ class _BodyState extends State<Body> {
             },
             'desc': '',
             'userStatus': 'user',
-            'reportCount': 0,
+            'report': const [],
             'faceRegPic': const [],
             'profilePic': const [],
             'chats': const [],

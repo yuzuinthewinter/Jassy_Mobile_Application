@@ -19,8 +19,23 @@ class ChatScreenBody extends StatefulWidget {
 }
 
 class _ChatScreenBodyState extends State<ChatScreenBody> {
+
   var currentUser = FirebaseAuth.instance.currentUser;
   bool isSelected = false;
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    searchController = TextEditingController();
+    // searchController.addListener(() {});
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +60,11 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
             child: TextFormField(
-              // controller: passwordController,
-              // obscureText: isHiddenPassword,
+              controller: searchController,
+              onChanged: (desc) {
+                desc = searchController.text;
+                setState(() {});
+              },
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 prefixIcon: SvgPicture.asset(
@@ -100,6 +118,7 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
                     return ChatCard(
                       chatid: data['chats'][index],
                       currentUser: data,
+                      query: searchController.text.toLowerCase(),
                     );
                   },
                 );

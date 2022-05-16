@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/conversation_text.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/message_input.dart';
@@ -8,8 +9,13 @@ class MessageScreenBody extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   final chatid;
   final user;
+  final inRoom;
 
-  const MessageScreenBody({Key? key, required this.chatid, required this.user})
+  const MessageScreenBody(
+      {Key? key,
+      required this.chatid,
+      required this.user,
+      required this.inRoom})
       : super(key: key);
 
   @override
@@ -17,6 +23,24 @@ class MessageScreenBody extends StatefulWidget {
 }
 
 class _MessageScreenBodyState extends State<MessageScreenBody> {
+  CollectionReference chats =
+      FirebaseFirestore.instance.collection('ChatRooms');
+
+  updateUnseen() async {
+    await chats.doc(widget.chatid).update({
+      'unseenCount': 0,
+    });
+  }
+
+  @override
+  void initState() {
+    print(widget.inRoom);
+    if (widget.inRoom == true) {
+      updateUnseen();
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -32,6 +56,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
             child: ConversationText(
               user: widget.user,
               chatid: widget.chatid,
+              inRoom: widget.inRoom,
             ),
           ),
           widget.user['report'].length < 3

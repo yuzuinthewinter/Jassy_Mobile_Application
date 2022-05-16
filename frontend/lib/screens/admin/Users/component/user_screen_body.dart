@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -137,26 +138,27 @@ class _UserScreenBody extends State<UserScreenBody> {
                               onPressed: () {},
                               icon: const Icon(Icons.verified_rounded),
                               color: data[index]['isAuth'] == true
-                                  ? data[index]['reportCount'] < 5
+                                  ? data[index]['report'].length < 5
                                       ? primaryColor
                                       : greyDark
                                   : textLight,
                             ),
-                            text: data[index]['name']['firstname'].toString() ==
+                            text: StringUtils.capitalize(
+                                            data[index]['name']['firstname']) ==
                                         '' &&
-                                    data[index]['name']['lastname']
-                                            .toString() ==
+                                    StringUtils.capitalize(
+                                            data[index]['name']['lastname']) ==
                                         ''
                                 ? '-'
-                                : '${data[index]['name']['firstname'].toString()} ${data[index]['name']['lastname'].toString()}',
+                                : '${StringUtils.capitalize(data[index]['name']['firstname'])} ${StringUtils.capitalize(data[index]['name']['lastname'])}',
                             reportIcon: IconButton(
                               onPressed: () {},
-                              icon: Icon(data[index]['reportCount'] < 5
+                              icon: Icon(data[index]['report'].length < 5
                                   ? Icons.warning_rounded
                                   : Icons.cancel_rounded),
-                              color: data[index]['reportCount'] < 3
+                              color: data[index]['report'].length < 3
                                   ? textLight
-                                  : data[index]['reportCount'] < 5
+                                  : data[index]['report'].length < 5
                                       ? tertiary
                                       : textLight,
                             ),

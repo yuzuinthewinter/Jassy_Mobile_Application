@@ -1,5 +1,10 @@
+import 'package:basic_utils/basic_utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
 import 'package:flutter_application_1/component/text/report_choice.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/message_screen_body.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,8 +30,13 @@ class ChatRoom extends StatefulWidget {
   State<ChatRoom> createState() => _ChatRoomState();
 }
 
-class _ChatRoomState extends State<ChatRoom> {
+class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   bool isNotificationOn = true;
+
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
+  CollectionReference chats =
+      FirebaseFirestore.instance.collection('ChatRooms');
+  var currentUser = FirebaseAuth.instance.currentUser;
 
   getDifferance(timestamp) {
     DateTime now = DateTime.now();
@@ -36,15 +46,85 @@ class _ChatRoomState extends State<ChatRoom> {
     var timeHour = diff.inHours;
     var timeDay = diff.inDays;
     if (timeMin < 3) {
-      return 'StatusActiveAfew'.tr;
+      return Text(
+        'StatusActiveAfew'.tr,
+        style: const TextStyle(fontSize: 14, color: greyDark),
+      );
     } else if (timeMin < 60) {
-      return '${'StatusActive'.tr} ${timeMin.toString()} ${'StatusActiveMins'.tr}';
+      return Text(
+        '${'StatusActive'.tr} ${timeMin.toString()}${'StatusActiveMins'.tr}',
+        style: const TextStyle(fontSize: 14, color: greyDark),
+      );
     } else if (timeHour < 24) {
-      return '${'StatusActive'.tr} ${timeHour.toString()}${'StatusActiveHours'.tr}';
+      return Text(
+        '${'StatusActive'.tr} ${timeHour.toString()}${'StatusActiveHours'.tr}',
+        style: const TextStyle(fontSize: 14, color: greyDark),
+      );
     } else if (timeDay < 3) {
-      return '${'StatusActive'.tr} ${timeDay.toString()}${'StatusActiveDays'.tr}';
+      return Text(
+        '${'StatusActive'.tr} ${timeDay.toString()}${'StatusActiveDays'.tr}',
+        style: const TextStyle(fontSize: 14, color: greyDark),
+      );
     } else {
-      return '';
+      return Container(height: 1);
+    }
+  }
+
+  unMatch() async {
+    await users.doc(widget.user['uid']).update({
+      'chats': FieldValue.arrayRemove([widget.chatid]),
+      'likesby': FieldValue.arrayRemove([widget.currentUser['uid']]),
+      'liked': FieldValue.arrayRemove([widget.currentUser['uid']]),
+    });
+    await users.doc(widget.currentUser['uid']).update({
+      'chats': FieldValue.arrayRemove([widget.chatid]),
+      'likesby': FieldValue.arrayRemove([widget.user['uid']]),
+      'liked': FieldValue.arrayRemove([widget.user['uid']]),
+    });
+    await chats.doc(widget.chatid).delete();
+    Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 3);
+  }
+
+  bool isInRoom = false;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+    isInRoom = true;
+    setInRoom(isInRoom);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+    isInRoom = false;
+    setInRoom(isInRoom);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    setState(() {
+      if (state == AppLifecycleState.resumed) {
+        isInRoom = true;
+        setInRoom(isInRoom);
+      } else {
+        isInRoom = false;
+        setInRoom(isInRoom);
+      }
+    });
+  }
+
+  void setInRoom(bool isInRoom) async {
+    if (isInRoom == true) {
+      await FirebaseFirestore.instance
+          .collection('ChatRooms')
+          .doc(widget.chatid)
+          .update({
+        'unseenCount': 0,
+      });
     }
   }
 
@@ -57,20 +137,21 @@ class _ChatRoomState extends State<ChatRoom> {
           children: [
             // Note: map chat room name on appbar here
             Text(
-              widget.user['name']['firstname'].toString() +
+              StringUtils.capitalize(widget.user['name']['firstname']) +
                   ' ' +
-                  widget.user['name']['lastname'].toString(),
+                  StringUtils.capitalize(widget.user['name']['lastname']),
               style: const TextStyle(fontSize: 16, color: textDark),
             ),
             widget.user['report'].length < 3
                 ? widget.user['isShowActive'] &&
                         widget.currentUser['isShowActive']
-                    ? Text(
-                        widget.user['isActive']
-                            ? 'StatusActiveNow'.tr
-                            : getDifferance(widget.user['timeStamp']),
-                        style: const TextStyle(fontSize: 14, color: greyDark),
-                      )
+                    ? widget.user['isActive']
+                        ? Text(
+                            'StatusActiveNow'.tr,
+                            style:
+                                const TextStyle(fontSize: 14, color: greyDark),
+                          )
+                        : getDifferance(widget.user['timeStamp'])
                     : Container(
                         height: 1,
                       )
@@ -105,7 +186,18 @@ class _ChatRoomState extends State<ChatRoom> {
                   print(isNotificationOn)
                 }
               else if (value == MenuItem.item2)
-                {print("cancel pairing")}
+                {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return WarningPopUpWithButton(
+                          text: 'WarningUnmatch'.tr,
+                          okPress: () {
+                            unMatch();
+                          },
+                        );
+                      })
+                }
               else if (value == MenuItem.item3)
                 {reportModalBottomSheet(context), print('report')}
             },
@@ -154,6 +246,7 @@ class _ChatRoomState extends State<ChatRoom> {
       body: MessageScreenBody(
         user: widget.user,
         chatid: widget.chatid,
+        inRoom: isInRoom,
       ),
     );
   }
@@ -196,36 +289,58 @@ class _ChatRoomState extends State<ChatRoom> {
                   ),
                   ReportTypeChoice(
                     text: 'ReportNudity'.tr,
+                    userid: widget.user['uid'],
+                    chatid: widget.chatid,
                   ),
                   ReportTypeChoice(
                     text: 'ReportVio'.tr,
+                    userid: widget.user['uid'],
+                    chatid: widget.chatid,
                   ),
                   ReportTypeChoice(
                     text: 'ReportThreat'.tr,
+                    userid: widget.user['uid'],
+                    chatid: widget.chatid,
                   ),
                   ReportTypeChoice(
                     text: 'ReportProfan'.tr,
+                    userid: widget.user['uid'],
+                    chatid: widget.chatid,
                   ),
                   ReportTypeChoice(
                     text: 'ReportTerro'.tr,
+                    userid: widget.user['uid'],
+                    chatid: widget.chatid,
                   ),
                   ReportTypeChoice(
                     text: 'ReportChild'.tr,
+                    userid: widget.user['uid'],
+                    chatid: widget.chatid,
                   ),
                   ReportTypeChoice(
                     text: 'ReportSexual'.tr,
+                    userid: widget.user['uid'],
+                    chatid: widget.chatid,
                   ),
                   ReportTypeChoice(
                     text: 'ReportAnimal'.tr,
+                    userid: widget.user['uid'],
+                    chatid: widget.chatid,
                   ),
                   ReportTypeChoice(
                     text: 'ReportScam'.tr,
+                    userid: widget.user['uid'],
+                    chatid: widget.chatid,
                   ),
                   ReportTypeChoice(
                     text: 'ReportAbuse'.tr,
+                    userid: widget.user['uid'],
+                    chatid: widget.chatid,
                   ),
                   ReportTypeChoice(
                     text: 'ReportOther'.tr,
+                    userid: widget.user['uid'],
+                    chatid: widget.chatid,
                   ),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,
