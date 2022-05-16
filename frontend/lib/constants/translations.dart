@@ -90,7 +90,7 @@ class LocaleString extends Translations {
           "CommuFeed": "New Feed",
           "CommuNoFeed": "There is no news for you yet.",
           "CommuStartJoin":
-              "Let's start by joining the group to receive news and exchange!",
+              "Let's start by joining the group\n to receive news and exchange!",
           "CommuMyGroup": "My Groups",
           "CommuSearch": "Search",
           "CommuSearchGroup": "Search",
@@ -169,6 +169,7 @@ class LocaleString extends Translations {
           "ProfileHelp": "Help Center",
           "ProfileAppSetting": "Settings",
           "ProfileMarkAsLike": "Mask as Like",
+          "ProfileSavedPost": "Saved Post",
           "ProfileAboutJassy": "About Jassy",
           "ProfileLogOut": "Log Out",
 
@@ -351,6 +352,7 @@ class LocaleString extends Translations {
           "ProfileHelp": "ศูนย์ช่วยเหลือ",
           "ProfileAppSetting": "การตั้งค่า",
           "ProfileMarkAsLike": "ข้อความที่ชื่นชอบ",
+          "ProfileSavedPost": "รายการที่บันทึกไว้",
           "ProfileAboutJassy": "เกี่ยวกับแจสซี่",
           "ProfileLogOut": "ออกจากระบบ",
 

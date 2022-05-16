@@ -120,6 +120,7 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                         Text(
                           'NoLikesTitle'.tr,
                           style: const TextStyle(fontSize: 18, color: textDark),
+                          textAlign: TextAlign.center,
                         ),
                         SizedBox(
                           height: size.height * 0.012,

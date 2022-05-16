@@ -30,6 +30,20 @@ class CommunityScreenBody extends StatefulWidget {
 }
 
 class _CommunityScreenBodyState extends State<CommunityScreenBody> {
+  getAllPost() {
+    List feedPost = [];
+    for (var usergroupid in widget.user['groups']) {
+      for (var group in widget.community) {
+        if (usergroupid == group['groupid']) {
+          if (group['postsID'].length > 0) {
+            feedPost = feedPost + group['postsID'];
+          }
+        }
+      }
+    }
+    return feedPost;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -140,11 +154,11 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                         ]),
                       ),
                       // Todo: isEmpty show NoNewsWidget
-                      widget.user['groups'].length == 0
+                      getAllPost().length == 0
                           ? NoNewsWidget(
-                              headText: "ยังไม่มีข่าวสารสำหรับคุณ",
+                              headText: "CommuNoFeed".tr,
                               descText:
-                                  "เริ่มเข้ากลุ่มเพื่อรับข่าวสารและแลกเปลี่ยนกันเถอะ !",
+                                  "CommuStartJoin".tr,
                               size: size)
                           : SizedBox(
                               width: size.width,
@@ -154,7 +168,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                       EdgeInsets.only(top: size.height * 0.02),
                                   scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
-                                  itemCount: newsLists.length,
+                                  itemCount: getAllPost().length,
                                   separatorBuilder:
                                       (BuildContext context, int index) {
                                     return SizedBox(
@@ -162,15 +176,20 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                     );
                                   },
                                   itemBuilder: (context, index) {
-                                    return InkWell(onTap: () {
-                                      // Navigator.push(context,
-                                      //     CupertinoPageRoute(builder: (context) {
-                                      //   return PostDetail(
-                                      //     post: post,
-                                      //   );
-                                      // }));
-                                    });
-                                    // child: newsCard(newsLists[index], context));
+                                    var postlist = getAllPost();
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            CupertinoPageRoute(
+                                                builder: (context) {
+                                          return PostDetail(
+                                            postid: postlist[index],
+                                          );
+                                        }));
+                                      },
+                                      child:
+                                          newsCard(postlist[index], context),
+                                    );
                                   }),
                             ),
                     ],

@@ -3,12 +3,10 @@ import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
 
-class MarkMessageAsLikeAppBar extends StatelessWidget implements PreferredSizeWidget {
-
-  const MarkMessageAsLikeAppBar({
-    Key? key,
-    required this.actionWidget
-  }) : super(key: key);
+class MarkMessageAsLikeAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  const MarkMessageAsLikeAppBar({Key? key, required this.actionWidget})
+      : super(key: key);
 
   final Widget actionWidget;
 
@@ -20,7 +18,10 @@ class MarkMessageAsLikeAppBar extends StatelessWidget implements PreferredSizeWi
       centerTitle: true,
       elevation: 0,
       backgroundColor: Colors.transparent,
-      title: const Text("ข้อความที่ชื่อชอบ", style: TextStyle(color: textDark),),
+      title: Text(
+        "ProfileMarkAsLike".tr,
+        style: TextStyle(color: textDark),
+      ),
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios,
@@ -29,9 +30,7 @@ class MarkMessageAsLikeAppBar extends StatelessWidget implements PreferredSizeWi
         color: primaryDarker,
         onPressed: () => Navigator.of(context).pop(),
       ),
-      actions: [
-        actionWidget
-      ],
+      actions: [actionWidget],
     );
   }
 
