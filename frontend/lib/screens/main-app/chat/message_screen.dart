@@ -130,6 +130,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Column(

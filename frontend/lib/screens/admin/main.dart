@@ -7,7 +7,6 @@ import 'package:flutter_application_1/screens/admin/Admin/admin_screen.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/dash_screen.dart';
 import 'package:flutter_application_1/screens/admin/Setting/setting_screen.dart';
 import 'package:flutter_application_1/screens/admin/Users/user_screen.dart';
-import 'package:flutter_application_1/screens/main-app/chat/chat_screen.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/jassy_main.dart';
 import 'package:flutter_application_1/screens/main-app/like/like_screen.dart';
 import 'package:flutter_application_1/screens/main-app/profile/profile.dart';
