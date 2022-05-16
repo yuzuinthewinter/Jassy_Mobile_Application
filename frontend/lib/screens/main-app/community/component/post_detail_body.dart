@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -53,10 +54,8 @@ class _PostDetailBodyState extends State<PostDetailBody> {
     var timeMin = diff.inMinutes;
     var timeHour = diff.inHours;
     var timeDay = diff.inDays;
-    if (timeMin < 60) {
-      return '${timeMin.toString()} ${'GroupPostMins'.tr}';
-    } else if (timeHour < 24) {
-      return '${timeHour.toString()} ${'GroupPostHours'.tr}';
+    if (timeDay < 1) {
+      return '${'GroupPostToday'.tr}, $formattedHours';
     } else if (timeDay < 2) {
       return '${'GroupPostYesterday'.tr}, $formattedHours';
     } else if (timeDay < 365) {
@@ -103,7 +102,7 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${widget.user['name']['firstname']} ${widget.user['name']['lastname']}',
+                                '${StringUtils.capitalize(widget.user['name']['firstname'])} ${StringUtils.capitalize(widget.user['name']['lastname'])}',
                                 style: const TextStyle(fontSize: 18),
                               ),
                               SizedBox(
@@ -139,7 +138,7 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                           Text(
                             widget.post['text'],
                             maxLines: null,
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 16),
                           ),
                           widget.post['picture'].isNotEmpty
                               ? ClipRRect(

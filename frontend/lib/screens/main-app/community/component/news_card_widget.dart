@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/like_button_widget.dart';
@@ -14,23 +15,32 @@ Widget newsCard(postid, context) {
     DateTime lastActive = DateTime.parse(timestamp.toDate().toString());
     Duration diff = now.difference(lastActive);
 
+    String formattedHour = DateFormat('KK:mm:a').format(lastActive);
     String formattedDay = DateFormat('EEE, d/M').format(lastActive);
     String formattedDaywithyear = DateFormat('EEE, d/M/y').format(lastActive);
 
-    var timeMin = diff.inMinutes;
-    var timeHour = diff.inHours;
     var timeDay = diff.inDays;
-    if (timeMin < 60) {
-      return '${timeMin.toString()} ${'GroupPostMins'.tr}';
-    } else if (timeHour < 24) {
-      return '${timeHour.toString()} ${'GroupPostHours'.tr}';
+    if (timeDay < 1) {
+      return '${'GroupPostToday'.tr}, $formattedHour';
     } else if (timeDay < 2) {
-      return 'GroupPostYesterday'.tr;
+      return '${'GroupPostYesterday'.tr}, $formattedHour';
     } else if (timeDay < 365) {
       return formattedDay;
     } else {
       return formattedDaywithyear;
     }
+  }
+
+  getGroupName(groupid) async {
+    CollectionReference groups =
+        FirebaseFirestore.instance.collection('Community');
+    var group = groups.where('groupid', isEqualTo: groupid);
+    var snapshot = await group.get();
+    if (snapshot.docs.isNotEmpty) {
+      final data = snapshot.docs[0];
+      return data['namegroup'];
+    }
+    return '';
   }
 
   return StreamBuilder<QuerySnapshot>(
@@ -103,10 +113,11 @@ Widget newsCard(postid, context) {
                                 ),
                                 // group name
                                 Text(
-                                  post['groupid'].toString(),
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600),
+                                  getGroupName(post['groupid']).toString(),
+                                  style:
+                                      TextStyle(fontSize: 18, color: textDark),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 // post by
                                 RichText(
@@ -116,10 +127,11 @@ Widget newsCard(postid, context) {
                                           fontSize: 14,
                                           fontFamily: 'kanit'),
                                       children: [
-                                        TextSpan(text: "${'GroupPostBy'.tr} "),
+                                        // TextSpan(text: "${'GroupPostBy'.tr} "),
                                         TextSpan(
-                                            text: user['name']['firstname']),
-                                        TextSpan(text: "${'GroupPostAt'.tr} "),
+                                            text: StringUtils.capitalize(
+                                                user['name']['firstname'])),
+                                        TextSpan(text: " • "),
                                         TextSpan(
                                             text: getDifferance(post['date'])),
                                       ]),
@@ -150,7 +162,7 @@ Widget newsCard(postid, context) {
                             Text(
                               post['text'],
                               maxLines: null,
-                              style: TextStyle(fontSize: 18),
+                              style: TextStyle(fontSize: 16),
                             ),
                             post['picture'].isNotEmpty
                                 ? ClipRRect(

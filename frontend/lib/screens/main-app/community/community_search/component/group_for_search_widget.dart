@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
@@ -63,7 +64,7 @@ Widget groupForSearchWidget(group, context, user) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      group['namegroup'],
+                      StringUtils.capitalize(group['namegroup']),
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.w700),
                       maxLines: 2,

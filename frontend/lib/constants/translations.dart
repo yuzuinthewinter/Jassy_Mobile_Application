@@ -114,9 +114,7 @@ class LocaleString extends Translations {
           "GroupPostNotiOn": "Turn on notifications for this post",
           "GroupPostBy": "Posted by",
           "GroupPostAt": "at",
-          "GroupPostMins": "m",
-          "GroupPostHours": "h",
-          "GroupPostDays": "d",
+          "GroupPostToday": "Today",
           "GroupPostYesterday": "Yesterday",
           "GroupPostCommentHintText": "Write a comment",
 
@@ -297,9 +295,7 @@ class LocaleString extends Translations {
           "GroupPostNotiOn": "เปิดการแจ้งเตือนสำหรับโพสต์นี้",
           "GroupPostBy": "เขียนโดย",
           "GroupPostAt": "เมื่อ",
-          "GroupPostMins": "นาทีที่แล้ว",
-          "GroupPostHours": "ชั่วโมงที่แล้ว",
-          "GroupPostDays": "วันที่แล้ว",
+          "GroupPostToday": "วันนี้",
           "GroupPostYesterday": "เมื่อวานนี้",
           "GroupPostCommentHintText": "เขียนคอมเมนต์",
 

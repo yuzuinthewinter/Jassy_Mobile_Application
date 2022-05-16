@@ -59,7 +59,7 @@ class _NewCommunityState extends State<AddNewCommunity> {
     DocumentReference docRef = await community.add({
       'membersID': const [],
       'postsID': const [],
-      'namegroup': commu.namegroup,
+      'namegroup': commu.namegroup.toLowerCase(),
       'coverPic': urlImage,
     });
     await community.doc(docRef.id).update({

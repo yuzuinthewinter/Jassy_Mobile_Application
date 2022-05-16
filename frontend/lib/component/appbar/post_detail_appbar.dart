@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -22,7 +23,7 @@ class PostDetailAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Column(
         children: [
           Text(
-            group['namegroup'],
+            StringUtils.capitalize(group['namegroup']),
             style: TextStyle(fontSize: 18, color: textDark),
           ),
           RichText(

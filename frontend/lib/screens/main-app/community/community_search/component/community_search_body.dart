@@ -29,7 +29,6 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
   @override
   void initState() {
     super.initState();
-
     searchController = TextEditingController();
     searchController.addListener(() {
       final isSearchEmpty = searchController.text.isNotEmpty;
@@ -79,49 +78,60 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
                 borderSide: const BorderSide(color: textLight),
               ),
             ),
-            onChanged: searhGroup,
+            onChanged: (String search) {
+              search = searchController.text;
+              query = search;
+            },
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.05, vertical: size.height * 0.02),
-          child: Row(children: [
-            Text(
-              "CommuRecommand".tr,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-            )
-          ]),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: size.width * 0.02),
-          child: SizedBox(
-            height: size.height * 0.1,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.groups.length,
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  width: size.width * 0.05,
-                );
-              },
-              itemBuilder: (context, index) {
-                var group = widget.groups[index];
-                bool isMember = false;
-                for (var groupid in widget.user['groups']) {
-                  if (groupid == group['groupid']) {
-                    isMember = true;
-                  }
-                }
-                return isMember == true
-                    ? const SizedBox.shrink()
-                    : communityCard(widget.user, group, context);
-              },
-            ),
-          ),
-        ),
-        SizedBox(
-          height: size.height * 0.03,
-        ),
+        isSearchEmpty
+            ? Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.05,
+                        vertical: size.height * 0.02),
+                    child: Row(children: [
+                      Text(
+                        "CommuRecommand".tr,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w700),
+                      )
+                    ]),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: size.width * 0.02),
+                    child: SizedBox(
+                      height: size.height * 0.1,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.groups.length,
+                        separatorBuilder: (BuildContext context, int index) {
+                          return SizedBox(
+                            width: size.width * 0.05,
+                          );
+                        },
+                        itemBuilder: (context, index) {
+                          var group = widget.groups[index];
+                          bool isMember = false;
+                          for (var groupid in widget.user['groups']) {
+                            if (groupid == group['groupid']) {
+                              isMember = true;
+                            }
+                          }
+                          return isMember == true
+                              ? const SizedBox.shrink()
+                              : communityCard(widget.user, group, context);
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                ],
+              )
+            : const SizedBox.shrink(),
         Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: size.width * 0.03, vertical: size.height * 0.01),
@@ -139,29 +149,60 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
                   ]))
             ])),
         Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.only(
-                top: size.height * 0.01, bottom: size.height * 0.01),
-            scrollDirection: Axis.vertical,
-            itemCount: widget.groups.length,
-            itemBuilder: (context, index) {
-              final group = widget.groups[index];
-              bool isMember = false;
-              for (var groupid in widget.user['groups']) {
-                if (groupid == group['groupid']) {
-                  isMember = true;
-                }
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('Community')
+                .where('namegroup',
+                    isGreaterThanOrEqualTo: searchController.text.toLowerCase())
+                .where('namegroup',
+                    isLessThan: searchController.text.toLowerCase() + 'z')
+                .snapshots(includeMetadataChanges: true),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Text('Something went wrong');
               }
-              return isMember == true
-                  ? Column(
-                      children: [
-                        groupForSearchWidget(group, context, widget.user),
-                        SizedBox(
-                          height: size.height * 0.03,
-                        ),
-                      ],
-                    )
-                  : const SizedBox.shrink();
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: Text(''),
+                );
+              }
+              var data = snapshot.data!.docs;
+              return ListView.builder(
+                padding: EdgeInsets.only(
+                    top: size.height * 0.01, bottom: size.height * 0.01),
+                scrollDirection: Axis.vertical,
+                itemCount: isSearchEmpty ? widget.groups.length : data.length,
+                itemBuilder: (context, index) {
+                  final group = widget.groups[index];
+                  bool isMember = false;
+                  for (var groupid in widget.user['groups']) {
+                    if (groupid == group['groupid']) {
+                      isMember = true;
+                    }
+                  }
+                  return isSearchEmpty
+                      ? isMember == true
+                          ? Column(
+                              children: [
+                                groupForSearchWidget(
+                                    group, context, widget.user),
+                                SizedBox(
+                                  height: size.height * 0.03,
+                                ),
+                              ],
+                            )
+                          : const SizedBox.shrink()
+                      : Column(
+                          children: [
+                            groupForSearchWidget(
+                                data[index], context, widget.user),
+                            SizedBox(
+                              height: size.height * 0.03,
+                            ),
+                          ],
+                        );
+                },
+              );
             },
           ),
         ),
@@ -204,16 +245,5 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
         // ),
       ],
     );
-  }
-
-  void searhGroup(String query) {
-    // final suggestion = grouplists.where((group) {
-    //   final groupName = group.groupName.name.toLowerCase();
-    //   final searchInput = query.toLowerCase();
-
-    //   return groupName.contains(searchInput);
-    // }).toList();
-
-    // setState(() => grouplists = suggestion);
   }
 }

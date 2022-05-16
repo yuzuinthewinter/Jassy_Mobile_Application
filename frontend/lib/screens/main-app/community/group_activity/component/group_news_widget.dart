@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/like_button_widget.dart';
@@ -13,21 +14,19 @@ Widget groupNewsCard(postid, context) {
 
   getDifferance(timestamp) {
     DateTime now = DateTime.now();
+    DateTime date = DateTime(now.year, now.month, now.day);
     DateTime lastActive = DateTime.parse(timestamp.toDate().toString());
-    Duration diff = now.difference(lastActive);
+    Duration diff = date.difference(lastActive);
 
+    String formattedHour = DateFormat('KK:mm:a').format(lastActive);
     String formattedDay = DateFormat('EEE, d/M').format(lastActive);
     String formattedDaywithyear = DateFormat('EEE, d/M/y').format(lastActive);
 
-    var timeMin = diff.inMinutes;
-    var timeHour = diff.inHours;
     var timeDay = diff.inDays;
-    if (timeMin < 60) {
-      return '${timeMin.toString()} ${'GroupPostMins'.tr}';
-    } else if (timeHour < 24) {
-      return '${timeHour.toString()} ${'GroupPostHours'.tr}';
+    if (timeDay < 1) {
+      return '${'GroupPostToday'.tr}, $formattedHour';
     } else if (timeDay < 2) {
-      return 'GroupPostYesterday'.tr;
+      return '${'GroupPostYesterday'.tr}, $formattedHour';
     } else if (timeDay < 365) {
       return formattedDay;
     } else {
@@ -100,7 +99,13 @@ Widget groupNewsCard(postid, context) {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              height: size.height * 0.025,
+                              height: size.height * 0.007,
+                            ),
+                            Text(
+                              '${StringUtils.capitalize(user['name']['firstname'])} ${StringUtils.capitalize(user['name']['lastname'])}',
+                              style: TextStyle(fontSize: 18, color: textDark),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             // post by
                             RichText(
@@ -110,12 +115,6 @@ Widget groupNewsCard(postid, context) {
                                       fontSize: 14,
                                       fontFamily: 'kanit'),
                                   children: [
-                                    TextSpan(
-                                        text:
-                                            "${'GroupPostBy'.tr} "), //เขียนโดย
-                                    TextSpan(text: user['name']['firstname']),
-                                    TextSpan(
-                                        text: " ${'GroupPostAt'.tr} "), //เมื่อ
                                     TextSpan(text: getDifferance(post['date'])),
                                   ]),
                             ),
@@ -144,7 +143,7 @@ Widget groupNewsCard(postid, context) {
                           Text(
                             post['text'],
                             maxLines: null,
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 16),
                           ),
                           post['picture'].isNotEmpty
                               ? ClipRRect(
