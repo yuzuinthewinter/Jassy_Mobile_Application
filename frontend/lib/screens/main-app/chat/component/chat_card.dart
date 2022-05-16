@@ -189,7 +189,8 @@ class _ChatCardBody extends State<ChatCard> {
               return StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('Users')
-                    .where('name.firstname', isEqualTo: widget.query)
+                    .where('name.firstname',
+                        isGreaterThanOrEqualTo: widget.query)
                     .snapshots(includeMetadataChanges: true),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
