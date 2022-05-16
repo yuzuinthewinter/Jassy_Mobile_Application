@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -105,9 +106,9 @@ class _ListUserBody extends State<ListUser> {
                               SizedBox(
                                 width: 70.0,
                                 child: Text(
-                                  user[index]['name']['firstname'] +
+                                  StringUtils.capitalize(user[index]['name']['firstname']) +
                                       ' ' +
-                                      user[index]['name']['lastname'],
+                                      StringUtils.capitalize(user[index]['name']['lastname']),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                   textAlign: TextAlign.center,

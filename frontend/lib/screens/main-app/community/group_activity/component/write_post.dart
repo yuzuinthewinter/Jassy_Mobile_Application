@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:basic_utils/basic_utils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -137,8 +138,8 @@ class _WritePostState extends State<WritePost> {
                     ),
                   ),
                   Text(
-                    '${widget.user['name']['firstname']} ${widget.user['name']['lastname']}',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    '${StringUtils.capitalize(widget.user['name']['firstname'])} ${StringUtils.capitalize(widget.user['name']['lastname'])}',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
                 ],
               ),

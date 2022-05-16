@@ -1,12 +1,15 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/main-app/profile/app_setting/app_setting.dart';
+import 'package:flutter_application_1/screens/main-app/profile/mark_as_like/mark_message_as_like.dart';
 import 'package:flutter_application_1/screens/main-app/profile/profile_setting/profile_setting.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_picture_widget.dart';
+import 'package:flutter_application_1/screens/main-app/profile/saved_post/saved_post.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -59,9 +62,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
               height: size.height * 0.01,
             ),
             Text(
-              user['name']['firstname'].toString() +
-                  ' ' +
-                  user['name']['lastname'].toString(),
+              StringUtils.capitalize(user['name']['firstname']) + ' ' + StringUtils.capitalize(user['name']['lastname']),
               style: const TextStyle(
                   fontSize: 20,
                   fontFamily: 'kanit',
@@ -70,14 +71,11 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
             SizedBox(
               height: size.height * 0.03,
             ),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
               padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
               width: size.width,
-              height: size.height * 0.21,
+              height: size.height * 0.20,
               decoration: BoxDecoration(
                   color: textLight, borderRadius: BorderRadius.circular(20)),
               child: Column(
@@ -95,21 +93,27 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                   ),
                   ProfileMenu(
                     size: size,
-                    icon: SvgPicture.asset("assets/icons/help_center_icon.svg"),
-                    text: "ProfileHelp".tr,
-                    onTab: () {},
-                  ),
-                  ProfileMenu(
-                    size: size,
-                    icon: SvgPicture.asset("assets/icons/app_setting_icon.svg"),
-                    text: 'ProfileAppSetting'.tr,
+                    icon: SvgPicture.asset("assets/icons/mark_as_like.svg"),
+                    text: 'ProfileMarkAsLike'.tr,
                     onTab: () {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
-                        return AppSetting(user);
+                        return MarkMessageAsLike();
                       }));
                     },
                   ),
+                  ProfileMenu(
+                    size: size,
+                    icon: SvgPicture.asset("assets/icons/saved_lists.svg"),
+                    // Todo: add translation
+                    text: "รายการที่บันทึกไว้",
+                    onTab: () {
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) {
+                        return SavedPost();
+                      }));
+                    },
+                  ),                  
                 ],
               ),
             ),
@@ -120,10 +124,27 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
               margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
               padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
               width: size.width,
-              height: size.height * 0.15,
+              height: size.height * 0.26,
               decoration: BoxDecoration(
                   color: textLight, borderRadius: BorderRadius.circular(20)),
               child: Column(children: [
+                ProfileMenu(
+                    size: size,
+                    icon: SvgPicture.asset("assets/icons/app_setting_icon.svg"),
+                    text: 'ProfileAppSetting'.tr,
+                    onTab: () {
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) {
+                        return AppSetting(user);
+                      }));
+                    },
+                  ),
+                ProfileMenu(
+                    size: size,
+                    icon: SvgPicture.asset("assets/icons/help_center_icon.svg"),
+                    text: "ProfileHelp".tr,
+                    onTab: () {},
+                ),     
                 ProfileMenu(
                   size: size,
                   icon: SvgPicture.asset("assets/icons/about_jassy_icon.svg"),

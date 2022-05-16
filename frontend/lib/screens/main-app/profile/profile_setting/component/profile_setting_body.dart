@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,7 +58,14 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
 
   //array data
   final languageItems = ['Thai', 'Korean', 'Indonsian'];
-  final languageLevelItems = ["Beginner", "Elementary", "Intermidiate", "Upper Intermidiate", "Advanced", "Proficiency"];
+  final languageLevelItems = [
+    "Beginner",
+    "Elementary",
+    "Intermidiate",
+    "Upper Intermidiate",
+    "Advanced",
+    "Proficiency"
+  ];
 
   //default index
   int countryIndex = 0;
@@ -205,13 +213,15 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextFieldLabel(textLabel: "${'InfoFirstname'.tr}-${'InfoLastname'.tr}"),
+          TextFieldLabel(
+              textLabel: "${'InfoFirstname'.tr}-${'InfoLastname'.tr}"),
           TextFormField(
             readOnly: true,
             decoration: InputDecoration(
-              hintText: widget.user['name']["firstname"] +
-                  ' ' +
-                  widget.user['name']["lastname"],
+              hintText:
+                  StringUtils.capitalize(widget.user['name']["firstname"]) +
+                      ' ' +
+                      StringUtils.capitalize(widget.user['name']["lastname"]),
               fillColor: grey,
               filled: true,
               contentPadding:

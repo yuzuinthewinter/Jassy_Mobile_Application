@@ -18,13 +18,13 @@ class ProfilePictureWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        CurvedWidget(child: JassyGradientColor(gradientHeight: size.height * 0.31,)),
+        CurvedWidget(child: JassyGradientColor(gradientHeight: size.height * 0.27,)),
         Stack(
           children: [
             Align(
               alignment: Alignment.topCenter,
               child: Container(
-                margin: EdgeInsets.only(top: size.height * 0.17),
+                margin: EdgeInsets.only(top: size.height * 0.15),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(width: 3, color: primaryLighter),

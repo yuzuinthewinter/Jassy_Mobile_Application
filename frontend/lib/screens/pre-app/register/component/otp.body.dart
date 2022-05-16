@@ -95,7 +95,7 @@ class _BodyState extends State<Body> {
           },
           'desc': '',
           'userStatus': 'user',
-          'reportCount': 0,
+          'report': const [],
           'faceRegPic': const [],
           'profilePic': const [],
           'chats': const [],
