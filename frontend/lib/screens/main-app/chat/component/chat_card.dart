@@ -18,7 +18,7 @@ class ChatCard extends StatefulWidget {
   const ChatCard({
     Key? key,
     required this.chatid,
-    required this.currentUser,
+    required this.currentUser, 
   }) : super(key: key);
 
   @override
@@ -79,6 +79,7 @@ class _ChatCardBody extends State<ChatCard> {
                           Navigator.push(context,
                               CupertinoPageRoute(builder: (context) {
                             // NOTE: click each card to go to chat room
+                            print("chat_card page: $widget$currentUser");
                             return ChatRoom(
                               chatid: chat['chatid'],
                               user: user,
@@ -135,7 +136,7 @@ class _ChatCardBody extends State<ChatCard> {
                                         horizontal: size.width * 0.05),
                                     child: Text(
                                       chat['lastMessageSent'].toString(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 16,
                                         color: greyDark,
                                       ),
