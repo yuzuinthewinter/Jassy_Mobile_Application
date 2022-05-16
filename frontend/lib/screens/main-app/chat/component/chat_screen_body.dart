@@ -16,45 +16,13 @@ class ChatScreenBody extends StatefulWidget {
 }
 
 class _ChatScreenBodyState extends State<ChatScreenBody> {
-  var currentUser = FirebaseAuth.instance.currentUser;
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         const CurvedWidget(child: JassyGradientColor()),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-          child: TextFormField(
-            // controller: passwordController,
-            // obscureText: isHiddenPassword,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              prefixIcon: SvgPicture.asset(
-                'assets/icons/search_input.svg',
-                height: 16,
-              ),
-              hintText: 'SearchChat'.tr,
-              filled: true,
-              fillColor: textLight,
-              // contentPadding:
-              //     const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40),
-                  borderSide: const BorderSide(color: textLight, width: 0.0)),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(40.0),
-                borderSide: const BorderSide(color: textLight),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(40.0),
-                borderSide: const BorderSide(color: textLight),
-              ),
-            ),
-          ),
-        ),
-        const Expanded(child: ListChat())
+        Expanded(child: ListChat())
       ],
     );
   }

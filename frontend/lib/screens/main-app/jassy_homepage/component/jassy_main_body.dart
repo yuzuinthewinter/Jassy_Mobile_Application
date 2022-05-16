@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -80,12 +81,11 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                 return carouselView(user, index);
               },
               options: CarouselOptions(
-                // height: size.height * 0.70,
-                aspectRatio: 0.75,
-                enlargeCenterPage: true,
-                enlargeStrategy: CenterPageEnlargeStrategy.height,
-                enableInfiniteScroll: false
-              ),
+                  // height: size.height * 0.70,
+                  aspectRatio: 0.75,
+                  enlargeCenterPage: true,
+                  enlargeStrategy: CenterPageEnlargeStrategy.height,
+                  enableInfiniteScroll: false),
             );
           },
         ),
@@ -110,7 +110,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
           );
           return FadeTransition(
             opacity: curvedAnimation,
-            child: DetailPage(user: user, animation: animation),
+            child: DetailPage(user: user, isMainPage: true, animation: animation),
           );
         }));
       }),
@@ -181,7 +181,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                       fontFamily: "kanit",
                                       fontWeight: FontWeight.w900),
                                   children: [
-                                    TextSpan(text: user['name']['firstname']),
+                                    TextSpan(text: StringUtils.capitalize(user['name']['firstname'])),
                                     const TextSpan(text: ", "),
                                     TextSpan(
                                         text: calculateAge(DateTime.parse(

@@ -1,6 +1,8 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/models/item.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
@@ -11,11 +13,13 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 class ConversationText extends StatefulWidget {
   final chatid;
   final user;
+  final inRoom;
 
   const ConversationText({
     Key? key,
     required this.user,
     required this.chatid,
+    required this.inRoom,
   }) : super(key: key);
 
   @override
@@ -27,6 +31,7 @@ class _BodyState extends State<ConversationText> {
       FirebaseFirestore.instance.collection('ChatRooms');
   CollectionReference messagesdb =
       FirebaseFirestore.instance.collection('Messages');
+  CollectionReference memos = FirebaseFirestore.instance.collection('NoteMemo');
   var currentUser = FirebaseAuth.instance.currentUser;
 
   getTime(timestamp) {
@@ -35,8 +40,22 @@ class _BodyState extends State<ConversationText> {
     return formattedTime.toString();
   }
 
+  checkReadMessage(messageid) async {
+    await messagesdb.doc(messageid).update({
+      'status': 'read',
+    });
+  }
+
+  AddFavorite(messageid) async {
+    //todo: do after show list language
+    // await memos.doc(messageid).update({
+    // 'groups': FieldValue.arrayUnion([]),
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return StreamBuilder<QuerySnapshot>(
       stream: chats
           .where('chatid', isEqualTo: widget.chatid)
@@ -53,7 +72,55 @@ class _BodyState extends State<ConversationText> {
           return Center(child: Text(data.toString()));
         }
         if (data[0]['messages'].isEmpty) {
-          return const Center(child: Text('Let\'s start conversation'));
+          return Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.12,
+                ),
+                CircleAvatar(
+                  radius: 42,
+                  backgroundImage: !widget.user['profilePic'].isEmpty
+                      ? NetworkImage(widget.user['profilePic'][0])
+                      : const AssetImage("assets/images/header_img1.png")
+                          as ImageProvider,
+                ),
+                Text(
+                  '${StringUtils.capitalize(widget.user['name']['firstname'])} ${StringUtils.capitalize(widget.user['name']['lastname'])}',
+                  style: TextStyle(fontSize: 20),
+                ),
+                const Text(
+                  'want to share their language with you',
+                  style: TextStyle(fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+                RichText(
+                  text: TextSpan(
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: "kanit",
+                      fontWeight: FontWeight.w700,
+                      color: greyDarker,
+                    ),
+                    children: [
+                      TextSpan(
+                          text:
+                              '${widget.user['language']['defaultLanguage']} '),
+                      const WidgetSpan(
+                          child: Icon(
+                        Icons.sync_alt,
+                        size: 20,
+                        color: greyDark,
+                      )),
+                      TextSpan(
+                          text:
+                              ' ${widget.user['language']['interestedLanguage']}'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
         }
         return ListView.builder(
           reverse: true,
@@ -62,15 +129,15 @@ class _BodyState extends State<ConversationText> {
           itemBuilder: (context, index) {
             int reversedIndex =
                 snapshot.data!.docs[0]['messages'].length - 1 - index;
-            return getMessage(
-                snapshot.data!.docs[0]['messages'][reversedIndex]);
+            return getMessage(snapshot.data!.docs[0]['messages'][reversedIndex],
+                widget.user['isActive']);
           },
         );
       },
     );
   }
 
-  Widget getMessage(message) {
+  Widget getMessage(message, userActive) {
     Size size = MediaQuery.of(context).size;
     return StreamBuilder<QuerySnapshot>(
       stream: messagesdb
@@ -87,6 +154,11 @@ class _BodyState extends State<ConversationText> {
         var currentMessage = snap[0];
         var sender = currentMessage['sentBy'];
         bool isCurrentUser = sender == currentUser!.uid;
+        if (currentMessage['status'] == 'unread' &&
+            userActive &&
+            widget.inRoom == true) {
+          checkReadMessage(currentMessage['messageID']);
+        }
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -116,11 +188,13 @@ class _BodyState extends State<ConversationText> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Text(
-                              "ChatRead".tr,
-                              style: TextStyle(color: grey, fontSize: 12),
-                              textAlign: TextAlign.right,
-                            ),
+                            currentMessage['status'] == 'read'
+                                ? Text(
+                                    "ChatRead".tr,
+                                    style: TextStyle(color: grey, fontSize: 12),
+                                    textAlign: TextAlign.right,
+                                  )
+                                : const Text(''),
                             Text(
                               getTime(currentMessage['time']).toString(),
                               style: const TextStyle(color: grey, fontSize: 12),
@@ -135,7 +209,9 @@ class _BodyState extends State<ConversationText> {
                     ],
                   ),
                   CustomPopupMenu(
-                    menuBuilder: _buildLongPressMenu, 
+                    menuBuilder: () {
+                      return _buildLongPressMenu(currentMessage);
+                    },
                     pressType: PressType.longPress,
                     arrowColor: primaryDarker,
                     child: Container(
@@ -146,8 +222,7 @@ class _BodyState extends State<ConversationText> {
                         decoration: BoxDecoration(
                             color: isCurrentUser ? primaryLighter : textLight,
                             borderRadius: BorderRadius.circular(20)),
-                        child: Text(currentMessage['message'])
-                    ),
+                        child: Text(currentMessage['message'])),
                   ),
                   if (!isCurrentUser) ...[
                     Text(
@@ -164,7 +239,7 @@ class _BodyState extends State<ConversationText> {
     );
   }
 
- Widget _buildLongPressMenu() {
+  Widget _buildLongPressMenu(message) {
     List<ItemModel> menuItems = [
       ItemModel(id: 1, text: "ตอบกลับ", icon: "assets/icons/reply_icon.svg"),
       ItemModel(id: 2, text: "คัดลอก", icon: "assets/icons/copy_icon.svg"),
@@ -186,27 +261,33 @@ class _BodyState extends State<ConversationText> {
       ),
       child: GridView.count(
         padding: const EdgeInsets.symmetric(vertical: 0),
-          crossAxisCount: 4,     
-          children: menuItems
-            .map((item) => 
-            Container(
-              decoration: const BoxDecoration(
-                border: Border(right: BorderSide(color: textLight, width: 0.1))
-              ),
-              child: InkWell(
-                onTap: () {
-                  // Todo: add onTab here
-                  if(item.id == item1) {
-                    return print("reply");
-                  } else if (item.id == item2) {
-                    return print("copy");
-                  } else if (item.id == item3) {
-                    return print("translate");
-                  } else {
-                    print("favorite");
-                  }
-                },
-                child: Column(
+        crossAxisCount: 4,
+        children: menuItems
+            .map((item) => Container(
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          right: BorderSide(color: textLight, width: 0.1))),
+                  child: InkWell(
+                    onTap: () {
+                      // Todo: add onTab here
+                      if (item.id == item1) {
+                        //reply
+                        Clipboard.setData(
+                            ClipboardData(text: message['message']));
+                      } else if (item.id == item2) {
+                        //copy
+                        Clipboard.setData(
+                            ClipboardData(text: message['message']));
+                      } else if (item.id == item3) {
+                        //translate
+                        return print("translate");
+                      } else {
+                        //favorite
+                        //todo: after press button : show list language, after that do the function to add memo
+                        AddFavorite(message);
+                      }
+                    },
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -220,10 +301,10 @@ class _BodyState extends State<ConversationText> {
                         ),
                       ],
                     ),
-              ),
-            ))
+                  ),
+                ))
             .toList(),
-        ),
+      ),
     );
   }
 }

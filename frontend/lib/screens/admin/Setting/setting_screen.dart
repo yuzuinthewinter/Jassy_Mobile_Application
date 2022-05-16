@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -59,9 +60,9 @@ class SettingScreen extends StatelessWidget {
               height: size.height * 0.01,
             ),
             Text(
-              user['name']['firstname'].toString() +
+              StringUtils.capitalize(user['name']['firstname']) +
                   ' ' +
-                  user['name']['lastname'].toString(),
+                  StringUtils.capitalize(user['name']['lastname']),
               style: const TextStyle(
                   fontSize: 20,
                   fontFamily: 'kanit',
@@ -119,7 +120,8 @@ class SettingScreen extends StatelessWidget {
                   ),
                   onTap: () async {
                     signOut();
-                    Navigator.pushNamed(context, Routes.LandingPage);
+                    Navigator.popUntil(context,
+                        ModalRoute.withName(Navigator.defaultRouteName));
                   },
                 ))
               ]),

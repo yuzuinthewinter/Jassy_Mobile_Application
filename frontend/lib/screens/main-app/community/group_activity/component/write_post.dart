@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:basic_utils/basic_utils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -92,9 +93,7 @@ class _WritePostState extends State<WritePost> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: WritePostAppBar(
-        onPress: () {}
-      ),
+      appBar: WritePostAppBar(onPress: () {}),
       body: Container(
         color: textLight,
         child: KeyboardActions(
@@ -109,7 +108,8 @@ class _WritePostState extends State<WritePost> {
               Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: size.width * 0.05),
                     child: CircleAvatar(
                       backgroundImage:
                           const AssetImage("assets/images/user3.jpg"),
@@ -117,7 +117,7 @@ class _WritePostState extends State<WritePost> {
                     ),
                   ),
                   Text(
-                    '${widget.user['name']['firstname']} ${widget.user['name']['lastname']}',
+                    '${StringUtils.capitalize(widget.user['name']['firstname'])} ${StringUtils.capitalize(widget.user['name']['lastname'])}',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
                 ],

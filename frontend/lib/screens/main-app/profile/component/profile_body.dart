@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -59,9 +60,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
               height: size.height * 0.01,
             ),
             Text(
-              user['name']['firstname'].toString() +
-                  ' ' +
-                  user['name']['lastname'].toString(),
+              StringUtils.capitalize(user['name']['firstname']) + ' ' + StringUtils.capitalize(user['name']['lastname']),
               style: const TextStyle(
                   fontSize: 20,
                   fontFamily: 'kanit',

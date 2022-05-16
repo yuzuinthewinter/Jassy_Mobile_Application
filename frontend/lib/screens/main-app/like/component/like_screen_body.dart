@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_application_1/screens/main-app/chat/message_screen.dart'
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/detail_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class LikeScreenBody extends StatefulWidget {
   const LikeScreenBody({Key? key}) : super(key: key);
@@ -31,42 +33,30 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
 
   createChatRoom(String userid) async {
     var chatMember = [userid, currentUser!.uid];
+    await users.doc(userid).update({
+      'likesby': FieldValue.arrayRemove([currentUser!.uid]),
+      'liked': FieldValue.arrayRemove([currentUser!.uid]),
+    });
+    await users.doc(currentUser!.uid).update({
+      'likesby': FieldValue.arrayRemove([userid]),
+      'liked': FieldValue.arrayRemove([userid]),
+    });
 
-    var queryChat = chatRooms.where('member', arrayContains: userid);
-    QuerySnapshot querySnapshot = await queryChat.get();
-    // ignore: prefer_typing_uninitialized_variables
-    var getChat;
-    var getChatid;
-    for (var doc in querySnapshot.docs) {
-      var getdata = doc['chatid'];
-      var queryfromUser = users.where('chats', arrayContains: getdata);
-      QuerySnapshot querySnap = await queryfromUser.get();
-      getChat = querySnap.docs;
-      getChatid = getdata;
-    }
-    final allData;
-    if (getChat == null) {
-      allData = [];
-    } else {
-      allData = getChat.map((doc) => doc.data()).toList();
-    }
-
-    if (allData.isEmpty) {
-      DocumentReference docRef = await chatRooms.add({
-        'member': chatMember,
-        'lastMessageSent': '',
-        'lastTimestamp': DateTime.now(),
-        'unseenCount': 0,
-        'messages': [],
+    DocumentReference docRef = await chatRooms.add({
+      'member': chatMember,
+      'lastMessageSent': '',
+      'lastTimestamp': DateTime.now(),
+      'unseenCount': 0,
+      'sentBy': '',
+      'messages': [],
+    });
+    await chatRooms.doc(docRef.id).update({
+      'chatid': docRef.id,
+    });
+    for (var member in chatMember) {
+      await users.doc(member).update({
+        'chats': FieldValue.arrayUnion([docRef.id]),
       });
-      await chatRooms.doc(docRef.id).update({
-        'chatid': docRef.id,
-      });
-      for (var member in chatMember) {
-        await users.doc(member).update({
-          'chats': FieldValue.arrayUnion([docRef.id]),
-        });
-      }
     }
     var user = users.where('uid', isEqualTo: userid);
     var snapshot = await user.get();
@@ -79,7 +69,7 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
     Navigator.push(context, CupertinoPageRoute(builder: (context) {
       // NOTE: click each card to go to chat room
       return ChatRoom(
-        chatid: getChatid,
+        chatid: docRef.id,
         user: data,
         currentUser: userData,
       );
@@ -108,8 +98,38 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                     );
                   }
                   if (snapshot.data!.docs[0]['likesby'].length == 0) {
-                    return const Center(
-                        child: Text('Someone who likes you will show here'));
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.28,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 270,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              alignment: Alignment.center,
+                              image: AssetImage(
+                                  "assets/images/no_likes_image.png"),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: size.height * 0.05,
+                        ),
+                        Text(
+                          'NoLikesTitle'.tr,
+                          style: const TextStyle(fontSize: 18, color: textDark),
+                        ),
+                        SizedBox(
+                          height: size.height * 0.012,
+                        ),
+                        Text(
+                          'NoLikesDesc'.tr,
+                          style: const TextStyle(fontSize: 14, color: greyDark),
+                        ),
+                      ],
+                    );
                   }
                   var user = snapshot.data!.docs;
                   return GridView.builder(
@@ -157,7 +177,8 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                 );
                 return FadeTransition(
                   opacity: curvedAnimation,
-                  child: DetailPage(user: user, animation: animation),
+                  child: DetailPage(
+                      user: user, isMainPage: false, animation: animation),
                 );
               }));
               print("each card");
@@ -234,7 +255,8 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                                             fontWeight: FontWeight.w900),
                                         children: [
                                           TextSpan(
-                                              text: user['name']['firstname']),
+                                              text: StringUtils.capitalize(
+                                                  user['name']['firstname'])),
                                           const TextSpan(text: ", "),
                                           TextSpan(
                                               text: calculateAge(DateTime.parse(
@@ -272,7 +294,7 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                                   },
                                   child: Expanded(
                                       child: SvgPicture.asset(
-                                    "assets/icons/heart_button.svg",
+                                    "assets/icons/ms_button.svg",
                                     width: size.width * 0.12,
                                   ))),
                             )

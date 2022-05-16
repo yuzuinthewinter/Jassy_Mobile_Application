@@ -1,7 +1,11 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/calculate/cal_age.dart';
+import 'package:flutter_application_1/screens/main-app/chat/message_screen.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/desc_tabbar.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,9 +13,14 @@ import 'package:intervalprogressbar/intervalprogressbar.dart';
 
 class DetailPage extends StatefulWidget {
   final user;
+  final bool isMainPage;
   final Animation animation;
 
-  const DetailPage({Key? key, required this.user, required this.animation})
+  const DetailPage(
+      {Key? key,
+      required this.user,
+      required this.isMainPage,
+      required this.animation})
       : super(key: key);
 
   @override
@@ -24,6 +33,17 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
 
   var currentUser = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
+  CollectionReference chatRooms =
+      FirebaseFirestore.instance.collection('ChatRooms');
+
+  final List _LanguageLevelChoicesLists = [
+    "Beginner",
+    "Elementary",
+    "Intermidiate",
+    "Upper Intermidiate",
+    "Advance", //advanced
+    "Proficiency"
+  ];
 
   void onTabChange() {
     setState(() {
@@ -39,6 +59,51 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
     users.doc(userid).update({
       'likesby': FieldValue.arrayUnion([currentUser!.uid]), //like โดย
     });
+  }
+
+  createChatRoom(String userid) async {
+    var chatMember = [userid, currentUser!.uid];
+    await users.doc(userid).update({
+      'likesby': FieldValue.arrayRemove([currentUser!.uid]),
+      'liked': FieldValue.arrayRemove([currentUser!.uid]),
+    });
+    await users.doc(currentUser!.uid).update({
+      'likesby': FieldValue.arrayRemove([userid]),
+      'liked': FieldValue.arrayRemove([userid]),
+    });
+
+    DocumentReference docRef = await chatRooms.add({
+      'member': chatMember,
+      'lastMessageSent': '',
+      'lastTimestamp': DateTime.now(),
+      'unseenCount': 0,
+      'sentBy': '',
+      'messages': [],
+    });
+    await chatRooms.doc(docRef.id).update({
+      'chatid': docRef.id,
+    });
+    for (var member in chatMember) {
+      await users.doc(member).update({
+        'chats': FieldValue.arrayUnion([docRef.id]),
+      });
+    }
+    var user = users.where('uid', isEqualTo: userid);
+    var snapshot = await user.get();
+    final data = snapshot.docs[0];
+
+    var thisUser = users.where('uid', isEqualTo: currentUser!.uid);
+    var snapshotUser = await thisUser.get();
+    final userData = snapshotUser.docs[0];
+
+    Navigator.push(context, CupertinoPageRoute(builder: (context) {
+      // NOTE: click each card to go to chat room
+      return ChatRoom(
+        chatid: docRef.id,
+        user: data,
+        currentUser: userData,
+      );
+    }));
   }
 
   @override
@@ -117,10 +182,11 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                         fontWeight: FontWeight.w900),
                                     children: [
                                       TextSpan(
-                                          text: widget.user['name']
-                                                  ['firstname'] +
+                                          text: StringUtils.capitalize(widget
+                                                  .user['name']['firstname']) +
                                               ' ' +
-                                              widget.user['name']['lastname']),
+                                              StringUtils.capitalize(widget
+                                                  .user['name']['lastname'])),
                                       const TextSpan(text: ", "),
                                       TextSpan(
                                           text: calculateAge(DateTime.parse(
@@ -152,11 +218,14 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                           padding: const EdgeInsets.only(right: 20, top: 5),
                           child: InkWell(
                               onTap: () {
-                                likeUser(widget.user['uid']);
+                                widget.isMainPage
+                                    ? likeUser(widget.user['uid'])
+                                    : createChatRoom(widget.user['uid']);
                               },
                               child: Expanded(
-                                  child: SvgPicture.asset(
-                                      "assets/icons/heart_button.svg"))),
+                                  child: SvgPicture.asset(widget.isMainPage
+                                      ? "assets/icons/heart_button.svg"
+                                      : "assets/icons/ms_button.svg"))),
                         )
                       ]),
                   DescTabBar(tabController: tabController),
@@ -177,7 +246,8 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                 child: Text(
                                     widget.user['language']['defaultLanguage']),
                               ),
-                              motherLanguageProgressBar(),
+                              motherLanguageProgressBar(widget.user['language']
+                                  ['levelDefaultLanguage']),
                             ],
                           ),
                           Row(
@@ -189,7 +259,8 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                 child: Text(widget.user['language']
                                     ['interestedLanguage']),
                               ),
-                              interestLanguageProgressBar(),
+                              interestLanguageProgressBar(widget
+                                  .user['language']['levelInterestedLanguage']),
                             ],
                           ),
                         ],
@@ -207,12 +278,22 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget motherLanguageProgressBar() {
+  Widget motherLanguageProgressBar(leveldefault) {
     var size = MediaQuery.of(context).size;
+    int level = 0;
+    _LanguageLevelChoicesLists.forEachIndexed((index, str) => {
+          if (leveldefault.toLowerCase() ==
+              _LanguageLevelChoicesLists[index].toLowerCase())
+            {
+              print(_LanguageLevelChoicesLists[index]),
+              level = index + 1,
+            }
+        });
+
     return IntervalProgressBar(
         direction: IntervalProgressDirection.horizontal,
         max: 6,
-        progress: 6,
+        progress: level,
         intervalSize: 2,
         size: Size(size.width * 0.5, size.height * 0.015),
         highlightColor: primaryColor,
@@ -222,12 +303,20 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
         radius: 20);
   }
 
-  Widget interestLanguageProgressBar() {
+  Widget interestLanguageProgressBar(levelInt) {
     var size = MediaQuery.of(context).size;
+    int level = 0;
+    _LanguageLevelChoicesLists.forEachIndexed((index, str) => {
+          if (levelInt.toLowerCase() ==
+              _LanguageLevelChoicesLists[index].toLowerCase())
+            {
+              level = index + 1,
+            }
+        });
     return IntervalProgressBar(
         direction: IntervalProgressDirection.horizontal,
         max: 6,
-        progress: 3,
+        progress: level,
         intervalSize: 2,
         size: Size(size.width * 0.5, size.height * 0.015),
         highlightColor: secoundary,
