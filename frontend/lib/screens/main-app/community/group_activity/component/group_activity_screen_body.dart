@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/main-app/community/group_activity/component/group_news_widget.dart';
 import 'package:flutter_application_1/screens/main-app/community/my_group/my_group.dart';
@@ -40,7 +41,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
     await users.doc(currentUser!.uid).update({
       'groups': FieldValue.arrayUnion([widget.groupActivity['groupid']]),
     });
-    Navigator.of(context).pop();
+    Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 2);
   }
 
   bool isMember = false;
@@ -116,7 +117,8 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
                         return PostDetail(
-                          postid: widget.groupActivity['postsID'][reversedindex],
+                          postid: widget.groupActivity['postsID']
+                              [reversedindex],
                         );
                       }));
                     },

@@ -12,6 +12,7 @@ import 'package:flutter_application_1/screens/main-app/community/admin/manage_co
 import 'package:flutter_application_1/screens/main-app/community/community_search/community_search.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/community_card.widget.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/news_card_widget.dart';
+import 'package:flutter_application_1/screens/main-app/community/component/no_news_widget.dart';
 import 'package:flutter_application_1/screens/main-app/community/my_group/my_group.dart';
 import 'package:flutter_application_1/screens/main-app/community/post_detail.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -45,10 +46,13 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
               horizontal: size.width * 0.03, vertical: size.height * 0.01),
           child: Row(children: [
             widget.user['userStatus'] == 'user'
-                ? Text(
-                    "CommuMyGroup".tr,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                  )
+                ? widget.user['groups'].length != 0
+                    ? Text("CommuMyGroup".tr,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w700))
+                    : Text("CommuRecommand".tr,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w700))
                 : const Text(
                     "กลุ่มทั้งหมด",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
@@ -88,9 +92,11 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                     isMember = true;
                   }
                 }
-                return isMember == true
-                    ? communityCard(widget.user, group, context)
-                    : const SizedBox.shrink();
+                return widget.user['groups'].length != 0
+                    ? isMember == true
+                        ? communityCard(widget.user, group, context)
+                        : const SizedBox.shrink()
+                    : communityCard(widget.user, group, context);
               },
             ),
           ),
@@ -134,37 +140,39 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                         ]),
                       ),
                       // Todo: isEmpty show NoNewsWidget
-                      // NoNewsWidget(
-                      //   headText: "ยังไม่มีข่าวสารสำหรับคุณ",
-                      //   descText: "เริ่มเข้ากลุ่มเพื่อรับข่าวสารและแลกเปลี่ยนกันเถอะ !",
-                      //   size: size
-                      // )
-                      SizedBox(
-                        width: size.width,
-                        height: size.height * 0.46,
-                        child: ListView.separated(
-                            padding: EdgeInsets.only(top: size.height * 0.02),
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: newsLists.length,
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return SizedBox(
-                                height: size.height * 0.03,
-                              );
-                            },
-                            itemBuilder: (context, index) {
-                              return InkWell(onTap: () {
-                                // Navigator.push(context,
-                                //     CupertinoPageRoute(builder: (context) {
-                                //   return PostDetail(
-                                //     post: post,
-                                //   );
-                                // }));
-                              });
-                              // child: newsCard(newsLists[index], context));
-                            }),
-                      )
+                      widget.user['groups'].length == 0
+                          ? NoNewsWidget(
+                              headText: "ยังไม่มีข่าวสารสำหรับคุณ",
+                              descText:
+                                  "เริ่มเข้ากลุ่มเพื่อรับข่าวสารและแลกเปลี่ยนกันเถอะ !",
+                              size: size)
+                          : SizedBox(
+                              width: size.width,
+                              height: size.height * 0.46,
+                              child: ListView.separated(
+                                  padding:
+                                      EdgeInsets.only(top: size.height * 0.02),
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount: newsLists.length,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return SizedBox(
+                                      height: size.height * 0.03,
+                                    );
+                                  },
+                                  itemBuilder: (context, index) {
+                                    return InkWell(onTap: () {
+                                      // Navigator.push(context,
+                                      //     CupertinoPageRoute(builder: (context) {
+                                      //   return PostDetail(
+                                      //     post: post,
+                                      //   );
+                                      // }));
+                                    });
+                                    // child: newsCard(newsLists[index], context));
+                                  }),
+                            ),
                     ],
                   )
                 : Column(
