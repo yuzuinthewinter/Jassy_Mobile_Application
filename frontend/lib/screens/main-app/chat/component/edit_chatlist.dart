@@ -40,7 +40,10 @@ class _EditChatListState extends State<EditChatList> {
             // Todo: read all
           },
           // Todo อ่าน(1) 
-          child: Text("อ่านทั้งหมด", style: TextStyle(color: secoundary, fontSize: 16),)
+          child: TextButton(
+            onPressed: () {}, 
+            child: Text("เลือกทั้งหมด", style: TextStyle(color: secoundary, fontSize: 16),)
+          )
         )
       ),
       body: Column(

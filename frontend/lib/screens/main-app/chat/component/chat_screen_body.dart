@@ -75,8 +75,8 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
                 hintText: 'SearchChat'.tr,
                 filled: true,
                 fillColor: textLight,
-                // contentPadding:
-                //     const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40),
                     borderSide: const BorderSide(color: textLight, width: 0.0)),
