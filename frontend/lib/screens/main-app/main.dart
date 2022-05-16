@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_screen_body.dart';
 import 'package:flutter_application_1/screens/main-app/community/community.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/jassy_main.dart';
+import 'package:flutter_application_1/screens/main-app/jassy_homepage/pre_jassy_main.dart';
 import 'package:flutter_application_1/screens/main-app/like/like_screen.dart';
 import 'package:flutter_application_1/screens/main-app/profile/profile.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -21,20 +22,15 @@ class JassyHome extends StatefulWidget {
 class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
   //boolean
   bool isLoading = false;
+  bool isFilter = false;
 
   //firebasee
   final currentUser = FirebaseAuth.instance.currentUser;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //set default navigator
-  int _currentIndex = 3;
-  final screens = [
-    const JassyMain(),
-    const LikeScreen(), //likes page
-    const CommunityScreen(),
-    const ChatScreenBody(),
-    const ProfileScreen(),
-  ];
+  int _currentIndex = 0;
+  List screens = [];
 
   @override
   void initState() {
@@ -42,6 +38,13 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
     _currentIndex = widget.indexpage;
     WidgetsBinding.instance.addObserver(this);
     setStatus(true, DateTime.now());
+    screens = [
+      const PreJassyMain(),
+      const LikeScreen(), //likes page
+      const CommunityScreen(),
+      const ChatScreenBody(),
+      const ProfileScreen(),
+    ];
   }
 
   @override

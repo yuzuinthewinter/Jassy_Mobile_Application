@@ -46,7 +46,7 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    userInfo.genre = _choicesLists[0];
+    userInfo.gender = _choicesLists[0];
   }
 
   @override
@@ -227,7 +227,7 @@ class _BodyState extends State<Body> {
                                       if (_defaultChoiceIndex == null) {
                                         _defaultChoiceIndex = 0;
                                       }
-                                      userInfo.genre =
+                                      userInfo.gender =
                                           _choicesLists[_defaultChoiceIndex];
                                     });
                                   },
