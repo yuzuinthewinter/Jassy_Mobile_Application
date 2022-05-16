@@ -31,18 +31,6 @@ Widget newsCard(postid, context) {
     }
   }
 
-  getGroupName(groupid) async {
-    CollectionReference groups =
-        FirebaseFirestore.instance.collection('Community');
-    var group = groups.where('groupid', isEqualTo: groupid);
-    var snapshot = await group.get();
-    if (snapshot.docs.isNotEmpty) {
-      final data = snapshot.docs[0];
-      return data['namegroup'];
-    }
-    return '';
-  }
-
   return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('Posts')
@@ -75,139 +63,164 @@ Widget newsCard(postid, context) {
                 return const SizedBox.shrink();
               }
               var user = snapshot.data!.docs[0];
-              return Container(
-                padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
-                decoration: BoxDecoration(
-                    color: textLight,
-                    border: Border(
-                        bottom: BorderSide(
-                            width: size.width * 0.01, color: primaryLightest))),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
+              return StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Community')
+                      .where('groupid', isEqualTo: post['groupid'])
+                      .snapshots(includeMetadataChanges: true),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox.shrink();
+                    }
+                    if (snapshot.data!.docs.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+                    var group = snapshot.data!.docs[0];
+                    return Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                      child: Row(
+                          EdgeInsets.symmetric(vertical: size.height * 0.02),
+                      decoration: BoxDecoration(
+                          color: textLight,
+                          border: Border(
+                              bottom: BorderSide(
+                                  width: size.width * 0.01,
+                                  color: primaryLightest))),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CircleAvatar(
-                            backgroundImage: !user['profilePic'].isEmpty
-                                ? NetworkImage(user['profilePic'][0])
-                                : const AssetImage("assets/images/user3.png")
-                                    as ImageProvider,
-                            radius: size.width * 0.08,
-                          ),
-                          Expanded(
-                              child: Padding(
+                          Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.03,
-                            ),
-                            child: Column(
+                                horizontal: size.width * 0.05),
+                            child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(
-                                  height: size.height * 0.007,
+                                CircleAvatar(
+                                  backgroundImage: !user['profilePic'].isEmpty
+                                      ? NetworkImage(user['profilePic'][0])
+                                      : const AssetImage(
+                                              "assets/images/user3.png")
+                                          as ImageProvider,
+                                  radius: size.width * 0.08,
                                 ),
-                                // group name
-                                Text(
-                                  getGroupName(post['groupid']).toString(),
-                                  style:
-                                      TextStyle(fontSize: 18, color: textDark),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                // post by
-                                RichText(
-                                  text: TextSpan(
-                                      style: TextStyle(
-                                          color: greyDark,
-                                          fontSize: 14,
-                                          fontFamily: 'kanit'),
-                                      children: [
-                                        // TextSpan(text: "${'GroupPostBy'.tr} "),
-                                        TextSpan(
-                                            text: StringUtils.capitalize(
-                                                user['name']['firstname'])),
-                                        TextSpan(text: " • "),
-                                        TextSpan(
-                                            text: getDifferance(post['date'])),
-                                      ]),
-                                ),
+                                Expanded(
+                                    child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.03,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: size.height * 0.007,
+                                      ),
+                                      // group name
+                                      Text(
+                                        StringUtils.capitalize(
+                                            group['namegroup']),
+                                        style: TextStyle(
+                                            fontSize: 18, color: textDark),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      // post by
+                                      RichText(
+                                        text: TextSpan(
+                                            style: TextStyle(
+                                                color: greyDark,
+                                                fontSize: 14,
+                                                fontFamily: 'kanit'),
+                                            children: [
+                                              // TextSpan(text: "${'GroupPostBy'.tr} "),
+                                              TextSpan(
+                                                  text: StringUtils.capitalize(
+                                                      user['name']
+                                                          ['firstname'])),
+                                              TextSpan(text: " • "),
+                                              TextSpan(
+                                                  text: getDifferance(
+                                                      post['date'])),
+                                            ]),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                                Icon(
+                                  Icons.more_horiz,
+                                  color: primaryColor,
+                                  size: size.width * 0.08,
+                                )
                               ],
                             ),
-                          )),
-                          Icon(
-                            Icons.more_horiz,
-                            color: primaryColor,
-                            size: size.width * 0.08,
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.02,
-                    ),
-                    // post text
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                      child: Container(
-                        constraints:
-                            const BoxConstraints(maxHeight: double.infinity),
-                        child: Column(
-                          children: [
-                            Text(
-                              post['text'],
-                              maxLines: null,
-                              style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.02,
+                          ),
+                          // post text
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.1),
+                            child: Container(
+                              constraints: const BoxConstraints(
+                                  maxHeight: double.infinity),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    post['text'],
+                                    maxLines: null,
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  post['picture'].isNotEmpty
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          child: Container(
+                                            width: size.width * 0.5,
+                                            height: size.height * 0.3,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      post['picture']),
+                                                  fit: BoxFit.cover),
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
+                                ],
+                              ),
                             ),
-                            post['picture'].isNotEmpty
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    child: Container(
-                                      width: size.width * 0.5,
-                                      height: size.height * 0.3,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image:
-                                                NetworkImage(post['picture']),
-                                            fit: BoxFit.cover),
-                                      ),
-                                    ),
-                                  )
-                                : const SizedBox.shrink(),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.03,
-                    ),
-                    // like and comment icon
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                      child: Row(
-                        children: [
-                          LikeButtonWidget(post, user['uid']),
-                          SizedBox(width: size.width * 0.05),
-                          InkWell(
-                              onTap: () {
-                                // FocusScope.of(context).requestFocus(myFocusNode);
-                              },
-                              child: SvgPicture.asset(
-                                "assets/icons/comment_icon.svg",
-                                width: size.width * 0.07,
-                              ))
+                          ),
+                          SizedBox(
+                            height: size.height * 0.03,
+                          ),
+                          // like and comment icon
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.1),
+                            child: Row(
+                              children: [
+                                LikeButtonWidget(post, user['uid']),
+                                SizedBox(width: size.width * 0.05),
+                                InkWell(
+                                    onTap: () {
+                                      // FocusScope.of(context).requestFocus(myFocusNode);
+                                    },
+                                    child: SvgPicture.asset(
+                                      "assets/icons/comment_icon.svg",
+                                      width: size.width * 0.07,
+                                    ))
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-              );
+                    );
+                  });
             });
       });
 }
