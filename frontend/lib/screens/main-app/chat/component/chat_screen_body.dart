@@ -114,7 +114,6 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
                   itemCount: snapshot.data!.docs[0]['chats'].length,
                   itemBuilder: (context, int index) {
                     var data = snapshot.data!.docs[0];
-                    var sendSelected = isSelected;
                     return ChatCard(
                       chatid: data['chats'][index],
                       currentUser: data,
