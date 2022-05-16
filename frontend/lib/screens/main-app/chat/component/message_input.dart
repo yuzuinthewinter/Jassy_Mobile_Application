@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MessageInput extends StatefulWidget {
   final Size size;
@@ -68,65 +72,147 @@ class _BodyState extends State<MessageInput> {
     messageController.clear();
   }
 
+  File? image;
+  Future pickImage (ImageSource source) async {
+    try{
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print('Fail to pick image $e');
+    }
+  }
+
+  PlatformFile? pickedFile;
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles();
+
+    if (result == null) return;
+
+    setState(() {
+      pickedFile = result.files.first;
+    });
+  }
+
+  bool isMore = false;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        decoration:
-            BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor),
-        child: Row(
-          children: [
-            InkWell(
-                // TODO: add add icon detail (ammie)
-                onTap: () {},
-                child: const Icon(
-                  Icons.attach_file,
-                  color: primaryColor,
-                )),
-            SizedBox(
-              width: widget.size.height * 0.01,
-            ),
-            Expanded(
-                child: TextField(
-              maxLines: null,
-              controller: messageController,
-              textCapitalization: TextCapitalization.sentences,
-              decoration: InputDecoration(
-                hintText: "ChatHintText".tr,
-                suffixIcon: InkWell(
-                    // TODO : add emoji picker (ammie)
+    Size size = MediaQuery.of(context).size;
+    return Column(
+      children: [
+        Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            decoration:
+                BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor),
+            child: Row(
+              children: [
+                InkWell(
+                    // TODO: add add icon detail (ammie)
                     onTap: () {
-                      print("image");
+                      print(isMore);
+                      setState(() {
+                        isMore = !isMore;
+                      });
+                      FocusScope.of(context).unfocus();
+                      print(isMore);
                     },
-                    child: const Icon(
-                      Icons.image,
-                      color: primaryColor,
-                    )),
-                filled: true,
-                fillColor: textLight,
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20.0),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40),
-                    borderSide:
-                        const BorderSide(color: primaryLighter, width: 0.0)),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40.0),
-                  borderSide: const BorderSide(color: primaryLighter),
+                  child: SvgPicture.asset("assets/icons/add_circle.svg")
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40.0),
-                  borderSide: const BorderSide(color: primaryLighter),
+                SizedBox(
+                  width: widget.size.height * 0.01,
+                ),
+                Expanded(
+                  child: TextField(
+                  onTap: () {
+                    setState(() {
+                      isMore = false;
+                    });
+                  },
+                  maxLines: null,
+                  controller: messageController,
+                  textCapitalization: TextCapitalization.sentences,
+                  decoration: InputDecoration(
+                    hintText: "ChatHintText".tr,
+                    filled: true,
+                    fillColor: textLight,
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 10, horizontal: 20.0),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(40),
+                        borderSide:
+                            const BorderSide(color: primaryLighter, width: 0.0)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                      borderSide: const BorderSide(color: primaryLighter),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                      borderSide: const BorderSide(color: primaryLighter),
+                    ),
+                  ),
+                )),
+                SizedBox(
+                  width: widget.size.height * 0.02,
+                ),
+                InkWell(
+                    onTap: () => sendMessage(messageController.text),
+                    child: SvgPicture.asset("assets/icons/send.svg")
+                ),
+              ],
+          )
+        ),
+        isMore 
+        ? Container(
+          height: size.height * 0.25,
+          padding: EdgeInsets.only(top: size.height * 0.02, left: size.height * 0.03, right: size.height * 0.03),
+          child: Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  selectFile();
+                },
+                child: Column(
+                  children: [
+                    Icon(Icons.description, size: size.height * 0.05, color: primaryColor,),
+                    const Text("ไฟล์")
+                  ],
                 ),
               ),
-            )),
-            SizedBox(
-              width: widget.size.height * 0.02,
-            ),
-            InkWell(
-                onTap: () => sendMessage(messageController.text),
-                child: SvgPicture.asset("assets/icons/send.svg"))
-          ],
-        ));
+              SizedBox(width: size.width * 0.1,),
+              InkWell(
+                onTap: () {
+                  pickImage(ImageSource.camera);
+                },
+                child: Column(
+                  children: [
+                    Icon(Icons.add_a_photo, size: size.height * 0.05, color: primaryColor,),
+                    const Text("ถ่ายภาพ")
+                  ],
+                ),
+              ),
+              SizedBox(width: size.width * 0.1,),
+              InkWell(
+                onTap: () {
+                  pickImage(ImageSource.gallery);
+                },
+                child: Column(
+                  children: [
+                    Icon(Icons.image, size: size.height * 0.05, color: primaryColor,),
+                    const Text("ส่งภาพ")
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ) 
+        : Container()
+      ],
+    );
   }
+
 }
