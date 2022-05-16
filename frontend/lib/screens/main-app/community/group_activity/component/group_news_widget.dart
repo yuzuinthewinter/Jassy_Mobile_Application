@@ -1,3 +1,4 @@
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/like_button_widget.dart';
 import 'package:flutter_application_1/models/community.dart';
@@ -16,7 +17,6 @@ import 'package:get/get.dart';
         ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
@@ -38,12 +38,12 @@ import 'package:get/get.dart';
                         // post by
                         RichText(
                           text: TextSpan(
-                            style: TextStyle(color: greyDark, fontSize: 14, fontFamily: 'kanit'),
+                            style: const TextStyle(color: greyDark, fontSize: 14, fontFamily: 'kanit'),
                             children: [
                               TextSpan(text: "${'GroupPostBy'.tr} "),
-                              TextSpan(text: "Ammie "),
+                              const TextSpan(text: "Ammie "),
                               TextSpan(text: "${'GroupPostAt'.tr} "),
-                              TextSpan(text: "10:24 AM "),
+                              const TextSpan(text: "10:24 AM "),
                             ]                      
                           ),
                         ),
@@ -61,9 +61,27 @@ import 'package:get/get.dart';
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
             child: Container(
               constraints: const BoxConstraints(maxHeight: double.infinity),
-              child: Text(data.news, maxLines: null, style: TextStyle(fontSize: 18),),
+              child: Text(data.news, maxLines: null, style: const TextStyle(fontSize: 18),),
             ),
           ),
+          // Todo: if has image show
+          // SizedBox(height: size.height * 0.02,),
+          // InkWell(
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => FullScreenImage(context)),
+          //     );
+          //   },
+            
+          //   child: Container(
+          //     constraints: BoxConstraints(maxHeight: size.height * 0.4, maxWidth: double.infinity),
+          //     child: Hero(
+          //       tag: 'post id',
+          //       child: Image.asset("assets/images/user3.jpg", height: size.height * 0.4, width: double.infinity, fit: BoxFit.cover,)
+          //     )
+          //   ),
+          // ),
           SizedBox(height: size.height * 0.03,),
           // like and comment icon
           Padding(
@@ -85,3 +103,23 @@ import 'package:get/get.dart';
       ),
     );
   }
+
+Widget FullScreenImage (context) {
+  return Scaffold(
+      body: DismissiblePage(
+        onDismissed: () {
+          Navigator.of(context).pop();
+        },
+        direction: DismissiblePageDismissDirection.multi,
+        child: Hero(
+          tag: 'post id',
+          child: Image.asset(
+            "assets/images/chat_message.jpg",
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            fit: BoxFit.contain,
+          ),
+        ),
+      )
+    );
+}

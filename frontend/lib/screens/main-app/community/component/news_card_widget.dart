@@ -1,3 +1,4 @@
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/like_button_widget.dart';
 import 'package:flutter_application_1/models/community.dart';
@@ -65,6 +66,24 @@ import 'package:get/get.dart';
               child: Text(data.news, maxLines: null, style: TextStyle(fontSize: 18),),
             ),
           ),
+          // Todo: if has image show
+          // SizedBox(height: size.height * 0.02,),
+          // InkWell(
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => FullScreenImage(context)),
+          //     );
+          //   },
+            
+          //   child: Container(
+          //     constraints: BoxConstraints(maxHeight: size.height * 0.4, maxWidth: double.infinity),
+          //     child: Hero(
+          //       tag: 'post id',
+          //       child: Image.asset("assets/images/user3.jpg", height: size.height * 0.4, width: double.infinity, fit: BoxFit.cover,)
+          //     )
+          //   ),
+          // ),
           SizedBox(height: size.height * 0.03,),
           // like and comment icon
           Padding(
@@ -86,3 +105,23 @@ import 'package:get/get.dart';
       ),
     );
   }
+
+Widget FullScreenImage (context) {
+  return Scaffold(
+      body: DismissiblePage(
+        onDismissed: () {
+          Navigator.of(context).pop();
+        },
+        direction: DismissiblePageDismissDirection.multi,
+        child: Hero(
+          tag: 'post id',
+          child: Image.asset(
+            "assets/images/chat_message.jpg",
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            fit: BoxFit.contain,
+          ),
+        ),
+      )
+    );
+}
