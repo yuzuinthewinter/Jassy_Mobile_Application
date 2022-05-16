@@ -1,10 +1,13 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/component/popup_page/mark_as_like_popup.dart';
 import 'package:flutter_application_1/models/item.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:flutter_svg/avd.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -214,15 +217,7 @@ class _BodyState extends State<ConversationText> {
                     },
                     pressType: PressType.longPress,
                     arrowColor: primaryDarker,
-                    child: Container(
-                        constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * 0.6),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        decoration: BoxDecoration(
-                            color: isCurrentUser ? primaryLighter : textLight,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Text(currentMessage['message'])),
+                    child: TypeTextMessage(isCurrentUser: isCurrentUser, currentMessage: currentMessage),
                   ),
                   if (!isCurrentUser) ...[
                     Text(
@@ -280,10 +275,16 @@ class _BodyState extends State<ConversationText> {
                             ClipboardData(text: message['message']));
                       } else if (item.id == item3) {
                         //translate
-                        return print("translate");
+                        print("translate");
                       } else {
                         //favorite
                         //todo: after press button : show list language, after that do the function to add memo
+                        showDialog(
+                          context: context, 
+                          builder: (context) {
+                            return MarkAsLikePopUp(onPress: () {});
+                          }
+                        );
                         AddFavorite(message);
                       }
                     },
@@ -305,6 +306,135 @@ class _BodyState extends State<ConversationText> {
                 ))
             .toList(),
       ),
+    );
+  }
+}
+
+class TypeTextMessage extends StatelessWidget {
+  const TypeTextMessage({
+    Key? key,
+    required this.isCurrentUser,
+    required this.currentMessage,
+  }) : super(key: key);
+
+  final bool isCurrentUser;
+  final currentMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.6),
+        padding: const EdgeInsets.symmetric(
+            horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+            color: isCurrentUser ? primaryLighter : textLight,
+            borderRadius: BorderRadius.circular(20)),
+        child: Text(currentMessage['message']));
+  }
+}
+
+class TypeFileMessage extends StatelessWidget {
+  const TypeFileMessage({
+    Key? key,
+    required this.isCurrentUser,
+    required this.currentMessage,
+  }) : super(key: key);
+
+  final bool isCurrentUser;
+  final currentMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        // Todo: open file
+      },
+      child: Container(
+          constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.6,
+              maxHeight: MediaQuery.of(context).size.width * 0.4,),
+          padding: const EdgeInsets.symmetric(
+              horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: isCurrentUser ? primaryLighter : textLight,
+              borderRadius: BorderRadius.circular(20)),
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.01),
+                child: SvgPicture.asset("assets/icons/file.svg"),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1),
+                child: Text("file.pdf"),
+              ),
+            ],
+          )),
+    );
+  }
+}
+
+class TypeImageMessage extends StatelessWidget {
+  const TypeImageMessage({
+    Key? key,
+    required this.isCurrentUser,
+    required this.currentMessage,
+  }) : super(key: key);
+
+  final bool isCurrentUser;
+  final currentMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        context.pushTransparentRoute(ImageMessageDetail(isCurrentUser: isCurrentUser, currentMessage: currentMessage));
+      },
+      child: Container(
+          constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.4,
+              maxHeight: MediaQuery.of(context).size.width * 0.5,
+            ),
+          padding: const EdgeInsets.symmetric(
+              horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              image: const DecorationImage(
+                image: AssetImage("assets/images/chat_message.jpg"),
+                fit: BoxFit.cover
+              )
+          ),
+      ),
+    );
+  }
+}
+
+class ImageMessageDetail extends StatelessWidget {
+  const ImageMessageDetail({
+    Key? key,
+    required this.isCurrentUser,
+    required this.currentMessage,
+  }) : super(key: key);
+
+  final bool isCurrentUser;
+  final currentMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: DismissiblePage(
+        onDismissed: () {
+          Navigator.of(context).pop();
+        },
+        direction: DismissiblePageDismissDirection.multi,
+        child: Image.asset(
+          "assets/images/chat_message.jpg",
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          fit: BoxFit.contain,
+        ),
+      )
     );
   }
 }

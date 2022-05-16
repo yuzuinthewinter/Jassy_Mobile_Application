@@ -79,7 +79,10 @@ class _BodyState extends State<MessageInput> {
             InkWell(
                 // TODO: add add icon detail (ammie)
                 onTap: () {},
-                child: SvgPicture.asset("assets/icons/add_circle.svg")),
+                child: const Icon(
+                  Icons.attach_file,
+                  color: primaryColor,
+                )),
             SizedBox(
               width: widget.size.height * 0.01,
             ),
@@ -93,10 +96,10 @@ class _BodyState extends State<MessageInput> {
                 suffixIcon: InkWell(
                     // TODO : add emoji picker (ammie)
                     onTap: () {
-                      print("emoji");
+                      print("image");
                     },
                     child: const Icon(
-                      Icons.sentiment_satisfied_alt,
+                      Icons.image,
                       color: primaryColor,
                     )),
                 filled: true,
