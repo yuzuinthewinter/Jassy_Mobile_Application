@@ -48,6 +48,7 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+    setStatus(false, DateTime.now());
   }
 
   void setStatus(bool status, DateTime timestamp) async {

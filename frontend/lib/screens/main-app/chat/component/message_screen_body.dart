@@ -23,7 +23,6 @@ class MessageScreenBody extends StatefulWidget {
 }
 
 class _MessageScreenBodyState extends State<MessageScreenBody> {
-
   CollectionReference chats =
       FirebaseFirestore.instance.collection('ChatRooms');
 
@@ -35,6 +34,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
 
   @override
   void initState() {
+    print(widget.inRoom);
     if (widget.inRoom == true) {
       updateUnseen();
     }

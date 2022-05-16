@@ -41,11 +41,9 @@ class _BodyState extends State<ConversationText> {
   }
 
   checkReadMessage(messageid) async {
-    if (widget.inRoom == true) {
-      await messagesdb.doc(messageid).update({
-        'status': 'read',
-      });
-    }
+    await messagesdb.doc(messageid).update({
+      'status': 'read',
+    });
   }
 
   AddFavorite(messageid) async {
@@ -131,15 +129,15 @@ class _BodyState extends State<ConversationText> {
           itemBuilder: (context, index) {
             int reversedIndex =
                 snapshot.data!.docs[0]['messages'].length - 1 - index;
-            return getMessage(
-                snapshot.data!.docs[0]['messages'][reversedIndex]);
+            return getMessage(snapshot.data!.docs[0]['messages'][reversedIndex],
+                widget.user['isActive']);
           },
         );
       },
     );
   }
 
-  Widget getMessage(message) {
+  Widget getMessage(message, userActive) {
     Size size = MediaQuery.of(context).size;
     return StreamBuilder<QuerySnapshot>(
       stream: messagesdb
@@ -156,7 +154,9 @@ class _BodyState extends State<ConversationText> {
         var currentMessage = snap[0];
         var sender = currentMessage['sentBy'];
         bool isCurrentUser = sender == currentUser!.uid;
-        if (currentMessage['status'] == 'unread') {
+        if (currentMessage['status'] == 'unread' &&
+            userActive &&
+            widget.inRoom == true) {
           checkReadMessage(currentMessage['messageID']);
         }
         return Padding(

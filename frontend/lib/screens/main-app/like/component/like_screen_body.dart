@@ -47,6 +47,7 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
       'lastMessageSent': '',
       'lastTimestamp': DateTime.now(),
       'unseenCount': 0,
+      'sentBy': '',
       'messages': [],
     });
     await chatRooms.doc(docRef.id).update({
@@ -176,7 +177,8 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                 );
                 return FadeTransition(
                   opacity: curvedAnimation,
-                  child: DetailPage(user: user, isMainPage: false, animation: animation),
+                  child: DetailPage(
+                      user: user, isMainPage: false, animation: animation),
                 );
               }));
               print("each card");

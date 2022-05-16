@@ -111,6 +111,7 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
       child: InkWell(
@@ -190,12 +191,11 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
                             Expanded(
                               child: pickedFile != null
                                   ? Container(
-                                      child: Text(
-                                        pickedFile!.name,
-                                        style: TextStyle(color: grey),
-                                      ),
-                                    )
-                                  : const SizedBox.shrink(),
+                                      child: Image.file(
+                                      File(pickedFile!.path!),
+                                      height: size.height * 0.3,
+                                    ))
+                                  : Container(height: 3),
                             ),
                           ],
                         ),

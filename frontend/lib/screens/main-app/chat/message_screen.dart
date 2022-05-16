@@ -91,25 +91,29 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+    isInRoom = true;
+    setInRoom(isInRoom);
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+    isInRoom = false;
+    setInRoom(isInRoom);
   }
 
-  //todo: recheck read message on chat
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     setState(() {
       if (state == AppLifecycleState.resumed) {
         isInRoom = true;
+        setInRoom(isInRoom);
       } else {
         isInRoom = false;
+        setInRoom(isInRoom);
       }
-      setInRoom(isInRoom);
     });
   }
 

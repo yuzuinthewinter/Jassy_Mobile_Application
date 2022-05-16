@@ -56,6 +56,9 @@ class _BodyState extends State<MessageInput> {
       'messageID': docRef.id,
     });
     await chats.doc(widget.chatid).update({
+      'unseenCount': FieldValue.increment(0),
+    });
+    await chats.doc(widget.chatid).update({
       'messages': FieldValue.arrayUnion([docRef.id]),
       'sentBy': currentUser!.uid,
       'lastMessageSent': message,

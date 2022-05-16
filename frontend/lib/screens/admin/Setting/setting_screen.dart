@@ -120,7 +120,8 @@ class SettingScreen extends StatelessWidget {
                   ),
                   onTap: () async {
                     signOut();
-                    Navigator.pushNamed(context, Routes.LandingPage);
+                    Navigator.popUntil(context,
+                        ModalRoute.withName(Navigator.defaultRouteName));
                   },
                 ))
               ]),

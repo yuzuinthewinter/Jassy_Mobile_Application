@@ -77,6 +77,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
       'lastMessageSent': '',
       'lastTimestamp': DateTime.now(),
       'unseenCount': 0,
+      'sentBy': '',
       'messages': [],
     });
     await chatRooms.doc(docRef.id).update({
