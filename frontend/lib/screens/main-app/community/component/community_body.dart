@@ -384,7 +384,7 @@ Widget newsCard(postid, context) {
                                   backgroundImage: !user['profilePic'].isEmpty
                                       ? NetworkImage(user['profilePic'][0])
                                       : const AssetImage(
-                                              "assets/images/user3.png")
+                                              "assets/images/user3.jpg")
                                           as ImageProvider,
                                   radius: size.width * 0.08,
                                 ),

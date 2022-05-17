@@ -160,6 +160,11 @@ class _WritePostState extends State<WritePost> {
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
                             focusNode: writingTextFocus,
+                            controller: writingTextController,
+                            onChanged: (String text) {
+                              text = writingTextController.text;
+                              postText = text;
+                            },
                           ),
                         ),
                         pickedFile != null 

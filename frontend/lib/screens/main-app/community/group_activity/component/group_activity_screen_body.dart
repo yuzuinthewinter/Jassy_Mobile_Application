@@ -212,7 +212,7 @@ Widget groupNewsCard(postid, context) {
                       CircleAvatar(
                         backgroundImage: !user['profilePic'].isEmpty
                             ? NetworkImage(user['profilePic'][0])
-                            : const AssetImage("assets/images/user3.png")
+                            : const AssetImage("assets/images/user3.jpg")
                                 as ImageProvider,
                         radius: size.width * 0.08,
                       ),
