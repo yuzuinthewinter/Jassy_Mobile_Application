@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/like_button_widget.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
+import 'package:flutter_application_1/component/text/report_choice.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/comment_input.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/comment_tree.dart';
@@ -37,6 +38,8 @@ class _PostDetailBodyState extends State<PostDetailBody> {
     super.initState();
     myFocusNode = FocusNode();
   }
+  bool isNotificationOn = false;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -73,7 +76,102 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                           ),
                         ),
                       ),
-                      Icon(Icons.more_horiz, color: primaryColor, size: size.width * 0.08,)
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                            shape: const RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20))),
+                            context: context, 
+                            builder: (context) {
+                              return Container(
+                                height: MediaQuery.of(context).size.height * 0.30,
+                                padding: const EdgeInsets.only(top: 5.0, left: 20.0, right: 20, bottom: 15),
+                                child: Stack(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
+                                      child: Column(
+                                        children: [
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                // Todo: saved post
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset("assets/icons/saved_lists.svg"),
+                                                  SizedBox(width: size.width * 0.03,),
+                                                  const Text("บันทึกโพสต์")
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                // Todo: Report
+                                                // reportModalBottomSheet(context);
+                                                // line 253
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset("assets/icons/report.svg"),
+                                                  SizedBox(width: size.width * 0.03,),
+                                                  const Text("รายงานโพสต์")
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                // Todo: delete post
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset("assets/icons/del_bin_circle.svg"),
+                                                  SizedBox(width: size.width * 0.03,),
+                                                  const Text("ลบโพสต์")
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                setState(() {
+                                                  isNotificationOn = !isNotificationOn;
+                                                });
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  isNotificationOn ? SvgPicture.asset("assets/icons/notification_on.svg") : SvgPicture.asset("assets/icons/notification_off.svg"),
+                                                  SizedBox(width: size.width * 0.03,),
+                                                  isNotificationOn ? Text("MenuNotificationOn".tr) : Text("MenuNotificationOff".tr)
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topRight, 
+                                      child: IconButton(
+                                        onPressed: () {Navigator.pop(context);}, 
+                                        icon: const Icon(Icons.close, color: primaryDarker,)
+                                      )
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          );
+                        },
+                        child: Icon(Icons.more_horiz, color: primaryColor, size: size.width * 0.08,)
+                      )
                     ],
                   ),
                 ),
@@ -160,3 +258,101 @@ class Input extends StatelessWidget {
     );
   }
 }
+
+  // Future<dynamic> reportModalBottomSheet(BuildContext context) {
+  //   return showModalBottomSheet(
+  //       isScrollControlled: true,
+  //       shape: const RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+  //       context: context,
+  //       builder: (context) => Container(
+  //             height: MediaQuery.of(context).size.height * 0.60,
+  //             padding:
+  //                 const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+  //             child: Column(
+  //               children: [
+  //                 Text(
+  //                   "MenuReport".tr,
+  //                   style: const TextStyle(fontSize: 16),
+  //                 ),
+  //                 Align(
+  //                     alignment: Alignment.topLeft,
+  //                     child: Text(
+  //                       "ReportChoose".tr,
+  //                       style: const TextStyle(fontSize: 16),
+  //                     )),
+  //                 Padding(
+  //                   padding:
+  //                       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+  //                   child: Text(
+  //                     "ReportDesc".tr,
+  //                     style: const TextStyle(fontSize: 14, color: greyDark),
+  //                   ),
+  //                 ),
+  //                 Expanded(
+  //                   child: SingleChildScrollView(
+  //                     child: Column(
+  //                       children: [
+  //                         ReportTypeChoice(
+  //                           text: 'ReportNudity'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportVio'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportThreat'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportProfan'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportTerro'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportChild'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportSexual'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportAnimal'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportScam'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportAbuse'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportOther'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ));
+  // }

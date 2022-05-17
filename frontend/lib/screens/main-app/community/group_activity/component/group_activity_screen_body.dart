@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/button/like_button_widget.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/models/community.dart';
-import 'package:flutter_application_1/screens/main-app/community/group_activity/component/group_news_widget.dart';
-import 'package:flutter_application_1/screens/main-app/community/my_group/my_group.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -42,6 +42,8 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
     });
     Navigator.of(context).pop();
   }
+
+  bool isNotificationOn = false;
 
   bool isMember = false;
   Widget getButtonJoinGroup(size) {
@@ -124,4 +126,315 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
       ],
     );
   }
+
+// news card in group
+  Widget groupNewsCard (News data, context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+        decoration: BoxDecoration(
+          color: textLight,
+          border: Border(bottom: BorderSide(width: size.width * 0.01, color: primaryLightest))
+        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  backgroundImage: const AssetImage("assets/images/user3.jpg"),
+                  radius: size.width * 0.08,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.03,),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: size.height * 0.025,),
+                        // post by
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(color: greyDark, fontSize: 14, fontFamily: 'kanit'),
+                            children: [
+                              TextSpan(text: "${'GroupPostBy'.tr} "),
+                              const TextSpan(text: "Ammie "),
+                              TextSpan(text: "${'GroupPostAt'.tr} "),
+                              const TextSpan(text: "10:24 AM "),
+                            ]                      
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ),
+                InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                      shape: const RoundedRectangleBorder(
+                      borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(20))),
+                      context: context, 
+                      builder: (context) {
+                        return Container(
+                          height: MediaQuery.of(context).size.height * 0.30,
+                          padding: const EdgeInsets.only(top: 5.0, left: 20.0, right: 20, bottom: 15),
+                          child: Stack(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Todo: saved post
+                                        },
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset("assets/icons/saved_lists.svg"),
+                                            SizedBox(width: size.width * 0.03,),
+                                            const Text("บันทึกโพสต์")
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Todo: Report
+                                          // reportModalBottomSheet(context);
+                                          // line 344
+                                        },
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset("assets/icons/report.svg"),
+                                            SizedBox(width: size.width * 0.03,),
+                                            const Text("รายงานโพสต์")
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Todo: delete post
+                                        },
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset("assets/icons/del_bin_circle.svg"),
+                                            SizedBox(width: size.width * 0.03,),
+                                            const Text("ลบโพสต์")
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          setState(() {
+                                            isNotificationOn = !isNotificationOn;
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            isNotificationOn ? SvgPicture.asset("assets/icons/notification_on.svg") : SvgPicture.asset("assets/icons/notification_off.svg"),
+                                            SizedBox(width: size.width * 0.03,),
+                                            isNotificationOn ? Text("MenuNotificationOn".tr) : Text("MenuNotificationOff".tr)
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.topRight, 
+                                child: IconButton(
+                                  onPressed: () {Navigator.pop(context);}, 
+                                  icon: const Icon(Icons.close, color: primaryDarker,)
+                                )
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    );
+                  },
+                  child: Icon(Icons.more_horiz, color: primaryColor, size: size.width * 0.08,)
+                )
+              ],
+            ),
+          ),
+          SizedBox(height: size.height * 0.02,),
+          // post text
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+            child: Container(
+              constraints: const BoxConstraints(maxHeight: double.infinity),
+              child: Text(data.news, maxLines: null, style: const TextStyle(fontSize: 18),),
+            ),
+          ),
+          // Todo: if has image show
+          // SizedBox(height: size.height * 0.02,),
+          // InkWell(
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => FullScreenImage(context)),
+          //     );
+          //   },
+            
+          //   child: Container(
+          //     constraints: BoxConstraints(maxHeight: size.height * 0.4, maxWidth: double.infinity),
+          //     child: Hero(
+          //       tag: 'post id',
+          //       child: Image.asset("assets/images/user3.jpg", height: size.height * 0.4, width: double.infinity, fit: BoxFit.cover,)
+          //     )
+          //   ),
+          // ),
+          SizedBox(height: size.height * 0.03,),
+          // like and comment icon
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+            child: Row(
+              children: [
+                const LikeButtonWidget(),
+                SizedBox(width: size.width * 0.05),
+                InkWell(
+                  onTap: () {
+                    // FocusScope.of(context).requestFocus(myFocusNode);
+                  },
+                  child: SvgPicture.asset("assets/icons/comment_icon.svg", width: size.width * 0.07,)
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget FullScreenImage (context) {
+    return Scaffold(
+        body: DismissiblePage(
+          onDismissed: () {
+            Navigator.of(context).pop();
+          },
+          direction: DismissiblePageDismissDirection.multi,
+          child: Hero(
+            tag: 'post id',
+            child: Image.asset(
+              "assets/images/chat_message.jpg",
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.contain,
+            ),
+          ),
+        )
+      );
+  }
 }
+
+  // Future<dynamic> reportModalBottomSheet(BuildContext context) {
+  //   return showModalBottomSheet(
+  //       isScrollControlled: true,
+  //       shape: const RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+  //       context: context,
+  //       builder: (context) => Container(
+  //             height: MediaQuery.of(context).size.height * 0.60,
+  //             padding:
+  //                 const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+  //             child: Column(
+  //               children: [
+  //                 Text(
+  //                   "MenuReport".tr,
+  //                   style: const TextStyle(fontSize: 16),
+  //                 ),
+  //                 Align(
+  //                     alignment: Alignment.topLeft,
+  //                     child: Text(
+  //                       "ReportChoose".tr,
+  //                       style: const TextStyle(fontSize: 16),
+  //                     )),
+  //                 Padding(
+  //                   padding:
+  //                       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+  //                   child: Text(
+  //                     "ReportDesc".tr,
+  //                     style: const TextStyle(fontSize: 14, color: greyDark),
+  //                   ),
+  //                 ),
+  //                 Expanded(
+  //                   child: SingleChildScrollView(
+  //                     child: Column(
+  //                       children: [
+  //                         ReportTypeChoice(
+  //                           text: 'ReportNudity'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportVio'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportThreat'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportProfan'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportTerro'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportChild'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportSexual'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportAnimal'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportScam'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportAbuse'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                         ReportTypeChoice(
+  //                           text: 'ReportOther'.tr,
+  //                           userid: widget.user['uid'],
+  //                           chatid: widget.chatid,
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ));
+  // }
