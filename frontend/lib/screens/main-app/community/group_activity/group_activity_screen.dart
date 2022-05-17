@@ -126,8 +126,6 @@ class _GroupActivityScreenState extends State<GroupActivityScreen> {
           user: widget.user,
           groupActivity: widget.groupActivity,
         ),
-        // Todo: if join group show if not join dont show
-
         floatingActionButton: isMember == true
             ? FloatingActionButton(
                 onPressed: () {

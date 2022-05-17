@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -23,7 +24,7 @@ class CommunityActivityAppBar extends StatelessWidget
       title: Column(
         children: [
           Text(
-            groupActivity['namegroup'],
+            StringUtils.capitalize(groupActivity['namegroup']),
             style: TextStyle(fontSize: 18, color: textDark),
           ),
           RichText(

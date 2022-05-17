@@ -59,7 +59,7 @@ class _NewCommunityState extends State<AddNewCommunity> {
     DocumentReference docRef = await community.add({
       'membersID': const [],
       'postsID': const [],
-      'namegroup': commu.namegroup,
+      'namegroup': commu.namegroup.toLowerCase(),
       'coverPic': urlImage,
     });
     await community.doc(docRef.id).update({
@@ -204,11 +204,10 @@ class _NewCommunityState extends State<AddNewCommunity> {
                                 Expanded(
                                   child: pickedFile != null
                                       ? Container(
-                                          child: Text(
-                                            pickedFile!.name,
-                                            style: TextStyle(color: grey),
-                                          ),
-                                        )
+                                          child: Image.file(
+                                          File(pickedFile!.path!),
+                                          height: size.height * 0.2,
+                                        ))
                                       : Container(height: 3),
                                 ),
                               ],

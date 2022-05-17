@@ -31,10 +31,7 @@ class Body extends StatelessWidget {
               //     MaterialPageRoute(
               //         builder: (context) => const JassyHome()),
               //   );
-                Navigator.pushNamed(
-                  context,
-                  Routes.JassyHome,
-                );
+              Navigator.pushNamed(context, Routes.JassyHome, arguments: 1);
               // Navigator.pushNamed(
               //     context,
               //     Path

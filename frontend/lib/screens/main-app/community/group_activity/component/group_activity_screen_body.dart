@@ -7,6 +7,7 @@ import 'package:flutter_application_1/component/button/like_button_widget.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,7 +41,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
     await users.doc(currentUser!.uid).update({
       'groups': FieldValue.arrayUnion([widget.groupActivity['groupid']]),
     });
-    Navigator.of(context).pop();
+    Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 2);
   }
 
   bool isNotificationOn = false;
@@ -75,7 +76,6 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
             child: JassyGradientColor(
           gradientHeight: size.height * 0.23,
         )),
-        // Todo: if now join show button if not join dont show button
         getButtonJoinGroup(size),
         SizedBox(
           height: size.height * 0.01,
@@ -101,27 +101,33 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
               ])),
         ),
         Expanded(
+          //TODO: use stream
           child: ListView.separated(
               padding: EdgeInsets.only(top: size.height * 0.02),
               scrollDirection: Axis.vertical,
-              itemCount: newsLists.length,
+              itemCount: widget.groupActivity['postsID'].length,
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(
                   height: size.height * 0.03,
                 );
               },
               itemBuilder: (context, index) {
+                int reversedindex =
+                    widget.groupActivity['postsID'].length - 1 - index;
                 // list of news card in group
                 return InkWell(
                     onTap: () {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
                         return PostDetail(
-                          post: newsLists[index],
+                          postid: widget.groupActivity['postsID']
+                              [reversedindex],
                         );
                       }));
                     },
-                    child: groupNewsCard(newsLists[index], context));
+                    child: groupNewsCard(
+                        widget.groupActivity['postsID'][reversedindex],
+                        context));
               }),
         ),
       ],

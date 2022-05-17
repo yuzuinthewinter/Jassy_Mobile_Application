@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/community.dart';
@@ -6,6 +7,12 @@ import 'package:flutter_application_1/theme/index.dart';
 
 Widget groupForSearchWidget(group, context, user) {
   var size = MediaQuery.of(context).size;
+  bool isMember = false;
+  for (var groupid in user['groups']) {
+    if (groupid == group['groupid']) {
+      isMember = true;
+    }
+  }
   return InkWell(
     onTap: () {
       print("group");
@@ -43,7 +50,8 @@ Widget groupForSearchWidget(group, context, user) {
                 height: size.height * 0.1,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage(group['coverPic']), fit: BoxFit.cover),
+                      image: NetworkImage(group['coverPic']),
+                      fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -56,7 +64,7 @@ Widget groupForSearchWidget(group, context, user) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      group['namegroup'],
+                      StringUtils.capitalize(group['namegroup']),
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.w700),
                       maxLines: 2,
@@ -93,13 +101,15 @@ Widget groupForSearchWidget(group, context, user) {
             ),
             // add icon
             user['userStatus'] == 'user'
-                ? InkWell(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.add_circle_rounded,
-                      color: primaryColor,
-                      size: size.width * 0.1,
-                    ))
+                ? isMember == true
+                    ? const SizedBox.shrink()
+                    : InkWell(
+                        onTap: () {},
+                        child: Icon(
+                          Icons.add_circle_rounded,
+                          color: primaryColor,
+                          size: size.width * 0.1,
+                        ))
                 : Container(
                     width: 1,
                   )

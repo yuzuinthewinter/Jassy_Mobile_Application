@@ -90,7 +90,7 @@ class LocaleString extends Translations {
           "CommuFeed": "New Feed",
           "CommuNoFeed": "There is no news for you yet.",
           "CommuStartJoin":
-              "Let's start by joining the group to receive news and exchange!",
+              "Let's start by joining the group\n to receive news and exchange!",
           "CommuMyGroup": "My Groups",
           "CommuSearch": "Search",
           "CommuSearchGroup": "Search",
@@ -114,9 +114,7 @@ class LocaleString extends Translations {
           "GroupPostNotiOn": "Turn on notifications for this post",
           "GroupPostBy": "Posted by",
           "GroupPostAt": "at",
-          "GroupPostMins": "m",
-          "GroupPostHours": "h",
-          "GroupPostDays": "d",
+          "GroupPostToday": "Today",
           "GroupPostYesterday": "Yesterday",
           "GroupPostCommentHintText": "Write a comment",
 
@@ -169,6 +167,7 @@ class LocaleString extends Translations {
           "ProfileHelp": "Help Center",
           "ProfileAppSetting": "Settings",
           "ProfileMarkAsLike": "Mask as Like",
+          "ProfileSavedPost": "Saved Post",
           "ProfileAboutJassy": "About Jassy",
           "ProfileLogOut": "Log Out",
 
@@ -266,7 +265,7 @@ class LocaleString extends Translations {
           "NoLikesDesc": "เริ่มต้นค้นหาคนที่คุณถูกใจกันเถอะ !",
 
           //Jassy Community Page
-          "CommuPage": "ชุมขน",
+          "CommuPage": "ชุมชน",
           "CommuRecommand": "แนะนำสำหรับคุณ",
           "CommuMore": "ดูเพิ่มเติม",
           "CommuFeed": "ข่าวสาร",
@@ -296,9 +295,7 @@ class LocaleString extends Translations {
           "GroupPostNotiOn": "เปิดการแจ้งเตือนสำหรับโพสต์นี้",
           "GroupPostBy": "เขียนโดย",
           "GroupPostAt": "เมื่อ",
-          "GroupPostMins": "นาทีที่แล้ว",
-          "GroupPostHours": "ชั่วโมงที่แล้ว",
-          "GroupPostDays": "วันที่แล้ว",
+          "GroupPostToday": "วันนี้",
           "GroupPostYesterday": "เมื่อวานนี้",
           "GroupPostCommentHintText": "เขียนคอมเมนต์",
 
@@ -351,6 +348,7 @@ class LocaleString extends Translations {
           "ProfileHelp": "ศูนย์ช่วยเหลือ",
           "ProfileAppSetting": "การตั้งค่า",
           "ProfileMarkAsLike": "ข้อความที่ชื่นชอบ",
+          "ProfileSavedPost": "รายการที่บันทึกไว้",
           "ProfileAboutJassy": "เกี่ยวกับแจสซี่",
           "ProfileLogOut": "ออกจากระบบ",
 
