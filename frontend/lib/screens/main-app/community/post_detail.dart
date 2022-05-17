@@ -77,13 +77,13 @@ class _PostDetailState extends State<PostDetail> {
                   child: Row(
                     children: [
                       isNotificationOn
-                          ? SvgPicture.asset("assets/icons/notification_on.svg")
+                          ? SvgPicture.asset("assets/icons/notification_off.svg")
                           : SvgPicture.asset(
-                              "assets/icons/notification_off.svg"),
+                              "assets/icons/notification_on.svg"),
                       SizedBox(width: size.width * 0.03,),
                       isNotificationOn
-                          ? Text("MenuNotificationOn".tr)
-                          : Text("MenuNotificationOff".tr),
+                          ? Text("MenuNotificationOff".tr)
+                          : Text("MenuNotificationOn".tr),
                     ],
                   )),
               PopupMenuItem(

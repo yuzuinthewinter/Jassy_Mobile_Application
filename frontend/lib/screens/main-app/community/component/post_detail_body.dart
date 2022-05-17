@@ -105,9 +105,9 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                                               },
                                               child: Row(
                                                 children: [
-                                                  isSavedPost ? SvgPicture.asset("assets/icons/saved_lists.svg") :SvgPicture.asset("assets/icons/unsaved_list.svg"),
+                                                  isSavedPost ? SvgPicture.asset("assets/icons/unsaved_list.svg") :SvgPicture.asset("assets/icons/saved_lists.svg"),
                                                   SizedBox(width: size.width * 0.03,),
-                                                  isSavedPost ? const Text("บันทึกโพสต์") : const Text("เลิกบันทึกโพสต์")
+                                                  isSavedPost ? const Text("เลิกบันทึกโพสต์") : const Text("บันทึกโพสต์")
                                                 ],
                                               ),
                                             ),
@@ -152,9 +152,9 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                                               },
                                               child: Row(
                                                 children: [
-                                                  isNotificationOn ? SvgPicture.asset("assets/icons/notification_on.svg") : SvgPicture.asset("assets/icons/notification_off.svg"),
+                                                  isNotificationOn ? SvgPicture.asset("assets/icons/notification_off.svg") : SvgPicture.asset("assets/icons/notification_on.svg"),
                                                   SizedBox(width: size.width * 0.03,),
-                                                  isNotificationOn ? Text("MenuNotificationOn".tr) : Text("MenuNotificationOff".tr)
+                                                  isNotificationOn ? Text("MenuNotificationOff".tr) : Text("MenuNotificationOn".tr)
                                                 ],
                                               ),
                                             ),
