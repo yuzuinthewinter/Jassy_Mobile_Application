@@ -68,10 +68,10 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
             widget.user['userStatus'] == 'user'
                 ? widget.user['groups'].length != 0
                     ? Text("CommuMyGroup".tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w700))
                     : Text("CommuRecommand".tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w700))
                 : const Text(
                     "กลุ่มทั้งหมด",
@@ -137,7 +137,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                         child: Row(children: [
                           Text(
                             "CommuFeed".tr,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w700),
                           ),
                           // const Spacer(),
@@ -276,14 +276,14 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                 SizedBox(
                                   width: size.width * 0.03,
                                 ),
-                                Text(
+                                const Text(
                                   "ตรวจสอบคำร้องเรียนจากชุมชน",
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w400,
                                       color: textMadatory),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                               ],
                             ),
                           ))
@@ -410,7 +410,7 @@ Widget newsCard(postid, context) {
                                       Text(
                                         StringUtils.capitalize(
                                             group['namegroup']),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 18, color: textDark),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
@@ -418,7 +418,7 @@ Widget newsCard(postid, context) {
                                       // post by
                                       RichText(
                                         text: TextSpan(
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 color: greyDark,
                                                 fontSize: 14,
                                                 fontFamily: 'kanit'),
@@ -428,7 +428,7 @@ Widget newsCard(postid, context) {
                                                   text: StringUtils.capitalize(
                                                       user['name']
                                                           ['firstname'])),
-                                              TextSpan(text: " • "),
+                                              const TextSpan(text: " • "),
                                               TextSpan(
                                                   text: getDifferance(
                                                       post['date'])),
@@ -555,7 +555,7 @@ Widget newsCard(postid, context) {
                                   Text(
                                     post['text'],
                                     maxLines: null,
-                                    style: TextStyle(fontSize: 16),
+                                    style: const TextStyle(fontSize: 16),
                                   ),
                                   SizedBox(height: size.height * 0.02,),
                                   // Todo: post image
