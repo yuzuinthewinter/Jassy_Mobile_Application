@@ -96,14 +96,9 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
           padding: EdgeInsets.only(left: size.width * 0.02),
           child: SizedBox(
             height: size.height * 0.1,
-            child: ListView.separated(
+            child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: widget.community.length,
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  width: size.width * 0.05,
-                );
-              },
               itemBuilder: (context, index) {
                 var group = widget.community[index];
                 bool isMember = false;

@@ -17,36 +17,39 @@ Widget communityCard(user, data, context) {
         );
       }));
     },
-    child: Stack(
-      children: [
-        Container(
-          width: size.width * 0.25,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              image: DecorationImage(
-                  image: NetworkImage(data['coverPic']), fit: BoxFit.cover)),
-        ),
-        Container(
-          width: size.width * 0.25,
-          decoration: BoxDecoration(
-            color: textDark.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ),
-        Container(
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+      child: Stack(
+        children: [
+          Container(
             width: size.width * 0.25,
-            padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
-            alignment: Alignment.center,
-            child: Text(
-              data['namegroup'].toUpperCase(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  color: textLight,
-                  fontFamily: 'kanit',
-                  fontWeight: FontWeight.w600),
-              overflow: TextOverflow.ellipsis,
-            ))
-      ],
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                image: DecorationImage(
+                    image: NetworkImage(data['coverPic']), fit: BoxFit.cover)),
+          ),
+          Container(
+            width: size.width * 0.25,
+            decoration: BoxDecoration(
+              color: textDark.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          Container(
+              width: size.width * 0.25,
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
+              alignment: Alignment.center,
+              child: Text(
+                data['namegroup'].toUpperCase(),
+                style: const TextStyle(
+                    fontSize: 16,
+                    color: textLight,
+                    fontFamily: 'kanit',
+                    fontWeight: FontWeight.w600),
+                overflow: TextOverflow.ellipsis,
+              ))
+        ],
+      ),
     ),
   );
 }
