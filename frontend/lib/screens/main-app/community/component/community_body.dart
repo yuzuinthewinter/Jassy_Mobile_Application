@@ -14,7 +14,6 @@ import 'package:flutter_application_1/screens/main-app/community/admin/add_commu
 import 'package:flutter_application_1/screens/main-app/community/admin/manage_community.dart';
 import 'package:flutter_application_1/screens/main-app/community/community_search/community_search.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/community_card.widget.dart';
-import 'package:flutter_application_1/screens/main-app/community/component/news_card_widget.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/no_news_widget.dart';
 import 'package:flutter_application_1/screens/main-app/community/my_group/my_group.dart';
 import 'package:flutter_application_1/screens/main-app/community/post_detail.dart';
@@ -608,8 +607,9 @@ Widget newsCard(postid, context) {
                   });
             });
       });
-}
 
+  }
+}
   // Future<dynamic> reportModalBottomSheet(BuildContext context) {
   //   return showModalBottomSheet(
   //       isScrollControlled: true,

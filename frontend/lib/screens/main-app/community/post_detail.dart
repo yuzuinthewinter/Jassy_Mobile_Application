@@ -25,7 +25,7 @@ class _PostDetailState extends State<PostDetail> {
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('Community')
-            .where('postsID', arrayContains: postid)
+            .where('postsID', arrayContains: widget.postid)
             .snapshots(includeMetadataChanges: true),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -43,7 +43,7 @@ class _PostDetailState extends State<PostDetail> {
           return StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection("Posts")
-                  .where('postid', isEqualTo: postid)
+                  .where('postid', isEqualTo: widget.postid)
                   .snapshots(includeMetadataChanges: true),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
