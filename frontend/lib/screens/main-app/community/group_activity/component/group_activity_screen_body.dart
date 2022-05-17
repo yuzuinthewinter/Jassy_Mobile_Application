@@ -44,6 +44,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
   }
 
   bool isNotificationOn = false;
+  bool isSavedPost = false;
 
   bool isMember = false;
   Widget getButtonJoinGroup(size) {
@@ -193,12 +194,16 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                                       child: InkWell(
                                         onTap: () {
                                           // Todo: saved post
+                                          Navigator.pop(context);
+                                          setState(() {
+                                            isSavedPost = !isSavedPost;
+                                          });
                                         },
                                         child: Row(
                                           children: [
-                                            SvgPicture.asset("assets/icons/saved_lists.svg"),
+                                            isSavedPost ? SvgPicture.asset("assets/icons/saved_lists.svg") :SvgPicture.asset("assets/icons/unsaved_list.svg"),
                                             SizedBox(width: size.width * 0.03,),
-                                            const Text("บันทึกโพสต์")
+                                            isSavedPost ? const Text("บันทึกโพสต์") : const Text("เลิกบันทึกโพสต์")
                                           ],
                                         ),
                                       ),

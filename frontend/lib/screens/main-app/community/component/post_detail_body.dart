@@ -39,6 +39,7 @@ class _PostDetailBodyState extends State<PostDetailBody> {
     myFocusNode = FocusNode();
   }
   bool isNotificationOn = false;
+  bool isSavedPost = false;
 
   @override
   Widget build(BuildContext context) {
@@ -97,12 +98,16 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                                             child: InkWell(
                                               onTap: () {
                                                 // Todo: saved post
+                                                Navigator.pop(context);
+                                                setState(() {
+                                                  isSavedPost = !isSavedPost;
+                                                });
                                               },
                                               child: Row(
                                                 children: [
-                                                  SvgPicture.asset("assets/icons/saved_lists.svg"),
+                                                  isSavedPost ? SvgPicture.asset("assets/icons/saved_lists.svg") :SvgPicture.asset("assets/icons/unsaved_list.svg"),
                                                   SizedBox(width: size.width * 0.03,),
-                                                  const Text("บันทึกโพสต์")
+                                                  isSavedPost ? const Text("บันทึกโพสต์") : const Text("เลิกบันทึกโพสต์")
                                                 ],
                                               ),
                                             ),

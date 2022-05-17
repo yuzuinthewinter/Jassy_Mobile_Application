@@ -13,6 +13,7 @@ import 'package:flutter_application_1/screens/main-app/community/admin/add_commu
 import 'package:flutter_application_1/screens/main-app/community/admin/manage_community.dart';
 import 'package:flutter_application_1/screens/main-app/community/community_search/community_search.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/community_card.widget.dart';
+import 'package:flutter_application_1/screens/main-app/community/component/post_detail_body.dart';
 import 'package:flutter_application_1/screens/main-app/community/my_group/my_group.dart';
 import 'package:flutter_application_1/screens/main-app/community/post_detail.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -36,6 +37,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
   }
 
   bool isNotificationOn = false;
+  bool isSavedPost = false;
 
   @override
   Widget build(BuildContext context) {
@@ -321,12 +323,16 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                       child: InkWell(
                                         onTap: () {
                                           // Todo: saved post
+                                          Navigator.pop(context);
+                                          setState(() {
+                                            isSavedPost = !isSavedPost;
+                                          });
                                         },
                                         child: Row(
                                           children: [
-                                            SvgPicture.asset("assets/icons/saved_lists.svg"),
+                                            isSavedPost ? SvgPicture.asset("assets/icons/saved_lists.svg") :SvgPicture.asset("assets/icons/unsaved_list.svg"),
                                             SizedBox(width: size.width * 0.03,),
-                                            const Text("บันทึกโพสต์")
+                                            isSavedPost ? const Text("บันทึกโพสต์") : const Text("เลิกบันทึกโพสต์")
                                           ],
                                         ),
                                       ),
