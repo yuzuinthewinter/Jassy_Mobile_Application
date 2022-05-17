@@ -22,7 +22,6 @@ class JassyHome extends StatefulWidget {
 class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
   //boolean
   bool isLoading = false;
-  bool isFilter = false;
 
   //firebasee
   final currentUser = FirebaseAuth.instance.currentUser;
@@ -39,7 +38,7 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     setStatus(true, DateTime.now());
     screens = [
-      const PreJassyMain(),
+      const JassyMain(),
       const LikeScreen(), //likes page
       const CommunityScreen(),
       const ChatScreenBody(),

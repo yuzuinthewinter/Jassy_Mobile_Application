@@ -40,24 +40,9 @@ class _PreJassyMainBodyState extends State<PreJassyMain> {
   ];
   RangeValues _currentRangeValues = const RangeValues(20, 30);
 
-  saveFilter() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('filter', [
-      _LanguageChoicesLists[_languageIndex],
-      _LanguageLevelChoicesLists[_languageLevelIndex],
-      _GenderChoicesLists[_genderIndex],
-      _currentRangeValues.start.round().toString(),
-      _currentRangeValues.end.round().toString(),
-    ]);
-    await prefs.setStringList('filterIndex', [
-      _languageIndex.toString(),
-      _languageLevelIndex.toString(),
-      _genderIndex.toString(),
-      _currentRangeValues.start.round().toString(),
-      _currentRangeValues.end.round().toString(),
-    ]);
-    // print(_LanguageChoicesLists[_languageIndex]);
-    // print(_LanguageLevelChoicesLists[_languageLevelIndex]);
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -103,8 +88,7 @@ class _PreJassyMainBodyState extends State<PreJassyMain> {
                   }
               },
             );
-            saveFilter();
-            return const JassyMain();
+            return JassyMain();
           }
         });
   }

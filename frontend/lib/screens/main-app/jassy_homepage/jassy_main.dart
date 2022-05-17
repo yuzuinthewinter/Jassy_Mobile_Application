@@ -14,9 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class JassyMain extends StatefulWidget {
-  const JassyMain(
-      {Key? key})
-      : super(key: key);
+  const JassyMain({Key? key}) : super(key: key);
   @override
   State<JassyMain> createState() => _JassyMainBodyState();
 }

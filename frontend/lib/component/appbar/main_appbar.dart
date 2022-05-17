@@ -26,7 +26,7 @@ class JassyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => const Filter()));
+                context, MaterialPageRoute(builder: (context) => Filter()));
           },
           icon: SvgPicture.asset(
             'assets/icons/filtering.svg',

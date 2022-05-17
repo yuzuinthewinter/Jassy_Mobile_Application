@@ -1,14 +1,12 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/outlined_button.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
-import 'package:flutter_application_1/component/calculate/cal_age.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
-import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/controllers/filter.dart';
+import 'package:flutter_application_1/models/filter.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FilterBody extends StatefulWidget {
   const FilterBody({Key? key}) : super(key: key);
@@ -18,7 +16,6 @@ class FilterBody extends StatefulWidget {
 }
 
 class _FilterBodyState extends State<FilterBody> {
-  //defined data
   final _LanguageChoicesLists = ['Thai', 'Korean', 'Indonsian'];
   final List<String> _LanguageLevelChoicesLists = [
     "Beginner",
@@ -35,75 +32,45 @@ class _FilterBodyState extends State<FilterBody> {
     "FilterNoneGender".tr
   ];
 
-  //defined data index
-  late int _languageIndex;
-  late int _languageLevelIndex;
-  late int _genderIndex;
+  Filtering filter = Filtering();
+  late var _languageIndex;
+  var _languageLevelIndex = 0;
+  var _genderIndex = 3;
   RangeValues _currentRangeValues = const RangeValues(20, 30);
+  FilterController filterController = Get.put(FilterController());
 
-  saveFilter() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('filter', [
-      _LanguageChoicesLists[_languageIndex],
-      _LanguageLevelChoicesLists[_languageLevelIndex],
-      _GenderChoicesLists[_genderIndex],
-      _currentRangeValues.start.round().toString(),
-      _currentRangeValues.end.round().toString(),
-    ]);
-    await prefs.setStringList('filterIndex', [
-      _languageIndex.toString(),
-      _languageLevelIndex.toString(),
-      _genderIndex.toString(),
-      _currentRangeValues.start.round().toString(),
-      _currentRangeValues.end.round().toString(),
-    ]);
-    Navigator.of(context).pop();
+  saveFilter() {
+    filterController.updateFilter(
+        _languageIndex, _languageLevelIndex, _genderIndex, _currentRangeValues);
   }
 
-  resetFilter() async {
-    final prefs = await SharedPreferences.getInstance();
-    final List<String>? filter = prefs.getStringList('filter');
-    final List<String>? filterIndex = prefs.getStringList('filterIndex');
+  resetFilter() {
     setState(() {
-      _languageIndex = filterIndex![0] as int;
-      _languageLevelIndex = filterIndex[1] as int;
-      _genderIndex = filterIndex[2] as int;
-      _currentRangeValues =
-          RangeValues(filterIndex[3] as double, filterIndex[4] as double);
-
-      filter![0] = _LanguageChoicesLists[filterIndex[0] as int];
-      filter[1] = _LanguageLevelChoicesLists[filterIndex[1] as int];
-      filter[2] = _GenderChoicesLists[filterIndex[2] as int];
+      _languageIndex = filterController.languageIndex.toInt();
+      _languageLevelIndex = filterController.languageLevelIndex.toInt();
+      _genderIndex = filterController.genderIndex.toInt();
+      _currentRangeValues = filterController.currentRangeValues.value;
     });
-  }
-
-  getSetState() async {
-    final prefs = await SharedPreferences.getInstance();
-    final List<String>? filter = prefs.getStringList('filter');
-    final List<String>? filterIndex = prefs.getStringList('filterIndex');
-
-    _languageIndex = filterIndex![0] as int;
-    _languageLevelIndex = filterIndex[1] as int;
-    _genderIndex = filterIndex[2] as int;
-    _currentRangeValues =
-        RangeValues(filterIndex[3] as double, filterIndex[4] as double);
-
-    filter![0] = _LanguageChoicesLists[filterIndex[0] as int];
-    filter[1] = _LanguageLevelChoicesLists[filterIndex[1] as int];
-    filter[2] = _GenderChoicesLists[filterIndex[2] as int];
   }
 
   @override
   void initState() {
-    // TODO: implement initState 
-    getSetState();
+    filterController.fetchDefaultFilter();
     super.initState();
+
+    _languageIndex = filterController.languageIndex.toInt();
+    _languageLevelIndex = filterController.languageLevelIndex.toInt();
+    _genderIndex = filterController.genderIndex.toInt();
+    _currentRangeValues = filterController.currentRangeValues.value;
+
+    filter.language = _LanguageChoicesLists[_languageIndex];
+    filter.languageLevel = _LanguageLevelChoicesLists[_languageLevelIndex];
+    filter.gender = _GenderChoicesLists[_genderIndex];
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
     return Container(
       margin: const EdgeInsets.only(top: 15, bottom: 20),
       child: Column(
@@ -115,91 +82,126 @@ class _FilterBodyState extends State<FilterBody> {
               padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                    children:
-                        List.generate(_LanguageChoicesLists.length, (index) {
-                  return ChoiceChip(
-                    label: Text(_LanguageChoicesLists[index]),
-                    selected: _languageIndex == index,
-                    onSelected: (value) {
-                      setState(() {
-                        _languageIndex = value ? index : _languageIndex;
-                        if (_languageIndex == null) {
-                          _languageIndex = 0;
-                        }
-                        // filter.language = _LanguageChoicesLists[_languageIndex];
-                      });
-                    },
-                    labelStyle: TextStyle(
-                        color:
-                            _languageIndex == index ? primaryColor : greyDark),
-                    backgroundColor: textLight,
-                    selectedColor: primaryLightest,
-                  );
-                })),
+                child: GetX<FilterController>(
+                  init: FilterController(),
+                  builder: (controller) {
+                    return Row(
+                      children: List.generate(
+                        _LanguageChoicesLists.length,
+                        (index) {
+                          return ChoiceChip(
+                            label: Text(_LanguageChoicesLists[index]),
+                            selected: false,
+                            onSelected: (selected) {
+                              setState(() {
+                                _languageIndex = selected
+                                    ? index
+                                    : controller.languageIndex.toInt();
+                                filter.language =
+                                    _LanguageChoicesLists[_languageIndex];
+                              });
+                            },
+                            labelStyle: TextStyle(
+                                color: _languageIndex == index
+                                    ? primaryColor
+                                    : controller.languageIndex.toInt() == index
+                                        ? greyDark
+                                        : greyDark),
+                            backgroundColor: _languageIndex == index
+                                ? primaryLightest
+                                : textLight,
+                            selectedColor: _languageIndex == index
+                                ? textLight
+                                : primaryLightest,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             HeaderText(text: "FilterLevelLang".tr),
             Container(
               padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
               child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                    children: List.generate(_LanguageLevelChoicesLists.length,
-                        (index) {
-                  return ChoiceChip(
-                    label: Text(_LanguageLevelChoicesLists[index]),
-                    selected: _languageLevelIndex == index,
-                    onSelected: (value) {
-                      setState(() {
-                        _languageLevelIndex =
-                            value ? index : _languageLevelIndex;
-                        if (_languageLevelIndex == null) {
-                          _languageLevelIndex = 0;
-                        }
-                        // filter.languageLevel =
-                        //     _LanguageLevelChoicesLists[_languageLevelIndex];
-                      });
-                    },
-                    labelStyle: TextStyle(
-                        color: _languageLevelIndex == index
-                            ? primaryColor
-                            : greyDark),
-                    backgroundColor: textLight,
-                    selectedColor: primaryLightest,
-                  );
-                })),
-              ),
+                  scrollDirection: Axis.horizontal,
+                  child: GetX<FilterController>(
+                      init: FilterController(),
+                      builder: (controller) {
+                        return Row(
+                            children: List.generate(
+                                _LanguageLevelChoicesLists.length, (index) {
+                          return ChoiceChip(
+                            label: Text(_LanguageLevelChoicesLists[index]),
+                            selected: false,
+                            onSelected: (selected) {
+                              setState(() {
+                                _languageLevelIndex = selected
+                                    ? index
+                                    : controller.languageLevelIndex.toInt();
+                                filter.languageLevel =
+                                    _LanguageLevelChoicesLists[
+                                        _languageLevelIndex];
+                              });
+                            },
+                            labelStyle: TextStyle(
+                                color: _languageLevelIndex == index
+                                    ? primaryColor
+                                    : controller.languageLevelIndex.toInt() ==
+                                            index
+                                        ? greyDark
+                                        : greyDark),
+                            backgroundColor: _languageLevelIndex == index
+                                ? primaryLightest
+                                : textLight,
+                            selectedColor: _languageLevelIndex == index
+                                ? textLight
+                                : primaryLightest,
+                          );
+                        }));
+                      })),
             ),
             HeaderText(text: "FilterSex".tr),
             Container(
               padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
               child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children:
-                        List.generate(_GenderChoicesLists.length, (index) {
-                  return ChoiceChip(
-                    label: Text(_GenderChoicesLists[index]),
-                    selected: _genderIndex == index,
-                    onSelected: (value) {
-                      setState(() {
-                        _genderIndex = value ? index : _genderIndex;
-                        if (_genderIndex == null) {
-                          _genderIndex = 0;
-                        }
-                        // filter.gender = _GenderChoicesLists[_genderIndex];
-                      });
-                    },
-                    labelStyle: TextStyle(
-                        color: _genderIndex == index ? primaryColor : greyDark),
-                    backgroundColor: textLight,
-                    selectedColor: primaryLightest,
-                  );
-                })),
-              ),
+                  scrollDirection: Axis.horizontal,
+                  child: GetX<FilterController>(
+                      init: FilterController(),
+                      builder: (controller) {
+                        return Row(
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: List.generate(_GenderChoicesLists.length,
+                                (index) {
+                          return ChoiceChip(
+                            label: Text(_GenderChoicesLists[index]),
+                            selected: false,
+                            onSelected: (selected) {
+                              setState(() {
+                                _genderIndex = selected
+                                    ? index
+                                    : controller.genderIndex.toInt();
+                                filter.gender =
+                                    _GenderChoicesLists[_genderIndex];
+                              });
+                            },
+                            labelStyle: TextStyle(
+                                color: _genderIndex == index
+                                    ? primaryColor
+                                    : controller.genderIndex.toInt() == index
+                                        ? greyDark
+                                        : greyDark),
+                            backgroundColor: _genderIndex == index
+                                ? primaryLightest
+                                : textLight,
+                            selectedColor: _genderIndex == index
+                                ? textLight
+                                : primaryLightest,
+                          );
+                        }));
+                      })),
             ),
             HeaderText(text: "FilterAge".tr),
             SliderTheme(
@@ -241,7 +243,10 @@ class _FilterBodyState extends State<FilterBody> {
                         // inactiveColor: greyLight,
                         onChanged: (RangeValues values) {
                           setState(() {
-                            _currentRangeValues = values;
+                            _currentRangeValues = values ==
+                                    filterController.currentRangeValues.value
+                                ? filterController.currentRangeValues.value
+                                : values;
                           });
                         },
                       ),

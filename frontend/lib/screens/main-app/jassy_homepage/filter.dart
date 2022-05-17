@@ -5,15 +5,14 @@ import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/
 import 'package:get/get.dart';
 
 class Filter extends StatelessWidget {
-  const Filter({Key? key})
-      : super(key: key);
+  Filter({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            appBar: BackAndCloseAppBar(text: "FilterPage".tr),
-            body: const FilterBody(),
-            // body: DemoScreen(),
-          );
+      appBar: BackAndCloseAppBar(text: "FilterPage".tr),
+      body: FilterBody(),
+      // body: DemoScreen(),
+    );
   }
 }

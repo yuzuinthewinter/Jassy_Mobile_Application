@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/calculate/cal_age.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
+import 'package:flutter_application_1/controllers/filter.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/detail_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:async/async.dart' show StreamGroup;
+import 'package:get/get.dart';
 
 class JassyMainBody extends StatefulWidget {
   const JassyMainBody({Key? key}) : super(key: key);
@@ -24,6 +26,8 @@ class _JassyMainBodyState extends State<JassyMainBody> {
 
   var currentUser = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
+
+  FilterController filterController = Get.put(FilterController());
 
   @override
   void initState() {
@@ -74,19 +78,19 @@ class _JassyMainBodyState extends State<JassyMainBody> {
 
             int count = 0;
             //query remove user that liked
-
-            return CarouselSlider.builder(
-              itemCount: user.length - count,
-              itemBuilder: (context, index, child) {
-                return carouselView(user, index);
-              },
-              options: CarouselOptions(
-                  // height: size.height * 0.70,
-                  aspectRatio: 0.75,
-                  enlargeCenterPage: true,
-                  enlargeStrategy: CenterPageEnlargeStrategy.height,
-                  enableInfiniteScroll: false),
-            );
+            return Text(filterController.languageIndex.value.toString());
+            // return CarouselSlider.builder(
+            //   itemCount: user.length - count,
+            //   itemBuilder: (context, index, child) {
+            //     return carouselView(user, index);
+            //   },
+            //   options: CarouselOptions(
+            //       // height: size.height * 0.70,
+            //       aspectRatio: 0.75,
+            //       enlargeCenterPage: true,
+            //       enlargeStrategy: CenterPageEnlargeStrategy.height,
+            //       enableInfiniteScroll: false),
+            // );
           },
         ),
       ],
@@ -110,7 +114,8 @@ class _JassyMainBodyState extends State<JassyMainBody> {
           );
           return FadeTransition(
             opacity: curvedAnimation,
-            child: DetailPage(user: user, isMainPage: true, animation: animation),
+            child:
+                DetailPage(user: user, isMainPage: true, animation: animation),
           );
         }));
       }),
@@ -181,7 +186,9 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                       fontFamily: "kanit",
                                       fontWeight: FontWeight.w900),
                                   children: [
-                                    TextSpan(text: StringUtils.capitalize(user['name']['firstname'])),
+                                    TextSpan(
+                                        text: StringUtils.capitalize(
+                                            user['name']['firstname'])),
                                     const TextSpan(text: ", "),
                                     TextSpan(
                                         text: calculateAge(DateTime.parse(
