@@ -61,6 +61,7 @@ class _PostDetailState extends State<PostDetail> {
                 return Scaffold(
                     extendBodyBehindAppBar: true,
                     appBar: AppBar(
+                    toolbarHeight: size.height * 0.15,
                     title: Column(
                     children: [
                         Text(StringUtils.capitalize(group['namegroup']), style: TextStyle(fontSize: 18, color: textDark),),
