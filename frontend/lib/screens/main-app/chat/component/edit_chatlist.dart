@@ -25,7 +25,7 @@ class _EditChatListState extends State<EditChatList> {
 
   getDate(timestamp) {
     DateTime datatime = DateTime.parse(timestamp.toDate().toString());
-    String formattedTime = DateFormat('KK:mm:a').format(datatime);
+    String formattedTime = DateFormat('KK:mm a').format(datatime);
     return formattedTime.toString();
   }
   @override

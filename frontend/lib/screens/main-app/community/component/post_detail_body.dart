@@ -47,7 +47,7 @@ class _PostDetailBodyState extends State<PostDetailBody> {
     DateTime lastActive = DateTime.parse(timestamp.toDate().toString());
     Duration diff = now.difference(lastActive);
 
-    String formattedHours = DateFormat('KK:mm:a').format(lastActive);
+    String formattedHours = DateFormat('KK:mm a').format(lastActive);
     String formattedDay = DateFormat('EEE, d/M').format(lastActive);
     String formattedDaywithyear = DateFormat('EEE, d/M/y').format(lastActive);
 

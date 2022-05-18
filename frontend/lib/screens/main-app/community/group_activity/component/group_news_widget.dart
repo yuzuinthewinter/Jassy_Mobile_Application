@@ -18,7 +18,7 @@ Widget groupNewsCard(postid, context) {
     DateTime lastActive = DateTime.parse(timestamp.toDate().toString());
     Duration diff = date.difference(lastActive);
 
-    String formattedHour = DateFormat('KK:mm:a').format(lastActive);
+    String formattedHour = DateFormat('KK:mm a').format(lastActive);
     String formattedDay = DateFormat('EEE, d/M').format(lastActive);
     String formattedDaywithyear = DateFormat('EEE, d/M/y').format(lastActive);
 

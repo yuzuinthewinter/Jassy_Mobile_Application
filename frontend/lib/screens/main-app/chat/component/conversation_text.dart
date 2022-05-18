@@ -36,7 +36,7 @@ class _BodyState extends State<ConversationText> {
 
   getTime(timestamp) {
     DateTime datatime = DateTime.parse(timestamp.toDate().toString());
-    String formattedTime = DateFormat('KK:mm:a').format(datatime);
+    String formattedTime = DateFormat('KK:mm a').format(datatime);
     return formattedTime.toString();
   }
 
@@ -154,7 +154,9 @@ class _BodyState extends State<ConversationText> {
         var currentMessage = snap[0];
         var sender = currentMessage['sentBy'];
         bool isCurrentUser = sender == currentUser!.uid;
-        if (currentMessage['status'] == 'unread' && widget.inRoom == true) {
+        if (currentMessage['status'] == 'unread' &&
+            widget.inRoom == true &&
+            currentMessage['sentBy'] != currentUser!.uid) {
           checkReadMessage(currentMessage['messageID']);
         }
         return Padding(

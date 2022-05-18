@@ -181,9 +181,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             onSelected: (value) => {
               if (value == MenuItem.item1)
                 {
-                  print("turn off notification"),
                   _toggleNotification,
-                  print(isNotificationOn)
                 }
               else if (value == MenuItem.item2)
                 {
@@ -204,10 +202,6 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             itemBuilder: (context) => [
               PopupMenuItem(
                   value: MenuItem.item1,
-                  onTap: () {
-                    print(isNotificationOn);
-                    _toggleNotification;
-                  },
                   child: Row(
                     children: [
                       isNotificationOn
