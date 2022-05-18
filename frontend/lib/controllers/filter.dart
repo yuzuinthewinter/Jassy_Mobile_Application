@@ -17,7 +17,7 @@ class FilterController extends GetxController {
 
   var currentUser = FirebaseAuth.instance.currentUser;
 
-  final _LanguageChoicesLists = ['Thai', 'Korean', 'Indonsian'];
+  final _LanguageChoicesLists = ['Thai', 'Korean', 'Indonesian'];
   final List<String> _LanguageLevelChoicesLists = [
     "Beginner",
     "Elementary",
@@ -46,6 +46,13 @@ class FilterController extends GetxController {
     genderIndex.value = genderindex;
     currentRangeValues.value = currentRange;
     update();
+  }
+
+  fetchFilter() {
+    languageIndex.obs;
+    languageLevelIndex.obs;
+    genderIndex.obs;
+    currentRangeValues.obs;
   }
 
   fetchDefaultFilter() async {

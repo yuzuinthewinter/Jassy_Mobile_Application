@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/outlined_button.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/controllers/filter.dart';
 import 'package:flutter_application_1/models/filter.dart';
 import 'package:flutter_application_1/models/user.dart';
@@ -16,7 +17,7 @@ class FilterBody extends StatefulWidget {
 }
 
 class _FilterBodyState extends State<FilterBody> {
-  final _LanguageChoicesLists = ['Thai', 'Korean', 'Indonsian'];
+  final _LanguageChoicesLists = ['Thai', 'Korean', 'Indonesian'];
   final List<String> _LanguageLevelChoicesLists = [
     "Beginner",
     "Elementary",
@@ -39,9 +40,10 @@ class _FilterBodyState extends State<FilterBody> {
   RangeValues _currentRangeValues = const RangeValues(20, 30);
   FilterController filterController = Get.put(FilterController());
 
-  saveFilter() {
-    filterController.updateFilter(
+  saveFilter() async {
+    await filterController.updateFilter(
         _languageIndex, _languageLevelIndex, _genderIndex, _currentRangeValues);
+    Navigator.of(context).popAndPushNamed(Routes.JassyHome, arguments: 0);
   }
 
   resetFilter() {

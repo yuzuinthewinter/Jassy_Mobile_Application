@@ -1,12 +1,14 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/calculate/cal_age.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/controllers/filter.dart';
+import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/detail_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,14 +29,44 @@ class _JassyMainBodyState extends State<JassyMainBody> {
   var currentUser = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
+  Filtering filter = Filtering();
   FilterController filterController = Get.put(FilterController());
+  late var _languageIndex;
+  late var _languageLevelIndex;
+  late var _genderIndex;
+  late RangeValues _currentRangeValues;
+
+  final _LanguageChoicesLists = ['Thai', 'Korean', 'Indonesian'];
+  final List<String> _LanguageLevelChoicesLists = [
+    "Beginner",
+    "Elementary",
+    "Intermidiate",
+    "Upper Intermidiate",
+    "Advanced",
+    "Proficiency"
+  ];
+  final List<String> _GenderChoicesLists = [
+    "InfoMale".tr,
+    "InfoFemale".tr,
+    "LGBTQ+",
+    "FilterNoneGender".tr
+  ];
 
   @override
   void initState() {
-    // TODO: implement initState
+    filterController.fetchFilter();
     super.initState();
     _pageController =
         PageController(initialPage: _currentPage, viewportFraction: 0.8);
+
+    _languageIndex = filterController.languageIndex.toInt();
+    _languageLevelIndex = filterController.languageLevelIndex.toInt();
+    _genderIndex = filterController.genderIndex.toInt();
+    _currentRangeValues = filterController.currentRangeValues.value;
+
+    filter.language = _LanguageChoicesLists[_languageIndex];
+    filter.languageLevel = _LanguageLevelChoicesLists[_languageLevelIndex];
+    filter.gender = _GenderChoicesLists[_genderIndex];
   }
 
   @override
@@ -60,10 +92,8 @@ class _JassyMainBodyState extends State<JassyMainBody> {
       children: [
         const CurvedWidget(child: JassyGradientColor()),
         StreamBuilder<QuerySnapshot>(
-          stream: users
-              // .where('isAuth', isEqualTo: true)
-              .where('uid', isNotEqualTo: currentUser!.uid)
-              .snapshots(),
+          stream:
+              users.where('uid', isNotEqualTo: currentUser!.uid).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Text('Something went wrong');
@@ -74,23 +104,47 @@ class _JassyMainBodyState extends State<JassyMainBody> {
               );
             }
 
-            var user = snapshot.data!.docs;
-
-            int count = 0;
-            //query remove user that liked
-            return Text(filterController.languageIndex.value.toString());
-            // return CarouselSlider.builder(
-            //   itemCount: user.length - count,
-            //   itemBuilder: (context, index, child) {
-            //     return carouselView(user, index);
-            //   },
-            //   options: CarouselOptions(
-            //       // height: size.height * 0.70,
-            //       aspectRatio: 0.75,
-            //       enlargeCenterPage: true,
-            //       enlargeStrategy: CenterPageEnlargeStrategy.height,
-            //       enableInfiniteScroll: false),
-            // );
+            var users = snapshot.data!.docs;
+            List queryUser = [];
+            int indexLanguage = 0;
+            for (var user in users) {
+              int age =
+                  calculateAge(DateTime.parse(user['birthDate'].toString()));
+              _LanguageLevelChoicesLists.forEachIndexed((index, lvlang) {
+                if ('${user['language']['levelDefaultLanguage']}'
+                        .toLowerCase() ==
+                    _LanguageLevelChoicesLists[index].toLowerCase()) {
+                  indexLanguage = index;
+                }
+              });
+              if (filter.language.toLowerCase() ==
+                  user['language']['defaultLanguage'].toLowerCase()) {
+                if (_languageLevelIndex <= indexLanguage) {
+                  if (_currentRangeValues.start.round().toInt() <= age &&
+                      age <= _currentRangeValues.end.round().toInt()) {
+                    if (filter.gender.toLowerCase() ==
+                        user['gender'].toLowerCase()) {
+                      queryUser.add(user);
+                    } else if (filter.gender.toLowerCase() ==
+                        "FilterNoneGender".tr.toLowerCase()) {
+                      queryUser.add(user);
+                    }
+                  }
+                }
+              }
+            }
+            return CarouselSlider.builder(
+              itemCount: queryUser.length,
+              itemBuilder: (context, index, child) {
+                return carouselCard(queryUser[index]);
+              },
+              options: CarouselOptions(
+                  // height: size.height * 0.70,
+                  aspectRatio: 0.75,
+                  enlargeCenterPage: true,
+                  enlargeStrategy: CenterPageEnlargeStrategy.height,
+                  enableInfiniteScroll: false),
+            );
           },
         ),
       ],
