@@ -1,5 +1,6 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
-
 class ConversationText extends StatefulWidget {
   final chatid;
   final user;
@@ -129,15 +129,16 @@ class _BodyState extends State<ConversationText> {
           itemBuilder: (context, index) {
             int reversedIndex =
                 snapshot.data!.docs[0]['messages'].length - 1 - index;
+            CustomPopupMenuController _controller = CustomPopupMenuController();
             return getMessage(snapshot.data!.docs[0]['messages'][reversedIndex],
-                widget.user['isActive']);
+                widget.user['isActive'], _controller);
           },
         );
       },
     );
   }
 
-  Widget getMessage(message, userActive) {
+  Widget getMessage(message, userActive, _controller) {
     Size size = MediaQuery.of(context).size;
     return StreamBuilder<QuerySnapshot>(
       stream: messagesdb
@@ -208,19 +209,12 @@ class _BodyState extends State<ConversationText> {
                   ),
                   CustomPopupMenu(
                     menuBuilder: () {
-                      return _buildLongPressMenu(currentMessage);
+                      return _buildLongPressMenu(currentMessage, _controller);
                     },
+                    controller: _controller,
                     pressType: PressType.longPress,
                     arrowColor: primaryDarker,
-                    child: Container(
-                        constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * 0.6),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        decoration: BoxDecoration(
-                            color: isCurrentUser ? primaryLighter : textLight,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Text(currentMessage['message'])),
+                    child: TypeTextMessage(isCurrentUser: isCurrentUser, currentMessage: currentMessage),
                   ),
                   if (!isCurrentUser) ...[
                     Text(
@@ -237,7 +231,7 @@ class _BodyState extends State<ConversationText> {
     );
   }
 
-  Widget _buildLongPressMenu(message) {
+  Widget _buildLongPressMenu(message, _controller) {
     List<ItemModel> menuItems = [
       ItemModel(id: 1, text: "ตอบกลับ", icon: "assets/icons/reply_icon.svg"),
       ItemModel(id: 2, text: "คัดลอก", icon: "assets/icons/copy_icon.svg"),
@@ -268,6 +262,7 @@ class _BodyState extends State<ConversationText> {
                   child: InkWell(
                     onTap: () {
                       // Todo: add onTab here
+                      _controller.hideMenu();
                       if (item.id == item1) {
                         //reply
                         Clipboard.setData(
@@ -278,10 +273,56 @@ class _BodyState extends State<ConversationText> {
                             ClipboardData(text: message['message']));
                       } else if (item.id == item3) {
                         //translate
-                        return print("translate");
+                        print("translate");
                       } else {
                         //favorite
                         //todo: after press button : show list language, after that do the function to add memo
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20))),
+                            context: context, 
+                            builder: (context) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.02),
+                                height: size.height * 0.3,
+                                child: Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        icon: Icon(Icons.close, color: primaryDark,))
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: size.height * 0.03),
+                                      child: Expanded(
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          itemCount: 10,
+                                          itemBuilder: (context, index) {
+                                            return InkWell(
+                                              onTap: () {
+                                                
+                                              },
+                                              child: Padding(
+                                                padding:  EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.015),
+                                                child: Text("Language Group"),
+                                              )
+                                            );
+                                          }
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          );
                         AddFavorite(message);
                       }
                     },
@@ -303,6 +344,135 @@ class _BodyState extends State<ConversationText> {
                 ))
             .toList(),
       ),
+    );
+  }
+}
+
+class TypeTextMessage extends StatelessWidget {
+  const TypeTextMessage({
+    Key? key,
+    required this.isCurrentUser,
+    required this.currentMessage,
+  }) : super(key: key);
+
+  final bool isCurrentUser;
+  final currentMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.6),
+        padding: const EdgeInsets.symmetric(
+            horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+            color: isCurrentUser ? primaryLighter : textLight,
+            borderRadius: BorderRadius.circular(20)),
+        child: Text(currentMessage['message']));
+  }
+}
+
+class TypeFileMessage extends StatelessWidget {
+  const TypeFileMessage({
+    Key? key,
+    required this.isCurrentUser,
+    required this.currentMessage,
+  }) : super(key: key);
+
+  final bool isCurrentUser;
+  final currentMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        // Todo: open file
+      },
+      child: Container(
+          constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.5,
+              maxHeight: MediaQuery.of(context).size.width * 0.4,),
+          padding: const EdgeInsets.symmetric(
+              horizontal: 10, vertical: 10),
+          decoration: BoxDecoration(
+              color: isCurrentUser ? primaryLighter : textLight,
+              borderRadius: BorderRadius.circular(20)),
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.01),
+                child: Icon(Icons.description, size: MediaQuery.of(context).size.height * 0.04,),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1),
+                child: Text("file.pdf"),
+              ),
+            ],
+          )),
+    );
+  }
+}
+
+class TypeImageMessage extends StatelessWidget {
+  const TypeImageMessage({
+    Key? key,
+    required this.isCurrentUser,
+    required this.currentMessage,
+  }) : super(key: key);
+
+  final bool isCurrentUser;
+  final currentMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        context.pushTransparentRoute(ImageMessageDetail(isCurrentUser: isCurrentUser, currentMessage: currentMessage));
+      },
+      child: Container(
+          constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.4,
+              maxHeight: MediaQuery.of(context).size.width * 0.5,
+            ),
+          padding: const EdgeInsets.symmetric(
+              horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              image: const DecorationImage(
+                image: AssetImage("assets/images/chat_message.jpg"),
+                fit: BoxFit.cover
+              )
+          ),
+      ),
+    );
+  }
+}
+
+class ImageMessageDetail extends StatelessWidget {
+  const ImageMessageDetail({
+    Key? key,
+    required this.isCurrentUser,
+    required this.currentMessage,
+  }) : super(key: key);
+
+  final bool isCurrentUser;
+  final currentMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: DismissiblePage(
+        onDismissed: () {
+          Navigator.of(context).pop();
+        },
+        direction: DismissiblePageDismissDirection.multi,
+        child: Image.asset(
+          "assets/images/chat_message.jpg",
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          fit: BoxFit.contain,
+        ),
+      )
     );
   }
 }

@@ -134,17 +134,19 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
                         Center(
                             child: Text(
                           "MenuReport".tr,
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         )),
                         Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 0.0),
                           child: Text(
                             "ReportDetail".tr,
-                            style: TextStyle(fontSize: 16),
+                            style: const TextStyle(fontSize: 16),
                           ),
                         ),
                         TextFormField(
+                          textCapitalization: TextCapitalization.sentences,
+                          maxLines: null,
                           controller: descController,
                           onChanged: (desc) {
                             desc = descController.text;
@@ -155,11 +157,11 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
                           ),
                         ),
                         Padding(
-                            padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
+                            padding: const EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
                             child: Row(children: [
                               Text(
                                 "ReportAttach".tr,
-                                style: TextStyle(fontSize: 16),
+                                style: const TextStyle(fontSize: 16),
                               ),
                               const Text(
                                 "*",
@@ -178,7 +180,7 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
                             ),
                             label: Text(
                               "ReportAddFile".tr,
-                              style: TextStyle(color: primaryColor),
+                              style: const TextStyle(color: primaryColor),
                             ),
                             style: OutlinedButton.styleFrom(
                               minimumSize: const Size(159, 36),
