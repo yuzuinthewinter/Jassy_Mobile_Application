@@ -12,7 +12,7 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:intl/intl.dart';
 
 class EditChatList extends StatefulWidget {
-  const EditChatList({ Key? key }) : super(key: key);
+  const EditChatList({Key? key}) : super(key: key);
 
   @override
   State<EditChatList> createState() => _EditChatListState();
@@ -28,6 +28,7 @@ class _EditChatListState extends State<EditChatList> {
     String formattedTime = DateFormat('KK:mm a').format(datatime);
     return formattedTime.toString();
   }
+
   @override
   Widget build(BuildContext context) {
     bool isSelected = false;
@@ -35,17 +36,17 @@ class _EditChatListState extends State<EditChatList> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: EditChatListAppBar(
-        action: TextButton(
-          onPressed: () {
-            // Todo: read all
-          },
-          // Todo อ่าน(1) 
-          child: TextButton(
-            onPressed: () {}, 
-            child: Text("เลือกทั้งหมด", style: TextStyle(color: secoundary, fontSize: 16),)
-          )
-        )
-      ),
+          action: TextButton(
+              onPressed: () {
+                // Todo: read all
+              },
+              // Todo อ่าน(1)
+              child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "เลือกทั้งหมด",
+                    style: TextStyle(color: secoundary, fontSize: 16),
+                  )))),
       body: Column(
         children: [
           const CurvedWidget(child: JassyGradientColor()),
@@ -78,219 +79,289 @@ class _EditChatListState extends State<EditChatList> {
             ),
           ),
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              //call all chatroom
-              stream: FirebaseFirestore.instance
-                  .collection('Users')
-                  .where('uid', isEqualTo: currentUser!.uid)
-                  .snapshots(includeMetadataChanges: true),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Text('Something went wrong');
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.data!.docs[0]['chats'].length == 0) {
-                  return const Center(child: Text('Let\'s start conversation'));
-                }
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-                  itemCount: snapshot.data!.docs[0]['chats'].length,
-                  itemBuilder: (context, int index) {
-                    var data = snapshot.data!.docs[0];
-                    return StreamBuilder<QuerySnapshot>(
-                      //call all chatroom
-                      stream: FirebaseFirestore.instance
-                          .collection('Users')
-                          .where('uid', isEqualTo: currentUser!.uid)
-                          .snapshots(includeMetadataChanges: true),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text('Something went wrong');
-                        }
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        if (snapshot.data!.docs[0]['chats'].length == 0) {
-                          return const Center(child: Text('Let\'s start conversation'));
-                        }
-                        return StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection('ChatRooms')
-                              .where('chatid', isEqualTo: data['chats'][index])
-                              .snapshots(includeMetadataChanges: true),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return const Text('Something went wrong');
-                            }
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(
-                                child: Text(''),
-                              );
-                            }
-                            var chat = snapshot.data!.docs[0];
-                            if (chat['member'].length >= 1) {
-                              for (var memberId in chat['member']) {
-                                if (memberId != currentUser!.uid) {
-                                  return StreamBuilder<QuerySnapshot>(
-                                    stream: FirebaseFirestore.instance
-                                        .collection('Users')
-                                        .where('uid', isEqualTo: memberId)
-                                        .snapshots(includeMetadataChanges: true),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasError) {
-                                        return const Text('Something went wrong');
-                                      }
-                                      if (snapshot.connectionState == ConnectionState.waiting) {
-                                        return const Center(
-                                          child: Text(''),
-                                        );
-                                      }
-                                      var data = snapshot.data!.docs;
-                                      if (data.isNotEmpty) {
-                                        for (var user in data) {
-                                          return InkWell(
-                                            onTap: () {
-                                              // Todo: setState
-                                              print(index);
-                                              print(isSelected);
-                                              setState(() {
-                                                isSelected = !isSelected;
-                                              });
-                                              print(isSelected);
-                                            },
-                                            child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  children: [
-                                                    isSelected 
-                                                    ? Padding(
-                                                      padding: EdgeInsets.only(right: size.width * 0.03),
-                                                      child: SvgPicture.asset("assets/icons/check_chatlist.svg"),
-                                                    )
-                                                    : Padding(
-                                                      padding: EdgeInsets.only(right: size.width * 0.03),
-                                                      child: SvgPicture.asset("assets/icons/uncheck_chatlist.svg"),
-                                                    ),
-                                                    Stack(
-                                                      children: [
-                                                        CircleAvatar(
-                                                          backgroundImage: !user['profilePic'].isEmpty
-                                                              ? NetworkImage(user['profilePic'][0])
-                                                              : const AssetImage(
-                                                                      "assets/images/header_img1.png")
-                                                                  as ImageProvider,
-                                                          radius: 33,
-                                                        ),
-                                                        user['isActive'] == true &&
-                                                                user['isShowActive'] == true &&
-                                                                snapshot.data!.docs[0]['isShowActive'] ==
-                                                                    true
-                                                            ? Positioned(
-                                                                right: 3,
-                                                                bottom: 3,
-                                                                child: Container(
-                                                                  height: 16,
-                                                                  width: 16,
-                                                                  decoration: BoxDecoration(
-                                                                      color: onlineColor,
-                                                                      shape: BoxShape.circle,
-                                                                      border: Border.all(
-                                                                          color: Theme.of(context)
-                                                                              .scaffoldBackgroundColor)),
-                                                                ),
-                                                              )
-                                                            : const Text(''),
-                                                      ],
-                                                    ),
-                                                    Expanded(
-                                                        child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                                                          child: Text(
-                                                            user['name']['firstname'].toString() + ' ' + user['name']['lastname'].toString(),
-                                                            textAlign: TextAlign.left,
-                                                            style: const TextStyle(
-                                                            fontSize: 18, 
-                                                            fontWeight: FontWeight.w500,
-                                                            color: textDark,
-                                                            ),
-                                                            overflow: TextOverflow.ellipsis,
-                                                            maxLines: 1,
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding: EdgeInsets.symmetric(
-                                                              horizontal: size.width * 0.05),
-                                                          child: Text(
-                                                            chat['lastMessageSent'].toString(),
-                                                            style: const TextStyle(
-                                                              fontSize: 16,
-                                                              color: greyDark,
-                                                            ),
-                                                            textAlign: TextAlign.left,
-                                                            overflow: TextOverflow.ellipsis,
-                                                            maxLines: 1,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )),
-                                                    Text(
-                                                      // chat['lastTimestamp']
-                                                      getDate(chat['lastTimestamp']),
-                                                      style: const TextStyle(
-                                                          fontSize: 12, color: greyDark),
-                                                    )
-                                                  ],
-                                                ),
-                                            ),
-                                          );
-                                        }
-                                      }
-                                      return const Text('');
-                                    },
-                                  );
-                                }
+              child: StreamBuilder<QuerySnapshot>(
+            //call all chatroom
+            stream: FirebaseFirestore.instance
+                .collection('Users')
+                .where('uid', isEqualTo: currentUser!.uid)
+                .snapshots(includeMetadataChanges: true),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Text('Something went wrong');
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.data!.docs[0]['chats'].length == 0) {
+                return const Center(child: Text('Let\'s start conversation'));
+              }
+              return ListView.builder(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 20.0),
+                itemCount: snapshot.data!.docs[0]['chats'].length,
+                itemBuilder: (context, int index) {
+                  var data = snapshot.data!.docs[0];
+                  return StreamBuilder<QuerySnapshot>(
+                    //call all chatroom
+                    stream: FirebaseFirestore.instance
+                        .collection('Users')
+                        .where('uid', isEqualTo: currentUser!.uid)
+                        .snapshots(includeMetadataChanges: true),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.data!.docs[0]['chats'].length == 0) {
+                        return const Center(
+                            child: Text('Let\'s start conversation'));
+                      }
+                      var listChatid = snapshot.data!.docs[0]['chats'];
+                      var data = snapshot.data!.docs[0];
+                      return StreamBuilder<QuerySnapshot>(
+                        //call list chat id
+                        stream: FirebaseFirestore.instance
+                            .collection('ChatRooms')
+                            .where('chatid')
+                            .snapshots(includeMetadataChanges: true),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return const Text('Something went wrong');
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (snapshot.data!.docs.isEmpty) {
+                            return const SizedBox.shrink();
+                          }
+
+                          var listChat = snapshot.data!.docs;
+                          List userList = [];
+
+                          for (var chatid in listChatid) {
+                            for (var chat in listChat) {
+                              if (chatid == chat['chatid']) {
+                                userList.add(chat);
                               }
                             }
-                            return const Text('Let\'s exchange with the expert!');
-                          },
-                        );
-                      },
-            
-                    );
-                  },
-                );
-              },
-            )
-          ),
+                          }
+                          userList.sort((a, b) {
+                            return DateFormat('dd/MM/yyyy KK:mm a')
+                                .format(DateTime.parse(
+                                    b['lastTimestamp'].toDate().toString()))
+                                .compareTo(DateFormat('dd/MM/yyyy KK:mm a')
+                                    .format(DateTime.parse(a['lastTimestamp']
+                                        .toDate()
+                                        .toString())));
+                          });
+                          if (userList[index]['member'].length >= 1) {
+                            for (var memberId in userList[index]['member']) {
+                              if (memberId != currentUser!.uid) {
+                                return StreamBuilder<QuerySnapshot>(
+                                  stream: FirebaseFirestore.instance
+                                      .collection('Users')
+                                      .where('uid', isEqualTo: memberId)
+                                      .snapshots(includeMetadataChanges: true),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return const Text('Something went wrong');
+                                    }
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                        child: Text(''),
+                                      );
+                                    }
+                                    var data = snapshot.data!.docs;
+                                    if (data.isNotEmpty) {
+                                      for (var user in data) {
+                                        return InkWell(
+                                          onTap: () {
+                                            // Todo: setState
+                                            print(index);
+                                            print(isSelected);
+                                            setState(() {
+                                              isSelected = !isSelected;
+                                            });
+                                            print(isSelected);
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              children: [
+                                                isSelected
+                                                    ? Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                right:
+                                                                    size.width *
+                                                                        0.03),
+                                                        child: SvgPicture.asset(
+                                                            "assets/icons/check_chatlist.svg"),
+                                                      )
+                                                    : Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                right:
+                                                                    size.width *
+                                                                        0.03),
+                                                        child: SvgPicture.asset(
+                                                            "assets/icons/uncheck_chatlist.svg"),
+                                                      ),
+                                                Stack(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      backgroundImage: !user[
+                                                                  'profilePic']
+                                                              .isEmpty
+                                                          ? NetworkImage(
+                                                              user['profilePic']
+                                                                  [0])
+                                                          : const AssetImage(
+                                                                  "assets/images/header_img1.png")
+                                                              as ImageProvider,
+                                                      radius: 33,
+                                                    ),
+                                                    user['isActive'] == true &&
+                                                            user['isShowActive'] ==
+                                                                true &&
+                                                            snapshot.data!
+                                                                        .docs[0]
+                                                                    [
+                                                                    'isShowActive'] ==
+                                                                true
+                                                        ? Positioned(
+                                                            right: 3,
+                                                            bottom: 3,
+                                                            child: Container(
+                                                              height: 16,
+                                                              width: 16,
+                                                              decoration: BoxDecoration(
+                                                                  color:
+                                                                      onlineColor,
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                  border: Border.all(
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .scaffoldBackgroundColor)),
+                                                            ),
+                                                          )
+                                                        : const Text(''),
+                                                  ],
+                                                ),
+                                                Expanded(
+                                                    child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal:
+                                                                  size.width *
+                                                                      0.05),
+                                                      child: Text(
+                                                        user['name'][
+                                                                    'firstname']
+                                                                .toString() +
+                                                            ' ' +
+                                                            user['name']
+                                                                    ['lastname']
+                                                                .toString(),
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: const TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: textDark,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal:
+                                                                  size.width *
+                                                                      0.05),
+                                                      child: Text(
+                                                        userList[index][
+                                                                'lastMessageSent']
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                          fontSize: 16,
+                                                          color: greyDark,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                                Text(
+                                                  // chat['lastTimestamp']
+                                                  getDate(userList[index]
+                                                      ['lastTimestamp']),
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: greyDark),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                    return const Text('');
+                                  },
+                                );
+                              }
+                            }
+                          }
+                          return const Text('Let\'s exchange with the expert!');
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            },
+          )),
           // Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               OutlinedButtonComponent(
-                // Todo: unpair
-                text: "ยกเลิกการจับคู่", 
-                minimumSize: Size(size.width * 0.45, size.height *0.05), 
-                press: ()
-                 {}
-              ),
+                  // Todo: unpair
+                  text: "ยกเลิกการจับคู่",
+                  minimumSize: Size(size.width * 0.45, size.height * 0.05),
+                  press: () {}),
               RoundButton(
-                // Todo: del chat 
-                text: "ลบการสนทนา", 
-                minimumSize: Size(size.width * 0.45, size.height *0.05), 
-                press: () {}
-              )
+                  // Todo: del chat
+                  text: "ลบการสนทนา",
+                  minimumSize: Size(size.width * 0.45, size.height * 0.05),
+                  press: () {})
             ],
           ),
-          SizedBox(height: size.height * 0.02,)
+          SizedBox(
+            height: size.height * 0.02,
+          )
         ],
       ),
     );
