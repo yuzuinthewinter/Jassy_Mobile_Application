@@ -4,15 +4,12 @@ import 'package:dismissible_page/dismissible_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/component/popup_page/mark_as_like_popup.dart';
 import 'package:flutter_application_1/models/item.dart';
 import 'package:flutter_application_1/theme/index.dart';
-import 'package:flutter_svg/avd.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
-
 class ConversationText extends StatefulWidget {
   final chatid;
   final user;
@@ -132,15 +129,16 @@ class _BodyState extends State<ConversationText> {
           itemBuilder: (context, index) {
             int reversedIndex =
                 snapshot.data!.docs[0]['messages'].length - 1 - index;
+            CustomPopupMenuController _controller = CustomPopupMenuController();
             return getMessage(snapshot.data!.docs[0]['messages'][reversedIndex],
-                widget.user['isActive']);
+                widget.user['isActive'], _controller);
           },
         );
       },
     );
   }
 
-  Widget getMessage(message, userActive) {
+  Widget getMessage(message, userActive, _controller) {
     Size size = MediaQuery.of(context).size;
     return StreamBuilder<QuerySnapshot>(
       stream: messagesdb
@@ -213,8 +211,9 @@ class _BodyState extends State<ConversationText> {
                   ),
                   CustomPopupMenu(
                     menuBuilder: () {
-                      return _buildLongPressMenu(currentMessage);
+                      return _buildLongPressMenu(currentMessage, _controller);
                     },
+                    controller: _controller,
                     pressType: PressType.longPress,
                     arrowColor: primaryDarker,
                     child: TypeTextMessage(isCurrentUser: isCurrentUser, currentMessage: currentMessage),
@@ -234,7 +233,7 @@ class _BodyState extends State<ConversationText> {
     );
   }
 
-  Widget _buildLongPressMenu(message) {
+  Widget _buildLongPressMenu(message, _controller) {
     List<ItemModel> menuItems = [
       ItemModel(id: 1, text: "ตอบกลับ", icon: "assets/icons/reply_icon.svg"),
       ItemModel(id: 2, text: "คัดลอก", icon: "assets/icons/copy_icon.svg"),
@@ -265,6 +264,7 @@ class _BodyState extends State<ConversationText> {
                   child: InkWell(
                     onTap: () {
                       // Todo: add onTab here
+                      _controller.hideMenu();
                       if (item.id == item1) {
                         //reply
                         Clipboard.setData(
@@ -279,12 +279,52 @@ class _BodyState extends State<ConversationText> {
                       } else {
                         //favorite
                         //todo: after press button : show list language, after that do the function to add memo
-                        showDialog(
-                          context: context, 
-                          builder: (context) {
-                            return MarkAsLikePopUp(onPress: () {});
-                          }
-                        );
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20))),
+                            context: context, 
+                            builder: (context) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.02),
+                                height: size.height * 0.3,
+                                child: Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        icon: Icon(Icons.close, color: primaryDark,))
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: size.height * 0.03),
+                                      child: Expanded(
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          itemCount: 10,
+                                          itemBuilder: (context, index) {
+                                            return InkWell(
+                                              onTap: () {
+                                                
+                                              },
+                                              child: Padding(
+                                                padding:  EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.015),
+                                                child: Text("Language Group"),
+                                              )
+                                            );
+                                          }
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          );
                         AddFavorite(message);
                       }
                     },
