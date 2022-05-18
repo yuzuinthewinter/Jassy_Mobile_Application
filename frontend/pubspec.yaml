@@ -42,7 +42,7 @@ dependencies:
   pinput: ^2.0.2
   file_picker: ^4.5.1
   lottie: ^1.2.2
-  get: ^4.6.1
+  get: ^4.6.3
   carousel_slider: ^4.0.0
   intervalprogressbar: ^2.0.1
   http: ^0.13.4
@@ -57,6 +57,7 @@ dependencies:
   basic_utils: ^4.2.2
   collection: ^1.16.0
   dismissible_page: ^0.7.2
+  shared_preferences: ^2.0.15
 
   # firebase
   firebase_storage: ^10.2.15

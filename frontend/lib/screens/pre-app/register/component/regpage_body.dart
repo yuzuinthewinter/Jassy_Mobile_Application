@@ -31,11 +31,12 @@ class _BodyState extends State<Body> {
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
     if (querySnapshot.docs.isNotEmpty) {
-        var data = querySnapshot.docs[0];
-        if (data['isAuth'] == true) {
-          Navigator.of(context).pushNamed(Routes.JassyHome);
-        }
-      } else {
+      var data = querySnapshot.docs[0];
+      if (data['isAuth'] == true) {
+        Navigator.of(context)
+            .pushNamed(Routes.JassyHome, arguments: 4);
+      }
+    } else {
       await users.doc(currentUser.uid).set({
         'uid': currentUser.uid,
         'name': {
@@ -43,7 +44,7 @@ class _BodyState extends State<Body> {
           'lastname': '${profile['last_name'].toLowerCase()}',
         },
         'birthDate': '',
-        'genre': '',
+        'gender': '',
         'country': '',
         'language': {
           'defaultLanguage': '',
@@ -126,43 +127,44 @@ class _BodyState extends State<Body> {
       if (querySnapshot.docs.isNotEmpty) {
         var data = querySnapshot.docs[0];
         if (data['isAuth'] == true) {
-          Navigator.of(context).pushNamed(Routes.JassyHome);
+          Navigator.of(context)
+              .pushNamed(Routes.JassyHome, arguments: 4);
         }
       } else {
         await users.doc(currentUser.uid).set({
-            'uid': currentUser.uid,
-            'name': {
-              'firstname': splitname[0].toLowerCase(),
-              'lastname': splitname[1].toLowerCase(),
-            },
-            'birthDate': '',
-            'genre': '',
-            'country': '',
-            'language': {
-              'defaultLanguage': '',
-              'levelDefaultLanguage': '',
-              'interestedLanguage': '',
-              'levelInterestedLanguage': '',
-            },
-            'desc': '',
-            'userStatus': 'user',
-            'report': const [],
-            'faceRegPic': const [],
-            'profilePic': const [],
-            'chats': const [],
-            'isShowActive': true,
-            'isActive': false,
-            'isAuth': false,
-            'groups': const [],
+          'uid': currentUser.uid,
+          'name': {
+            'firstname': splitname[0].toLowerCase(),
+            'lastname': splitname[1].toLowerCase(),
+          },
+          'birthDate': '',
+          'gender': '',
+          'country': '',
+          'language': {
+            'defaultLanguage': '',
+            'levelDefaultLanguage': '',
+            'interestedLanguage': '',
+            'levelInterestedLanguage': '',
+          },
+          'desc': '',
+          'userStatus': 'user',
+          'report': const [],
+          'faceRegPic': const [],
+          'profilePic': const [],
+          'chats': const [],
+          'isShowActive': true,
+          'isActive': false,
+          'isAuth': false,
+          'groups': const [],
+        });
+        if (currentUser.photoURL!.isNotEmpty) {
+          await users.doc(currentUser.uid).update({
+            'profilePic': FieldValue.arrayUnion([currentUser.photoURL]),
           });
-          if (currentUser.photoURL!.isNotEmpty) {
-            await users.doc(currentUser.uid).update({
-              'profilePic': FieldValue.arrayUnion([currentUser.photoURL]),
-            });
-          }
-          //todo: popup delay
-          Navigator.of(context).pushNamed(Routes.RegisterProfile);
         }
+        //todo: popup delay
+        Navigator.of(context).pushNamed(Routes.RegisterProfile);
+      }
     } on FirebaseAuthException catch (e) {
       isLoading = false;
     }

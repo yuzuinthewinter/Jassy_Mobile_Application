@@ -69,9 +69,10 @@ class LocaleString extends Translations {
           "MainTabLanguage": "Level of Language",
           "MainTabDesc": "Description",
           //Filter
+          "FilterLang": "Language",
           "FilterLevelLang": "Level of Language",
           "FilterSex": "Sex",
-          "FilterNoneGenre": "None",
+          "FilterNoneGender": "None",
           "FilterAge": "Age",
           "FilterReset": "Reset",
           "FilterPage": "Filter",
@@ -251,9 +252,10 @@ class LocaleString extends Translations {
           "MainTabLanguage": "ระดับภาษา",
           "MainTabDesc": "คำบรรยาย",
           //Filter
+          "FilterLang": "ภาษา",
           "FilterLevelLang": "ระดับภาษา",
           "FilterSex": "เพศ",
-          "FilterNoneGenre": "ไม่ระบุ",
+          "FilterNoneGender": "ไม่ระบุ",
           "FilterAge": "อายุ",
           "FilterReset": "คืนค่า",
           "FilterPage": "ตัวกรอง",

@@ -155,9 +155,7 @@ class _BodyState extends State<ConversationText> {
         var currentMessage = snap[0];
         var sender = currentMessage['sentBy'];
         bool isCurrentUser = sender == currentUser!.uid;
-        if (currentMessage['status'] == 'unread' &&
-            userActive &&
-            widget.inRoom == true) {
+        if (currentMessage['status'] == 'unread' && widget.inRoom == true) {
           checkReadMessage(currentMessage['messageID']);
         }
         return Padding(

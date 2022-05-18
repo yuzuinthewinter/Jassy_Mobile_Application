@@ -90,14 +90,16 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
 
   void updateData() async {
     await users.doc(currentUser!.uid).update({
-      'genre': userInfo.genre,
+      'gender': userInfo.gender.toLowerCase(),
       'desc': userInfo.desc,
-      'language.levelDefaultLanguage': language.levelDefaultLanguage,
-      'language.interestedLanguage': language.interestedLanguage,
-      'language.levelInterestedLanguage': language.levelInterestedLanguage,
+      'language.levelDefaultLanguage':
+          language.levelDefaultLanguage.toLowerCase(),
+      'language.interestedLanguage': language.interestedLanguage.toLowerCase(),
+      'language.levelInterestedLanguage':
+          language.levelInterestedLanguage.toLowerCase(),
     });
     //todo: popup change profile success
-    Navigator.of(context).pushNamed(Routes.JassyHome);
+    Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 4);
   }
 
   @override
@@ -107,8 +109,8 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
     tabController.addListener(() {
       onTabChange();
     });
-    if (widget.user['genre'].isNotEmpty) {
-      userInfo.genre = widget.user['genre'];
+    if (widget.user['gender'].isNotEmpty) {
+      userInfo.gender = widget.user['gender'];
     }
     if (widget.user['desc'].isNotEmpty) {
       userInfo.desc = widget.user['desc'];
@@ -273,19 +275,19 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
                         EdgeInsets.symmetric(horizontal: size.width * 0.04),
                     label: Text(_choicesLists[index]),
                     // ignore: unrelated_type_equality_checks
-                    selected: userInfo.genre.toLowerCase() ==
+                    selected: userInfo.gender.toLowerCase() ==
                         _choicesLists[index].toLowerCase(),
                     onSelected: (selected) {
                       setState(() {
                         _defaultChoiceIndex =
                             selected ? index : _defaultChoiceIndex;
                       });
-                      userInfo.genre = _choicesLists[_defaultChoiceIndex];
+                      userInfo.gender = _choicesLists[_defaultChoiceIndex];
                     },
                     backgroundColor: textLight,
                     selectedColor: primaryLightest,
                     labelStyle: TextStyle(
-                      color: userInfo.genre.toLowerCase() ==
+                      color: userInfo.gender.toLowerCase() ==
                               _choicesLists[index].toLowerCase()
                           ? primaryColor
                           : greyDark,

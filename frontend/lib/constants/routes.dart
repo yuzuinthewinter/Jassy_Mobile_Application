@@ -3,6 +3,7 @@ import 'package:flutter_application_1/component/popup_page/successWithButton.dar
 import 'package:flutter_application_1/screens/admin/main.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_screen_body.dart';
 import 'package:flutter_application_1/screens/main-app/community/admin/manage_community.dart';
+import 'package:flutter_application_1/screens/main-app/jassy_homepage/jassy_main.dart';
 import 'package:flutter_application_1/screens/main-app/main.dart';
 import 'package:flutter_application_1/screens/pre-app/landing/landing_page.dart';
 import 'package:flutter_application_1/screens/pre-app/login/login.dart';
@@ -32,6 +33,7 @@ class Routes extends RouteGenerator {
   static const String LoginPage = '/LoginPage';
   static const String LandingPage = '/LandingPage';
   static const String JassyHome = '/JassyHome';
+  static const String JassyMain = '/JassyMain';
   static const String ChatScreen = '/ChatScreen';
 
   //Admin
@@ -72,7 +74,7 @@ class RouteGenerator {
       case Routes.LandingPage:
         return MaterialPageRoute(builder: (_) => const LandingPage());
       case Routes.JassyHome:
-        var data = settings.arguments ?? 0;
+        var data = settings.arguments ?? 2;
         return MaterialPageRoute(builder: (_) => JassyHome(data));
       case Routes.ChatScreen:
         return MaterialPageRoute(builder: (_) => const ChatScreenBody());
