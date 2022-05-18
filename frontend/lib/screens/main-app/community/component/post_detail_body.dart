@@ -88,7 +88,7 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                       CircleAvatar(
                         backgroundImage: !widget.user['profilePic'].isEmpty
                             ? NetworkImage(widget.user['profilePic'][0])
-                            : const AssetImage("assets/images/user3.png")
+                            : const AssetImage("assets/images/user3.jpg")
                                 as ImageProvider,
                         radius: size.width * 0.07,
                       ),

@@ -41,7 +41,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
     "Elementary",
     "Intermidiate",
     "Upper Intermidiate",
-    "Advance", //advanced
+    "Advanced", //advanced
     "Proficiency"
   ];
 

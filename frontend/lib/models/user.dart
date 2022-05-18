@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 class NameType {
   String firstname;
   String lastname;
@@ -11,7 +14,7 @@ class NameType {
 class InfoType {
   bool isActive;
   String birthDate;
-  String genre;
+  String gender;
   String country;
   String desc;
   String faceRegPic;
@@ -21,7 +24,7 @@ class InfoType {
   InfoType({
     this.isActive = false,
     this.birthDate = '',
-    this.genre = '',
+    this.gender = '',
     this.country = '',
     this.desc = '',
     this.faceRegPic = '',
@@ -45,10 +48,11 @@ class LanguageType {
 }
 
 class Filtering {
-  String langguageLevel, gender;
+  String language, languageLevel, gender;
 
   Filtering({
-    this.langguageLevel = '',
+    this.language = '',
+    this.languageLevel = '',
     this.gender = '',
   });
 }

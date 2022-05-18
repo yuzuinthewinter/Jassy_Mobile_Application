@@ -75,7 +75,7 @@ class _BodyState extends State<Body> {
         if (data['userStatus'] == 'admin') {
           Navigator.of(context).pushNamed(Routes.AdminJassyHome);
         } else {
-          Navigator.of(context).pushNamed(Routes.JassyHome);
+          Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 2);
         }
       } else {
         await users.doc(currentUser.uid).set({
@@ -85,7 +85,7 @@ class _BodyState extends State<Body> {
             'lastname': '',
           },
           'birthDate': '',
-          'genre': '',
+          'gender': '',
           'country': '',
           'language': {
             'defaultLanguage': '',

@@ -34,8 +34,15 @@ class _BodyState extends State<Body> {
   late FixedExtentScrollController interestScrollController;
   late FixedExtentScrollController interestLevelScrollController;
 
-  final languageLevelItems = ["Beginner", "Elementary", "Intermidiate", "Upper Intermidiate", "Advanced", "Proficiency"];
-  final languageItems = ['Thai', 'Korean', 'Indonsian'];
+  final languageLevelItems = [
+    "Beginner",
+    "Elementary",
+    "Intermidiate",
+    "Upper Intermidiate",
+    "Advanced",
+    "Proficiency"
+  ];
+  final languageItems = ['Thai', 'Korean', 'Indonesian'];
 
   int countryIndex = 0;
   int defaultIndex = 0;
@@ -54,13 +61,14 @@ class _BodyState extends State<Body> {
         'lastname': widget.name.lastname.toLowerCase(),
       },
       'birthDate': widget.uinfo.birthDate,
-      'genre': widget.uinfo.genre,
-      'country': userInfo.country,
+      'gender': widget.uinfo.gender.toLowerCase(),
+      'country': userInfo.country.toLowerCase(),
       'language': {
-        'defaultLanguage': language.defaultLanguage,
-        'levelDefaultLanguage': language.levelDefaultLanguage,
-        'interestedLanguage': language.interestedLanguage,
-        'levelInterestedLanguage': language.levelInterestedLanguage,
+        'defaultLanguage': language.defaultLanguage.toLowerCase(),
+        'levelDefaultLanguage': language.levelDefaultLanguage.toLowerCase(),
+        'interestedLanguage': language.interestedLanguage.toLowerCase(),
+        'levelInterestedLanguage':
+            language.levelInterestedLanguage.toLowerCase(),
       },
       'isShowActive': true,
       'isActive': true,
@@ -107,9 +115,7 @@ class _BodyState extends State<Body> {
             child: HeaderStyle2(),
           ),
           HeaderText(text: "InfoLangHeader".tr),
-          DescriptionText(
-              text:
-                  "InfoLangDesc".tr),
+          DescriptionText(text: "InfoLangDesc".tr),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -205,7 +211,8 @@ class _BodyState extends State<Body> {
                       },
                     ),
                   ),
-                  RequiredTextFieldLabel(textLabel: "InfoLevelFirstLanguage".tr),
+                  RequiredTextFieldLabel(
+                      textLabel: "InfoLevelFirstLanguage".tr),
                   Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 0, horizontal: 20.0),
@@ -300,7 +307,8 @@ class _BodyState extends State<Body> {
                       },
                     ),
                   ),
-                  RequiredTextFieldLabel(textLabel: "InfoLevelLanguageInterest".tr),
+                  RequiredTextFieldLabel(
+                      textLabel: "InfoLevelLanguageInterest".tr),
                   Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 0, horizontal: 20.0),
