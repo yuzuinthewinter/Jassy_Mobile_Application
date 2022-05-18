@@ -101,6 +101,7 @@ class _BodyState extends State<Body> {
           Spacer(),
           Center(
               child: DisableToggleButton(
+            color: _formKey.currentState!.validate() ? primaryColor : grey,
             text: "ตกลง",
             minimumSize: Size(size.width * 0.8, size.height * 0.05),
             press: () {
