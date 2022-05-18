@@ -62,14 +62,14 @@ class _PictureUploadState extends State<PictureUpload> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const CurvedWidget(child: HeaderStyle2()),
-          const HeaderText(text: "อัปโหลดรูปภาพโพรไฟล์ของของคุณ"),
-          const DescriptionText(text: "กรุณาอัปโหลดรูปที่ชัดเจนไม่มีอะไรปิดบัง ไม่หันหลัง ไม่อนาจาร ไม่เกี่ยวข้องกับกับการปลุกปั่นศาสนา/การเมือง ไม่ล่อลวงเกี่ยวกับเงิน"),
-          const Padding(
+          HeaderText(text: "ProfilePictureUpload".tr),
+          DescriptionText(text: "ProfilePictureDesc".tr),
+          Padding(
             padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
             child: Text(
-              "รูปภาพที่ถูกเลือกจะไม่สามารถแก้ไขได้กรุณาเลือกรูปอย่างระมัดระวัง",
+              "ProfilePictureWarning".tr,
               textAlign: TextAlign.left,
-              style: TextStyle(
+              style: const TextStyle(
               fontSize: 16, 
               fontWeight: FontWeight.w500,
               color: secoundary
@@ -103,7 +103,7 @@ class _PictureUploadState extends State<PictureUpload> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               OutlinedButtonComponent(
-                text: "อัพโหลดรูปภาพ", 
+                text: "ProfilePictureUploadButton".tr, 
                 minimumSize: Size(size.width * 0.55, size.height * 0.05), 
                 press: () {
                   pickImage();
