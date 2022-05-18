@@ -6,6 +6,7 @@ import 'package:flutter_application_1/component/button/outlined_button.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
@@ -20,6 +21,7 @@ class EditChatList extends StatefulWidget {
 
 class _EditChatListState extends State<EditChatList> {
   var currentUser = FirebaseAuth.instance.currentUser;
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
   CollectionReference chatRooms =
       FirebaseFirestore.instance.collection('ChatRooms');
 
@@ -27,6 +29,33 @@ class _EditChatListState extends State<EditChatList> {
     DateTime datatime = DateTime.parse(timestamp.toDate().toString());
     String formattedTime = DateFormat('KK:mm a').format(datatime);
     return formattedTime.toString();
+  }
+
+  List checkList = [];
+
+  unMatch() async {
+    for (var chat in checkList) {
+      await users.doc(chat['member'][0]).update({
+        'chats': FieldValue.arrayRemove([chat['chatid']]),
+        'likesby': FieldValue.arrayRemove([chat['member'][1]]),
+        'liked': FieldValue.arrayRemove([chat['member'][1]]),
+      });
+      await users.doc(chat['member'][1]).update({
+        'chats': FieldValue.arrayRemove([chat['chatid']]),
+        'likesby': FieldValue.arrayRemove([chat['member'][0]]),
+        'liked': FieldValue.arrayRemove([chat['member'][0]]),
+      });
+      await chatRooms.doc(chat['chatid']).delete();
+    }
+    Navigator.of(context).popAndPushNamed(Routes.JassyHome, arguments: 3);
+  }
+
+  removeChat() async {
+    // for (var chat in checkList) {
+      // await users.doc(currentUser!.uid).update({
+        // 'chats': FieldValue.arrayRemove([chat['chatid']]),
+      // });
+    // }
   }
 
   @override
@@ -186,13 +215,14 @@ class _EditChatListState extends State<EditChatList> {
                                       for (var user in data) {
                                         return InkWell(
                                           onTap: () {
-                                            // Todo: setState
-                                            print(index);
-                                            print(isSelected);
                                             setState(() {
                                               isSelected = !isSelected;
                                             });
-                                            print(isSelected);
+                                            isSelected
+                                                ? checkList.add(
+                                                    userList[index]['chatid'])
+                                                : checkList.remove(
+                                                    userList[index]['chatid']);
                                           },
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -351,12 +381,16 @@ class _EditChatListState extends State<EditChatList> {
                   // Todo: unpair
                   text: "ยกเลิกการจับคู่",
                   minimumSize: Size(size.width * 0.45, size.height * 0.05),
-                  press: () {}),
+                  press: () {
+                    unMatch();
+                  }),
               RoundButton(
                   // Todo: del chat
                   text: "ลบการสนทนา",
                   minimumSize: Size(size.width * 0.45, size.height * 0.05),
-                  press: () {})
+                  press: () {
+                    removeChat();
+                  })
             ],
           ),
           SizedBox(

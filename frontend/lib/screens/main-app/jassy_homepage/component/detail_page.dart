@@ -63,14 +63,14 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
 
   createChatRoom(String userid) async {
     var chatMember = [userid, currentUser!.uid];
-    await users.doc(userid).update({
-      'likesby': FieldValue.arrayRemove([currentUser!.uid]),
-      'liked': FieldValue.arrayRemove([currentUser!.uid]),
-    });
-    await users.doc(currentUser!.uid).update({
-      'likesby': FieldValue.arrayRemove([userid]),
-      'liked': FieldValue.arrayRemove([userid]),
-    });
+    // await users.doc(userid).update({
+    //   'likesby': FieldValue.arrayRemove([currentUser!.uid]),
+    //   'liked': FieldValue.arrayRemove([currentUser!.uid]),
+    // });
+    // await users.doc(currentUser!.uid).update({
+    //   'likesby': FieldValue.arrayRemove([userid]),
+    //   'liked': FieldValue.arrayRemove([userid]),
+    // });
 
     DocumentReference docRef = await chatRooms.add({
       'member': chatMember,
