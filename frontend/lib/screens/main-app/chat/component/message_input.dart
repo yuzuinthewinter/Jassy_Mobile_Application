@@ -40,7 +40,7 @@ class _BodyState extends State<MessageInput> {
 
   @override
   void dispose() {
-    replyController.updateReply('', false, '');
+    replyController.updateReply('', false, '', typemessage);
     messageController.dispose();
     super.dispose();
   }
@@ -74,7 +74,7 @@ class _BodyState extends State<MessageInput> {
       'messageID': docRef.id,
     });
     await chats.doc(widget.chatid).update({
-      'unseenCount': FieldValue.increment(0),
+      'unseenCount': 1,
     });
     await chats.doc(widget.chatid).update({
       'messages': FieldValue.arrayUnion([docRef.id]),
@@ -82,8 +82,9 @@ class _BodyState extends State<MessageInput> {
       'lastMessageSent': message,
       'lastTimestamp': DateTime.now(),
       'unseenCount': FieldValue.increment(1),
+      'type': type,
     });
-    replyController.updateReply('', false, '');
+    replyController.updateReply('', false, '', type);
   }
 
   File? pickedImage;
@@ -187,10 +188,29 @@ class _BodyState extends State<MessageInput> {
                         'Reply : ',
                         style: TextStyle(color: greyDark, fontSize: 14),
                       ),
-                      Text(
-                        controller.message.value,
-                        style: TextStyle(color: greyDark, fontSize: 14),
-                      ),
+                      controller.type.value == 'text'
+                          ? Text(
+                              controller.message.value,
+                              style: TextStyle(color: greyDark, fontSize: 14),
+                              maxLines: 1,
+                              textAlign: TextAlign.left,
+                              overflow: TextOverflow.ellipsis,
+                            )
+                          : controller.type.value == 'image'
+                              ? Image.network(
+                                  controller.message.value,
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.height,
+                                  fit: BoxFit.contain,
+                                )
+                              : const Text(
+                                  'File',
+                                  style:
+                                      TextStyle(color: greyDark, fontSize: 14),
+                                  maxLines: 1,
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                       const Spacer(),
                       Padding(
                           padding: const EdgeInsets.all(10.0),
@@ -203,7 +223,7 @@ class _BodyState extends State<MessageInput> {
                                       _isReply = controller.isReply.value;
                                     });
                                     replyController.updateReply(
-                                        '', _isReply, _chatid);
+                                        '', _isReply, _chatid, typemessage);
                                   },
                                   child: SvgPicture.asset(
                                     "assets/icons/close_circle.svg",

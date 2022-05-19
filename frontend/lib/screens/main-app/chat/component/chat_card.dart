@@ -114,17 +114,46 @@ class _ChatCardBody extends State<ChatCard> {
                                 child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                HeaderText(
-                                    text: StringUtils.capitalize(
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 0, horizontal: 20.0),
+                                  child: Text(
+                                    StringUtils.capitalize(
                                             user['name']['firstname']) +
                                         ' ' +
                                         StringUtils.capitalize(
-                                            user['name']['lastname'])),
+                                            user['name']['lastname']),
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        color: textDark),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: size.width * 0.05),
                                   child: Text(
-                                    widget.chat['lastMessageSent'].toString(),
+                                    widget.chat['type'] == 'text'
+                                        ? widget.chat['lastMessageSent']
+                                            .toString()
+                                        : widget.chat['type'] == 'image'
+                                            ? widget.chat['sentBy'] !=
+                                                    currentUser!.uid
+                                                ? StringUtils.capitalize(
+                                                        user['name']
+                                                            ['firstname']) +
+                                                    ' Send a photo'
+                                                : 'You send a photo'
+                                            : widget.chat['sentBy'] !=
+                                                    currentUser!.uid
+                                                ? StringUtils.capitalize(
+                                                        user['name']
+                                                            ['firstname']) +
+                                                    ' Send a file'
+                                                : 'You send a file',
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: currentUser!.uid ==
@@ -250,7 +279,19 @@ class _ChatCardBody extends State<ChatCard> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: size.width * 0.05),
                                   child: Text(
-                                    widget.chat['lastMessageSent'].toString(),
+                                    widget.chat['type'] == 'text'
+                                        ? widget.chat['lastMessageSent']
+                                            .toString()
+                                        : StringUtils.capitalize(
+                                                        widget.chat['sentBy'] ==
+                                                                user['uid']
+                                                            ? user['name']
+                                                                ['firstname']
+                                                            : 'You') +
+                                                    widget.chat['type'] ==
+                                                'image'
+                                            ? ' Send a photo'
+                                            : ' Send a file',
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: currentUser!.uid ==

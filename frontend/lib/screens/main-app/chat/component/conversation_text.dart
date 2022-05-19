@@ -43,7 +43,7 @@ class _BodyState extends State<ConversationText> {
   bool _isReply = false;
   String _message = '';
   String _chatid = '';
-
+  String _type = 'text';
   getTime(timestamp) {
     DateTime datatime = DateTime.parse(timestamp.toDate().toString());
     String formattedTime = DateFormat('KK:mm a').format(datatime);
@@ -67,8 +67,8 @@ class _BodyState extends State<ConversationText> {
 
   replyMessage(message) {
     _isReply = true;
-    print(_chatid);
-    replyController.updateReply(message['message'], _isReply, _chatid);
+
+    replyController.updateReply(message['message'], _isReply, _chatid, _type);
   }
 
   @override
@@ -76,6 +76,7 @@ class _BodyState extends State<ConversationText> {
     _isReply = replyController.isReply.value;
     _message = replyController.message.toString();
     _chatid = widget.chatid;
+    _type = replyController.type.toString();
     super.initState();
   }
 
@@ -257,14 +258,34 @@ class _BodyState extends State<ConversationText> {
                                   style:
                                       TextStyle(color: greyDark, fontSize: 14),
                                 ),
-                                Text(
-                                  currentMessage['replyFromMessage'],
-                                  style:
-                                      TextStyle(color: greyDark, fontSize: 14),
-                                  maxLines: 1,
-                                  textAlign: TextAlign.left,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                                currentMessage['type'] == 'text'
+                                    ? Text(
+                                        currentMessage['replyFromMessage'],
+                                        style: TextStyle(
+                                            color: greyDark, fontSize: 14),
+                                        maxLines: 1,
+                                        textAlign: TextAlign.left,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    : currentMessage['type'] == 'image'
+                                        ? Image.network(
+                                            currentMessage['url'],
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: MediaQuery.of(context)
+                                                .size
+                                                .height,
+                                            fit: BoxFit.contain,
+                                          )
+                                        : const Text(
+                                            'File',
+                                            style: TextStyle(
+                                                color: greyDark, fontSize: 14),
+                                            maxLines: 1,
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                               ],
                             )
                           : const SizedBox.shrink(),
