@@ -136,7 +136,11 @@ class _BodyState extends State<Body> {
           HeaderText(text: "WelcomeLoginPage".tr),
           DescriptionText(
               text: "DescLoginPage".tr),
-          Padding(
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
             child: Row(
               children: [
@@ -171,10 +175,7 @@ class _BodyState extends State<Body> {
           SizedBox(
             height: size.height * 0.01,
           ),
-          Expanded(
-            child: Column(
-              children: [
-                RequiredTextFieldLabel(textLabel: "PhoneLoginPage".tr),
+          RequiredTextFieldLabel(textLabel: "PhoneLoginPage".tr),
                 SizedBox(
                   height: size.height * 0.01,
                 ),
@@ -225,31 +226,33 @@ class _BodyState extends State<Body> {
                     },
                   ),
                 ),
-              ],
+                SizedBox(
+                  height: size.height * 0.07,
+                ),
+                Center(
+                  child: DisableToggleButton(
+                      text: "LoginPage".tr,
+                      minimumSize: const Size(339, 36),
+                      press: () {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          String phone =
+                              getCoutryCode + '${phoneNumberController.text}';
+                          print(phone);
+                          Navigator.pushNamed(context, Routes.EnterOTP,
+                              arguments: [phone, 'PhoneLoginPage'.tr]);
+                        }
+                      }),
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                const Center(child: NoAccountRegister()),
+                ],
+              ),
             ),
-          ),
-          Center(
-            child: DisableToggleButton(
-                text: "LoginPage".tr,
-                minimumSize: const Size(339, 36),
-                press: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    String phone =
-                        getCoutryCode + '${phoneNumberController.text}';
-                    print(phone);
-                    Navigator.pushNamed(context, Routes.EnterOTP,
-                        arguments: [phone, 'PhoneLoginPage'.tr]);
-                  }
-                }),
-          ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
-          const Center(child: NoAccountRegister()),
-          SizedBox(
-            height: size.height * 0.08,
-          ),
+          )
+          
         ],
       ),
     );
