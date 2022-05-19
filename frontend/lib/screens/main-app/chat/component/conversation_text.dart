@@ -4,12 +4,15 @@ import 'package:dismissible_page/dismissible_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/controllers/reply.dart';
 import 'package:flutter_application_1/models/item.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:translator/translator.dart';
+
 class ConversationText extends StatefulWidget {
   final chatid;
   final user;
@@ -31,12 +34,19 @@ class _BodyState extends State<ConversationText> {
       FirebaseFirestore.instance.collection('ChatRooms');
   CollectionReference messagesdb =
       FirebaseFirestore.instance.collection('Messages');
-  CollectionReference memos = FirebaseFirestore.instance.collection('NoteMemo');
+  CollectionReference memos =
+      FirebaseFirestore.instance.collection('MemoMessages');
   var currentUser = FirebaseAuth.instance.currentUser;
 
+  final _LanguageChoicesLists = ['Thai', 'Korean', 'Indonesian'];
+  ReplyController replyController = Get.put(ReplyController());
+  bool _isReply = false;
+  String _message = '';
+  String _chatid = '';
+  String _type = 'text';
   getTime(timestamp) {
     DateTime datatime = DateTime.parse(timestamp.toDate().toString());
-    String formattedTime = DateFormat('KK:mm:a').format(datatime);
+    String formattedTime = DateFormat('KK:mm a').format(datatime);
     return formattedTime.toString();
   }
 
@@ -46,11 +56,28 @@ class _BodyState extends State<ConversationText> {
     });
   }
 
-  AddFavorite(messageid) async {
-    //todo: do after show list language
-    // await memos.doc(messageid).update({
-    // 'groups': FieldValue.arrayUnion([]),
-    // });
+  AddFavorite(messageid, languageName) async {
+    languageName = languageName.toLowerCase();
+    await memos.doc(currentUser!.uid).set({
+      'owner': currentUser!.uid,
+      '$languageName': FieldValue.arrayUnion([messageid]),
+    });
+    Navigator.of(context).pop();
+  }
+
+  replyMessage(message) {
+    _isReply = true;
+
+    replyController.updateReply(message['message'], _isReply, _chatid, _type);
+  }
+
+  @override
+  void initState() {
+    _isReply = replyController.isReply.value;
+    _message = replyController.message.toString();
+    _chatid = widget.chatid;
+    _type = replyController.type.toString();
+    super.initState();
   }
 
   @override
@@ -155,7 +182,9 @@ class _BodyState extends State<ConversationText> {
         var currentMessage = snap[0];
         var sender = currentMessage['sentBy'];
         bool isCurrentUser = sender == currentUser!.uid;
-        if (currentMessage['status'] == 'unread' && widget.inRoom == true) {
+        if (currentMessage['status'] == 'unread' &&
+            widget.inRoom == true &&
+            currentMessage['sentBy'] != currentUser!.uid) {
           checkReadMessage(currentMessage['messageID']);
         }
         return Padding(
@@ -214,7 +243,64 @@ class _BodyState extends State<ConversationText> {
                     controller: _controller,
                     pressType: PressType.longPress,
                     arrowColor: primaryDarker,
-                    child: TypeTextMessage(isCurrentUser: isCurrentUser, currentMessage: currentMessage),
+                    child: Column(children: [
+                      currentMessage['isReplyMessage'] == true
+                          ? Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(right: size.width * 0.03),
+                                  child: SvgPicture.asset(
+                                      "assets/icons/reply-fill.svg"),
+                                ),
+                                Text(
+                                  'ตอบกลับ : ',
+                                  style:
+                                      TextStyle(color: greyDark, fontSize: 14),
+                                ),
+                                currentMessage['type'] == 'text'
+                                    ? Text(
+                                        currentMessage['replyFromMessage'],
+                                        style: TextStyle(
+                                            color: greyDark, fontSize: 14),
+                                        maxLines: 1,
+                                        textAlign: TextAlign.left,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    : currentMessage['type'] == 'image'
+                                        ? Image.network(
+                                            currentMessage['url'],
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: MediaQuery.of(context)
+                                                .size
+                                                .height,
+                                            fit: BoxFit.contain,
+                                          )
+                                        : const Text(
+                                            'File',
+                                            style: TextStyle(
+                                                color: greyDark, fontSize: 14),
+                                            maxLines: 1,
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                              ],
+                            )
+                          : const SizedBox.shrink(),
+                      currentMessage['type'] == 'text'
+                          ? TypeTextMessage(
+                              isCurrentUser: isCurrentUser,
+                              currentMessage: currentMessage)
+                          : currentMessage['type'] == 'image'
+                              ? TypeImageMessage(
+                                  isCurrentUser: isCurrentUser,
+                                  currentMessage: currentMessage)
+                              : TypeFileMessage(
+                                  isCurrentUser: isCurrentUser,
+                                  currentMessage: currentMessage),
+                    ]),
                   ),
                   if (!isCurrentUser) ...[
                     Text(
@@ -264,9 +350,8 @@ class _BodyState extends State<ConversationText> {
                       // Todo: add onTab here
                       _controller.hideMenu();
                       if (item.id == item1) {
-                        //reply
-                        Clipboard.setData(
-                            ClipboardData(text: message['message']));
+                        replyMessage(message);
+                        print('reply');
                       } else if (item.id == item2) {
                         //copy
                         Clipboard.setData(
@@ -275,55 +360,67 @@ class _BodyState extends State<ConversationText> {
                         //translate
                         print("translate");
                       } else {
-                        //favorite
-                        //todo: after press button : show list language, after that do the function to add memo
                         showModalBottomSheet(
                             isScrollControlled: true,
                             shape: const RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(20))),
-                            context: context, 
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20))),
+                            context: context,
                             builder: (context) {
                               return Container(
-                                padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.02),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.05,
+                                    vertical: size.height * 0.02),
                                 height: size.height * 0.3,
                                 child: Stack(
                                   children: [
                                     Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        icon: Icon(Icons.close, color: primaryDark,))
-                                    ),
+                                        alignment: Alignment.topRight,
+                                        child: IconButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            icon: Icon(
+                                              Icons.close,
+                                              color: primaryDark,
+                                            ))),
                                     Padding(
-                                      padding: EdgeInsets.only(top: size.height * 0.03),
+                                      padding: EdgeInsets.only(
+                                          top: size.height * 0.03),
                                       child: Expanded(
                                         child: ListView.builder(
-                                          scrollDirection: Axis.vertical,
-                                          shrinkWrap: true,
-                                          itemCount: 10,
-                                          itemBuilder: (context, index) {
-                                            return InkWell(
-                                              onTap: () {
-                                                
-                                              },
-                                              child: Padding(
-                                                padding:  EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.015),
-                                                child: Text("Language Group"),
-                                              )
-                                            );
-                                          }
-                                        ),
+                                            scrollDirection: Axis.vertical,
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                _LanguageChoicesLists.length,
+                                            itemBuilder: (context, index) {
+                                              return InkWell(
+                                                  onTap: () {
+                                                    AddFavorite(
+                                                        message['messageID'],
+                                                        _LanguageChoicesLists[
+                                                            index]);
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal:
+                                                                size.width *
+                                                                    0.05,
+                                                            vertical:
+                                                                size.height *
+                                                                    0.015),
+                                                    child: Text(
+                                                        _LanguageChoicesLists[
+                                                            index]),
+                                                  ));
+                                            }),
                                       ),
                                     ),
                                   ],
                                 ),
                               );
-                            }
-                          );
-                        AddFavorite(message);
+                            });
                       }
                     },
                     child: Column(
@@ -361,14 +458,14 @@ class TypeTextMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.6),
-        padding: const EdgeInsets.symmetric(
-            horizontal: 20, vertical: 10),
-        decoration: BoxDecoration(
-            color: isCurrentUser ? primaryLighter : textLight,
-            borderRadius: BorderRadius.circular(20)),
-        child: Text(currentMessage['message']));
+      constraints:
+          BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+          color: isCurrentUser ? primaryLighter : textLight,
+          borderRadius: BorderRadius.circular(20)),
+      child: Text(currentMessage['message']),
+    );
   }
 }
 
@@ -390,21 +487,26 @@ class TypeFileMessage extends StatelessWidget {
       },
       child: Container(
           constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.5,
-              maxHeight: MediaQuery.of(context).size.width * 0.4,),
-          padding: const EdgeInsets.symmetric(
-              horizontal: 10, vertical: 10),
+            maxWidth: MediaQuery.of(context).size.width * 0.5,
+            maxHeight: MediaQuery.of(context).size.width * 0.4,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
               color: isCurrentUser ? primaryLighter : textLight,
               borderRadius: BorderRadius.circular(20)),
           child: Stack(
             children: [
               Padding(
-                padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.01),
-                child: Icon(Icons.description, size: MediaQuery.of(context).size.height * 0.04,),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.width * 0.01),
+                child: Icon(
+                  Icons.description,
+                  size: MediaQuery.of(context).size.height * 0.04,
+                ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1),
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.1),
                 child: Text("file.pdf"),
               ),
             ],
@@ -427,22 +529,23 @@ class TypeImageMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.pushTransparentRoute(ImageMessageDetail(isCurrentUser: isCurrentUser, currentMessage: currentMessage));
+        context.pushTransparentRoute(ImageMessageDetail(
+            isCurrentUser: isCurrentUser, currentMessage: currentMessage));
       },
       child: Container(
-          constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.4,
-              maxHeight: MediaQuery.of(context).size.width * 0.5,
-            ),
-          padding: const EdgeInsets.symmetric(
-              horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              image: const DecorationImage(
-                image: AssetImage("assets/images/chat_message.jpg"),
-                fit: BoxFit.cover
-              )
-          ),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.4,
+          maxHeight: MediaQuery.of(context).size.width * 0.5,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            image: DecorationImage(
+                image: currentMessage['url'].isNotEmpty
+                    ? NetworkImage(currentMessage['url'])
+                    : const AssetImage("assets/images/chat_message.jpg")
+                        as ImageProvider,
+                fit: BoxFit.cover)),
       ),
     );
   }
@@ -461,18 +564,24 @@ class ImageMessageDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DismissiblePage(
-        onDismissed: () {
-          Navigator.of(context).pop();
-        },
-        direction: DismissiblePageDismissDirection.multi,
-        child: Image.asset(
-          "assets/images/chat_message.jpg",
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          fit: BoxFit.contain,
-        ),
-      )
-    );
+        body: DismissiblePage(
+      onDismissed: () {
+        Navigator.of(context).pop();
+      },
+      direction: DismissiblePageDismissDirection.multi,
+      child: currentMessage['url'].isNotEmpty
+          ? Image.network(
+              currentMessage['url'],
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.contain,
+            )
+          : Image.asset(
+              "assets/images/chat_message.jpg",
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.contain,
+            ),
+    ));
   }
 }
