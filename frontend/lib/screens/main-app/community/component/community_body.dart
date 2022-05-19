@@ -17,6 +17,7 @@ import 'package:flutter_application_1/screens/main-app/community/admin/manage_co
 import 'package:flutter_application_1/screens/main-app/community/community_search/community_search.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/community_card.widget.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/no_news_widget.dart';
+import 'package:flutter_application_1/screens/main-app/community/component/report_post.dart';
 import 'package:flutter_application_1/screens/main-app/community/my_group/my_group.dart';
 import 'package:flutter_application_1/screens/main-app/community/post_detail.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -560,7 +561,11 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                                             child: InkWell(
                                                               onTap: () {
                                                                 // Todo: Report
-                                                                // reportModalBottomSheet(context);
+                                                                reportModalBottomSheet(
+                                                                    context,
+                                                                    widget.user,
+                                                                    post[
+                                                                        'postid']);
                                                                 // line 613
                                                               },
                                                               child: Row(
@@ -753,102 +758,101 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
         });
   }
 }
-  // Future<dynamic> reportModalBottomSheet(BuildContext context) {
-  //   return showModalBottomSheet(
-  //       isScrollControlled: true,
-  //       shape: const RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-  //       context: context,
-  //       builder: (context) => Container(
-  //             height: MediaQuery.of(context).size.height * 0.60,
-  //             padding:
-  //                 const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-  //             child: Column(
-  //               children: [
-  //                 Text(
-  //                   "MenuReport".tr,
-  //                   style: const TextStyle(fontSize: 16),
-  //                 ),
-  //                 Align(
-  //                     alignment: Alignment.topLeft,
-  //                     child: Text(
-  //                       "ReportChoose".tr,
-  //                       style: const TextStyle(fontSize: 16),
-  //                     )),
-  //                 Padding(
-  //                   padding:
-  //                       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
-  //                   child: Text(
-  //                     "ReportDesc".tr,
-  //                     style: const TextStyle(fontSize: 14, color: greyDark),
-  //                   ),
-  //                 ),
-  //                 Expanded(
-  //                   child: SingleChildScrollView(
-  //                     child: Column(
-  //                       children: [
-  //                         ReportTypeChoice(
-  //                           text: 'ReportNudity'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportVio'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportThreat'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportProfan'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportTerro'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportChild'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportSexual'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportAnimal'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportScam'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportAbuse'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportOther'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ));
-  // }
 
-
+Future<dynamic> reportModalBottomSheet(BuildContext context, user, postid) {
+  return showModalBottomSheet(
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      context: context,
+      builder: (context) => Container(
+            height: MediaQuery.of(context).size.height * 0.60,
+            padding:
+                const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+            child: Column(
+              children: [
+                Text(
+                  "MenuReport".tr,
+                  style: const TextStyle(fontSize: 16),
+                ),
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "ReportChoose".tr,
+                      style: const TextStyle(fontSize: 16),
+                    )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 15.0, horizontal: 0.0),
+                  child: Text(
+                    "ReportDesc".tr,
+                    style: const TextStyle(fontSize: 14, color: greyDark),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ReportPostTypeChoice(
+                          text: 'ReportNudity'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportVio'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportThreat'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportProfan'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportTerro'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportChild'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportSexual'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportAnimal'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportScam'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportAbuse'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportOther'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ));
+}
