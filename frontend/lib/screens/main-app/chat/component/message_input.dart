@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/controllers/reply.dart';
@@ -35,6 +36,7 @@ class _BodyState extends State<MessageInput> {
   late bool _isReply;
   String _chatid = '';
   String _message = '';
+  String typemessage = 'text';
 
   @override
   void dispose() {
@@ -51,7 +53,7 @@ class _BodyState extends State<MessageInput> {
     super.initState();
   }
 
-  sendMessage(message) async {
+  sendMessage(message, type) async {
     CollectionReference chats =
         FirebaseFirestore.instance.collection('ChatRooms');
     CollectionReference messages =
@@ -61,10 +63,11 @@ class _BodyState extends State<MessageInput> {
       'sentBy': currentUser!.uid,
       'date': DateTime.now(),
       'time': DateTime.now(),
-      'type': '',
+      'type': type,
       'status': 'unread',
       'isReplyMessage': _isReply,
       'replyFromMessage': _message,
+      'url': urlFile,
     });
     messageController.clear();
     await messages.doc(docRef.id).update({
@@ -83,7 +86,7 @@ class _BodyState extends State<MessageInput> {
     replyController.updateReply('', false, '');
   }
 
-  File? image;
+  File? pickedImage;
   Future pickImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
@@ -91,8 +94,10 @@ class _BodyState extends State<MessageInput> {
 
       final imageTemporary = File(image.path);
       setState(() {
-        this.image = imageTemporary;
+        pickedImage = imageTemporary;
+        typemessage = 'image';
       });
+      await uploadImage();
     } on PlatformException catch (e) {
       print('Fail to pick image $e');
     }
@@ -106,6 +111,53 @@ class _BodyState extends State<MessageInput> {
 
     setState(() {
       pickedFile = result.files.first;
+      typemessage = 'file';
+    });
+    await uploadFile();
+  }
+
+  UploadTask? uploadTask;
+  String urlFile = '';
+
+  Future uploadImage() async {
+    final imageFile = File(pickedImage!.path);
+    final path = 'conversations/${pickedImage!.path}';
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+
+    setState(() {
+      uploadTask = ref.putFile(imageFile);
+    });
+
+    final snapshot = await uploadTask!.whenComplete(() {});
+
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    print('Download Link: $urlDownload');
+
+    setState(() {
+      urlFile = urlDownload;
+      uploadTask = null;
+    });
+  }
+
+  Future uploadFile() async {
+    final path = 'conversations/${pickedFile!.name}';
+    final file = File(pickedFile!.path!);
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+
+    setState(() {
+      uploadTask = ref.putFile(file);
+    });
+
+    final snapshot = await uploadTask!.whenComplete(() {});
+
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    print('Download Link: $urlDownload');
+
+    setState(() {
+      urlFile = urlDownload;
+      uploadTask = null;
     });
   }
 
@@ -214,7 +266,8 @@ class _BodyState extends State<MessageInput> {
                       width: widget.size.height * 0.02,
                     ),
                     InkWell(
-                        onTap: () => sendMessage(messageController.text),
+                        onTap: () =>
+                            sendMessage(messageController.text, typemessage),
                         child: SvgPicture.asset("assets/icons/send.svg")),
                   ],
                 )),

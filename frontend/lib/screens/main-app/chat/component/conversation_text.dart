@@ -268,9 +268,17 @@ class _BodyState extends State<ConversationText> {
                               ],
                             )
                           : const SizedBox.shrink(),
-                      TypeTextMessage(
-                          isCurrentUser: isCurrentUser,
-                          currentMessage: currentMessage),
+                      currentMessage['type'] == 'text'
+                          ? TypeTextMessage(
+                              isCurrentUser: isCurrentUser,
+                              currentMessage: currentMessage)
+                          : currentMessage['type'] == 'image'
+                              ? TypeImageMessage(
+                                  isCurrentUser: isCurrentUser,
+                                  currentMessage: currentMessage)
+                              : TypeFileMessage(
+                                  isCurrentUser: isCurrentUser,
+                                  currentMessage: currentMessage),
                     ]),
                   ),
                   if (!isCurrentUser) ...[
@@ -511,8 +519,11 @@ class TypeImageMessage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            image: const DecorationImage(
-                image: AssetImage("assets/images/chat_message.jpg"),
+            image: DecorationImage(
+                image: currentMessage['url'].isNotEmpty
+                    ? NetworkImage(currentMessage['url'])
+                    : const AssetImage("assets/images/chat_message.jpg")
+                        as ImageProvider,
                 fit: BoxFit.cover)),
       ),
     );
@@ -537,12 +548,19 @@ class ImageMessageDetail extends StatelessWidget {
         Navigator.of(context).pop();
       },
       direction: DismissiblePageDismissDirection.multi,
-      child: Image.asset(
-        "assets/images/chat_message.jpg",
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        fit: BoxFit.contain,
-      ),
+      child: currentMessage['url'].isNotEmpty
+          ? Image.network(
+              currentMessage['url'],
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.contain,
+            )
+          : Image.asset(
+              "assets/images/chat_message.jpg",
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.contain,
+            ),
     ));
   }
 }
