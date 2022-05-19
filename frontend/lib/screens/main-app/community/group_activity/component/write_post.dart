@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/component/appbar/write_post_appbar.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/main-app/community/group_activity/group_activity_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 // Todo: crop Image file + แจ้งเตือน + ออกกลุ่ม
@@ -115,71 +117,65 @@ class _WritePostState extends State<WritePost> {
       }),
       body: Container(
         color: textLight,
-        child: KeyboardActions(
-          config: _buildConfig(context),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CurvedWidget(
-                  child: JassyGradientColor(
-                gradientHeight: size.height * 0.23,
-              )),
-              Row(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                    child: CircleAvatar(
-                      backgroundImage: !widget.user['profilePic'].isEmpty
-                          ? NetworkImage(widget.user['profilePic'][0])
-                          : const AssetImage("assets/images/user3.jpg")
-                              as ImageProvider,
-                      radius: size.width * 0.05,
+        child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CurvedWidget(
+                    child: JassyGradientColor(
+                  gradientHeight: size.height * 0.23,
+                )),
+                Expanded(
+                  child: KeyboardActions(
+                    config: _buildConfig(context),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                              child: CircleAvatar(
+                                backgroundImage: !widget.user['profilePic'].isEmpty
+                                    ? NetworkImage(widget.user['profilePic'][0])
+                                    : const AssetImage("assets/images/user3.jpg")
+                                        as ImageProvider,
+                                radius: size.width * 0.05,
+                              ),
+                            ),
+                            Text(
+                              '${StringUtils.capitalize(widget.user['name']['firstname'])} ${StringUtils.capitalize(widget.user['name']['lastname'])}',
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
+                          child: TextFormField(
+                            autofocus: true,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "GroupPostHintText".tr,
+                              hintMaxLines: 4,
+                            ),
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            focusNode: writingTextFocus,
+                            controller: writingTextController,
+                            onChanged: (String text) {
+                              text = writingTextController.text;
+                              postText = text;
+                            },
+                          ),
+                        ),
+                        pickedFile != null 
+                        ? Image.file(File(pickedFile!.path!), fit: BoxFit.cover, height: MediaQuery.of(context).size.height * 0.6, width: double.infinity,)
+                        : Container(),
+                      ],
                     ),
                   ),
-                  Text(
-                    '${StringUtils.capitalize(widget.user['name']['firstname'])} ${StringUtils.capitalize(widget.user['name']['lastname'])}',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
-                child: Expanded(
-                  child: TextFormField(
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "GroupPostHintText".tr,
-                      hintMaxLines: 4,
-                    ),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    focusNode: writingTextFocus,
-                    controller: writingTextController,
-                    onChanged: (String text) {
-                      text = writingTextController.text;
-                      postText = text;
-                    },
-                  ),
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: pickedFile != null
-                        ? Container(
-                            child: Image.file(
-                            File(pickedFile!.path!),
-                            height: size.height * 0.3,
-                          ))
-                        : Container(height: 3),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+                )
+              ],
+            ),
       ),
     );
   }
@@ -205,17 +201,17 @@ class _WritePostState extends State<WritePost> {
                 },
                 child: Container(
                   color: greyLightest,
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: <Widget>[
-                      Icon(
+                      const Icon(
                         Icons.add_photo_alternate,
                         size: 28,
                         color: primaryColor,
                       ),
                       Text(
                         "GroupPostAddPic".tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: textDark,
                             fontSize: 18,
                             fontWeight: FontWeight.w400),
@@ -230,16 +226,4 @@ class _WritePostState extends State<WritePost> {
       ],
     );
   }
-
-  // Future<void> _getImageAndCrop() async {
-  //   File imageFileFromGallery = await ImagePicker.pickImage(source: ImageSource.gallery);
-  //   if (imageFileFromGallery != null) {
-  //     File cropImageFile = await Utils.cropImageFile(imageFileFromGallery);//await cropImageFile(imageFileFromGallery);
-  //     if (cropImageFile != null) {
-  //       setState(() {
-  //         _postImageFile = cropImageFile;
-  //       });
-  //     }
-  //   }
-  // }
 }

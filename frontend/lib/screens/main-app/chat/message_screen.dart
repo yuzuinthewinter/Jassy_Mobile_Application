@@ -130,7 +130,6 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Column(
@@ -170,18 +169,18 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.phone),
-            color: primaryDarker,
-          ),
           PopupMenuButton<MenuItem>(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             onSelected: (value) => {
               if (value == MenuItem.item1)
                 {
-                  _toggleNotification,
+                  print(isNotificationOn),
+                  setState(() {
+                    isNotificationOn = !isNotificationOn;
+                  }),
+                  print("turn off notification"),
+                  print(isNotificationOn)
                 }
               else if (value == MenuItem.item2)
                 {
@@ -245,12 +244,6 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
     );
   }
 
-  void _toggleNotification() {
-    setState(() {
-      isNotificationOn = !isNotificationOn;
-    });
-  }
-
   Future<dynamic> reportModalBottomSheet(BuildContext context) {
     return showModalBottomSheet(
         isScrollControlled: true,
@@ -265,76 +258,84 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                 children: [
                   Text(
                     "MenuReport".tr,
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
                   Align(
                       alignment: Alignment.topLeft,
                       child: Text(
                         "ReportChoose".tr,
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                       )),
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 0.0),
                     child: Text(
                       "ReportDesc".tr,
-                      style: TextStyle(fontSize: 14, color: greyDark),
+                      style: const TextStyle(fontSize: 14, color: greyDark),
                     ),
                   ),
-                  ReportTypeChoice(
-                    text: 'ReportNudity'.tr,
-                    userid: widget.user['uid'],
-                    chatid: widget.chatid,
-                  ),
-                  ReportTypeChoice(
-                    text: 'ReportVio'.tr,
-                    userid: widget.user['uid'],
-                    chatid: widget.chatid,
-                  ),
-                  ReportTypeChoice(
-                    text: 'ReportThreat'.tr,
-                    userid: widget.user['uid'],
-                    chatid: widget.chatid,
-                  ),
-                  ReportTypeChoice(
-                    text: 'ReportProfan'.tr,
-                    userid: widget.user['uid'],
-                    chatid: widget.chatid,
-                  ),
-                  ReportTypeChoice(
-                    text: 'ReportTerro'.tr,
-                    userid: widget.user['uid'],
-                    chatid: widget.chatid,
-                  ),
-                  ReportTypeChoice(
-                    text: 'ReportChild'.tr,
-                    userid: widget.user['uid'],
-                    chatid: widget.chatid,
-                  ),
-                  ReportTypeChoice(
-                    text: 'ReportSexual'.tr,
-                    userid: widget.user['uid'],
-                    chatid: widget.chatid,
-                  ),
-                  ReportTypeChoice(
-                    text: 'ReportAnimal'.tr,
-                    userid: widget.user['uid'],
-                    chatid: widget.chatid,
-                  ),
-                  ReportTypeChoice(
-                    text: 'ReportScam'.tr,
-                    userid: widget.user['uid'],
-                    chatid: widget.chatid,
-                  ),
-                  ReportTypeChoice(
-                    text: 'ReportAbuse'.tr,
-                    userid: widget.user['uid'],
-                    chatid: widget.chatid,
-                  ),
-                  ReportTypeChoice(
-                    text: 'ReportOther'.tr,
-                    userid: widget.user['uid'],
-                    chatid: widget.chatid,
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ReportTypeChoice(
+                            text: 'ReportNudity'.tr,
+                            userid: widget.user['uid'],
+                            chatid: widget.chatid,
+                          ),
+                          ReportTypeChoice(
+                            text: 'ReportVio'.tr,
+                            userid: widget.user['uid'],
+                            chatid: widget.chatid,
+                          ),
+                          ReportTypeChoice(
+                            text: 'ReportThreat'.tr,
+                            userid: widget.user['uid'],
+                            chatid: widget.chatid,
+                          ),
+                          ReportTypeChoice(
+                            text: 'ReportProfan'.tr,
+                            userid: widget.user['uid'],
+                            chatid: widget.chatid,
+                          ),
+                          ReportTypeChoice(
+                            text: 'ReportTerro'.tr,
+                            userid: widget.user['uid'],
+                            chatid: widget.chatid,
+                          ),
+                          ReportTypeChoice(
+                            text: 'ReportChild'.tr,
+                            userid: widget.user['uid'],
+                            chatid: widget.chatid,
+                          ),
+                          ReportTypeChoice(
+                            text: 'ReportSexual'.tr,
+                            userid: widget.user['uid'],
+                            chatid: widget.chatid,
+                          ),
+                          ReportTypeChoice(
+                            text: 'ReportAnimal'.tr,
+                            userid: widget.user['uid'],
+                            chatid: widget.chatid,
+                          ),
+                          ReportTypeChoice(
+                            text: 'ReportScam'.tr,
+                            userid: widget.user['uid'],
+                            chatid: widget.chatid,
+                          ),
+                          ReportTypeChoice(
+                            text: 'ReportAbuse'.tr,
+                            userid: widget.user['uid'],
+                            chatid: widget.chatid,
+                          ),
+                          ReportTypeChoice(
+                            text: 'ReportOther'.tr,
+                            userid: widget.user['uid'],
+                            chatid: widget.chatid,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,
