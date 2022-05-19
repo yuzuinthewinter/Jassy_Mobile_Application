@@ -193,7 +193,7 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                                                         child: Row(
                                                           children: [
                                                             SvgPicture.asset(
-                                                                    "assets/icons/saved_lists.svg"),
+                                                                "assets/icons/saved_lists.svg"),
                                                             SizedBox(
                                                               width:
                                                                   size.width *
@@ -218,8 +218,9 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                                                               widget.post);
                                                         },
                                                         child: Row(
-                                                          children: [SvgPicture.asset(
-                                                                    "assets/icons/unsaved_list.svg"),
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                                "assets/icons/unsaved_list.svg"),
                                                             SizedBox(
                                                               width:
                                                                   size.width *
