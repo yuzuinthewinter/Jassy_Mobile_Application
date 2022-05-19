@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:746123936665:android:31f2250189745e256dc908",
         "android_client_info": {
-          "package_name": "com.example.flutter_application_1"
+          "package_name": "com.jassygroup.jassyapplication"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "746123936665-0mjdsm3a9o6u6pdkg9m7gjgghm53vcni.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.flutter_application_1",
+            "package_name": "com.jassygroup.jassyapplication",
             "certificate_hash": "83373e543eaab49166b6b98f011d85e3a4008060"
           }
         },
@@ -26,7 +26,7 @@
           "client_id": "746123936665-i51a7uvk23jf7sbkq4kmj23omtriv15i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.flutter_application_1",
+            "package_name": "com.jassygroup.jassyapplication",
             "certificate_hash": "feeb95601088c76089b78739cbaacdaca0fcc3d2"
           }
         },

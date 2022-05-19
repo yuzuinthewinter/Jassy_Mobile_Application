@@ -79,7 +79,9 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/jassy_logo2.png"
+  image_path: "assets/images/jassy_icon.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/jassy_icon1.png"
 
   flutter_localizations:
     sdk: flutter
