@@ -188,9 +188,6 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
             ),
           ),
         ),
-        SizedBox(
-          height: size.height * 0.015,
-        ),
         Center(
           child: DisableToggleButton(
               text: "ProfileSaveChange".tr,
@@ -201,9 +198,6 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
                   updateData();
                 }
               }),
-        ),
-        SizedBox(
-          height: size.height * 0.02,
         ),
       ],
     );
@@ -278,18 +272,14 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
                     selected: userInfo.gender.toLowerCase() ==
                         _choicesLists[index].toLowerCase(),
                     onSelected: (selected) {
-                      setState(() {
-                        _defaultChoiceIndex =
-                            selected ? index : _defaultChoiceIndex;
-                      });
-                      userInfo.gender = _choicesLists[_defaultChoiceIndex];
+                      userInfo.gender = _choicesLists[index];
                     },
                     backgroundColor: textLight,
-                    selectedColor: primaryLightest,
+                    selectedColor: grey,
                     labelStyle: TextStyle(
                       color: userInfo.gender.toLowerCase() ==
                               _choicesLists[index].toLowerCase()
-                          ? primaryColor
+                          ? greyDark
                           : greyDark,
                     ),
                   );
