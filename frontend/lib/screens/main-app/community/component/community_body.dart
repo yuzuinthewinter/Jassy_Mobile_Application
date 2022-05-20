@@ -309,7 +309,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
     }
 
     bool isSavedPost = false;
-    var getpost;
+    // var getpost;
     CollectionReference savePosts =
         FirebaseFirestore.instance.collection('SavePosts');
     savePost(post) async {
@@ -337,17 +337,17 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
       Navigator.of(context).pop();
     }
 
-    checkSavePost() {
-      if (postid == getpost['postid']) {
-        return true;
-      } else {
-        return false;
-      }
-    }
+    // checkSavePost() {
+    //   if (postid == getpost['postid']) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // }
 
     @override
     void initState() {
-      isSavedPost = checkSavePost();
+      // isSavedPost = checkSavePost();
       super.initState();
     }
 
@@ -367,7 +367,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
             return const SizedBox.shrink();
           }
           var post = snapshot.data!.docs[0];
-          getpost = post;
+          // getpost = post;
           return StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('Users')
