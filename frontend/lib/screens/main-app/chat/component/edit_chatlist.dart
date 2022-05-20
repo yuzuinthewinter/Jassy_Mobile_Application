@@ -11,6 +11,7 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 class EditChatList extends StatefulWidget {
   const EditChatList({Key? key}) : super(key: key);
@@ -119,8 +120,8 @@ class _EditChatListState extends State<EditChatList> {
                 return const Text('Something went wrong');
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return Center(
+                  child: Lottie.asset("assets/images/loading.json"),
                 );
               }
               if (snapshot.data!.docs[0]['chats'].length == 0) {
@@ -143,8 +144,8 @@ class _EditChatListState extends State<EditChatList> {
                         return const Text('Something went wrong');
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                        return Center(
+                          child: Lottie.asset("assets/images/loading.json"),
                         );
                       }
                       if (snapshot.data!.docs[0]['chats'].length == 0) {

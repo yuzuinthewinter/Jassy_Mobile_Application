@@ -14,6 +14,7 @@ import 'package:flutter_application_1/component/popup_page/successWithButton.dar
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -57,7 +58,9 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
 
     return isLoading
-        ? CircularProgressIndicator()
+        ? Center(
+            child: Lottie.asset("assets/images/loading.json"),
+          )
         : Form(
             key: _formKey,
             child: Column(

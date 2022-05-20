@@ -12,6 +12,7 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 class ChatScreenBody extends StatefulWidget {
   const ChatScreenBody({
@@ -109,8 +110,8 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
                       return const Text('Something went wrong');
                     }
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return Center(
+                        child: Lottie.asset("assets/images/loading.json"),
                       );
                     }
                     if (snapshot.data!.docs[0]['chats'].length == 0) {
@@ -139,8 +140,8 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
                         }
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return Center(
+                            child: Lottie.asset("assets/images/loading.json"),
                           );
                         }
                         if (snapshot.data!.docs.isEmpty) {

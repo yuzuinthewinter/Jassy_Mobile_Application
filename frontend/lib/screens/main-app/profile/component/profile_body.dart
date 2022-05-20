@@ -16,6 +16,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:lottie/lottie.dart';
 
 class ProfileScreenBody extends StatefulWidget {
   const ProfileScreenBody({Key? key}) : super(key: key);
@@ -51,8 +52,8 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
           return const Text('Something went wrong');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: Lottie.asset("assets/images/loading.json"),
           );
         }
         var user = snapshot.data!.docs[0];

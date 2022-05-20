@@ -14,6 +14,7 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:async/async.dart' show StreamGroup;
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class JassyMainBody extends StatefulWidget {
   const JassyMainBody({Key? key}) : super(key: key);
@@ -99,8 +100,8 @@ class _JassyMainBodyState extends State<JassyMainBody> {
               return const Text('Something went wrong');
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: Lottie.asset("assets/images/loading.json"),
               );
             }
 

@@ -12,6 +12,7 @@ import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class LikeScreenBody extends StatefulWidget {
   const LikeScreenBody({Key? key}) : super(key: key);
@@ -93,8 +94,8 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                     return const Text('Something went wrong');
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                    return Center(
+                      child: Lottie.asset("assets/images/loading.json"),
                     );
                   }
                   if (snapshot.data!.docs[0]['likesby'].length == 0) {
