@@ -708,35 +708,46 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                               child: Container(
                                 constraints: const BoxConstraints(
                                     maxHeight: double.infinity),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      post['text'],
-                                      maxLines: null,
-                                      style: const TextStyle(fontSize: 16),
-                                    ),
-                                    SizedBox(
-                                      height: size.height * 0.02,
-                                    ),
-                                    // Todo: post image
-                                    // InkWell(
-                                    //   onTap: () {
-                                    //     Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(builder: (context) => FullScreenImage(context)),
-                                    //     );
-                                    //   },
-
-                                    //   child: Container(
-                                    //     constraints: BoxConstraints(maxHeight: size.height * 0.4, maxWidth: double.infinity),
-                                    //     child: Hero(
-                                    //       tag: 'post id',
-                                    //       child: Image.asset("assets/images/user3.jpg", height: size.height * 0.4, width: double.infinity, fit: BoxFit.cover,)
-                                    //     )
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
+                                child: post['picture'] != ''
+                                    ? Column(
+                                        children: [
+                                          Text(
+                                            post['text'],
+                                            maxLines: null,
+                                            style:
+                                                const TextStyle(fontSize: 16),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                          SizedBox(
+                                            height: size.height * 0.02,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              context.pushTransparentRoute(
+                                                  ImageMessageDetail(
+                                                      urlImage:
+                                                          post['picture']));
+                                            },
+                                            child: Container(
+                                              constraints: BoxConstraints(
+                                                  maxHeight: size.height * 0.4,
+                                                  maxWidth: double.infinity),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          post['picture']),
+                                                      fit: BoxFit.cover)),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Text(
+                                        post['text'],
+                                        maxLines: null,
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
                               ),
                             ),
                             SizedBox(
@@ -767,6 +778,40 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                     });
               });
         });
+  }
+}
+
+class ImageMessageDetail extends StatelessWidget {
+  const ImageMessageDetail({
+    Key? key,
+    required this.urlImage,
+  }) : super(key: key);
+
+  final urlImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: DismissiblePage(
+      onDismissed: () {
+        Navigator.of(context).pop();
+      },
+      direction: DismissiblePageDismissDirection.multi,
+      child: urlImage.isNotEmpty
+          ? Image.network(
+              urlImage,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.contain,
+            )
+          : Image.asset(
+              //todo: default image
+              "assets/images/chat_message.jpg",
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.contain,
+            ),
+    ));
   }
 }
 

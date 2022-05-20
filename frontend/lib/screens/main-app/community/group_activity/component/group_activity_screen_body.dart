@@ -1,5 +1,6 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -507,24 +508,34 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                               maxLines: null,
                               style: TextStyle(fontSize: 16),
                             ),
-                            // Todo: if has image show
-                            // SizedBox(height: size.height * 0.02,),
-                            // InkWell(
-                            //   onTap: () {
-                            //     Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(builder: (context) => FullScreenImage(context)),
-                            //     );
-                            //   },
-
-                            //   child: Container(
-                            //     constraints: BoxConstraints(maxHeight: size.height * 0.4, maxWidth: double.infinity),
-                            //     child: Hero(
-                            //       tag: 'post id',
-                            //       child: Image.asset("assets/images/user3.jpg", height: size.height * 0.4, width: double.infinity, fit: BoxFit.cover,)
-                            //     )
-                            //   ),
-                            // ),
+                            post['picture'].isNotEmpty
+                                ? Column(
+                                    children: [
+                                      SizedBox(
+                                        height: size.height * 0.02,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          context.pushTransparentRoute(
+                                              ImageMessageDetail(
+                                                  urlImage: post['picture']));
+                                        },
+                                        child: Container(
+                                          constraints: BoxConstraints(
+                                              maxHeight: size.height * 0.4,
+                                              maxWidth: double.infinity),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      post['picture']),
+                                                  fit: BoxFit.cover)),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox.shrink(),
                           ],
                         )),
                   ),
@@ -556,6 +567,40 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
         );
       },
     );
+  }
+}
+
+class ImageMessageDetail extends StatelessWidget {
+  const ImageMessageDetail({
+    Key? key,
+    required this.urlImage,
+  }) : super(key: key);
+
+  final urlImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: DismissiblePage(
+      onDismissed: () {
+        Navigator.of(context).pop();
+      },
+      direction: DismissiblePageDismissDirection.multi,
+      child: urlImage.isNotEmpty
+          ? Image.network(
+              urlImage,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.contain,
+            )
+          : Image.asset(
+              //todo: default image
+              "assets/images/chat_message.jpg",
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.contain,
+            ),
+    ));
   }
 }
 
