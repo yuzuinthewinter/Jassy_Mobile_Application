@@ -109,8 +109,6 @@ class _PostDetailState extends State<PostDetail> {
                           PopupMenuItem(
                               value: MenuItem.item1,
                               onTap: () {
-                                // print(isNotificationOn);
-                                // _toggleNotification;
                               },
                               child: Row(
                                 children: [
@@ -124,15 +122,15 @@ class _PostDetailState extends State<PostDetail> {
                                       : Text("MenuNotificationOn".tr),
                                 ],
                               )),
-                          PopupMenuItem(
-                              value: MenuItem.item2,
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset("assets/icons/leave_group.svg"),
-                                  SizedBox(width: size.width * 0.03,),
-                                  Text("GroupLeave".tr),
-                                ],
-                            )),
+                          // PopupMenuItem(
+                          //     value: MenuItem.item2,
+                          //     child: Row(
+                          //       children: [
+                          //         SvgPicture.asset("assets/icons/leave_group.svg"),
+                          //         SizedBox(width: size.width * 0.03,),
+                          //         Text("GroupLeave".tr),
+                          //       ],
+                          //   )),
                         ],
                         icon: const Icon(
                           Icons.more_vert,

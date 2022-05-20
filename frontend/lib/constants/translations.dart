@@ -118,6 +118,7 @@ class LocaleString extends Translations {
           "GroupPostToday": "Today",
           "GroupPostYesterday": "Yesterday",
           "GroupPostCommentHintText": "Write a comment",
+          "GroupDeleteWarning": "Are you want to delete this post ?",
 
           //Jassy Chat Page
           "ChatPage": "Chat",
@@ -140,6 +141,7 @@ class LocaleString extends Translations {
           //unmatch
           "WarningUnmatch": "Are you sure you want to unmatch?",
           "WarningReport": "Are you sure you want to report this user?",
+          "WarningReportPost": "Are you sure you want to report this post?",
           //Report
           "ReportDetail": "Report Details",
           "ReportWarning":
@@ -300,6 +302,7 @@ class LocaleString extends Translations {
           "GroupPostToday": "วันนี้",
           "GroupPostYesterday": "เมื่อวานนี้",
           "GroupPostCommentHintText": "เขียนคอมเมนต์",
+          "GroupDeleteWarning": "คุณต้องการลบโพสต์นี้ใช่หรือไม่ ?",
 
           //Jassy Chat Page
           "ChatPage": "แชท",
@@ -322,6 +325,7 @@ class LocaleString extends Translations {
           //unmatch
           "WarningUnmatch": "คุณต้องการยกเลิกการจับคู่ใช่หรือไม่ ?",
           "WarningReport": "คุณต้องการรายงานผู้ใช้รายนี้ใช่หรือไม่ ?",
+          "WarningReportPost": "คุณต้องการรายงานโพสต์นี้ใช่หรือไม่ ?",
           //Report
           "ReportDetail": "รายละเอียดการรายงาน",
           "ReportWarning":

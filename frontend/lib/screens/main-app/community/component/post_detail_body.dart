@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/like_button_widget.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
+import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
 import 'package:flutter_application_1/component/text/report_choice.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/comment_input.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/comment_tree.dart';
+import 'package:flutter_application_1/screens/main-app/community/component/report_post.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -39,9 +42,11 @@ class _PostDetailBodyState extends State<PostDetailBody> {
 
   @override
   void initState() {
+    // isSavedPost = checkSavePost();
     super.initState();
     myFocusNode = FocusNode();
   }
+
   bool isNotificationOn = false;
   bool isSavedPost = false;
 
@@ -67,6 +72,42 @@ class _PostDetailBodyState extends State<PostDetailBody> {
       return formattedDaywithyear;
     }
   }
+
+  CollectionReference savePosts =
+      FirebaseFirestore.instance.collection('SavePosts');
+  savePost(post) async {
+    await savePosts.doc(widget.user['uid']).update({
+      'savedBy': widget.user['uid'],
+      'saved': FieldValue.arrayUnion([post['postid']]),
+    });
+  }
+
+  unsavePost(post) async {
+    await savePosts.doc(widget.user['uid']).update({
+      'saved': FieldValue.arrayRemove([post['postid']]),
+    });
+  }
+
+  deletePost(post) async {
+    CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
+    CollectionReference groups =
+        FirebaseFirestore.instance.collection('Community');
+    await posts.doc(post['postid']).delete();
+    await groups.doc(post['groupid']).update({
+      'postsID': FieldValue.arrayRemove([post['postid']]),
+    });
+    Navigator.of(context).pop();
+  }
+
+  // checkSavePost() async {
+  //   CollectionReference savePost =
+  //       FirebaseFirestore.instance.collection('SavePosts');
+  //   if (widget.post['postid']) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -120,105 +161,212 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                         ),
                       ),
                       InkWell(
-                        onTap: () {
-                          showModalBottomSheet(
-                            shape: const RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(20))),
-                            context: context, 
-                            builder: (context) {
-                              return Container(
-                                height: MediaQuery.of(context).size.height * 0.30,
-                                padding: const EdgeInsets.only(top: 5.0, left: 20.0, right: 20, bottom: 15),
-                                child: Stack(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
-                                      child: Column(
-                                        children: [
-                                          Expanded(
-                                            child: InkWell(
-                                              onTap: () {
-                                                // Todo: saved post
-                                                Navigator.pop(context);
-                                                setState(() {
-                                                  isSavedPost = !isSavedPost;
-                                                });
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  isSavedPost ? SvgPicture.asset("assets/icons/unsaved_list.svg") :SvgPicture.asset("assets/icons/saved_lists.svg"),
-                                                  SizedBox(width: size.width * 0.03,),
-                                                  isSavedPost ? const Text("เลิกบันทึกโพสต์") : const Text("บันทึกโพสต์")
-                                                ],
+                          onTap: () {
+                            showModalBottomSheet(
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20))),
+                                context: context,
+                                builder: (context) {
+                                  return Container(
+                                    height: widget.post['postby'] ==
+                                            widget.user['uid']
+                                        ? MediaQuery.of(context).size.height *
+                                            0.30
+                                        : MediaQuery.of(context).size.height *
+                                            0.24,
+                                    padding: const EdgeInsets.only(
+                                        top: 5.0,
+                                        left: 20.0,
+                                        right: 20,
+                                        bottom: 15),
+                                    child: Stack(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.02),
+                                          child: Column(
+                                            children: [
+                                              isSavedPost == false
+                                                  ? Expanded(
+                                                      child: InkWell(
+                                                        onTap: () async {
+                                                          Navigator.pop(
+                                                              context);
+                                                          setState(() {
+                                                            isSavedPost = true;
+                                                          });
+                                                          await savePost(
+                                                              widget.post);
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                                "assets/icons/saved_lists.svg"),
+                                                            SizedBox(
+                                                              width:
+                                                                  size.width *
+                                                                      0.03,
+                                                            ),
+                                                            const Text(
+                                                                "บันทึกโพสต์")
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Expanded(
+                                                      child: InkWell(
+                                                        onTap: () async {
+                                                          Navigator.pop(
+                                                              context);
+                                                          setState(() {
+                                                            isSavedPost = false;
+                                                          });
+                                                          await unsavePost(
+                                                              widget.post);
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                                "assets/icons/unsaved_list.svg"),
+                                                            SizedBox(
+                                                              width:
+                                                                  size.width *
+                                                                      0.03,
+                                                            ),
+                                                            const Text(
+                                                                "เลิกบันทึกโพสต์")
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                              widget.post['postby'] !=
+                                                      widget.user['uid']
+                                                  ? Expanded(
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          // Todo: Report
+                                                          reportModalBottomSheet(
+                                                              context,
+                                                              widget.user,
+                                                              widget.post[
+                                                                  'postid']);
+                                                          // line 613
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                                "assets/icons/report.svg"),
+                                                            SizedBox(
+                                                              width:
+                                                                  size.width *
+                                                                      0.03,
+                                                            ),
+                                                            Text(
+                                                                "GroupPostReport"
+                                                                    .tr)
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : const SizedBox.shrink(),
+                                              widget.post['postby'] ==
+                                                      widget.user['uid']
+                                                  ? Expanded(
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return WarningPopUpWithButton(
+                                                                  text:
+                                                                      'GroupDeleteWarning'
+                                                                          .tr,
+                                                                  okPress: () {
+                                                                    deletePost(
+                                                                        widget
+                                                                            .post);
+                                                                  },
+                                                                );
+                                                              });
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                                "assets/icons/del_bin_circle.svg"),
+                                                            SizedBox(
+                                                              width:
+                                                                  size.width *
+                                                                      0.03,
+                                                            ),
+                                                            Text(
+                                                                "GroupPostDelete"
+                                                                    .tr)
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : const SizedBox.shrink(),
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                    setState(() {
+                                                      isNotificationOn =
+                                                          !isNotificationOn;
+                                                    });
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      isNotificationOn
+                                                          ? SvgPicture.asset(
+                                                              "assets/icons/notification_off.svg")
+                                                          : SvgPicture.asset(
+                                                              "assets/icons/notification_on.svg"),
+                                                      SizedBox(
+                                                        width:
+                                                            size.width * 0.03,
+                                                      ),
+                                                      isNotificationOn
+                                                          ? Text(
+                                                              "MenuNotificationOff"
+                                                                  .tr)
+                                                          : Text(
+                                                              "MenuNotificationOn"
+                                                                  .tr)
+                                                    ],
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                          Expanded(
-                                            child: InkWell(
-                                              onTap: () {
-                                                // Todo: Report
-                                                // reportModalBottomSheet(context);
-                                                // line 338
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  SvgPicture.asset("assets/icons/report.svg"),
-                                                  SizedBox(width: size.width * 0.03,),
-                                                  const Text("รายงานโพสต์")
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: InkWell(
-                                              onTap: () {
-                                                // Todo: delete post
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  SvgPicture.asset("assets/icons/del_bin_circle.svg"),
-                                                  SizedBox(width: size.width * 0.03,),
-                                                  const Text("ลบโพสต์")
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: InkWell(
-                                              onTap: () {
-                                                Navigator.pop(context);
-                                                setState(() {
-                                                  isNotificationOn = !isNotificationOn;
-                                                });
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  isNotificationOn ? SvgPicture.asset("assets/icons/notification_off.svg") : SvgPicture.asset("assets/icons/notification_on.svg"),
-                                                  SizedBox(width: size.width * 0.03,),
-                                                  isNotificationOn ? Text("MenuNotificationOff".tr) : Text("MenuNotificationOn".tr)
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                        Align(
+                                            alignment: Alignment.topRight,
+                                            child: IconButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                icon: const Icon(
+                                                  Icons.close,
+                                                  color: primaryDarker,
+                                                ))),
+                                      ],
                                     ),
-                                    Align(
-                                      alignment: Alignment.topRight, 
-                                      child: IconButton(
-                                        onPressed: () {Navigator.pop(context);}, 
-                                        icon: const Icon(Icons.close, color: primaryDarker,)
-                                      )
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-                          );
-                        },
-                        child: Icon(Icons.more_horiz, color: primaryColor, size: size.width * 0.08,)
-                      )
+                                  );
+                                });
+                          },
+                          child: Icon(
+                            Icons.more_horiz,
+                            color: primaryColor,
+                            size: size.width * 0.08,
+                          ))
                     ],
                   ),
                 ),
@@ -335,100 +483,100 @@ class Input extends StatelessWidget {
   }
 }
 
-  // Future<dynamic> reportModalBottomSheet(BuildContext context) {
-  //   return showModalBottomSheet(
-  //       isScrollControlled: true,
-  //       shape: const RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-  //       context: context,
-  //       builder: (context) => Container(
-  //             height: MediaQuery.of(context).size.height * 0.60,
-  //             padding:
-  //                 const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-  //             child: Column(
-  //               children: [
-  //                 Text(
-  //                   "MenuReport".tr,
-  //                   style: const TextStyle(fontSize: 16),
-  //                 ),
-  //                 Align(
-  //                     alignment: Alignment.topLeft,
-  //                     child: Text(
-  //                       "ReportChoose".tr,
-  //                       style: const TextStyle(fontSize: 16),
-  //                     )),
-  //                 Padding(
-  //                   padding:
-  //                       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
-  //                   child: Text(
-  //                     "ReportDesc".tr,
-  //                     style: const TextStyle(fontSize: 14, color: greyDark),
-  //                   ),
-  //                 ),
-  //                 Expanded(
-  //                   child: SingleChildScrollView(
-  //                     child: Column(
-  //                       children: [
-  //                         ReportTypeChoice(
-  //                           text: 'ReportNudity'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportVio'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportThreat'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportProfan'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportTerro'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportChild'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportSexual'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportAnimal'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportScam'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportAbuse'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                         ReportTypeChoice(
-  //                           text: 'ReportOther'.tr,
-  //                           userid: widget.user['uid'],
-  //                           chatid: widget.chatid,
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ));
-  // }
+Future<dynamic> reportModalBottomSheet(BuildContext context, user, postid) {
+  return showModalBottomSheet(
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      context: context,
+      builder: (context) => Container(
+            height: MediaQuery.of(context).size.height * 0.60,
+            padding:
+                const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+            child: Column(
+              children: [
+                Text(
+                  "MenuReport".tr,
+                  style: const TextStyle(fontSize: 16),
+                ),
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "ReportChoose".tr,
+                      style: const TextStyle(fontSize: 16),
+                    )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 15.0, horizontal: 0.0),
+                  child: Text(
+                    "ReportDesc".tr,
+                    style: const TextStyle(fontSize: 14, color: greyDark),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ReportPostTypeChoice(
+                          text: 'ReportNudity'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportVio'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportThreat'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportProfan'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportTerro'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportChild'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportSexual'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportAnimal'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportScam'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportAbuse'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportOther'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ));
+}
