@@ -98,7 +98,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                     onTab: () {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
-                        return MarkMessageAsLike();
+                        return MarkMessageAsLike(user);
                       }));
                     },
                   ),
@@ -106,11 +106,11 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                     size: size,
                     icon: SvgPicture.asset("assets/icons/saved_lists.svg"),
                     // Todo: add translation
-                    text: "รายการที่บันทึกไว้",
+                    text: "ProfileSavedPost".tr,
                     onTab: () {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
-                        return SavedPost();
+                        return SavedPost(user);
                       }));
                     },
                   ),                  

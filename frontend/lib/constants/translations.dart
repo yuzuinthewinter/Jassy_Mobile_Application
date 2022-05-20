@@ -64,9 +64,11 @@ class LocaleString extends Translations {
           "InfoLevelLanguageInterest": "Level of Language Interest",
           //Profile Picture Upload
           "ProfilePictureUpload": "Please upload your profile picture.",
-          "ProfilePictureDesc" : "Please upload a clear picture. Don't look back, obscene, involved in religious/political provocation and don't deceive money.",
-          "ProfilePictureWarning" : "The selected picture cannot be edited, please select the picture carefully.",
-          "ProfilePictureUploadButton" : "Upload Image",
+          "ProfilePictureDesc":
+              "Please upload a clear picture. Don't look back, obscene, involved in religious/political provocation and don't deceive money.",
+          "ProfilePictureWarning":
+              "The selected picture cannot be edited, please select the picture carefully.",
+          "ProfilePictureUploadButton": "Upload Image",
 
           //Main-Application
           //Jassy Main Page
@@ -174,8 +176,11 @@ class LocaleString extends Translations {
           "ProfileSetting": "Profile Settings",
           "ProfileHelp": "Help Center",
           "ProfileAppSetting": "Settings",
-          "ProfileMarkAsLike": "Mask as Like",
-          "ProfileSavedPost": "Saved Post",
+          "ProfileMarkAsLike": "Mark as Like",
+          "ProfileSavedPost": "Saved Post ",
+          "ProfileSavedPostBy": "Post from ",
+          "ProfileSeeSavedPost": "See Original Post",
+          "ProfileRemoveSavedPost": "Remove saved post",
           "ProfileAboutJassy": "About Jassy",
           "ProfileLogOut": "Log Out",
 
@@ -254,9 +259,11 @@ class LocaleString extends Translations {
           "InfoLevelLanguageInterest": "ระดับของภาษาที่สนใจ",
           //Profile Picture Upload
           "ProfilePictureUpload": "อัปโหลดรูปภาพโพรไฟล์ของของคุณ",
-          "ProfilePictureDesc" : "กรุณาอัปโหลดรูปที่ชัดเจนไม่มีอะไรปิดบัง ไม่หันหลัง ไม่อนาจาร ไม่เกี่ยวข้องกับกับการปลุกปั่นศาสนา/การเมือง ไม่ล่อลวงเกี่ยวกับเงิน",
-          "ProfilePictureWarning" : "รูปภาพที่ถูกเลือกจะไม่สามารถแก้ไขได้กรุณาเลือกรูปอย่างระมัดระวัง",
-          "ProfilePictureUploadButton" : "อัพโหลดรูปภาพ",
+          "ProfilePictureDesc":
+              "กรุณาอัปโหลดรูปที่ชัดเจนไม่มีอะไรปิดบัง ไม่หันหลัง ไม่อนาจาร ไม่เกี่ยวข้องกับกับการปลุกปั่นศาสนา/การเมือง ไม่ล่อลวงเกี่ยวกับเงิน",
+          "ProfilePictureWarning":
+              "รูปภาพที่ถูกเลือกจะไม่สามารถแก้ไขได้กรุณาเลือกรูปอย่างระมัดระวัง",
+          "ProfilePictureUploadButton": "อัพโหลดรูปภาพ",
 
           //Main-Application
           //Jassy Main Page
@@ -365,6 +372,9 @@ class LocaleString extends Translations {
           "ProfileAppSetting": "การตั้งค่า",
           "ProfileMarkAsLike": "ข้อความที่ชื่นชอบ",
           "ProfileSavedPost": "รายการที่บันทึกไว้",
+          "ProfileSavedPostBy": "โพสต์จาก ",
+          "ProfileSeeSavedPost": "ดูโพสต์ต้นฉบับ",
+          "ProfileRemoveSavedPost": "เลิกบันทึก",
           "ProfileAboutJassy": "เกี่ยวกับแจสซี่",
           "ProfileLogOut": "ออกจากระบบ",
 

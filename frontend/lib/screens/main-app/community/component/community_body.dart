@@ -309,18 +309,28 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
     }
 
     bool isSavedPost = false;
-    // var getpost;
+    var currentUser = FirebaseAuth.instance.currentUser;
     CollectionReference savePosts =
         FirebaseFirestore.instance.collection('SavePosts');
+        
     savePost(post) async {
-      await savePosts.doc(widget.user['uid']).update({
-        'savedBy': widget.user['uid'],
-        'saved': FieldValue.arrayUnion([post['postid']]),
-      });
+      var queryPost = savePosts.where('savedBy', isEqualTo: currentUser!.uid);
+      QuerySnapshot querySnapshot = await queryPost.get();
+      if (querySnapshot.docs.isNotEmpty) {
+        await savePosts.doc(currentUser.uid).update({
+          'savedBy': widget.user['uid'],
+          'saved': FieldValue.arrayUnion([post['postid']])
+        });
+      } else {
+        await savePosts.doc(currentUser.uid).set({
+          'savedBy': widget.user['uid'],
+          'saved': FieldValue.arrayUnion([post['postid']])
+        });
+      }
     }
 
     unsavePost(post) async {
-      await savePosts.doc(widget.user['uid']).update({
+      await savePosts.doc(currentUser!.uid).update({
         'saved': FieldValue.arrayRemove([post['postid']]),
       });
     }
