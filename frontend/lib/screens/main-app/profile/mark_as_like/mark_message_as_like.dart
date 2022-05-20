@@ -119,7 +119,12 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                                       itemBuilder: (context, i) {
                                         var isSelect = isSelected;
                                         return favMassageItem(
-                                            context, i, memo, language, index);
+                                            context,
+                                            i,
+                                            memo,
+                                            language,
+                                            index,
+                                            memo['listLanguage']);
                                       },
                                     ),
                                   ),
@@ -147,7 +152,7 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
     Navigator.of(context).pop();
   }
 
-  Widget favMassageItem(context, i, memo, language, index) {
+  Widget favMassageItem(context, i, memo, language, index, listLanguage) {
     List colors = [primaryLightest, tertiaryLightest, secoundaryLightest];
     Size size = MediaQuery.of(context).size;
     bool isCheck = false;
@@ -168,7 +173,7 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
           var message = snapshot.data!.docs[0];
           return InkWell(
             onTap: () {
-              int color = index.toInt() % memo['listLanguage'].length.toInt();
+              int color = index.toInt() % listLanguage.length.toInt();
               Navigator.push(
                   context,
                   MaterialPageRoute(
