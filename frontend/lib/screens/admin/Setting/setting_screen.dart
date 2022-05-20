@@ -21,7 +21,7 @@ class SettingScreen extends StatelessWidget {
   var currentUser = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
-  void signOut() async {
+  void signOut(context) async {
     await users.doc(currentUser!.uid).update({
       'isActive': false,
       'timeStamp': DateTime.now(),
@@ -29,6 +29,8 @@ class SettingScreen extends StatelessWidget {
     await GoogleSignIn().signOut();
     await FacebookAuth.instance.logOut();
     await FirebaseAuth.instance.signOut();
+    Navigator.popUntil(
+        context, ModalRoute.withName(Navigator.defaultRouteName));
   }
 
   @override
@@ -119,9 +121,7 @@ class SettingScreen extends StatelessWidget {
                     ],
                   ),
                   onTap: () async {
-                    signOut();
-                    Navigator.popUntil(context,
-                        ModalRoute.withName(Navigator.defaultRouteName));
+                    signOut(context);
                   },
                 ))
               ]),

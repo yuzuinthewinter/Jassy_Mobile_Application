@@ -157,7 +157,8 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
                           ),
                         ),
                         Padding(
-                            padding: const EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
+                            padding:
+                                const EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
                             child: Row(children: [
                               Text(
                                 "ReportAttach".tr,
@@ -192,12 +193,15 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
                           children: <Widget>[
                             Expanded(
                               child: pickedFile != null
-                                  ? Container(
-                                      child: Image.file(
+                                  ? Image.file(
                                       File(pickedFile!.path!),
-                                      height: size.height * 0.3,
-                                    ))
-                                  : Container(height: 3),
+                                      fit: BoxFit.cover,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.6,
+                                      width: double.infinity,
+                                    )
+                                  : Container(),
                             ),
                           ],
                         ),

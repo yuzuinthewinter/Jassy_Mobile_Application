@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controllers/reply.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/conversation_text.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/message_input.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -34,7 +35,6 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
 
   @override
   void initState() {
-    print(widget.inRoom);
     if (widget.inRoom == true) {
       updateUnseen();
     }
@@ -60,7 +60,8 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
             ),
           ),
           widget.user['report'].length < 3
-              ? MessageInput(size: size, chatid: widget.chatid)
+              ? MessageInput(
+                  size: size, chatid: widget.chatid)
               : Center(
                   heightFactor: 5,
                   child: Text(
