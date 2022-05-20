@@ -43,8 +43,8 @@ class _PostDetailBodyState extends State<PostDetailBody> {
   @override
   void initState() {
     // isSavedPost = checkSavePost();
-    super.initState();
     myFocusNode = FocusNode();
+    super.initState();
   }
 
   bool isNotificationOn = false;
@@ -440,7 +440,10 @@ class _PostDetailBodyState extends State<PostDetailBody> {
             ),
           ),
         ),
-        CommentInput(size: size, child: Input(myFocusNode: myFocusNode)),
+        CommentInput(
+          size: size,
+          child: Input(myFocusNode: myFocusNode),
+        ),
       ],
     );
   }
@@ -454,6 +457,26 @@ class Input extends StatelessWidget {
   }) : super(key: key);
 
   final FocusNode myFocusNode;
+
+  //TODO: implement add comment
+  //String type = 'text';
+  // addComment(postid, comment) async {
+  //   var currentUser = FirebaseAuth.instance.currentUser;
+  //   CollectionReference comments =
+  //       FirebaseFirestore.instance.collection('Comments');
+  //   CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
+  //   DocumentReference docRef = await comments.add({
+  //     'postid': postid,
+  //     'comment': comment,
+  //     'type': type,
+  //     'commentBy': currentUser!.uid,
+  //     'date': DateTime.now(),
+  //     'likes': [],
+  //   });
+  //   await posts.doc(postid).update({
+  //     'comments': FieldValue.arrayUnion([docRef.id])
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
