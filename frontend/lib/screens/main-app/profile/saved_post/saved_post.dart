@@ -74,17 +74,18 @@ class _SavedPostState extends State<SavedPost> {
                           shrinkWrap: true,
                           itemCount: savepost['saved'].length,
                           itemBuilder: (context, index) {
+                            int reverse = savepost['saved'].length - 1 - index;
                             return InkWell(
                                 onTap: () {
                                   Navigator.push(context,
                                       CupertinoPageRoute(builder: (context) {
                                     return PostDetail(
-                                      postid: savepost['saved'][index],
+                                      postid: savepost['saved'][reverse],
                                     );
                                   }));
                                 },
                                 child: savedListItem(
-                                    savepost['saved'][index], index));
+                                    savepost['saved'][reverse], reverse));
                           });
                     }),
               )

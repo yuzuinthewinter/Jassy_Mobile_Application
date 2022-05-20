@@ -168,8 +168,7 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
           var message = snapshot.data!.docs[0];
           return InkWell(
             onTap: () {
-              // go to detail page
-              int color = (index % memo['listLanguage'].length).toInt();
+              int color = index.toInt() % memo['listLanguage'].length.toInt();
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -181,7 +180,8 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
             },
             child: Container(
               padding: EdgeInsets.all(size.height * 0.015),
-              color: colors[(index % memo['listLanguage'].length).toInt()],
+              color:
+                  colors[index.toInt() % memo['listLanguage'].length.toInt()],
               child: Stack(
                 children: [
                   Align(
