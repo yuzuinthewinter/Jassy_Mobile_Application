@@ -10,16 +10,18 @@ import 'package:flutter_application_1/screens/main-app/chat/component/edit_chatl
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ChatScreenBody extends StatefulWidget {
-  const ChatScreenBody({Key? key,}) : super(key: key);
+  const ChatScreenBody({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ChatScreenBody> createState() => _ChatScreenBodyState();
 }
 
 class _ChatScreenBodyState extends State<ChatScreenBody> {
-
   var currentUser = FirebaseAuth.instance.currentUser;
   bool isSelected = false;
   TextEditingController searchController = TextEditingController();
@@ -51,9 +53,12 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
               context,
               MaterialPageRoute(builder: (context) => const EditChatList()),
             );
-          }, 
-          icon: SvgPicture.asset('assets/icons/list_check.svg',), 
-          color: primaryDarker,),
+          },
+          icon: SvgPicture.asset(
+            'assets/icons/list_check.svg',
+          ),
+          color: primaryDarker,
+        ),
       ),
       body: Column(
         children: [
@@ -92,39 +97,81 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
             ),
           ),
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              //call all chatroom
-              stream: FirebaseFirestore.instance
-                  .collection('Users')
-                  .where('uid', isEqualTo: currentUser!.uid)
-                  .snapshots(includeMetadataChanges: true),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Text('Something went wrong');
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.data!.docs[0]['chats'].length == 0) {
-                  return const Center(child: Text('Let\'s start conversation'));
-                }
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-                  itemCount: snapshot.data!.docs[0]['chats'].length,
-                  itemBuilder: (context, int index) {
+              child: StreamBuilder<QuerySnapshot>(
+                  //call all chatroom
+                  stream: FirebaseFirestore.instance
+                      .collection('Users')
+                      .where('uid', isEqualTo: currentUser!.uid)
+                      .snapshots(includeMetadataChanges: true),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.data!.docs[0]['chats'].length == 0) {
+                      return const Center(
+                          child: Text('Let\'s start conversation'));
+                    }
+                    var listChatid = snapshot.data!.docs[0]['chats'];
                     var data = snapshot.data!.docs[0];
-                    return ChatCard(
-                      chatid: data['chats'][index],
-                      currentUser: data,
-                      query: searchController.text.toLowerCase(),
+                    return StreamBuilder<QuerySnapshot>(
+                      //call list chat id
+                      stream: FirebaseFirestore.instance
+                          .collection('ChatRooms')
+                          .where('chatid')
+                          .snapshots(includeMetadataChanges: true),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text('Something went wrong');
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        if (snapshot.data!.docs.isEmpty) {
+                          return const SizedBox.shrink();
+                        }
+
+                        var listChat = snapshot.data!.docs;
+                        List userList = [];
+
+                        for (var chatid in listChatid) {
+                          for (var chat in listChat) {
+                            if (chatid == chat['chatid']) {
+                              userList.add(chat);
+                            }
+                          }
+                        }
+                        userList.sort((a, b) {
+                          return DateFormat('dd/MM/yyyy KK:mm a')
+                              .format(DateTime.parse(
+                                  b['lastTimestamp'].toDate().toString()))
+                              .compareTo(DateFormat('dd/MM/yyyy KK:mm a')
+                                  .format(DateTime.parse(
+                                      a['lastTimestamp'].toDate().toString())));
+                        });
+
+                        return ListView.builder(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20.0, horizontal: 20.0),
+                          itemCount: userList.length,
+                          itemBuilder: (context, int index) {
+                            return ChatCard(
+                              chat: userList[index],
+                              currentUser: data,
+                              query: searchController.text.toLowerCase(),
+                            );
+                          },
+                        );
+                      },
                     );
-                  },
-                );
-              },
-            )
-          )
+                  }))
         ],
       ),
     );

@@ -202,13 +202,9 @@ class _NewCommunityState extends State<AddNewCommunity> {
                             Row(
                               children: <Widget>[
                                 Expanded(
-                                  child: pickedFile != null
-                                      ? Container(
-                                          child: Image.file(
-                                          File(pickedFile!.path!),
-                                          height: size.height * 0.2,
-                                        ))
-                                      : Container(height: 3),
+                                  child: pickedFile != null 
+                        ? Image.file(File(pickedFile!.path!), fit: BoxFit.cover, height: MediaQuery.of(context).size.height * 0.25, width: double.infinity,)
+                        : Container(),
                                 ),
                               ],
                             ),

@@ -110,24 +110,26 @@ class _JassyMainBodyState extends State<JassyMainBody> {
             for (var user in users) {
               int age =
                   calculateAge(DateTime.parse(user['birthDate'].toString()));
-              _LanguageLevelChoicesLists.forEachIndexed((index, lvlang) {
-                if ('${user['language']['levelDefaultLanguage']}'
-                        .toLowerCase() ==
-                    _LanguageLevelChoicesLists[index].toLowerCase()) {
-                  indexLanguage = index;
-                }
-              });
-              if (filter.language.toLowerCase() ==
-                  user['language']['defaultLanguage'].toLowerCase()) {
-                if (_languageLevelIndex <= indexLanguage) {
-                  if (_currentRangeValues.start.round().toInt() <= age &&
-                      age <= _currentRangeValues.end.round().toInt()) {
-                    if (filter.gender.toLowerCase() ==
-                        user['gender'].toLowerCase()) {
-                      queryUser.add(user);
-                    } else if (filter.gender.toLowerCase() ==
-                        "FilterNoneGender".tr.toLowerCase()) {
-                      queryUser.add(user);
+              if (user['userStatus'] == 'user') {
+                _LanguageLevelChoicesLists.forEachIndexed((index, lvlang) {
+                  if ('${user['language']['levelDefaultLanguage']}'
+                          .toLowerCase() ==
+                      _LanguageLevelChoicesLists[index].toLowerCase()) {
+                    indexLanguage = index;
+                  }
+                });
+                if (filter.language.toLowerCase() ==
+                    user['language']['defaultLanguage'].toLowerCase()) {
+                  if (_languageLevelIndex <= indexLanguage) {
+                    if (_currentRangeValues.start.round().toInt() <= age &&
+                        age <= _currentRangeValues.end.round().toInt()) {
+                      if (filter.gender.toLowerCase() ==
+                          user['gender'].toLowerCase()) {
+                        queryUser.add(user);
+                      } else if (filter.gender.toLowerCase() ==
+                          "FilterNoneGender".tr.toLowerCase()) {
+                        queryUser.add(user);
+                      }
                     }
                   }
                 }

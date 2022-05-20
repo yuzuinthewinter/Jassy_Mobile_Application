@@ -130,7 +130,6 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Column(
@@ -202,10 +201,6 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             itemBuilder: (context) => [
               PopupMenuItem(
                   value: MenuItem.item1,
-                  onTap: () {
-                    // print(isNotificationOn);
-                    // _toggleNotification;
-                  },
                   child: Row(
                     children: [
                       isNotificationOn
@@ -272,8 +267,8 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                         style: const TextStyle(fontSize: 16),
                       )),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 0.0),
                     child: Text(
                       "ReportDesc".tr,
                       style: const TextStyle(fontSize: 14, color: greyDark),

@@ -60,22 +60,22 @@ class _BodyState extends State<Body> {
       var currentUser = FirebaseAuth.instance.currentUser;
       var users = FirebaseFirestore.instance.collection('Users');
       var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
-
       QuerySnapshot querySnapshot = await queryUser.get();
-      final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
-      var snapshot = await queryUser.get();
-      final data = snapshot.docs[0];
-
-      if (data['isAuth'] == true) {
-        await users.doc(currentUser.uid).update({
-          'isActive': true,
-          'timeStamp': DateTime.now(),
-        });
-        if (data['userStatus'] == 'admin') {
-          Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+      if (querySnapshot.docs.isNotEmpty) {
+        final data = querySnapshot.docs[0];
+        if (data['isAuth'] == true) {
+          await users.doc(currentUser.uid).update({
+            'isActive': true,
+            'timeStamp': DateTime.now(),
+          });
+          if (data['userStatus'] == 'admin') {
+            Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+          } else {
+            Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 2);
+          }
         } else {
-          Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 2);
+          return Navigator.of(context).pushNamed(Routes.RegisterProfile);
         }
       } else {
         await users.doc(currentUser.uid).set({

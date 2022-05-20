@@ -29,7 +29,7 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //set default navigator
-  int _currentIndex = 0;
+  int _currentIndex = 3;
   List screens = [];
 
   @override
