@@ -28,13 +28,11 @@ class _BodyState extends State<Body> {
     var users = FirebaseFirestore.instance.collection('Users');
     var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
     QuerySnapshot querySnapshot = await queryUser.get();
-    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
     if (querySnapshot.docs.isNotEmpty) {
       var data = querySnapshot.docs[0];
       if (data['isAuth'] == true) {
-        Navigator.of(context)
-            .pushNamed(Routes.JassyHome, arguments: 4);
+        Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 4);
       }
     } else {
       await users.doc(currentUser.uid).set({
@@ -119,7 +117,6 @@ class _BodyState extends State<Body> {
       var users = FirebaseFirestore.instance.collection('Users');
       var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
       QuerySnapshot querySnapshot = await queryUser.get();
-      final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
       var name = currentUser.displayName;
       final splitname = name!.split(' ');
@@ -127,8 +124,7 @@ class _BodyState extends State<Body> {
       if (querySnapshot.docs.isNotEmpty) {
         var data = querySnapshot.docs[0];
         if (data['isAuth'] == true) {
-          Navigator.of(context)
-              .pushNamed(Routes.JassyHome, arguments: 4);
+          Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 4);
         }
       } else {
         await users.doc(currentUser.uid).set({
