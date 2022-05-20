@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/header_style2.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/screens/pre-app/register_info/face_regcognition.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/utils.dart';
 import 'package:image_picker/image_picker.dart';
@@ -50,7 +52,7 @@ class _PictureUploadState extends State<PictureUpload> {
     var currentUser = FirebaseAuth.instance.currentUser;
 
     String uploadFileName = DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
-    Reference reference = FirebaseStorage.instance.ref().child(uploadFileName);
+    Reference reference = FirebaseStorage.instance.ref().child('profilePics/${uploadFileName}');
     UploadTask uploadTask = reference.putFile(File(imagePath!.path));
 
     uploadTask.snapshotEvents.listen((event) {
@@ -145,7 +147,13 @@ class _PictureUploadState extends State<PictureUpload> {
                   minimumSize: Size(size.width * 0.35, size.height * 0.05),
                   press: () {
                     // Todo: face reg
-                    _uploadImage();
+                    if(imagePath != null) {
+                      _uploadImage();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const FaceRecognition()),
+                      );
+                    }
                   },
                 ),
               ),
