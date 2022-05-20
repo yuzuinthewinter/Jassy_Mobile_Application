@@ -95,7 +95,7 @@ class LocaleString extends Translations {
           "CommuPage": "Community",
           "CommuRecommand": "Recommend for you",
           "CommuMore": "See More",
-          "CommuFeed": "New Feed",
+          "CommuFeed": "News Feed",
           "CommuNoFeed": "There is no news for you yet.",
           "CommuStartJoin":
               "Let's start by joining the group\n to receive news and exchange!",
