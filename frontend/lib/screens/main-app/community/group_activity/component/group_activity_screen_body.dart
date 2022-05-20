@@ -10,6 +10,7 @@ import 'package:flutter_application_1/component/header_style/jassy_gradient_colo
 import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/community.dart';
+import 'package:flutter_application_1/screens/main-app/community/component/report_post.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -164,14 +165,15 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
     CollectionReference savePosts =
         FirebaseFirestore.instance.collection('SavePosts');
     savePost(post) async {
-      await savePosts.doc(currentUser!.uid).set({
-        '${post['groupid']}': FieldValue.arrayUnion([post['postid']]),
+      await savePosts.doc(widget.user['uid']).update({
+        'savedBy': widget.user['uid'],
+        'saved': FieldValue.arrayUnion([post['postid']]),
       });
     }
 
     unsavePost(post) async {
-      await savePosts.doc(currentUser!.uid).set({
-        '${post['groupid']}': FieldValue.arrayRemove([post['postid']]),
+      await savePosts.doc(widget.user['uid']).update({
+        'saved': FieldValue.arrayRemove([post['postid']]),
       });
     }
 
@@ -306,7 +308,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                                                     0.02),
                                             child: Column(
                                               children: [
-                                                isSavedPost
+                                                isSavedPost == false
                                                     ? Expanded(
                                                         child: InkWell(
                                                           onTap: () async {
@@ -314,16 +316,15 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                                                                 context);
                                                             setState(() {
                                                               isSavedPost =
-                                                                  !isSavedPost;
+                                                                  true;
                                                             });
                                                             await savePost(
                                                                 post);
                                                           },
                                                           child: Row(
                                                             children: [
-                                                              SvgPicture
-                                                                      .asset(
-                                                                          "assets/icons/saved_lists.svg"),
+                                                              SvgPicture.asset(
+                                                                  "assets/icons/saved_lists.svg"),
                                                               SizedBox(
                                                                 width:
                                                                     size.width *
@@ -342,15 +343,15 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                                                                 context);
                                                             setState(() {
                                                               isSavedPost =
-                                                                  !isSavedPost;
+                                                                  false;
                                                             });
                                                             await unsavePost(
                                                                 post);
                                                           },
                                                           child: Row(
-                                                            children: [SvgPicture
-                                                                      .asset(
-                                                                          "assets/icons/unsaved_list.svg"),
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                  "assets/icons/unsaved_list.svg"),
                                                               SizedBox(
                                                                 width:
                                                                     size.width *
@@ -362,27 +363,35 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                                                           ),
                                                         ),
                                                       ),
-                                                Expanded(
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      // Todo: Report
-                                                      // reportModalBottomSheet(context);
-                                                      // line ภ/ๅ
-                                                    },
-                                                    child: Row(
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                            "assets/icons/report.svg"),
-                                                        SizedBox(
-                                                          width:
-                                                              size.width * 0.03,
+                                                post['postby'] !=
+                                                        widget.user['uid']
+                                                    ? Expanded(
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            // Todo: Report
+                                                            reportModalBottomSheet(
+                                                                context,
+                                                                widget.user,
+                                                                post['postid']);
+                                                            // line 613
+                                                          },
+                                                          child: Row(
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                  "assets/icons/report.svg"),
+                                                              SizedBox(
+                                                                width:
+                                                                    size.width *
+                                                                        0.03,
+                                                              ),
+                                                              Text(
+                                                                  "GroupPostReport"
+                                                                      .tr)
+                                                            ],
+                                                          ),
                                                         ),
-                                                        Text("GroupPostReport"
-                                                            .tr)
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
+                                                      )
+                                                    : const SizedBox.shrink(),
                                                 post['postby'] ==
                                                         widget.user['uid']
                                                     ? Expanded(
@@ -549,100 +558,101 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
     );
   }
 }
-// Future<dynamic> reportModalBottomSheet(BuildContext context) {
-//   return showModalBottomSheet(
-//       isScrollControlled: true,
-//       shape: const RoundedRectangleBorder(
-//           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-//       context: context,
-//       builder: (context) => Container(
-//             height: MediaQuery.of(context).size.height * 0.60,
-//             padding:
-//                 const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-//             child: Column(
-//               children: [
-//                 Text(
-//                   "MenuReport".tr,
-//                   style: const TextStyle(fontSize: 16),
-//                 ),
-//                 Align(
-//                     alignment: Alignment.topLeft,
-//                     child: Text(
-//                       "ReportChoose".tr,
-//                       style: const TextStyle(fontSize: 16),
-//                     )),
-//                 Padding(
-//                   padding:
-//                       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
-//                   child: Text(
-//                     "ReportDesc".tr,
-//                     style: const TextStyle(fontSize: 14, color: greyDark),
-//                   ),
-//                 ),
-//                 Expanded(
-//                   child: SingleChildScrollView(
-//                     child: Column(
-//                       children: [
-//                         ReportTypeChoice(
-//                           text: 'ReportNudity'.tr,
-//                           userid: widget.user['uid'],
-//                           chatid: widget.chatid,
-//                         ),
-//                         ReportTypeChoice(
-//                           text: 'ReportVio'.tr,
-//                           userid: widget.user['uid'],
-//                           chatid: widget.chatid,
-//                         ),
-//                         ReportTypeChoice(
-//                           text: 'ReportThreat'.tr,
-//                           userid: widget.user['uid'],
-//                           chatid: widget.chatid,
-//                         ),
-//                         ReportTypeChoice(
-//                           text: 'ReportProfan'.tr,
-//                           userid: widget.user['uid'],
-//                           chatid: widget.chatid,
-//                         ),
-//                         ReportTypeChoice(
-//                           text: 'ReportTerro'.tr,
-//                           userid: widget.user['uid'],
-//                           chatid: widget.chatid,
-//                         ),
-//                         ReportTypeChoice(
-//                           text: 'ReportChild'.tr,
-//                           userid: widget.user['uid'],
-//                           chatid: widget.chatid,
-//                         ),
-//                         ReportTypeChoice(
-//                           text: 'ReportSexual'.tr,
-//                           userid: widget.user['uid'],
-//                           chatid: widget.chatid,
-//                         ),
-//                         ReportTypeChoice(
-//                           text: 'ReportAnimal'.tr,
-//                           userid: widget.user['uid'],
-//                           chatid: widget.chatid,
-//                         ),
-//                         ReportTypeChoice(
-//                           text: 'ReportScam'.tr,
-//                           userid: widget.user['uid'],
-//                           chatid: widget.chatid,
-//                         ),
-//                         ReportTypeChoice(
-//                           text: 'ReportAbuse'.tr,
-//                           userid: widget.user['uid'],
-//                           chatid: widget.chatid,
-//                         ),
-//                         ReportTypeChoice(
-//                           text: 'ReportOther'.tr,
-//                           userid: widget.user['uid'],
-//                           chatid: widget.chatid,
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ));
-// }
+
+Future<dynamic> reportModalBottomSheet(BuildContext context, user, postid) {
+  return showModalBottomSheet(
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      context: context,
+      builder: (context) => Container(
+            height: MediaQuery.of(context).size.height * 0.60,
+            padding:
+                const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+            child: Column(
+              children: [
+                Text(
+                  "MenuReport".tr,
+                  style: const TextStyle(fontSize: 16),
+                ),
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "ReportChoose".tr,
+                      style: const TextStyle(fontSize: 16),
+                    )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 15.0, horizontal: 0.0),
+                  child: Text(
+                    "ReportDesc".tr,
+                    style: const TextStyle(fontSize: 14, color: greyDark),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ReportPostTypeChoice(
+                          text: 'ReportNudity'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportVio'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportThreat'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportProfan'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportTerro'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportChild'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportSexual'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportAnimal'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportScam'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportAbuse'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                        ReportPostTypeChoice(
+                          text: 'ReportOther'.tr,
+                          userid: user['uid'],
+                          postid: postid,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ));
+}

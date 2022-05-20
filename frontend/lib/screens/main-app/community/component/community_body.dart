@@ -50,13 +50,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
     return feedPost;
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   bool isNotificationOn = false;
-  bool isSavedPost = false;
 
   @override
   Widget build(BuildContext context) {
@@ -314,17 +308,20 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
       }
     }
 
+    bool isSavedPost = false;
+    var getpost;
     CollectionReference savePosts =
         FirebaseFirestore.instance.collection('SavePosts');
     savePost(post) async {
-      await savePosts.doc(widget.user['uid']).set({
-        '${post['groupid']}': FieldValue.arrayUnion([post['postid']]),
+      await savePosts.doc(widget.user['uid']).update({
+        'savedBy': widget.user['uid'],
+        'saved': FieldValue.arrayUnion([post['postid']]),
       });
     }
 
     unsavePost(post) async {
-      await savePosts.doc(widget.user['uid']).set({
-        '${post['groupid']}': FieldValue.arrayRemove([post['postid']]),
+      await savePosts.doc(widget.user['uid']).update({
+        'saved': FieldValue.arrayRemove([post['postid']]),
       });
     }
 
@@ -338,6 +335,20 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
         'postsID': FieldValue.arrayRemove([post['postid']]),
       });
       Navigator.of(context).pop();
+    }
+
+    checkSavePost() {
+      if (postid == getpost['postid']) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    @override
+    void initState() {
+      isSavedPost = checkSavePost();
+      super.initState();
     }
 
     return StreamBuilder<QuerySnapshot>(
@@ -356,6 +367,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
             return const SizedBox.shrink();
           }
           var post = snapshot.data!.docs[0];
+          getpost = post;
           return StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('Users')
@@ -472,16 +484,10 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                             context: context,
                                             builder: (context) {
                                               return Container(
-                                                height: post['postby'] ==
-                                                        widget.user['uid']
-                                                    ? MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.30
-                                                    : MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.24,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.24,
                                                 padding: const EdgeInsets.only(
                                                     top: 5.0,
                                                     left: 20.0,
@@ -498,7 +504,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                                               0.02),
                                                       child: Column(
                                                         children: [
-                                                          isSavedPost
+                                                          isSavedPost == false
                                                               ? Expanded(
                                                                   child:
                                                                       InkWell(
@@ -509,7 +515,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                                                       setState(
                                                                           () {
                                                                         isSavedPost =
-                                                                            !isSavedPost;
+                                                                            true;
                                                                       });
                                                                       await savePost(
                                                                           post);
@@ -538,7 +544,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                                                       setState(
                                                                           () {
                                                                         isSavedPost =
-                                                                            !isSavedPost;
+                                                                            false;
                                                                       });
                                                                       await unsavePost(
                                                                           post);
@@ -557,33 +563,38 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                                                     ),
                                                                   ),
                                                                 ),
-                                                          Expanded(
-                                                            child: InkWell(
-                                                              onTap: () {
-                                                                // Todo: Report
-                                                                reportModalBottomSheet(
-                                                                    context,
-                                                                    widget.user,
-                                                                    post[
-                                                                        'postid']);
-                                                                // line 613
-                                                              },
-                                                              child: Row(
-                                                                children: [
-                                                                  SvgPicture.asset(
-                                                                      "assets/icons/report.svg"),
-                                                                  SizedBox(
-                                                                    width: size
-                                                                            .width *
-                                                                        0.03,
+                                                          post['postby'] !=
+                                                                  widget.user[
+                                                                      'uid']
+                                                              ? Expanded(
+                                                                  child:
+                                                                      InkWell(
+                                                                    onTap: () {
+                                                                      // Todo: Report
+                                                                      reportModalBottomSheet(
+                                                                          context,
+                                                                          widget
+                                                                              .user,
+                                                                          post[
+                                                                              'postid']);
+                                                                      // line 613
+                                                                    },
+                                                                    child: Row(
+                                                                      children: [
+                                                                        SvgPicture.asset(
+                                                                            "assets/icons/report.svg"),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              size.width * 0.03,
+                                                                        ),
+                                                                        Text("GroupPostReport"
+                                                                            .tr)
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                  Text(
-                                                                      "GroupPostReport"
-                                                                          .tr)
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
+                                                                )
+                                                              : const SizedBox
+                                                                  .shrink(),
                                                           post['postby'] ==
                                                                   widget.user[
                                                                       'uid']
