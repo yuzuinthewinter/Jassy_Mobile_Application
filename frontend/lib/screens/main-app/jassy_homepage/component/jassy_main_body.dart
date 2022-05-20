@@ -88,6 +88,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Column(
       children: [
         const CurvedWidget(child: JassyGradientColor()),
@@ -135,18 +136,109 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                 }
               }
             }
-            return CarouselSlider.builder(
-              itemCount: queryUser.length,
-              itemBuilder: (context, index, child) {
-                return carouselCard(queryUser[index]);
-              },
-              options: CarouselOptions(
-                  // height: size.height * 0.70,
-                  aspectRatio: 0.75,
-                  enlargeCenterPage: true,
-                  enlargeStrategy: CenterPageEnlargeStrategy.height,
-                  enableInfiniteScroll: false),
-            );
+            //query for no one on list: new generate list user
+            if (queryUser.isEmpty) {
+              for (var user in users) {
+                if (user['userStatus'] == 'user') {
+                  _LanguageLevelChoicesLists.forEachIndexed((index, lvlang) {
+                    if ('${user['language']['levelDefaultLanguage']}'
+                            .toLowerCase() ==
+                        _LanguageLevelChoicesLists[index].toLowerCase()) {
+                      indexLanguage = index;
+                    }
+                  });
+                  if (filter.language.toLowerCase() ==
+                      user['language']['defaultLanguage'].toLowerCase()) {
+                    if (_languageLevelIndex <= indexLanguage) {
+                      queryUser.add(user);
+                    }
+                  }
+                }
+              }
+              if (queryUser.isEmpty) {
+                // for (var user in users) {
+                //   if (user['userStatus'] == 'user') {
+                //     _LanguageLevelChoicesLists.forEachIndexed((index, lvlang) {
+                //       if ('${user['language']['levelInterestedLanguage']}'
+                //               .toLowerCase() ==
+                //           _LanguageLevelChoicesLists[index].toLowerCase()) {
+                //         indexLanguage = index;
+                //       }
+                //     });
+                //     if (filter.language.toLowerCase() ==
+                //         user['language']['interestedLanguage'].toLowerCase()) {
+                //       if (_languageLevelIndex <= indexLanguage) {
+                //         queryUser.add(user);
+                //       }
+                //     }
+                //   }
+                // }
+                // if (queryUser.isEmpty) {
+                //   for (var user in users) {
+                //     if (user['userStatus'] == 'user') {
+                //       if (filter.language.toLowerCase() ==
+                //           user['language']['interestedLanguage']
+                //               .toLowerCase()) {
+                //         queryUser.add(user);
+                //       }
+                //     }
+                //   }
+                // }
+                if (queryUser.isEmpty) {
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: size.height * 0.12,
+                      ),
+                      SvgPicture.asset(
+                        "assets/images/no_user_filter.svg",
+                        width: size.width * 0.72,
+                      ),
+                      SizedBox(
+                        height: size.height * 0.05,
+                      ),
+                      Text(
+                        'MainNoUserTitle'.tr,
+                        style: const TextStyle(fontSize: 18, color: textDark),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: size.height * 0.012,
+                      ),
+                      Text(
+                        'MainNoUserDesc'.tr,
+                        style: const TextStyle(fontSize: 14, color: greyDark),
+                      ),
+                    ],
+                  );
+                }
+              }
+              return CarouselSlider.builder(
+                itemCount: queryUser.length,
+                itemBuilder: (context, index, child) {
+                  return carouselCard(queryUser[index]);
+                },
+                options: CarouselOptions(
+                    // height: size.height * 0.70,
+                    aspectRatio: 0.75,
+                    enlargeCenterPage: true,
+                    enlargeStrategy: CenterPageEnlargeStrategy.height,
+                    enableInfiniteScroll: false),
+              );
+            } else {
+              return CarouselSlider.builder(
+                itemCount: queryUser.length,
+                itemBuilder: (context, index, child) {
+                  return carouselCard(queryUser[index]);
+                },
+                options: CarouselOptions(
+                    // height: size.height * 0.70,
+                    aspectRatio: 0.75,
+                    enlargeCenterPage: true,
+                    enlargeStrategy: CenterPageEnlargeStrategy.height,
+                    enableInfiniteScroll: false),
+              );
+            }
           },
         ),
       ],

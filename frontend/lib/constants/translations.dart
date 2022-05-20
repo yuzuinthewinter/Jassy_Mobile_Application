@@ -75,6 +75,9 @@ class LocaleString extends Translations {
           "MainPage": "Home",
           "MainTabLanguage": "Level of Language",
           "MainTabDesc": "Description",
+          "MainNoUserTitle":
+              "There are no users who have matched\ntheir requirements to yours now.",
+          "MainNoUserDesc": "Please select the closest requirement.",
           //Filter
           "FilterLang": "Language",
           "FilterLevelLang": "Level of Language",
@@ -270,6 +273,9 @@ class LocaleString extends Translations {
           "MainPage": "หน้าหลัก",
           "MainTabLanguage": "ระดับภาษา",
           "MainTabDesc": "คำบรรยาย",
+          "MainNoUserTitle":
+              "ไม่มีผู้ใช้งานที่ตรงกับความต้องการ\nของคุณในขณะนี้",
+          "MainNoUserDesc": "กรุณาเลือกความต้องการที่ใกล้เคียง",
           //Filter
           "FilterLang": "ภาษา",
           "FilterLevelLang": "ระดับภาษา",
