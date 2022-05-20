@@ -156,61 +156,61 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                 }
               }
               if (queryUser.isEmpty) {
-                // for (var user in users) {
-                //   if (user['userStatus'] == 'user') {
-                //     _LanguageLevelChoicesLists.forEachIndexed((index, lvlang) {
-                //       if ('${user['language']['levelInterestedLanguage']}'
-                //               .toLowerCase() ==
-                //           _LanguageLevelChoicesLists[index].toLowerCase()) {
-                //         indexLanguage = index;
-                //       }
-                //     });
-                //     if (filter.language.toLowerCase() ==
-                //         user['language']['interestedLanguage'].toLowerCase()) {
-                //       if (_languageLevelIndex <= indexLanguage) {
-                //         queryUser.add(user);
-                //       }
-                //     }
-                //   }
-                // }
-                // if (queryUser.isEmpty) {
-                //   for (var user in users) {
-                //     if (user['userStatus'] == 'user') {
-                //       if (filter.language.toLowerCase() ==
-                //           user['language']['interestedLanguage']
-                //               .toLowerCase()) {
-                //         queryUser.add(user);
-                //       }
-                //     }
-                //   }
-                // }
+                for (var user in users) {
+                  if (user['userStatus'] == 'user') {
+                    _LanguageLevelChoicesLists.forEachIndexed((index, lvlang) {
+                      if ('${user['language']['levelInterestedLanguage']}'
+                              .toLowerCase() ==
+                          _LanguageLevelChoicesLists[index].toLowerCase()) {
+                        indexLanguage = index;
+                      }
+                    });
+                    if (filter.language.toLowerCase() ==
+                        user['language']['interestedLanguage'].toLowerCase()) {
+                      if (_languageLevelIndex <= indexLanguage) {
+                        queryUser.add(user);
+                      }
+                    }
+                  }
+                }
                 if (queryUser.isEmpty) {
-                  return Column(
-                    children: [
-                      SizedBox(
-                        height: size.height * 0.12,
-                      ),
-                      SvgPicture.asset(
-                        "assets/images/no_user_filter.svg",
-                        width: size.width * 0.72,
-                      ),
-                      SizedBox(
-                        height: size.height * 0.05,
-                      ),
-                      Text(
-                        'MainNoUserTitle'.tr,
-                        style: const TextStyle(fontSize: 18, color: textDark),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(
-                        height: size.height * 0.012,
-                      ),
-                      Text(
-                        'MainNoUserDesc'.tr,
-                        style: const TextStyle(fontSize: 14, color: greyDark),
-                      ),
-                    ],
-                  );
+                  for (var user in users) {
+                    if (user['userStatus'] == 'user') {
+                      if (filter.language.toLowerCase() ==
+                          user['language']['interestedLanguage']
+                              .toLowerCase()) {
+                        queryUser.add(user);
+                      }
+                    }
+                  }
+                  if (queryUser.isEmpty) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.12,
+                        ),
+                        SvgPicture.asset(
+                          "assets/images/no_user_filter.svg",
+                          width: size.width * 0.72,
+                        ),
+                        SizedBox(
+                          height: size.height * 0.05,
+                        ),
+                        Text(
+                          'MainNoUserTitle'.tr,
+                          style: const TextStyle(fontSize: 18, color: textDark),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: size.height * 0.012,
+                        ),
+                        Text(
+                          'MainNoUserDesc'.tr,
+                          style: const TextStyle(fontSize: 14, color: greyDark),
+                        ),
+                      ],
+                    );
+                  }
                 }
               }
               return CarouselSlider.builder(
