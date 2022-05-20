@@ -131,6 +131,8 @@ class LocaleString extends Translations {
           "ChatRead": "Read",
           "ChatHintText": "Enter a message",
           "ChatShowReport": "You can not message this account.",
+          "NoChatPartner" : "You don’t currently have a chat partner.",
+          "FindChatPartner" : "Let's start searching for a language exchange partner. !",
           //Appbar Chat
           "StatusActiveNow": "Active now",
           "StatusActiveAfew": "Active a few minutes ago",
@@ -318,6 +320,8 @@ class LocaleString extends Translations {
           "ChatRead": "อ่านแล้ว",
           "ChatHintText": "พิมพ์ข้อความ",
           "ChatShowReport": "ไม่สามารถส่งข้อความกับบุคคลนี้ได้อีก",
+          "NoChatPartner" : "คุณยังไม่มีคู่สนทนาในขณะนี้",
+          "FindChatPartner" : "เริ่มต้นค้นหาคู่สนทนาเพื่อแลกเปลี่ยนภาษากันเถอะ !",
           //Appbar Chat
           "StatusActiveNow": "กำลังใช้งาน",
           "StatusActiveAfew": "ใช้งานเมื่อไม่กี่นาทีที่แล้ว",
