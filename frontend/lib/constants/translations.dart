@@ -62,6 +62,11 @@ class LocaleString extends Translations {
           "InfoLevelFirstLanguage": "Level of First Language",
           "InfoLanguageInterest": "Language Interest",
           "InfoLevelLanguageInterest": "Level of Language Interest",
+          //Profile Picture Upload
+          "ProfilePictureUpload": "Please upload your profile picture.",
+          "ProfilePictureDesc" : "Please upload a clear picture. Don't look back, obscene, involved in religious/political provocation and don't deceive money.",
+          "ProfilePictureWarning" : "The selected picture cannot be edited, please select the picture carefully.",
+          "ProfilePictureUploadButton" : "Upload Image",
 
           //Main-Application
           //Jassy Main Page
@@ -247,6 +252,11 @@ class LocaleString extends Translations {
           "InfoLevelFirstLanguage": "ระดับของภาษาที่หนึ่ง",
           "InfoLanguageInterest": "ภาษาที่สนใจ",
           "InfoLevelLanguageInterest": "ระดับของภาษาที่สนใจ",
+          //Profile Picture Upload
+          "ProfilePictureUpload": "อัปโหลดรูปภาพโพรไฟล์ของของคุณ",
+          "ProfilePictureDesc" : "กรุณาอัปโหลดรูปที่ชัดเจนไม่มีอะไรปิดบัง ไม่หันหลัง ไม่อนาจาร ไม่เกี่ยวข้องกับกับการปลุกปั่นศาสนา/การเมือง ไม่ล่อลวงเกี่ยวกับเงิน",
+          "ProfilePictureWarning" : "รูปภาพที่ถูกเลือกจะไม่สามารถแก้ไขได้กรุณาเลือกรูปอย่างระมัดระวัง",
+          "ProfilePictureUploadButton" : "อัพโหลดรูปภาพ",
 
           //Main-Application
           //Jassy Main Page
