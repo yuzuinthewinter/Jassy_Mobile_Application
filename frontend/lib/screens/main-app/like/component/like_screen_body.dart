@@ -53,11 +53,14 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
     await chatRooms.doc(docRef.id).update({
       'chatid': docRef.id,
     });
-    for (var member in chatMember) {
-      await users.doc(member).update({
-        'chats': FieldValue.arrayUnion([docRef.id]),
-      });
-    }
+    await users.doc(chatMember[0]).update({
+      'chats': FieldValue.arrayUnion([docRef.id]),
+      'hideUser': FieldValue.arrayUnion([chatMember[1]]),
+    });
+    await users.doc(chatMember[1]).update({
+      'chats': FieldValue.arrayUnion([docRef.id]),
+      'hideUser': FieldValue.arrayUnion([chatMember[0]]),
+    });
     var user = users.where('uid', isEqualTo: userid);
     var snapshot = await user.get();
     final data = snapshot.docs[0];
@@ -74,6 +77,16 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
         currentUser: userData,
       );
     }));
+  }
+
+  removeLike(userid) async {
+    await users.doc(currentUser!.uid).update({
+      'likesby': FieldValue.arrayRemove([userid]),
+      'hideUser': FieldValue.arrayRemove([userid]), //current user like ใคร
+    });
+    await users.doc(userid).update({
+      'liked': FieldValue.arrayRemove([currentUser!.uid]), //current user like ใคร
+    });
   }
 
   @override
@@ -209,7 +222,7 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                           alignment: Alignment.topRight,
                           child: InkWell(
                               onTap: () {
-                                print("x");
+                                removeLike(user['uid']);
                               },
                               child: SvgPicture.asset(
                                 "assets/icons/close_circle.svg",
