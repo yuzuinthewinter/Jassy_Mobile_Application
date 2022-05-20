@@ -39,7 +39,8 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     setStatus(true, DateTime.now());
     screens = [
-      const JassyMain(),
+      Text("main"),
+      // const JassyMain(),
       const LikeScreen(), //likes page
       const CommunityScreen(),
       const ChatScreenBody(),

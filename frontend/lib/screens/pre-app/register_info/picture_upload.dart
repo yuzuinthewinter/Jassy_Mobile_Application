@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,6 +47,7 @@ class _PictureUploadState extends State<PictureUpload> {
   _uploadImage () async{
 
     var users = FirebaseFirestore.instance.collection('Users');
+    var currentUser = FirebaseAuth.instance.currentUser;
 
     String uploadFileName = DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
     Reference reference = FirebaseStorage.instance.ref().child(uploadFileName);
@@ -56,9 +57,26 @@ class _PictureUploadState extends State<PictureUpload> {
       print(event.bytesTransferred.toString() + "\t" + event.totalBytes.toString());
     });
 
+    _showMessage() {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Something went wrong"),
+        duration: const Duration(seconds: 2),
+      ));
+    }
+
     await uploadTask.whenComplete( () async{
       var uploadPath = await uploadTask.snapshot.ref.getDownloadURL();
+
+      if (uploadPath.isNotEmpty) {
+        users.doc(currentUser!.uid).update({
+          'profilePic': [uploadPath]
+        }).then((value) => null);
+      } else {
+        _showMessage();
+      }
+    
     });
+
   }
   
   @override
@@ -127,6 +145,7 @@ class _PictureUploadState extends State<PictureUpload> {
                   minimumSize: Size(size.width * 0.35, size.height * 0.05),
                   press: () {
                     // Todo: face reg
+                    _uploadImage();
                   },
                 ),
               ),
