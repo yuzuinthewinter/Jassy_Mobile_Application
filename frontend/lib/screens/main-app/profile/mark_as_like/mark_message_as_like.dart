@@ -85,41 +85,47 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                               var language =
                                   memo['listLanguage'][index].toLowerCase();
                               return Column(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: size.width * 0.02,
-                                          vertical: size.height * 0.02),
-                                      child: Text(
-                                        StringUtils.capitalize(language),
-                                        style: TextStyle(
-                                            fontSize: 20, color: greyDark),
-                                      ),
-                                    ), 
-                                    Container(
-                                      margin: EdgeInsets.symmetric(horizontal: size.height * 0),
-                                      child: GridView.builder(
-                                          padding: const EdgeInsets.only(top: 0),
-                                          physics: const ScrollPhysics(),
-                                          shrinkWrap: true,
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                                  childAspectRatio:
-                                                      size.width / size.height / 0.35,
-                                                  crossAxisCount: 2,
-                                                  crossAxisSpacing: size.height * 0.02,
-                                                  mainAxisSpacing: size.height * 0.02),
-                                          itemCount: memo[language].length,
-                                          itemBuilder: (context, i) {
-                                            var isSelect = isSelected;
-                                            return favMassageItem(context, i, memo, language, index);
-                                          },
-                                      ),
+                                children: [
+                                  memo[language].length > 0
+                                      ? Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: size.width * 0.02,
+                                              vertical: size.height * 0.02),
+                                          child: Text(
+                                            StringUtils.capitalize(language),
+                                            style: TextStyle(
+                                                fontSize: 20, color: greyDark),
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: size.height * 0),
+                                    child: GridView.builder(
+                                      padding: const EdgeInsets.only(top: 0),
+                                      physics: const ScrollPhysics(),
+                                      shrinkWrap: true,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              childAspectRatio: size.width /
+                                                  size.height /
+                                                  0.35,
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing:
+                                                  size.height * 0.02,
+                                              mainAxisSpacing:
+                                                  size.height * 0.02),
+                                      itemCount: memo[language].length,
+                                      itemBuilder: (context, i) {
+                                        var isSelect = isSelected;
+                                        return favMassageItem(
+                                            context, i, memo, language, index);
+                                      },
                                     ),
-                                  ],
-                                );
-                              }
-                            );
+                                  ),
+                                ],
+                              );
+                            });
                       },
                     ),
                   ),
@@ -127,15 +133,14 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
               ),
             ),
           ),
-             
         ],
       ),
     );
   }
 
   removeMemo(memoid, language) async {
-    CollectionReference memo = FirebaseFirestore.instance
-                          .collection('MemoMessages');
+    CollectionReference memo =
+        FirebaseFirestore.instance.collection('MemoMessages');
     await memo.doc(widget.user['uid']).update({
       '$language': FieldValue.arrayRemove([memoid]),
     });
@@ -147,84 +152,86 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
     Size size = MediaQuery.of(context).size;
     bool isCheck = false;
     return StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('Messages')
-                    .where('messageID', isEqualTo: memo[language][i])
-                    .snapshots(includeMetadataChanges: true),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return const Text('Something went wrong');
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  var message = snapshot.data!.docs[0];
-                  return InkWell(
-      onTap: () {
-        // go to detail page
-        int color = (index % memo['listLanguage'].length).toInt();
-        Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MessageAsLikeDetail(
-                          color: color,
-                          message: message['message'],
-                        )));
-      },
-      child: Container(
-        padding: EdgeInsets.all(size.height * 0.015),
-        color: colors[(index % memo['listLanguage'].length).toInt()],
-        child: Stack(
-          children: [
-            Align(
-                alignment: Alignment.topRight,
-                child: isSelected
-                    ? InkWell(
-                        onTap: () {
-                          // Todo: setState is not update
-                          setState(() {
-                            isCheck == !isCheck;
-                          });
-                          print('${memo[language][i]} + $isCheck');
-                        },
-                        child: 
-                        isCheck
-                            ? SvgPicture.asset("assets/icons/check_circle.svg")
-                            : 
-                            SvgPicture.asset(
-                                "assets/icons/uncheck_circle.svg"))
-                    : InkWell(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return DeleteWarningPopUp(onPress: () {
-                                  removeMemo(memo[language][i], language);
+        stream: FirebaseFirestore.instance
+            .collection('Messages')
+            .where('messageID', isEqualTo: memo[language][i])
+            .snapshots(includeMetadataChanges: true),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text('Something went wrong');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          var message = snapshot.data!.docs[0];
+          return InkWell(
+            onTap: () {
+              // go to detail page
+              int color = (index % memo['listLanguage'].length).toInt();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MessageAsLikeDetail(
+                            color: color,
+                            message: message,
+                            language: language,
+                          )));
+            },
+            child: Container(
+              padding: EdgeInsets.all(size.height * 0.015),
+              color: colors[(index % memo['listLanguage'].length).toInt()],
+              child: Stack(
+                children: [
+                  Align(
+                      alignment: Alignment.topRight,
+                      child: isSelected
+                          ? InkWell(
+                              onTap: () {
+                                // Todo: setState is not update
+                                setState(() {
+                                  isCheck == !isCheck;
                                 });
-                              });
-                        },
-                        child: SvgPicture.asset("assets/icons/del_bin.svg"))),
-            SizedBox(height: size.height * 0.01),
-            Align(
-              alignment: Alignment.center,
-              child: message['type'] == 'text' ? Text(
-                message['message'],
-                style: TextStyle(fontSize: 16),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ) : Text(
-                'Type is not available',
-                style: TextStyle(fontSize: 16, color: textMadatory),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+                              },
+                              child: isCheck
+                                  ? SvgPicture.asset(
+                                      "assets/icons/check_circle.svg")
+                                  : SvgPicture.asset(
+                                      "assets/icons/uncheck_circle.svg"))
+                          : InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return DeleteWarningPopUp(onPress: () {
+                                        removeMemo(memo[language][i], language);
+                                      });
+                                    });
+                              },
+                              child: SvgPicture.asset(
+                                  "assets/icons/del_bin.svg"))),
+                  SizedBox(height: size.height * 0.01),
+                  Align(
+                    alignment: Alignment.center,
+                    child: message['type'] == 'text'
+                        ? Text(
+                            message['message'],
+                            style: TextStyle(fontSize: 16),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        : Text(
+                            'Type is not available',
+                            style: TextStyle(fontSize: 16, color: textMadatory),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );});
-    
+          );
+        });
   }
 }

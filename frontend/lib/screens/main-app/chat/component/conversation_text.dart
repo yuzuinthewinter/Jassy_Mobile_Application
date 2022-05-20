@@ -60,6 +60,7 @@ class _BodyState extends State<ConversationText> {
     languageName = languageName.toLowerCase();
     await memos.doc(currentUser!.uid).update({
       'owner': currentUser!.uid,
+      'pingroup': [],
       'listLanguage': FieldValue.arrayUnion([languageName]),
       '$languageName': FieldValue.arrayUnion([messageid]),
     });
