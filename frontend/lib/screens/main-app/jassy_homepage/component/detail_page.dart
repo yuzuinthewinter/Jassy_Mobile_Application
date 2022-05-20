@@ -83,11 +83,14 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
     await chatRooms.doc(docRef.id).update({
       'chatid': docRef.id,
     });
-    for (var member in chatMember) {
-      await users.doc(member).update({
-        'chats': FieldValue.arrayUnion([docRef.id]),
-      });
-    }
+    await users.doc(chatMember[0]).update({
+      'chats': FieldValue.arrayUnion([docRef.id]),
+      'hideUser': FieldValue.arrayUnion([chatMember[1]]),
+    });
+    await users.doc(chatMember[1]).update({
+      'chats': FieldValue.arrayUnion([docRef.id]),
+      'hideUser': FieldValue.arrayUnion([chatMember[0]]),
+    });
     var user = users.where('uid', isEqualTo: userid);
     var snapshot = await user.get();
     final data = snapshot.docs[0];
