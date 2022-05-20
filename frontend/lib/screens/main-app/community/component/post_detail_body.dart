@@ -178,12 +178,19 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                                 context: context,
                                 builder: (context) {
                                   return Container(
-                                    height: widget.post['postby'] ==
-                                            widget.user['uid']
+                                    height: widget.user['userStatus'] == 'admin'
                                         ? MediaQuery.of(context).size.height *
-                                            0.30
-                                        : MediaQuery.of(context).size.height *
-                                            0.24,
+                                            0.16
+                                        : widget.post['postby'] ==
+                                                widget.user['uid']
+                                            ? MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.30
+                                            : MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.24,
                                     padding: const EdgeInsets.only(
                                         top: 5.0,
                                         left: 20.0,
@@ -199,91 +206,100 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                                                   0.02),
                                           child: Column(
                                             children: [
-                                              isSavedPost == false
-                                                  ? Expanded(
-                                                      child: InkWell(
-                                                        onTap: () async {
-                                                          Navigator.pop(
-                                                              context);
-                                                          setState(() {
-                                                            isSavedPost = true;
-                                                          });
-                                                          await savePost(
-                                                              widget.post);
-                                                        },
-                                                        child: Row(
-                                                          children: [
-                                                            SvgPicture.asset(
-                                                                "assets/icons/saved_lists.svg"),
-                                                            SizedBox(
-                                                              width:
-                                                                  size.width *
-                                                                      0.03,
+                                              widget.user['userStatus'] ==
+                                                      'admin'
+                                                  ? const SizedBox.shrink()
+                                                  : isSavedPost == false
+                                                      ? Expanded(
+                                                          child: InkWell(
+                                                            onTap: () async {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              setState(() {
+                                                                isSavedPost =
+                                                                    true;
+                                                              });
+                                                              await savePost(
+                                                                  widget.post);
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    "assets/icons/saved_lists.svg"),
+                                                                SizedBox(
+                                                                  width:
+                                                                      size.width *
+                                                                          0.03,
+                                                                ),
+                                                                const Text(
+                                                                    "บันทึกโพสต์")
+                                                              ],
                                                             ),
-                                                            const Text(
-                                                                "บันทึกโพสต์")
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : Expanded(
-                                                      child: InkWell(
-                                                        onTap: () async {
-                                                          Navigator.pop(
-                                                              context);
-                                                          setState(() {
-                                                            isSavedPost = false;
-                                                          });
-                                                          await unsavePost(
-                                                              widget.post);
-                                                        },
-                                                        child: Row(
-                                                          children: [
-                                                            SvgPicture.asset(
-                                                                "assets/icons/unsaved_list.svg"),
-                                                            SizedBox(
-                                                              width:
-                                                                  size.width *
-                                                                      0.03,
+                                                          ),
+                                                        )
+                                                      : Expanded(
+                                                          child: InkWell(
+                                                            onTap: () async {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              setState(() {
+                                                                isSavedPost =
+                                                                    false;
+                                                              });
+                                                              await unsavePost(
+                                                                  widget.post);
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    "assets/icons/unsaved_list.svg"),
+                                                                SizedBox(
+                                                                  width:
+                                                                      size.width *
+                                                                          0.03,
+                                                                ),
+                                                                const Text(
+                                                                    "เลิกบันทึกโพสต์")
+                                                              ],
                                                             ),
-                                                            const Text(
-                                                                "เลิกบันทึกโพสต์")
-                                                          ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ),
-                                              widget.post['postby'] !=
-                                                      widget.user['uid']
-                                                  ? Expanded(
-                                                      child: InkWell(
-                                                        onTap: () {
-                                                          // Todo: Report
-                                                          reportModalBottomSheet(
-                                                              context,
-                                                              widget.user,
-                                                              widget.post[
-                                                                  'postid']);
-                                                          // line 613
-                                                        },
-                                                        child: Row(
-                                                          children: [
-                                                            SvgPicture.asset(
-                                                                "assets/icons/report.svg"),
-                                                            SizedBox(
-                                                              width:
-                                                                  size.width *
-                                                                      0.03,
+                                              widget.user['userStatus'] ==
+                                                      'admin'
+                                                  ? const SizedBox
+                                                      .shrink() //TODO: report list
+                                                  : widget.post['postby'] !=
+                                                          widget.user['uid']
+                                                      ? Expanded(
+                                                          child: InkWell(
+                                                            onTap: () {
+                                                              // Todo: Report
+                                                              reportModalBottomSheet(
+                                                                  context,
+                                                                  widget.user,
+                                                                  widget.post[
+                                                                      'postid']);
+                                                              // line 613
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    "assets/icons/report.svg"),
+                                                                SizedBox(
+                                                                  width:
+                                                                      size.width *
+                                                                          0.03,
+                                                                ),
+                                                                Text(
+                                                                    "GroupPostReport"
+                                                                        .tr)
+                                                              ],
                                                             ),
-                                                            Text(
-                                                                "GroupPostReport"
-                                                                    .tr)
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : const SizedBox.shrink(),
-                                              widget.post['postby'] ==
-                                                      widget.user['uid']
+                                                          ),
+                                                        )
+                                                      : const SizedBox.shrink(),
+                                              widget.user['userStatus'] ==
+                                                      'admin'
                                                   ? Expanded(
                                                       child: InkWell(
                                                         onTap: () {
@@ -321,38 +337,83 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                                                         ),
                                                       ),
                                                     )
-                                                  : const SizedBox.shrink(),
-                                              Expanded(
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    Navigator.pop(context);
-                                                    setState(() {
-                                                      isNotificationOn =
-                                                          !isNotificationOn;
-                                                    });
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      isNotificationOn
-                                                          ? SvgPicture.asset(
-                                                              "assets/icons/notification_off.svg")
-                                                          : SvgPicture.asset(
-                                                              "assets/icons/notification_on.svg"),
-                                                      SizedBox(
-                                                        width:
-                                                            size.width * 0.03,
+                                                  : widget.post['postby'] ==
+                                                          widget.user['uid']
+                                                      ? Expanded(
+                                                          child: InkWell(
+                                                            onTap: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return WarningPopUpWithButton(
+                                                                      text: 'GroupDeleteWarning'
+                                                                          .tr,
+                                                                      okPress:
+                                                                          () {
+                                                                        deletePost(
+                                                                            widget.post);
+                                                                      },
+                                                                    );
+                                                                  });
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    "assets/icons/del_bin_circle.svg"),
+                                                                SizedBox(
+                                                                  width:
+                                                                      size.width *
+                                                                          0.03,
+                                                                ),
+                                                                Text(
+                                                                    "GroupPostDelete"
+                                                                        .tr)
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : const SizedBox.shrink(),
+                                              widget.user['userStatus'] ==
+                                                      'admin'
+                                                  ? const SizedBox.shrink()
+                                                  : Expanded(
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                          setState(() {
+                                                            isNotificationOn =
+                                                                !isNotificationOn;
+                                                          });
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            isNotificationOn
+                                                                ? SvgPicture.asset(
+                                                                    "assets/icons/notification_off.svg")
+                                                                : SvgPicture.asset(
+                                                                    "assets/icons/notification_on.svg"),
+                                                            SizedBox(
+                                                              width:
+                                                                  size.width *
+                                                                      0.03,
+                                                            ),
+                                                            isNotificationOn
+                                                                ? Text(
+                                                                    "MenuNotificationOff"
+                                                                        .tr)
+                                                                : Text(
+                                                                    "MenuNotificationOn"
+                                                                        .tr)
+                                                          ],
+                                                        ),
                                                       ),
-                                                      isNotificationOn
-                                                          ? Text(
-                                                              "MenuNotificationOff"
-                                                                  .tr)
-                                                          : Text(
-                                                              "MenuNotificationOn"
-                                                                  .tr)
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
+                                                    ),
                                             ],
                                           ),
                                         ),

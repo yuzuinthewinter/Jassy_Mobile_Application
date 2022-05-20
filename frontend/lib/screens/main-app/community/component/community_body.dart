@@ -12,6 +12,7 @@ import 'package:flutter_application_1/component/text/report_choice.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/component/report/reportGroup.dart';
 import 'package:flutter_application_1/screens/main-app/community/admin/add_community.dart';
 import 'package:flutter_application_1/screens/main-app/community/admin/manage_community.dart';
 import 'package:flutter_application_1/screens/main-app/community/community_search/community_search.dart';
@@ -255,7 +256,12 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                         child: Column(children: [
                           Expanded(
                               child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                return const ReportGroupScreen();
+                              }));
+                            },
                             child: Row(
                               children: [
                                 IconButton(
@@ -312,7 +318,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
     var currentUser = FirebaseAuth.instance.currentUser;
     CollectionReference savePosts =
         FirebaseFirestore.instance.collection('SavePosts');
-        
+
     savePost(post) async {
       var queryPost = savePosts.where('savedBy', isEqualTo: currentUser!.uid);
       QuerySnapshot querySnapshot = await queryPost.get();

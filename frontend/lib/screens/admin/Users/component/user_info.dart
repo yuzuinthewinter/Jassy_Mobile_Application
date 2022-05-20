@@ -1,9 +1,11 @@
 import 'package:basic_utils/basic_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/back_close_appbar.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/component/popup_page/body/successWithButton_body.dart';
+import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/detail_page.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_picture_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -40,16 +42,25 @@ class _UserInfoPage extends State<UserInfoPage> {
             style: const TextStyle(
                 fontSize: 20, fontFamily: 'kanit', fontWeight: FontWeight.w600),
           ),
-          Text(
-            'จำนวนการร้องเรียนโดยผู้ใช้ : ${widget.user['report'].length}',
-            style: TextStyle(
-              fontSize: 16,
-              fontFamily: 'kanit',
-              fontWeight: FontWeight.w400,
-              color:
-                  widget.user['report'].length >= 3 ? textMadatory : textDark,
-            ),
-          ),
+          widget.user['userStatus'] == 'admin'
+              ? const Text(
+                  'Administrator',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'kanit',
+                      fontWeight: FontWeight.w400),
+                )
+              : Text(
+                  'จำนวนการร้องเรียนโดยผู้ใช้ : ${widget.user['report'].length}',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'kanit',
+                    fontWeight: FontWeight.w400,
+                    color: widget.user['report'].length >= 3
+                        ? textMadatory
+                        : textDark,
+                  ),
+                ),
           SizedBox(
             height: size.height * 0.04,
           ),
@@ -66,21 +77,43 @@ class _UserInfoPage extends State<UserInfoPage> {
                 icon: SvgPicture.asset("assets/icons/profile_icon.svg"),
                 text: 'โพรไฟล์',
                 onTab: () {
-                  // Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                  //   return const AppSetting();
-                  // }));
+                  Navigator.of(context).push(PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) {
+                    final curvedAnimation = CurvedAnimation(
+                      parent: animation,
+                      curve: Interval(0, 0.5),
+                    );
+                    return FadeTransition(
+                      opacity: curvedAnimation,
+                      child: DetailPage(
+                          user: widget.user,
+                          isMainPage: true,
+                          animation: animation),
+                    );
+                  }));
                 },
               ),
-              ProfileMenu(
-                size: size,
-                icon: SvgPicture.asset("assets/icons/facereg_icon.svg"),
-                text: 'การยืนยันตัวตนของผู้ใช้',
-                onTab: () {
-                  // Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                  //   return const AppSetting();
-                  // }));
-                },
-              ),
+              widget.user['userStatus'] == 'admin'
+                  ? ProfileMenu(
+                      size: size,
+                      icon: SvgPicture.asset("assets/icons/filter-circle.svg"),
+                      text: 'ประวัติเปลี่ยนแปลงข้อมูล',
+                      onTab: () {
+                        // Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                        //   return const AppSetting();
+                        // }));
+                      },
+                    )
+                  : ProfileMenu(
+                      size: size,
+                      icon: SvgPicture.asset("assets/icons/facereg_icon.svg"),
+                      text: 'การยืนยันตัวตนของผู้ใช้',
+                      onTab: () {
+                        // Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                        //   return const AppSetting();
+                        // }));
+                      },
+                    ),
             ]),
           ),
           SizedBox(

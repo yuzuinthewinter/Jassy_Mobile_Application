@@ -73,6 +73,7 @@ class _ReportTypeChoice extends State<ReportPostTypeChoice> {
 
   sendReport() async {
     DocumentReference docRef = await reportPost.add({
+      'postid': widget.postid,
       'reportHeader': widget.text,
       'reportDetail': reportFilled,
       'reportImage': urlImage,

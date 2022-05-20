@@ -9,6 +9,8 @@ import 'package:flutter_application_1/component/header_style/jassy_gradient_colo
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/component/report/reportGroup.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/component/report/reportUser.dart';
 import 'package:flutter_application_1/screens/admin/Users/component/user_card.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_card.dart';
 import 'package:flutter_application_1/screens/main-app/chat/message_screen.dart';
@@ -33,26 +35,6 @@ class DashboardScreenBody extends StatefulWidget {
 class _DashboardScreenBody extends State<DashboardScreenBody> {
   var currentUser = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
-
-  getDifferance(timestamp) {
-    DateTime now = DateTime.now();
-    DateTime lastActive = DateTime.parse(timestamp.toDate().toString());
-    Duration diff = now.difference(lastActive);
-    var timeMin = diff.inMinutes;
-    var timeHour = diff.inHours;
-    var timeDay = diff.inDays;
-    if (timeMin < 3) {
-      return 'Active a few minutes ago';
-    } else if (timeMin < 60) {
-      return 'Active ${timeMin.toString()} minutes ago';
-    } else if (timeHour < 24) {
-      return 'Active ${timeHour.toString()}h ago';
-    } else if (timeDay < 3) {
-      return 'Active ${timeDay.toString()}d ago';
-    } else {
-      return '';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +61,11 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
               color: primaryColor,
             ),
             text: 'การจัดการผู้ดูแลระบบ',
-            onTab: () {},
+            onTab: () {
+              Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                return CommunityScreen();
+              }));
+            },
           ),
           MenuCard(
             size: size,
@@ -110,7 +96,11 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
         child: Column(children: [
           Expanded(
               child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                return ReportUserScreen();
+              }));
+            },
             child: Row(
               children: [
                 IconButton(
@@ -122,7 +112,7 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
                   width: size.width * 0.03,
                 ),
                 Text(
-                  "ตรวจสอบคำร้องเรียนจากผู้ใช้",
+                  "ตรวจสอบคำร้องเรียนผู้ใช้งาน",
                   style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w400,
@@ -134,7 +124,11 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
           )),
           Expanded(
               child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                return ReportGroupScreen();
+              }));
+            },
             child: Row(
               children: [
                 IconButton(
