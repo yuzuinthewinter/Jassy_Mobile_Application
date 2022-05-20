@@ -6,8 +6,8 @@ import 'package:flutter_application_1/theme/index.dart';
 
 class MessageAsLikeDetail extends StatefulWidget {
   final int color;
-  final FavMassage data;
-  const MessageAsLikeDetail({ Key? key, required this.color, required this.data }) : super(key: key);
+  final message;
+  const MessageAsLikeDetail({ Key? key, required this.color, required this.message }) : super(key: key);
 
   @override
   State<MessageAsLikeDetail> createState() => _MessageAsLikeDetailState();
@@ -40,7 +40,7 @@ class _MessageAsLikeDetailState extends State<MessageAsLikeDetail> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.data.text, style: TextStyle(fontSize: 16),)
+            Text(widget.message, style: TextStyle(fontSize: 16),)
           ],
         ),
       ),

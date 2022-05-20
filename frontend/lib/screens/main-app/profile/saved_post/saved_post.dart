@@ -1,3 +1,6 @@
+import 'package:basic_utils/basic_utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/appbar/back_only_appbar.dart';
@@ -7,9 +10,11 @@ import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/main-app/community/post_detail.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class SavedPost extends StatefulWidget {
-  const SavedPost({Key? key}) : super(key: key);
+  final user;
+  const SavedPost(this.user, {Key? key}) : super(key: key);
 
   @override
   State<SavedPost> createState() => _SavedPostState();
@@ -21,8 +26,8 @@ class _SavedPostState extends State<SavedPost> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: const BackOnlyAppBar(
-        text: "รายการที่บันทึกไว้",
+      appBar: BackOnlyAppBar(
+        text: "ProfileSavedPost".tr,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,8 +35,8 @@ class _SavedPostState extends State<SavedPost> {
           const CurvedWidget(child: JassyGradientColor()),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-            child: const Text(
-              "รายการที่บันทึกไว้",
+            child: Text(
+              "ProfileSavedPost".tr,
               style: TextStyle(fontSize: 20, color: greyDark),
             ),
           ),
@@ -40,96 +45,209 @@ class _SavedPostState extends State<SavedPost> {
           ),
           Expanded(
               child: SingleChildScrollView(
-            child: ListView.builder(
-                padding: const EdgeInsets.only(top: 0),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: newsLists.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                      onTap: () {
-                        // Todo: see post
-                        print("see post");
-                        // Navigator.push(context,
-                        // CupertinoPageRoute(builder: (context) {
-                        // return PostDetail(post: newsLists[index],);
-                        // }));
-                      },
-                      child: savedListItem(newsLists[index], index));
-                }),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              SizedBox(
+                height: size.height * 0.8,
+                width: size.width,
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('SavePosts')
+                        .where('savedBy', isEqualTo: widget.user['uid'])
+                        .snapshots(includeMetadataChanges: true),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.data!.docs.isEmpty) {
+                        return const Center(child: Text('Save something'));
+                      }
+                      var savepost = snapshot.data!.docs[0];
+                      return ListView.builder(
+                          padding: const EdgeInsets.only(top: 0),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: savepost['saved'].length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      CupertinoPageRoute(builder: (context) {
+                                    return PostDetail(
+                                      postid: savepost['saved'][index],
+                                    );
+                                  }));
+                                },
+                                child: savedListItem(
+                                    savepost['saved'][index], index));
+                          });
+                    }),
+              )
+            ]),
           ))
         ],
       ),
     );
   }
 
-  Widget savedListItem(News data, index) {
+  Widget savedListItem(postid, index) {
     Size size = MediaQuery.of(context).size;
+
     return Container(
       // color: secoundary,
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
       height: size.height * 0.15,
       width: double.infinity,
-      child: Row(
-        children: [
-          // image
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
-            child: Container(
-              width: size.width * 0.25,
-              height: size.height * 0.1,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    // Todo: if post has image show post image im only text show writer profilepics (or use group pic)
-                    image: AssetImage("assets/images/user4.jpg"),
-                    fit: BoxFit.cover),
-              ),
-            ),
-          ),
-          // post text
-          Expanded(
-              child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  data.news,
-                  style: const TextStyle(fontSize: 18),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-                RichText(
-                    text: const TextSpan(
-                        style: TextStyle(
-                            fontSize: 14, color: greyDark, fontFamily: 'kanit'),
-                        children: [
-                      TextSpan(
-                        text: "บันทึกเมื่อ ",
+      child: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('Posts')
+            .where('postid', isEqualTo: postid)
+            .snapshots(includeMetadataChanges: true),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text('Something went wrong');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('Save something'));
+          }
+          var post = snapshot.data!.docs[0];
+          return StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('Users')
+                .where('uid', isEqualTo: post['postby'])
+                .snapshots(includeMetadataChanges: true),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Text('Something went wrong');
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.data!.docs.isEmpty) {
+                return const Center(child: Text('Save something'));
+              }
+              var postOwner = snapshot.data!.docs[0];
+              return StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('Community')
+                    .where('groupid', isEqualTo: post['groupid'])
+                    .snapshots(includeMetadataChanges: true),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Something went wrong');
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text('Save something'));
+                  }
+                  var group = snapshot.data!.docs[0];
+                  return Row(
+                    children: [
+                      // image
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: Container(
+                          width: size.width * 0.25,
+                          height: size.height * 0.1,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              // Todo: if post has image show post image im only text show writer profilepics (or use group pic)
+                              image: NetworkImage(post['picture'] == ''
+                                  ? postOwner['profilePic'][0] == ''
+                                      ? group['coverPic']
+                                      : postOwner['profilePic'][0]
+                                  : post['picture']),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       ),
-                      TextSpan(
-                        text: "1/2/2012",
+                      // post text
+                      Expanded(
+                          child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              post['text'],
+                              style: const TextStyle(fontSize: 18),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      color: greyDark,
+                                      fontFamily: 'kanit'),
+                                  children: [
+                                    TextSpan(
+                                      text: "ProfileSavedPostBy".tr,
+                                    ),
+                                    TextSpan(
+                                      text: StringUtils.capitalize(
+                                          group['namegroup']),
+                                    )
+                                  ]),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )
+                          ],
+                        ),
+                      )),
+                      // more icon
+                      InkWell(
+                        onTap: () {
+                          savedPostMoreBottomsheet(context, index, postid);
+                        },
+                        child: Icon(Icons.more_horiz,
+                            color: primaryColor, size: size.width * 0.08),
                       )
-                    ]))
-              ],
-            ),
-          )),
-          // more icon
-          InkWell(
-            onTap: () {
-              savedPostMoreBottomsheet(context, index);
+                    ],
+                  );
+                },
+              );
             },
-            child: Icon(Icons.more_horiz,
-                color: primaryColor, size: size.width * 0.08),
-          )
-        ],
+          );
+        },
       ),
     );
   }
 
-  Future<dynamic> savedPostMoreBottomsheet(BuildContext context, index) {
+  Future<dynamic> savedPostMoreBottomsheet(
+      BuildContext context, index, postid) {
     Size size = MediaQuery.of(context).size;
+    var currentUser = FirebaseAuth.instance.currentUser;
+
+    CollectionReference savePosts =
+        FirebaseFirestore.instance.collection('SavePosts');
+
+    unsavePost(postid) async {
+      await savePosts.doc(currentUser!.uid).update({
+        'saved': FieldValue.arrayRemove([postid]),
+      });
+      Navigator.of(context).pop();
+    }
+
     return showModalBottomSheet(
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
@@ -159,10 +277,12 @@ class _SavedPostState extends State<SavedPost> {
                       InkWell(
                         onTap: () {
                           // Todo: see post
-                          // Navigator.push(context,
-                          // CupertinoPageRoute(builder: (context) {
-                          // return PostDetail(post: newsLists[index],);
-                          // }));
+                          Navigator.push(context,
+                              CupertinoPageRoute(builder: (context) {
+                            return PostDetail(
+                              postid: postid,
+                            );
+                          }));
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(
@@ -181,7 +301,7 @@ class _SavedPostState extends State<SavedPost> {
                                   width: size.width * 0.03,
                                 ),
                                 Text(
-                                  "ดูโพสต์ต้นฉบับ",
+                                  "ProfileSeeSavedPost".tr,
                                   style: TextStyle(fontSize: 16),
                                 )
                               ],
@@ -194,7 +314,7 @@ class _SavedPostState extends State<SavedPost> {
                       ),
                       InkWell(
                         onTap: () {
-                          // Todo: unsaved post
+                          unsavePost(postid);
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(
