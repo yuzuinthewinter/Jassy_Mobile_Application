@@ -10,6 +10,6 @@ class FaceRecognition extends StatefulWidget {
 class _FaceRecognitionState extends State<FaceRecognition> {
   @override
   Widget build(BuildContext context) {
-    
+    return Container();
   }
 }
