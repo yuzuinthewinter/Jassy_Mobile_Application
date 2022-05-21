@@ -28,7 +28,7 @@ class _BodyState extends State<Body> {
 
   // state of data's user
   final List<String> role = ["User", "Premium", "Admin"];
-  final List<String> _choicesLists = ["InfoMale".tr, "InfoFemale".tr, "LGBTQ+"];
+  final List<String> _choicesLists = ["Male", "Female", "LGBTQ+"];
   NameType name = NameType();
   InfoType userInfo = InfoType();
   TextEditingController lastnameController = TextEditingController();

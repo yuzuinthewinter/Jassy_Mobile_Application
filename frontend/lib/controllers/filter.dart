@@ -34,9 +34,7 @@ class FilterController extends GetxController {
     "Proficiency"
   ];
   final List<String> _GenderChoicesLists = [
-    "InfoMale".tr,
-    "InfoFemale".tr,
-    "LGBTQ+",
+   "Male", "Female", "LGBTQ+",
     "FilterNoneGender".tr
   ];
 

@@ -53,9 +53,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
     "Proficiency"
   ];
   final List<String> _GenderChoicesLists = [
-    "InfoMale".tr,
-    "InfoFemale".tr,
-    "LGBTQ+",
+    "Male", "Female", "LGBTQ+",
     "FilterNoneGender".tr
   ];
 

@@ -36,7 +36,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
   int currentTabIndex = 0;
 
   // state of data's user
-  final List<String> _choicesLists = ["InfoMale".tr, "InfoFemale".tr, "LGBTQ+"];
+  final List<String> _choicesLists = ["Male", "Female", "LGBTQ+"];
 
   //controller
   TextEditingController descController = TextEditingController();
