@@ -30,6 +30,8 @@ class BasicCard extends StatelessWidget {
           Text(
             text,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           Spacer(),
           Icon(

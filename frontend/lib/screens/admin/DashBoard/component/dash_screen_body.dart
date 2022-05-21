@@ -11,6 +11,7 @@ import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/admin/manage_blocked.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/admin/manage_user.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/component/suggestion_screen.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/manage/manage_data.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/report/reportGroup.dart';
@@ -61,7 +62,7 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
               child: InkWell(
             onTap: () {
               Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                return ReportGroupScreen();
+                return SuggestionScreen();
               }));
             },
             child: Row(
