@@ -36,7 +36,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
   late var _genderIndex;
   late RangeValues _currentRangeValues;
 
-  final _LanguageChoicesLists = ['Thai', 'Korean', 'Indonesian'];
+  final _LanguageChoicesLists = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
   final List<String> _LanguageLevelChoicesLists = [
     "Beginner",
     "Elementary",

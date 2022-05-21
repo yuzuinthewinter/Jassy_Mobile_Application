@@ -23,7 +23,7 @@ class _PreJassyMainBodyState extends State<PreJassyMain> {
   int _languageLevelIndex = 0;
   final int _genderIndex = 3;
 
-  final _LanguageChoicesLists = ['Thai', 'Korean', 'Indonsian'];
+  final _LanguageChoicesLists = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
   final List<String> _LanguageLevelChoicesLists = [
     "Beginner",
     "Elementary",
