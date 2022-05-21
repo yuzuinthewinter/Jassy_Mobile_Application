@@ -1,4 +1,5 @@
 import 'package:basic_utils/basic_utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_application_1/component/back_close_appbar.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/component/popup_page/body/successWithButton_body.dart';
+import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/report/listReportUser.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/detail_page.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_picture_widget.dart';
@@ -25,6 +28,15 @@ class ReportUserInfoPage extends StatefulWidget {
 }
 
 class _ReportUserInfoPage extends State<ReportUserInfoPage> {
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
+
+  warningChangeStatusUser() async {
+    await users.doc(widget.user['uid']).update({
+      'userStatus': 'blocked',
+    });
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -101,33 +113,6 @@ class _ReportUserInfoPage extends State<ReportUserInfoPage> {
               ),
             ),
           ),
-
-          // Container(
-          //   margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-          //   padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
-          //   width: size.width,
-          //   height: size.height * 0.15,
-          //   decoration: BoxDecoration(
-          //       color: textLight, borderRadius: BorderRadius.circular(20)),
-          //   child: Column(children: [
-          //     ProfileMenu(
-          //       size: size,
-          //       icon: SvgPicture.asset("assets/icons/see_post.svg"),
-          //       text: 'ดูโพสต์ต้นฉบับ',
-          //       onTab: () {},
-          //     ),
-          //     ProfileMenu(
-          //       size: size,
-          //       icon: SvgPicture.asset("assets/icons/report.svg"),
-          //       text: 'การรายงานอื่นๆ',
-          //       onTab: () {
-          //         // Navigator.push(context, CupertinoPageRoute(builder: (context) {
-          //         //   return const AppSetting();
-          //         // }));
-          //       },
-          //     ),
-          //   ]),
-          // ),
           SizedBox(
             height: size.height * 0.03,
           ),
@@ -159,7 +144,12 @@ class _ReportUserInfoPage extends State<ReportUserInfoPage> {
                     // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
                   ],
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context,
+                      CupertinoPageRoute(builder: (context) {
+                    return ListReportUserScreen(widget.user);
+                  }));
+                },
               )),
               Expanded(
                   child: InkWell(
@@ -181,7 +171,18 @@ class _ReportUserInfoPage extends State<ReportUserInfoPage> {
                     // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
                   ],
                 ),
-                onTap: () {},
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return WarningPopUpWithButton(
+                          text: 'WarningReport'.tr,
+                          okPress: () {
+                            warningChangeStatusUser();
+                          },
+                        );
+                      });
+                },
               )),
             ]),
           ),

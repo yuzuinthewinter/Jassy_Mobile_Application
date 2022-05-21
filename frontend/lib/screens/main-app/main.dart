@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
 import 'package:flutter_application_1/controllers/filter.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_screen_body.dart';
 import 'package:flutter_application_1/screens/main-app/community/community.dart';
@@ -23,19 +24,23 @@ class JassyHome extends StatefulWidget {
 class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
   //boolean
   bool isLoading = false;
+  bool isBlocked = false;
 
   //firebasee
   final currentUser = FirebaseAuth.instance.currentUser;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //set default navigator
-  int _currentIndex = 3;
+  int _currentIndex = 2;
   List screens = [];
 
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.indexpage;
+    if (_currentIndex == 4) {
+      isBlocked = true;
+    }
     WidgetsBinding.instance.addObserver(this);
     setStatus(true, DateTime.now());
     screens = [
@@ -84,20 +89,6 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
         ? const CircularProgressIndicator()
         : Scaffold(
             extendBodyBehindAppBar: true,
-            // floatingActionButton: Visibility(
-            //   visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
-            //   child: FloatingActionButton(
-            //     child: SvgPicture.asset('assets/icons/jassy_water.svg'),
-            //     backgroundColor: greyLightest,
-            //     onPressed: () {
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(builder: (context) => const JassyMain())
-            //       );
-            //     },
-            //   ),
-            // ),
-            // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             body: screens[_currentIndex],
             bottomNavigationBar: BottomAppBar(
               shape: const CircularNotchedRectangle(),
@@ -113,8 +104,20 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
                       selectedItemColor: primaryColor,
                       onTap: (index) {
                         setState(() {
-                          _currentIndex = index;
+                          !isBlocked ? _currentIndex = index : _currentIndex;
                         });
+                        if (isBlocked) {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return WarningPopUpWithButton(
+                                  text: 'WarningBlocked'.tr,
+                                  okPress: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                );
+                              });
+                        }
                       },
                       items: [
                         BottomNavigationBarItem(

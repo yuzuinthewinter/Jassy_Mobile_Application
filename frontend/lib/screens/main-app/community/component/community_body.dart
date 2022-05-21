@@ -63,7 +63,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
           padding: EdgeInsets.symmetric(
               horizontal: size.width * 0.03, vertical: size.height * 0.01),
           child: Row(children: [
-            widget.user['userStatus'] == 'user'
+            widget.user['userStatus'] != 'admin'
                 ? widget.user['groups'].length != 0
                     ? Text("CommuMyGroup".tr,
                         style: const TextStyle(
@@ -120,7 +120,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
         Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: size.width * 0.03, vertical: size.height * 0.01),
-            child: widget.user['userStatus'] == 'user'
+            child: widget.user['userStatus'] != 'admin'
                 ? Column(
                     children: [
                       Padding(
@@ -133,23 +133,6 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                             style: const TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w700),
                           ),
-                          // const Spacer(),
-                          // widget.user['userStatus'] == 'user'
-                          //     ? InkWell(
-                          //         onTap: () {
-                          //           Navigator.push(context,
-                          //               CupertinoPageRoute(builder: (context) {
-                          //             return MyGroup(widget.community, widget.user);
-                          //           }));
-                          //         },
-                          //         child: Text("CommuMyGroup".tr,
-                          //             style: TextStyle(
-                          //               fontSize: 16,
-                          //               color: primaryColor,
-                          //             )))
-                          //     : Container(
-                          //         width: 1,
-                          //       ),
                         ]),
                       ),
                       // Todo: isEmpty show NoNewsWidget

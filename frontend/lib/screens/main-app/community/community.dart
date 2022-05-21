@@ -49,7 +49,7 @@ class CommunityScreen extends StatelessWidget {
                   appBar: CommunityAppBar(
                     user: user,
                     group: data,
-                    text: user['userStatus'] == 'user'
+                    text: user['userStatus'] != 'admin'
                         ? "CommuPage".tr
                         : "การจัดการชุมชน",
                   ),
