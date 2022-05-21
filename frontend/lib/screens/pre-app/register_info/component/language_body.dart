@@ -42,7 +42,8 @@ class _BodyState extends State<Body> {
     "Advanced",
     "Proficiency"
   ];
-  final languageItems = ['Thai', 'Korean', 'Indonesian'];
+  final languageItems = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
+  final countryItem = ['Cambodia', 'Indonesia', 'Japan', 'Korea', 'Thailand'];
 
   int countryIndex = 0;
   int defaultIndex = 0;
@@ -141,7 +142,7 @@ class _BodyState extends State<Body> {
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 15.0, horizontal: 10.0),
-                          labelText: languageItems[countryIndex],
+                          labelText: countryItem[countryIndex],
                           fillColor: textLight,
                           filled: true,
                           suffixIcon: const Icon(
@@ -162,7 +163,7 @@ class _BodyState extends State<Body> {
                           ),
                         ),
                         onSaved: (String? country) {
-                          userInfo.country = languageItems[countryIndex];
+                          userInfo.country = countryItem[countryIndex];
                         }),
                   ),
                   RequiredTextFieldLabel(textLabel: "InfoFirstLanguage".tr),
@@ -391,7 +392,7 @@ class _BodyState extends State<Body> {
             child: CupertinoPicker(
               scrollController: countryScrollController,
               itemExtent: 40,
-              children: languageItems
+              children: countryItem
                   .map((item) => Center(
                         child: Text(
                           item,
