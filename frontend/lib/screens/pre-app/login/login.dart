@@ -10,7 +10,6 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      resizeToAvoidBottomInset: false,
       appBar: BackAndCloseAppBar(text: 'LoginPage'.tr),
       body: Body(),
       );
