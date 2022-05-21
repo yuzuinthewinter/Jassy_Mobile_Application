@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,35 +18,39 @@ import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_application_1/theme/index.dart';
-
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
-
   @override
   _BodyState createState() => _BodyState();
 }
-
 class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
-  final phoneNumberController = TextEditingController();
+  late TextEditingController phoneNumberController;
+  bool isButtonActive = true;
   bool isHiddenPassword = true;
   RegExp regex = RegExp("(?=.*[A-Z])(?=.*[a-z])(?=.*?[!@#\$&*~.]).{8,}");
   TextEditingController passwordController = TextEditingController();
-
   CountryCode? countryCode = CountryCode();
   String getCoutryCode = '';
-
   void getCountry(CountryCode? countryCode) {
     getCoutryCode = countryCode.toString();
   }
-
+  @override void initState() {
+    phoneNumberController = TextEditingController();
+    phoneNumberController.addListener(() {
+      final isButtonActivate = phoneNumberController.text.isEmpty;
+      setState(() {
+        this.isButtonActive = isButtonActive;
+      });
+    });
+    super.initState();
+  }
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     phoneNumberController.dispose();
     super.dispose();
   }
-
   //TODO: signin service function - facebook, google, phone
   Future _facebookLogin(BuildContext context) async {
     try {
@@ -55,7 +58,6 @@ class _BodyState extends State<Body> {
       final facebookAuthCredential = FacebookAuthProvider.credential(
           facebookLoginResult.accessToken!.token);
       await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-
       var currentUser = FirebaseAuth.instance.currentUser;
       var users = FirebaseFirestore.instance.collection('Users');
       var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
@@ -64,12 +66,10 @@ class _BodyState extends State<Body> {
         return Navigator.of(context).pushNamed(Routes.LandingPage);
       }
       final data = snapshot.docs[0];
-
       await users.doc(currentUser.uid).update({
         'isActive': true,
         'timeStamp': DateTime.now(),
       });
-
       if (data['isAuth'] == true) {
         if (data['userStatus'] == 'admin') {
           Navigator.of(context).pushNamed(Routes.AdminJassyHome);
@@ -83,19 +83,16 @@ class _BodyState extends State<Body> {
       //TODO: handle failed
     }
   }
-
   Future _googleLogin(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication googleAuth =
           await googleUser!.authentication;
-
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
-
       var currentUser = FirebaseAuth.instance.currentUser;
       var users = FirebaseFirestore.instance.collection('Users');
       var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
@@ -104,12 +101,10 @@ class _BodyState extends State<Body> {
         return Navigator.of(context).pushNamed(Routes.LandingPage);
       }
       final data = snapshot.docs[0];
-
       await users.doc(currentUser.uid).update({
         'isActive': true,
         'timeStamp': DateTime.now(),
       });
-
       if (data['isAuth'] == true) {
         if (data['userStatus'] == 'admin') {
           Navigator.of(context).pushNamed(Routes.AdminJassyHome);
@@ -123,7 +118,6 @@ class _BodyState extends State<Body> {
       //TODO: handle failed
     }
   }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -136,10 +130,14 @@ class _BodyState extends State<Body> {
           HeaderText(text: "WelcomeLoginPage".tr),
           DescriptionText(
               text: "DescLoginPage".tr),
-          Padding(
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
             child: Row(
-              children: [
+              children: [  
                 IconButtonComponent(
                   text: "Google",
                   minimumSize: Size(size.width * 0.4, size.height * 0.05),
@@ -171,11 +169,8 @@ class _BodyState extends State<Body> {
           SizedBox(
             height: size.height * 0.01,
           ),
-          Expanded(
-            child: Column(
-              children: [
-                RequiredTextFieldLabel(textLabel: "PhoneLoginPage".tr),
-                SizedBox(
+          RequiredTextFieldLabel(textLabel: "PhoneLoginPage".tr),
+          SizedBox(
                   height: size.height * 0.01,
                 ),
                 Container(
@@ -225,32 +220,34 @@ class _BodyState extends State<Body> {
                     },
                   ),
                 ),
-              ],
+                SizedBox(
+                  height: size.height * 0.07,
+                ),
+                Center(
+                  child: DisableToggleButton(
+                    color: phoneNumberController.text.isEmpty ? grey : primaryColor,
+                      text: "LoginPage".tr,
+                      minimumSize: const Size(339, 36),
+                      press: () {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          String phone =
+                              getCoutryCode + '${phoneNumberController.text}';
+                          print(phone);
+                          Navigator.pushNamed(context, Routes.EnterOTP,
+                              arguments: [phone, 'PhoneLoginPage'.tr]);
+                        } 
+                      }),
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                const Center(child: NoAccountRegister()),
+                ],
+              ),
             ),
-          ),
-          Center(
-            child: DisableToggleButton(
-                text: "LoginPage".tr,
-                minimumSize: const Size(339, 36),
-                press: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    String phone =
-                        getCoutryCode + '${phoneNumberController.text}';
-                    print(phone);
-                    Navigator.pushNamed(context, Routes.EnterOTP,
-                        arguments: [phone, 'PhoneLoginPage'.tr]);
-                  }
-                }),
-          ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
-          const Center(child: NoAccountRegister()),
-          SizedBox(
-            height: size.height * 0.08,
-          ),
-        ],
+          )
+          ],
       ),
     );
   }

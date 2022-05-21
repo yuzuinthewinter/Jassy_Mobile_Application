@@ -20,6 +20,7 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 // NOTE: chat card in all chat page show name lastest message and unread notification
 class UserScreenBody extends StatefulWidget {
@@ -133,9 +134,8 @@ class _UserScreenBody extends State<UserScreenBody> {
                 return const Text('Something went wrong');
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: Text(''),
-                );
+                return Center(
+                    child: Lottie.asset("assets/images/loading.json"));
               }
               var data = snapshot.data!.docs;
               return ListView.builder(

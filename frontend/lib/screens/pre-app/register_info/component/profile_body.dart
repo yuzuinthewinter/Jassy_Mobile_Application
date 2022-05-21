@@ -14,6 +14,7 @@ import 'package:flutter_application_1/component/popup_page/successWithButton.dar
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class _BodyState extends State<Body> {
 
   // state of data's user
   final List<String> role = ["User", "Premium", "Admin"];
-  final List<String> _choicesLists = ["InfoMale".tr, "InfoFemale".tr, "LGBTQ+"];
+  final List<String> _choicesLists = ["Male", "Female", "LGBTQ+"];
   NameType name = NameType();
   InfoType userInfo = InfoType();
   TextEditingController lastnameController = TextEditingController();
@@ -57,7 +58,9 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
 
     return isLoading
-        ? CircularProgressIndicator()
+        ? Center(
+            child: Lottie.asset("assets/images/loading.json"),
+          )
         : Form(
             key: _formKey,
             child: Column(
@@ -241,22 +244,21 @@ class _BodyState extends State<Body> {
                                 );
                               })),
                         ),
+                        Center(
+                          child: DisableToggleButton(
+                            text: "NextButton".tr,
+                            minimumSize: Size(size.width * 0.8, size.height * 0.05),
+                            press: () {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                Navigator.pushNamed(context, Routes.RegisterLanguage,
+                                    arguments: [name, userInfo]);
+                              }
+                            },
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-                Center(
-                  child: DisableToggleButton(
-                    color: _formKey.currentState!.validate() ? primaryColor : grey,
-                    text: "NextButton".tr,
-                    minimumSize: Size(size.width * 0.8, size.height * 0.05),
-                    press: () {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        Navigator.pushNamed(context, Routes.RegisterLanguage,
-                            arguments: [name, userInfo]);
-                      }
-                    },
                   ),
                 ),
               ],

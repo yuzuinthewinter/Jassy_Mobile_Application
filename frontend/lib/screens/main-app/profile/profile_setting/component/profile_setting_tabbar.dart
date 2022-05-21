@@ -31,6 +31,7 @@ class ProfileSettingTabBar extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 fontFamily: 'kanit',
               ),
+              textAlign: TextAlign.center,
             ),
           ),
           Tab(
@@ -41,6 +42,7 @@ class ProfileSettingTabBar extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 fontFamily: 'kanit',
               ),
+              textAlign: TextAlign.center,
             ),
           ),
         ],

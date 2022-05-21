@@ -22,7 +22,7 @@ class MarkMessageAsLike extends StatefulWidget {
 class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
   List colors = [primaryLightest, tertiaryLightest, secoundaryLightest];
   bool isSelected = false;
-  final _LanguageChoicesLists = ['Thai', 'Korean', 'Indonesian'];
+  final _LanguageChoicesLists = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
 
   @override
   Widget build(BuildContext context) {

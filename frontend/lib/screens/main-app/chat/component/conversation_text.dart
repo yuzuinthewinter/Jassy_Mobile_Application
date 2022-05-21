@@ -38,7 +38,7 @@ class _BodyState extends State<ConversationText> {
       FirebaseFirestore.instance.collection('MemoMessages');
   var currentUser = FirebaseAuth.instance.currentUser;
 
-  final _LanguageChoicesLists = ['Thai', 'Korean', 'Indonesian'];
+  final _LanguageChoicesLists = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
   ReplyController replyController = Get.put(ReplyController());
   bool _isReply = false;
   String _message = '';

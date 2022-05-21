@@ -13,6 +13,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:lottie/lottie.dart';
+
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
@@ -62,6 +64,7 @@ class _BodyState extends State<Body> {
         'isActive': false,
         'isAuth': false,
         'groups': const [],
+        'hideUser': const [],
       });
       //todo: popup delay
       Navigator.of(context).pushNamed(Routes.RegisterProfile);
@@ -152,6 +155,7 @@ class _BodyState extends State<Body> {
           'isActive': false,
           'isAuth': false,
           'groups': const [],
+          'hideUser': const [],
         });
         if (currentUser.photoURL!.isNotEmpty) {
           await users.doc(currentUser.uid).update({
@@ -170,7 +174,22 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return isLoading
-        ? const CircularProgressIndicator()
+        ? Expanded(
+          child: Container(
+            decoration: const BoxDecoration(
+            gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            stops: [
+              0.3,
+              0.5,
+              0.8,
+            ],
+            colors: [Color(0xFFE6E3FF), Color(0xFFFFEAEF), Color(0xFFFFEAC4)]),
+            ),
+            child: Lottie.asset("assets/images/loading.json",)
+          ),
+        )
         : Background(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -8,6 +8,7 @@ import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/filter.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/jassy_main.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreJassyMain extends StatefulWidget {
@@ -23,7 +24,7 @@ class _PreJassyMainBodyState extends State<PreJassyMain> {
   int _languageLevelIndex = 0;
   final int _genderIndex = 3;
 
-  final _LanguageChoicesLists = ['Thai', 'Korean', 'Indonsian'];
+  final _LanguageChoicesLists = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
   final List<String> _LanguageLevelChoicesLists = [
     "Beginner",
     "Elementary",
@@ -33,9 +34,7 @@ class _PreJassyMainBodyState extends State<PreJassyMain> {
     "Proficiency"
   ];
   final List<String> _GenderChoicesLists = [
-    "InfoMale".tr,
-    "InfoFemale".tr,
-    "LGBTQ+",
+    "Male", "Female", "LGBTQ+",
     "FilterNoneGender".tr
   ];
   RangeValues _currentRangeValues = const RangeValues(20, 30);
@@ -57,8 +56,8 @@ class _PreJassyMainBodyState extends State<PreJassyMain> {
             return const Text('Something went wrong');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: Lottie.asset("assets/images/loading.json"),
             );
           }
           if (snapshot.data!.docs.isEmpty) {
