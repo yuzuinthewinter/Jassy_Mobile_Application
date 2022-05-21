@@ -1,6 +1,7 @@
 import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/component/back_close_appbar.dart';
@@ -23,31 +24,58 @@ class PictureUpload extends StatefulWidget {
 
 class _PictureUploadState extends State<PictureUpload> {
 
-  File? image;
+  XFile? imagePath;
+  String imageName = '';
   Future pickImage () async {
     try{
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      
+      final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
       if (image == null) return;
 
-      final imageTemporary = File(image.path);
       setState(() {
-        this.image = imageTemporary;
-      });
+        imagePath = image;
+        imageName = image.name.toString();
+      }); 
     } on PlatformException catch (e) {
       print('Fail to pick image $e');
     }
   }
 
-  PlatformFile? pickedFile;
-  Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles();
+  var users = FirebaseFirestore.instance.collection('Users');
 
-    if (result == null) return;
+  _uploadImage () async{
 
-    setState(() {
-      pickedFile = result.files.first;
+    var users = FirebaseFirestore.instance.collection('Users');
+    var currentUser = FirebaseAuth.instance.currentUser;
+
+    String uploadFileName = DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
+    Reference reference = FirebaseStorage.instance.ref().child('profilePics/${uploadFileName}');
+    UploadTask uploadTask = reference.putFile(File(imagePath!.path));
+
+    uploadTask.snapshotEvents.listen((event) {
+      print(event.bytesTransferred.toString() + "\t" + event.totalBytes.toString());
     });
+
+    _showMessage() {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: const Text("Something went wrong"),
+        duration: Duration(seconds: 2),
+      ));
+    }
+
+    await uploadTask.whenComplete( () async{
+      var uploadPath = await uploadTask.snapshot.ref.getDownloadURL();
+
+      if (uploadPath.isNotEmpty) {
+        users.doc(currentUser!.uid).update({
+          'profilePic': [uploadPath]
+        }).then((value) => null);
+      } else {
+        _showMessage();
+      }
+
+    });
+
   }
 
   @override
@@ -65,7 +93,7 @@ class _PictureUploadState extends State<PictureUpload> {
           HeaderText(text: "ProfilePictureUpload".tr),
           DescriptionText(text: "ProfilePictureDesc".tr),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
             child: Text(
               "ProfilePictureWarning".tr,
               textAlign: TextAlign.left,
@@ -81,13 +109,13 @@ class _PictureUploadState extends State<PictureUpload> {
               child: Column(
                 children: [
                   SizedBox(height: size.height * 0.015,),
-                  image != null 
+                  imagePath != null 
                   ? Align(
                     alignment: Alignment.center,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.0),
                       child: Image.file(
-                        image!, 
+                        File(imagePath!.path), 
                         fit: BoxFit.cover, 
                         height: size.height * 0.3, 
                         width: size.width * 0.65,
@@ -111,11 +139,18 @@ class _PictureUploadState extends State<PictureUpload> {
               ),
               Center(
                 child: DisableToggleButton(
-                  color: image != null ? primaryColor : grey,
+                  color: imagePath != null ? primaryColor : grey,
                   text: "NextButton".tr,
                   minimumSize: Size(size.width * 0.35, size.height * 0.05),
                   press: () {
                     // Todo: face reg
+                    if(imagePath != null) {
+                      _uploadImage();
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => const FaceRecognition()),
+                      // );
+                    }
                   },
                 ),
               ),
