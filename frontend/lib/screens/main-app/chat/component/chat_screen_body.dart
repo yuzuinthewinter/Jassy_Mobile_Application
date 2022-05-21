@@ -7,6 +7,7 @@ import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_card.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/edit_chatlist.dart';
+import 'package:flutter_application_1/screens/main-app/community/component/no_news_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -113,8 +114,16 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
                       );
                     }
                     if (snapshot.data!.docs[0]['chats'].length == 0) {
-                      return const Center(
-                          child: Text('Let\'s start conversation'));
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          NoNewsWidget(
+                            size: size,
+                            headText: "NoChatPartner".tr,
+                            descText: "FindChatPartner".tr,
+                          ),
+                        ],
+                      );
                     }
                     var listChatid = snapshot.data!.docs[0]['chats'];
                     var data = snapshot.data!.docs[0];
