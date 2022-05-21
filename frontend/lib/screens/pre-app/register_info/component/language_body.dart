@@ -362,7 +362,6 @@ class _BodyState extends State<Body> {
           ),
           Center(
             child: DisableToggleButton(
-              color: _formKey.currentState!.validate() ? primaryColor : grey,
               text: "NextButton".tr,
               minimumSize: const Size(279, 36),
               press: () async {
