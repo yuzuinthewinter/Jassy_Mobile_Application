@@ -58,7 +58,7 @@ class _PictureUploadState extends State<PictureUpload> {
 
     _showMessage() {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: const Text("Something went wrong"),
+        content: Text("Something went wrong"),
         duration: Duration(seconds: 2),
       ));
     }
