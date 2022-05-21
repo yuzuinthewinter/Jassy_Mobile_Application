@@ -25,7 +25,8 @@ class Body extends StatefulWidget {
 }
 class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
-  final phoneNumberController = TextEditingController();
+  late TextEditingController phoneNumberController;
+  bool isButtonActive = true;
   bool isHiddenPassword = true;
   RegExp regex = RegExp("(?=.*[A-Z])(?=.*[a-z])(?=.*?[!@#\$&*~.]).{8,}");
   TextEditingController passwordController = TextEditingController();
@@ -33,6 +34,16 @@ class _BodyState extends State<Body> {
   String getCoutryCode = '';
   void getCountry(CountryCode? countryCode) {
     getCoutryCode = countryCode.toString();
+  }
+  @override void initState() {
+    phoneNumberController = TextEditingController();
+    phoneNumberController.addListener(() {
+      final isButtonActivate = phoneNumberController.text.isEmpty;
+      setState(() {
+        this.isButtonActive = isButtonActive;
+      });
+    });
+    super.initState();
   }
   @override
   void dispose() {
@@ -214,6 +225,7 @@ class _BodyState extends State<Body> {
                 ),
                 Center(
                   child: DisableToggleButton(
+                    color: phoneNumberController.text.isEmpty ? grey : primaryColor,
                       text: "LoginPage".tr,
                       minimumSize: const Size(339, 36),
                       press: () {
@@ -224,7 +236,7 @@ class _BodyState extends State<Body> {
                           print(phone);
                           Navigator.pushNamed(context, Routes.EnterOTP,
                               arguments: [phone, 'PhoneLoginPage'.tr]);
-                        }
+                        } 
                       }),
                 ),
                 SizedBox(
@@ -238,15 +250,5 @@ class _BodyState extends State<Body> {
           ],
       ),
     );
-
-    
-          
-            
-    
-
-          
-    
-    
-  
   }
 }
