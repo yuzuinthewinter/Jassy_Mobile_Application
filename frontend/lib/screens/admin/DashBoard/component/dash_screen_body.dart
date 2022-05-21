@@ -9,6 +9,7 @@ import 'package:flutter_application_1/component/header_style/jassy_gradient_colo
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/admin/manage_blocked.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/admin/manage_user.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/manage/manage_data.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
@@ -45,14 +46,55 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
     Size size = MediaQuery.of(context).size;
     return Column(children: [
       CurvedWidget(child: JassyGradientColor()),
-      SizedBox(
+       SizedBox(
+        height: size.height * 0.03,
+      ),
+      Container(
+        margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+        padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
+        width: size.width,
+        height: size.height * 0.075,
+        decoration: BoxDecoration(
+            color: textLight, borderRadius: BorderRadius.circular(20)),
+        child: Column(children: [
+          Expanded(
+              child: InkWell(
+            onTap: () {
+              Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                return ReportGroupScreen();
+              }));
+            },
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.newspaper_rounded),
+                  color: primaryColor,
+                ),
+                SizedBox(
+                  width: size.width * 0.03,
+                ),
+                Text(
+                  "ข้อเสนอแนะจากผู้ใช้งาน",
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      color: textDark),
+                ),
+                Spacer(),
+              ],
+            ),
+          ))
+        ]),
+      ),
+    SizedBox(
         height: size.height * 0.04,
       ),
       Container(
         margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
         padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
         width: size.width,
-        height: size.height * 0.21,
+        height: size.height * 0.22,
         decoration: BoxDecoration(
             color: textLight, borderRadius: BorderRadius.circular(20)),
         child: Column(children: [
@@ -107,10 +149,38 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
         margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
         padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
         width: size.width,
-        height: size.height * 0.15,
+        height: size.height * 0.22,
         decoration: BoxDecoration(
             color: textLight, borderRadius: BorderRadius.circular(20)),
         child: Column(children: [
+          Expanded(
+              child: InkWell(
+            onTap: () {
+              Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                return ManageBlockedScreenBody();
+              }));
+            },
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.person_off_rounded),
+                  color: secoundary,
+                ),
+                SizedBox(
+                  width: size.width * 0.03,
+                ),
+                Text(
+                  "การจัดการผู้ใช้งานที่ถูกระงับ",
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      color: textMadatory),
+                ),
+                Spacer(),
+              ],
+            ),
+          )),
           Expanded(
               child: InkWell(
             onTap: () {
@@ -122,7 +192,7 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.warning_rounded),
+                  icon: const Icon(Icons.message_rounded),
                   color: secoundary,
                 ),
                 SizedBox(
@@ -150,7 +220,7 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.warning_rounded),
+                  icon: const Icon(Icons.quiz_rounded),
                   color: secoundary,
                 ),
                 SizedBox(
@@ -169,6 +239,6 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
           ))
         ]),
       ),
-    ]);
+      ]);
   }
 }

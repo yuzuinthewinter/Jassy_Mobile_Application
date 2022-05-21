@@ -34,6 +34,14 @@ class _UserInfoPage extends State<UserInfoPage> {
     Navigator.of(context).pop();
   }
 
+  warningCancelBlocked() async {
+    await users.doc(widget.user['uid']).update({
+      'userStatus': 'user',
+    });
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -133,19 +141,6 @@ class _UserInfoPage extends State<UserInfoPage> {
                     }));
                   },
                 ),
-                widget.user['userStatus'] == 'admin'
-                    ? ProfileMenu(
-                        size: size,
-                        icon:
-                            SvgPicture.asset("assets/icons/filter-circle.svg"),
-                        text: 'ประวัติเปลี่ยนแปลงข้อมูล',
-                        onTab: () {
-                          // Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                          //   return const AppSetting();
-                          // }));
-                        },
-                      )
-                    : const SizedBox.shrink()
               ],
             ),
           ),
@@ -156,9 +151,11 @@ class _UserInfoPage extends State<UserInfoPage> {
             margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
             padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
             width: size.width,
-            height: widget.user['report'].length < 5
-                ? size.height * 0.075
-                : size.height * 0.15,
+            height: widget.user['userStatus'] == 'blocked'
+                ? size.height * 0.15
+                : widget.user['report'].length < 5
+                    ? size.height * 0.075
+                    : size.height * 0.15,
             decoration: BoxDecoration(
                 color: textLight, borderRadius: BorderRadius.circular(20)),
             child: Column(
@@ -186,37 +183,68 @@ class _UserInfoPage extends State<UserInfoPage> {
                     }));
                   },
                 )),
-                widget.user['report'].length < 5
-                    ? const SizedBox.shrink()
-                    : Expanded(
+                widget.user['userStatus'] == 'blocked'
+                    ? Expanded(
                         child: InkWell(
-                        child: Row(
-                          children: [
-                            SvgPicture.asset("assets/icons/report_red.svg"),
-                            SizedBox(
-                              width: size.width * 0.03,
-                            ),
-                            Text(
-                              "ระงับการใช้งานผู้ใช้",
-                              style: TextStyle(color: textMadatory),
-                            ),
-                            Spacer(),
-                            // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
-                          ],
+                          child: Row(
+                            children: [
+                              SvgPicture.asset("assets/icons/report_red.svg"),
+                              SizedBox(
+                                width: size.width * 0.03,
+                              ),
+                              Text(
+                                "ยกเลิกระงับการใช้งานผู้ใช้",
+                                style: TextStyle(color: textMadatory),
+                              ),
+                              Spacer(),
+                              // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
+                            ],
+                          ),
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return WarningPopUpWithButton(
+                                    text: 'WarningAdminUnblocked'.tr,
+                                    okPress: () {
+                                      warningCancelBlocked();
+                                    },
+                                  );
+                                });
+                          },
                         ),
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return WarningPopUpWithButton(
-                                  text: 'WarningReport'.tr,
-                                  okPress: () {
-                                    warningChangeStatusUser();
-                                  },
-                                );
-                              });
-                        },
-                      )),
+                      )
+                    : widget.user['report'].length < 5
+                        ? const SizedBox.shrink()
+                        : Expanded(
+                            child: InkWell(
+                            child: Row(
+                              children: [
+                                SvgPicture.asset("assets/icons/report_red.svg"),
+                                SizedBox(
+                                  width: size.width * 0.03,
+                                ),
+                                Text(
+                                  "ระงับการใช้งานผู้ใช้",
+                                  style: TextStyle(color: textMadatory),
+                                ),
+                                Spacer(),
+                                // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
+                              ],
+                            ),
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return WarningPopUpWithButton(
+                                      text: 'WarningAdminBlocked'.tr,
+                                      okPress: () {
+                                        warningChangeStatusUser();
+                                      },
+                                    );
+                                  });
+                            },
+                          )),
               ],
             ),
           ),

@@ -200,6 +200,10 @@ class LocaleString extends Translations {
           "LanguageSetting": "Language",
 
           //Popup
+          "WarningAdminBlocked":
+              "Are you sure you\nwant to suspend this account?",
+          "WarningAdminUnblocked":
+              "Are you sure you want to\ncancel suspend this account?",
           "WarningBlocked":
               "Your account\nhas been suspended,\nPlease contact\nhelp center for recovery",
           "RegisterSuccess": "Success",
@@ -399,6 +403,9 @@ class LocaleString extends Translations {
           "LanguageSetting": "ภาษา",
 
           //Popup
+          "WarningAdminBlocked": "คุณต้องการระงับ\nการใช้งานผู้ใช้รายนี้ ?",
+          "WarningAdminUnblocked":
+              "คุณต้องการยกเลิกระงับ\nการใช้งานผู้ใช้รายนี้ ?",
           "WarningBlocked":
               "บัญชีของคุณถูกระงับการใช้งาน\nหากต้องการกู้คืนบัญชี\nกรุณาติดต่อศูนย์ช่วยเหลือผู้ใช้",
           "RegisterSuccess": "ลงทะเบียนสำเร็จ",
