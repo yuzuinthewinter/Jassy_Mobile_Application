@@ -8,6 +8,7 @@ import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/filter.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/jassy_main.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreJassyMain extends StatefulWidget {
@@ -55,8 +56,8 @@ class _PreJassyMainBodyState extends State<PreJassyMain> {
             return const Text('Something went wrong');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: Lottie.asset("assets/images/loading.json"),
             );
           }
           if (snapshot.data!.docs.isEmpty) {

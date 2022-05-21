@@ -11,6 +11,7 @@ import 'package:flutter_application_1/screens/pre-app/landing/landing_page.dart'
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'theme/index.dart';
 
 void main() async {
@@ -63,9 +64,22 @@ class _AppScreen extends State<App> {
           );
         }
         // TODO: loading
-        return const Center(
-          child: CircularProgressIndicator(),
-        ); // l
+        return Expanded(
+          child: Container(
+            decoration: const BoxDecoration(
+            gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            stops: [
+              0.3,
+              0.5,
+              0.8,
+            ],
+            colors: [Color(0xFFE6E3FF), Color(0xFFFFEAEF), Color(0xFFFFEAC4)]),
+          ),
+            child: Lottie.asset("assets/images/loading.json",)
+          ),
+         ); // l
       },
     );
   }
@@ -111,8 +125,11 @@ class AuthGate extends StatelessWidget {
         if (currentUser!.uid == null) {
           return const LandingPage();
         }
-        return const Center(
-          child: CircularProgressIndicator(),
+        return Expanded(
+          child: Container(
+            color: greyLightest, 
+            child: Lottie.asset("assets/images/loading.json")
+          ),
         );
       },
     );
