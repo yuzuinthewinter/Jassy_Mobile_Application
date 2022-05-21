@@ -255,10 +255,6 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                                             fontWeight: FontWeight.w700),
                                         children: [
                                           TextSpan(text: user['country']),
-                                          const TextSpan(text: ", "),
-                                          TextSpan(text: user['country']),
-                                          const TextSpan(text: " "),
-                                          TextSpan(text: user['country'])
                                         ]),
                                   ),
                                   RichText(
