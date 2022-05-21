@@ -189,6 +189,15 @@ class LocaleString extends Translations {
           "ProfileAboutJassy": "About Jassy",
           "ProfileLogOut": "Log Out",
 
+          //Help Center
+          "unverifiedUsers" : "For unverified users",
+          "CommunityFeedback" : "Community feedback",
+          "SuspendedUsers" : "For suspended users",
+          "FeedBack" : "Feedback",
+          "FeedBackDetail" : "Feedback details",
+          "RequestTitle" : "File a petition that has been suspended",
+          "RequestDetail" : "Petition details",
+
           //Profile Setting Page
           "ProfileDesc": "Description",
           "ProfileSaveChange": "Save Change",
@@ -390,6 +399,15 @@ class LocaleString extends Translations {
           "ProfileRemoveSavedPost": "เลิกบันทึก",
           "ProfileAboutJassy": "เกี่ยวกับแจสซี่",
           "ProfileLogOut": "ออกจากระบบ",
+
+          //Help Center
+          "unverifiedUsers" : "สำหรับผู้ใช้ที่ยังไม่ยืนยันตัวตน",
+          "CommunityFeedback" : "ข้อเสนอแนะสำหรับชุมชน",
+          "SuspendedUsers" : "สำหรับผู้ใช้ที่โดนระงับการใช้งาน",
+          "FeedBack" : "ข้อเสนอแนะ",
+          "FeedBackDetail" : "รายละเอียดข้อเสนอแนะ",
+          "RequestTitle" : "ยื่นคำร้องการถูกระงับการใช้งาน",
+          "RequestDetail" : "รายระเอียดการยื่นคำร้อง",
 
           //Profile Setting Page
           "ProfileDesc": "คำบรรยายของคุณ",
