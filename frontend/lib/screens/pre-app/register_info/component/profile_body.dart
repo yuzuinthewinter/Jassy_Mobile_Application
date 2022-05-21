@@ -241,21 +241,21 @@ class _BodyState extends State<Body> {
                                 );
                               })),
                         ),
+                        Center(
+                          child: DisableToggleButton(
+                            text: "NextButton".tr,
+                            minimumSize: Size(size.width * 0.8, size.height * 0.05),
+                            press: () {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                Navigator.pushNamed(context, Routes.RegisterLanguage,
+                                    arguments: [name, userInfo]);
+                              }
+                            },
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-                Center(
-                  child: DisableToggleButton(
-                    text: "NextButton".tr,
-                    minimumSize: Size(size.width * 0.8, size.height * 0.05),
-                    press: () {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        Navigator.pushNamed(context, Routes.RegisterLanguage,
-                            arguments: [name, userInfo]);
-                      }
-                    },
                   ),
                 ),
               ],
