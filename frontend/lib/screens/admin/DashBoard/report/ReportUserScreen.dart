@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/report/reportuser_info.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 // NOTE: chat card in all chat page show name lastest message and unread notification
@@ -90,7 +92,13 @@ class _ReportUserScreenBody extends State<ReportUserScreenBody> {
                                           : tertiary,
                                     ),
                                     text: data[index]['reportHeader'],
-                                    onTab: () {},
+                                    onTab: () {
+                                      Navigator.push(context,
+                                          CupertinoPageRoute(
+                                              builder: (context) {
+                                        return ReportUserInfoPage(user, data[index]);
+                                      }));
+                                    },
                                   ),
                                 ]);
                               }),

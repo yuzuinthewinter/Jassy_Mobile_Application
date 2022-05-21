@@ -8,9 +8,12 @@ import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/admin/manage_user.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/manage/manage_data.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
-import 'package:flutter_application_1/screens/admin/DashBoard/component/report/reportGroup.dart';
-import 'package:flutter_application_1/screens/admin/DashBoard/component/report/reportUser.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/report/reportGroup.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/report/reportUser.dart';
 import 'package:flutter_application_1/screens/admin/Users/component/user_card.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_card.dart';
 import 'package:flutter_application_1/screens/main-app/chat/message_screen.dart';
@@ -49,10 +52,24 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
         margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
         padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
         width: size.width,
-        height: size.height * 0.15,
+        height: size.height * 0.21,
         decoration: BoxDecoration(
             color: textLight, borderRadius: BorderRadius.circular(20)),
         child: Column(children: [
+          MenuCard(
+            size: size,
+            icon: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.document_scanner_rounded),
+              color: primaryColor,
+            ),
+            text: 'การจัดการข้อมูลแอปพลิเคชั่น',
+            onTab: () {
+              Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                return ManageScreenBody();
+              }));
+            },
+          ),
           MenuCard(
             size: size,
             icon: IconButton(
@@ -63,7 +80,7 @@ class _DashboardScreenBody extends State<DashboardScreenBody> {
             text: 'การจัดการผู้ดูแลระบบ',
             onTab: () {
               Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                return CommunityScreen();
+                return ManageAdminScreenBody();
               }));
             },
           ),

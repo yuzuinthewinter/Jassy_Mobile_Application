@@ -12,7 +12,7 @@ import 'package:flutter_application_1/component/text/report_choice.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
-import 'package:flutter_application_1/screens/admin/DashBoard/component/report/reportGroup.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/report/reportGroup.dart';
 import 'package:flutter_application_1/screens/main-app/community/admin/add_community.dart';
 import 'package:flutter_application_1/screens/main-app/community/admin/manage_community.dart';
 import 'package:flutter_application_1/screens/main-app/community/community_search/community_search.dart';

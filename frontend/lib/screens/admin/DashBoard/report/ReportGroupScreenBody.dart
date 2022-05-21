@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
-import 'package:flutter_application_1/screens/admin/DashBoard/component/report/reportpost_info.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/report/reportpost_info.dart';
 import 'package:flutter_application_1/theme/index.dart';
 
 // NOTE: chat card in all chat page show name lastest message and unread notification

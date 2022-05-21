@@ -80,7 +80,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ChatScreenBody());
 
       case Routes.AdminJassyHome:
-        return MaterialPageRoute(builder: (_) => const AdminJassyHome());
+        var data = settings.arguments ?? 0;
+        return MaterialPageRoute(builder: (_) => AdminJassyHome(data));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
