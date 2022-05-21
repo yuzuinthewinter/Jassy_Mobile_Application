@@ -33,9 +33,7 @@ class _PreJassyMainBodyState extends State<PreJassyMain> {
     "Proficiency"
   ];
   final List<String> _GenderChoicesLists = [
-    "InfoMale".tr,
-    "InfoFemale".tr,
-    "LGBTQ+",
+    "Male", "Female", "LGBTQ+",
     "FilterNoneGender".tr
   ];
   RangeValues _currentRangeValues = const RangeValues(20, 30);

@@ -17,7 +17,14 @@ class FilterController extends GetxController {
 
   var currentUser = FirebaseAuth.instance.currentUser;
 
-  final _LanguageChoicesLists = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
+  final _LanguageChoicesLists = [
+    'Cambodian',
+    'English',
+    'Indonesian',
+    'Japanese',
+    'Korean',
+    'Thai',
+  ];
   final List<String> _LanguageLevelChoicesLists = [
     "Beginner",
     "Elementary",
@@ -27,9 +34,7 @@ class FilterController extends GetxController {
     "Proficiency"
   ];
   final List<String> _GenderChoicesLists = [
-    "InfoMale".tr,
-    "InfoFemale".tr,
-    "LGBTQ+",
+   "Male", "Female", "LGBTQ+",
     "FilterNoneGender".tr
   ];
 

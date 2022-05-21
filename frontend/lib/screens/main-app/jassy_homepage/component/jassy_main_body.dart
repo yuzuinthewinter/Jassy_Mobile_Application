@@ -36,7 +36,14 @@ class _JassyMainBodyState extends State<JassyMainBody> {
   late var _genderIndex;
   late RangeValues _currentRangeValues;
 
-  final _LanguageChoicesLists = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
+  final _LanguageChoicesLists = [
+    'Cambodian',
+    'English',
+    'Indonesian',
+    'Japanese',
+    'Korean',
+    'Thai',
+  ];
   final List<String> _LanguageLevelChoicesLists = [
     "Beginner",
     "Elementary",
@@ -46,9 +53,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
     "Proficiency"
   ];
   final List<String> _GenderChoicesLists = [
-    "InfoMale".tr,
-    "InfoFemale".tr,
-    "LGBTQ+",
+    "Male", "Female", "LGBTQ+",
     "FilterNoneGender".tr
   ];
 
