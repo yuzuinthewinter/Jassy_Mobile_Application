@@ -62,6 +62,7 @@ class _BodyState extends State<Body> {
         'isActive': false,
         'isAuth': false,
         'groups': const [],
+        'hideUser': const [],
       });
       //todo: popup delay
       Navigator.of(context).pushNamed(Routes.RegisterProfile);
@@ -152,6 +153,7 @@ class _BodyState extends State<Body> {
           'isActive': false,
           'isAuth': false,
           'groups': const [],
+          'hideUser': const [],
         });
         if (currentUser.photoURL!.isNotEmpty) {
           await users.doc(currentUser.uid).update({
