@@ -102,7 +102,7 @@ class _BodyState extends State<Body> {
           Center(
               child: DisableToggleButton(
                 color: phoneNumberController.text.isEmpty ? grey : primaryColor,
-            text: "ตกลง",
+            text: "Confirm".tr,
             minimumSize: Size(size.width * 0.8, size.height * 0.05),
             press: () {
               if (_formKey.currentState!.validate()) {

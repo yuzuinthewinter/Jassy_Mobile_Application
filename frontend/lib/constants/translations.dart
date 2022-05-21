@@ -202,6 +202,9 @@ class LocaleString extends Translations {
           //Popup
           "RegisterSuccess": "Success",
           "NextButton": "Next",
+
+          //Confirm
+          "Confirm" : "Confirm"
         },
         'th_TH': {
           // Conjunction
@@ -399,6 +402,9 @@ class LocaleString extends Translations {
           //Popup
           "RegisterSuccess": "ลงทะเบียนสำเร็จ",
           "NextButton": "ต่อไป",
+
+          //Confirm
+          "Confirm" : "ตกลง"
         },
       };
 }

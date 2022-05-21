@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/outlined_button.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/utils.dart';
 
 class MarkAsLikePopUp extends StatelessWidget {
 
@@ -41,7 +42,7 @@ class MarkAsLikePopUp extends StatelessWidget {
                 ),
                 SizedBox(width: size.width * 0.04,),
                 RoundButton(
-                  text: "ตกลง", 
+                  text: "Confirm".tr, 
                   minimumSize: Size(size.width * 0.3, size.height * 0.05), 
                   press: onPress
                 ),
