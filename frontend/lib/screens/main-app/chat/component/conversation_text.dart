@@ -58,8 +58,10 @@ class _BodyState extends State<ConversationText> {
 
   AddFavorite(messageid, languageName) async {
     languageName = languageName.toLowerCase();
-    await memos.doc(currentUser!.uid).set({
+    await memos.doc(currentUser!.uid).update({
       'owner': currentUser!.uid,
+      'pingroup': [],
+      'listLanguage': FieldValue.arrayUnion([languageName]),
       '$languageName': FieldValue.arrayUnion([messageid]),
     });
     Navigator.of(context).pop();

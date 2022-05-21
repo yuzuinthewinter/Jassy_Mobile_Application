@@ -64,15 +64,20 @@ class LocaleString extends Translations {
           "InfoLevelLanguageInterest": "Level of Language Interest",
           //Profile Picture Upload
           "ProfilePictureUpload": "Please upload your profile picture.",
-          "ProfilePictureDesc" : "Please upload a clear picture. Don't look back, obscene, involved in religious/political provocation and don't deceive money.",
-          "ProfilePictureWarning" : "The selected picture cannot be edited, please select the picture carefully.",
-          "ProfilePictureUploadButton" : "Upload Image",
+          "ProfilePictureDesc":
+              "Please upload a clear picture. Don't look back, obscene, involved in religious/political provocation and don't deceive money.",
+          "ProfilePictureWarning":
+              "The selected picture cannot be edited, please select the picture carefully.",
+          "ProfilePictureUploadButton": "Upload Image",
 
           //Main-Application
           //Jassy Main Page
           "MainPage": "Home",
           "MainTabLanguage": "Level of Language",
           "MainTabDesc": "Description",
+          "MainNoUserTitle":
+              "There are no users who have matched\ntheir requirements to yours now.",
+          "MainNoUserDesc": "Please select the closest requirement.",
           //Filter
           "FilterLang": "Language",
           "FilterLevelLang": "Level of Language",
@@ -93,7 +98,7 @@ class LocaleString extends Translations {
           "CommuPage": "Community",
           "CommuRecommand": "Recommend for you",
           "CommuMore": "See More",
-          "CommuFeed": "New Feed",
+          "CommuFeed": "News Feed",
           "CommuNoFeed": "There is no news for you yet.",
           "CommuStartJoin":
               "Let's start by joining the group\n to receive news and exchange!",
@@ -123,6 +128,7 @@ class LocaleString extends Translations {
           "GroupPostToday": "Today",
           "GroupPostYesterday": "Yesterday",
           "GroupPostCommentHintText": "Write a comment",
+          "GroupDeleteWarning": "Are you want to delete this post ?",
 
           //Jassy Chat Page
           "ChatPage": "Chat",
@@ -147,6 +153,7 @@ class LocaleString extends Translations {
           //unmatch
           "WarningUnmatch": "Are you sure you want to unmatch?",
           "WarningReport": "Are you sure you want to report this user?",
+          "WarningReportPost": "Are you sure you want to report this post?",
           //Report
           "ReportDetail": "Report Details",
           "ReportWarning":
@@ -174,8 +181,11 @@ class LocaleString extends Translations {
           "ProfileSetting": "Profile Settings",
           "ProfileHelp": "Help Center",
           "ProfileAppSetting": "Settings",
-          "ProfileMarkAsLike": "Mask as Like",
-          "ProfileSavedPost": "Saved Post",
+          "ProfileMarkAsLike": "Mark as Like",
+          "ProfileSavedPost": "Saved Post ",
+          "ProfileSavedPostBy": "Post from ",
+          "ProfileSeeSavedPost": "See Original Post",
+          "ProfileRemoveSavedPost": "Remove saved post",
           "ProfileAboutJassy": "About Jassy",
           "ProfileLogOut": "Log Out",
 
@@ -254,15 +264,20 @@ class LocaleString extends Translations {
           "InfoLevelLanguageInterest": "ระดับของภาษาที่สนใจ",
           //Profile Picture Upload
           "ProfilePictureUpload": "อัปโหลดรูปภาพโพรไฟล์ของของคุณ",
-          "ProfilePictureDesc" : "กรุณาอัปโหลดรูปที่ชัดเจนไม่มีอะไรปิดบัง ไม่หันหลัง ไม่อนาจาร ไม่เกี่ยวข้องกับกับการปลุกปั่นศาสนา/การเมือง ไม่ล่อลวงเกี่ยวกับเงิน",
-          "ProfilePictureWarning" : "รูปภาพที่ถูกเลือกจะไม่สามารถแก้ไขได้กรุณาเลือกรูปอย่างระมัดระวัง",
-          "ProfilePictureUploadButton" : "อัพโหลดรูปภาพ",
+          "ProfilePictureDesc":
+              "กรุณาอัปโหลดรูปที่ชัดเจนไม่มีอะไรปิดบัง ไม่หันหลัง ไม่อนาจาร ไม่เกี่ยวข้องกับกับการปลุกปั่นศาสนา/การเมือง ไม่ล่อลวงเกี่ยวกับเงิน",
+          "ProfilePictureWarning":
+              "รูปภาพที่ถูกเลือกจะไม่สามารถแก้ไขได้กรุณาเลือกรูปอย่างระมัดระวัง",
+          "ProfilePictureUploadButton": "อัพโหลดรูปภาพ",
 
           //Main-Application
           //Jassy Main Page
           "MainPage": "หน้าหลัก",
           "MainTabLanguage": "ระดับภาษา",
           "MainTabDesc": "คำบรรยาย",
+          "MainNoUserTitle":
+              "ไม่มีผู้ใช้งานที่ตรงกับความต้องการ\nของคุณในขณะนี้",
+          "MainNoUserDesc": "กรุณาเลือกความต้องการที่ใกล้เคียง",
           //Filter
           "FilterLang": "ภาษา",
           "FilterLevelLang": "ระดับภาษา",
@@ -312,6 +327,7 @@ class LocaleString extends Translations {
           "GroupPostToday": "วันนี้",
           "GroupPostYesterday": "เมื่อวานนี้",
           "GroupPostCommentHintText": "เขียนคอมเมนต์",
+          "GroupDeleteWarning": "คุณต้องการลบโพสต์นี้ใช่หรือไม่ ?",
 
           //Jassy Chat Page
           "ChatPage": "แชท",
@@ -336,6 +352,7 @@ class LocaleString extends Translations {
           //unmatch
           "WarningUnmatch": "คุณต้องการยกเลิกการจับคู่ใช่หรือไม่ ?",
           "WarningReport": "คุณต้องการรายงานผู้ใช้รายนี้ใช่หรือไม่ ?",
+          "WarningReportPost": "คุณต้องการรายงานโพสต์นี้ใช่หรือไม่ ?",
           //Report
           "ReportDetail": "รายละเอียดการรายงาน",
           "ReportWarning":
@@ -365,6 +382,9 @@ class LocaleString extends Translations {
           "ProfileAppSetting": "การตั้งค่า",
           "ProfileMarkAsLike": "ข้อความที่ชื่นชอบ",
           "ProfileSavedPost": "รายการที่บันทึกไว้",
+          "ProfileSavedPostBy": "โพสต์จาก ",
+          "ProfileSeeSavedPost": "ดูโพสต์ต้นฉบับ",
+          "ProfileRemoveSavedPost": "เลิกบันทึก",
           "ProfileAboutJassy": "เกี่ยวกับแจสซี่",
           "ProfileLogOut": "ออกจากระบบ",
 

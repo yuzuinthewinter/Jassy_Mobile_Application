@@ -28,7 +28,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
   int _currentPage = 0;
 
   var currentUser = FirebaseAuth.instance.currentUser;
-  CollectionReference users = FirebaseFirestore.instance.collection('Users');
+  CollectionReference usersdb = FirebaseFirestore.instance.collection('Users');
 
   Filtering filter = Filtering();
   FilterController filterController = Get.put(FilterController());
@@ -78,23 +78,32 @@ class _JassyMainBodyState extends State<JassyMainBody> {
   }
 
   likeUser(userid) async {
-    await users.doc(currentUser!.uid).update({
-      'liked': FieldValue.arrayUnion([userid]), //current user like ใคร
+    await usersdb.doc(currentUser!.uid).update({
+      'liked': FieldValue.arrayUnion([userid]),
+      'hideUser': FieldValue.arrayUnion([userid]), //current user like ใคร
     });
-    await users.doc(userid).update({
-      'likesby':
+    await usersdb.doc(userid).update({
+      'likesby': FieldValue.arrayUnion([currentUser!.uid]),
+      'hideUser':
           FieldValue.arrayUnion([currentUser!.uid]), //like โดย current user
+    });
+  }
+
+  hideUser(userid) async {
+    await usersdb.doc(currentUser!.uid).update({
+      'hideUser': FieldValue.arrayUnion([userid]), //current user like ใคร
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Column(
       children: [
         const CurvedWidget(child: JassyGradientColor()),
         StreamBuilder<QuerySnapshot>(
           stream:
-              users.where('uid', isNotEqualTo: currentUser!.uid).snapshots(),
+              usersdb.where('uid', isNotEqualTo: currentUser!.uid).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Text('Something went wrong');
@@ -104,50 +113,182 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                 child: Lottie.asset("assets/images/loading.json"),
               );
             }
-
             var users = snapshot.data!.docs;
-            List queryUser = [];
-            int indexLanguage = 0;
-            for (var user in users) {
-              int age =
-                  calculateAge(DateTime.parse(user['birthDate'].toString()));
-              if (user['userStatus'] == 'user') {
-                _LanguageLevelChoicesLists.forEachIndexed((index, lvlang) {
-                  if ('${user['language']['levelDefaultLanguage']}'
-                          .toLowerCase() ==
-                      _LanguageLevelChoicesLists[index].toLowerCase()) {
-                    indexLanguage = index;
+            return StreamBuilder<QuerySnapshot>(
+                stream: usersdb
+                    .where('uid', isEqualTo: currentUser!.uid)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Something went wrong');
                   }
-                });
-                if (filter.language.toLowerCase() ==
-                    user['language']['defaultLanguage'].toLowerCase()) {
-                  if (_languageLevelIndex <= indexLanguage) {
-                    if (_currentRangeValues.start.round().toInt() <= age &&
-                        age <= _currentRangeValues.end.round().toInt()) {
-                      if (filter.gender.toLowerCase() ==
-                          user['gender'].toLowerCase()) {
-                        queryUser.add(user);
-                      } else if (filter.gender.toLowerCase() ==
-                          "FilterNoneGender".tr.toLowerCase()) {
-                        queryUser.add(user);
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  var thisuser = snapshot.data!.docs[0];
+
+                  List queryUser = [];
+                  int indexLanguage = 0;
+                  for (var user in users) {
+                    int age = calculateAge(
+                        DateTime.parse(user['birthDate'].toString()));
+
+                    if (user['userStatus'] == 'user') {
+                      _LanguageLevelChoicesLists.forEachIndexed(
+                          (index, lvlang) {
+                        if ('${user['language']['levelDefaultLanguage']}'
+                                .toLowerCase() ==
+                            _LanguageLevelChoicesLists[index].toLowerCase()) {
+                          indexLanguage = index;
+                        }
+                      });
+                      if (filter.language.toLowerCase() ==
+                          user['language']['defaultLanguage'].toLowerCase()) {
+                        if (_languageLevelIndex <= indexLanguage) {
+                          if (_currentRangeValues.start.round().toInt() <=
+                                  age &&
+                              age <= _currentRangeValues.end.round().toInt()) {
+                            if (filter.gender.toLowerCase() ==
+                                user['gender'].toLowerCase()) {
+                              queryUser.add(user);
+                            } else if (filter.gender.toLowerCase() ==
+                                "FilterNoneGender".tr.toLowerCase()) {
+                              queryUser.add(user);
+                            }
+                          }
+                        }
                       }
                     }
                   }
-                }
-              }
-            }
-            return CarouselSlider.builder(
-              itemCount: queryUser.length,
-              itemBuilder: (context, index, child) {
-                return carouselCard(queryUser[index]);
-              },
-              options: CarouselOptions(
-                  // height: size.height * 0.70,
-                  aspectRatio: 0.75,
-                  enlargeCenterPage: true,
-                  enlargeStrategy: CenterPageEnlargeStrategy.height,
-                  enableInfiniteScroll: false),
-            );
+                  for (var hide in thisuser['hideUser']) {
+                    queryUser.removeWhere((user) => hide.contains(user['uid']));
+                  }
+                  //query for no one on list: new generate list user
+                  if (queryUser.isEmpty) {
+                    for (var user in users) {
+                      if (user['userStatus'] == 'user') {
+                        _LanguageLevelChoicesLists.forEachIndexed(
+                            (index, lvlang) {
+                          if ('${user['language']['levelDefaultLanguage']}'
+                                  .toLowerCase() ==
+                              _LanguageLevelChoicesLists[index].toLowerCase()) {
+                            indexLanguage = index;
+                          }
+                        });
+                        if (filter.language.toLowerCase() ==
+                            user['language']['defaultLanguage'].toLowerCase()) {
+                          if (_languageLevelIndex <= indexLanguage) {
+                            queryUser.add(user);
+                          }
+                        }
+                      }
+                    }
+                    for (var hide in thisuser['hideUser']) {
+                      queryUser
+                          .removeWhere((user) => hide.contains(user['uid']));
+                    }
+                    if (queryUser.isEmpty) {
+                      for (var user in users) {
+                        if (user['userStatus'] == 'user') {
+                          _LanguageLevelChoicesLists.forEachIndexed(
+                              (index, lvlang) {
+                            if ('${user['language']['levelInterestedLanguage']}'
+                                    .toLowerCase() ==
+                                _LanguageLevelChoicesLists[index]
+                                    .toLowerCase()) {
+                              indexLanguage = index;
+                            }
+                          });
+                          if (filter.language.toLowerCase() ==
+                              user['language']['interestedLanguage']
+                                  .toLowerCase()) {
+                            if (_languageLevelIndex <= indexLanguage) {
+                              queryUser.add(user);
+                            }
+                          }
+                        }
+                      }
+                      for (var hide in thisuser['hideUser']) {
+                        queryUser
+                            .removeWhere((user) => hide.contains(user['uid']));
+                      }
+                      if (queryUser.isEmpty) {
+                        for (var user in users) {
+                          if (user['userStatus'] == 'user') {
+                            if (filter.language.toLowerCase() ==
+                                user['language']['interestedLanguage']
+                                    .toLowerCase()) {
+                              queryUser.add(user);
+                            }
+                          }
+                        }
+                        for (var hide in thisuser['hideUser']) {
+                          queryUser.removeWhere(
+                              (user) => hide.contains(user['uid']));
+                        }
+                        if (queryUser.isEmpty) {
+                          return Column(
+                            children: [
+                              SizedBox(
+                                height: size.height * 0.12,
+                              ),
+                              SvgPicture.asset(
+                                "assets/images/no_user_filter.svg",
+                                width: size.width * 0.72,
+                              ),
+                              SizedBox(
+                                height: size.height * 0.05,
+                              ),
+                              Text(
+                                'MainNoUserTitle'.tr,
+                                style: const TextStyle(
+                                    fontSize: 18, color: textDark),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height: size.height * 0.012,
+                              ),
+                              Text(
+                                'MainNoUserDesc'.tr,
+                                style: const TextStyle(
+                                    fontSize: 14, color: greyDark),
+                              ),
+                            ],
+                          );
+                        }
+                      }
+                    }
+                    queryUser.removeWhere(
+                        (user) => thisuser['hideUser'].contains(user['uid']));
+                    return CarouselSlider.builder(
+                      itemCount: queryUser.length,
+                      itemBuilder: (context, index, child) {
+                        return carouselCard(queryUser[index]);
+                      },
+                      options: CarouselOptions(
+                          // height: size.height * 0.70,
+                          aspectRatio: 0.75,
+                          enlargeCenterPage: true,
+                          enlargeStrategy: CenterPageEnlargeStrategy.height,
+                          enableInfiniteScroll: false),
+                    );
+                  } else {
+                    return CarouselSlider.builder(
+                      itemCount: queryUser.length,
+                      itemBuilder: (context, index, child) {
+                        return carouselCard(queryUser[index]);
+                      },
+                      options: CarouselOptions(
+                          // height: size.height * 0.70,
+                          aspectRatio: 0.75,
+                          enlargeCenterPage: true,
+                          enlargeStrategy: CenterPageEnlargeStrategy.height,
+                          enableInfiniteScroll: false),
+                    );
+                  }
+                });
           },
         ),
       ],
@@ -200,7 +341,9 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                 child: Align(
                     alignment: Alignment.topRight,
                     child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          hideUser(user['uid']);
+                        },
                         child: SvgPicture.asset(
                             "assets/icons/close_circle.svg")))),
             Column(
