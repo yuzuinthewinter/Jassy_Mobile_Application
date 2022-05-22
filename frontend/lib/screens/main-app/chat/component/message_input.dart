@@ -331,10 +331,12 @@ class _BodyState extends State<MessageInput> {
                     ),
                     InkWell(
                         onTap: () {
-                          setState(() {
-                            pickedImage = null;
-                          });
+                          if(messageController.text.isNotEmpty) {
+                            setState(() {
+                              pickedImage = null;
+                            });
                           return sendMessage(messageController.text, typemessage);
+                          }
                         },
                         child: SvgPicture.asset("assets/icons/send.svg")
                     ),
