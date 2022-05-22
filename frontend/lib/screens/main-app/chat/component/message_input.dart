@@ -189,7 +189,7 @@ class _BodyState extends State<MessageInput> {
           children: [
             pickedImage != null 
             ? Container(
-              padding: EdgeInsets.symmetric(horizontal: size.width *0.05, vertical: size.width *0.01),
+              padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.width * 0.05),
               decoration: const BoxDecoration(
                 border: Border(
                   top: BorderSide(color: primaryLight, width: 1)

@@ -263,26 +263,28 @@ class _BodyState extends State<ConversationText> {
                     controller: _controller,
                     pressType: PressType.longPress,
                     arrowColor: primaryDarker,
-                    child: Column(children: [
+                    child: Column(
+                      crossAxisAlignment: isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                      children: [
                       currentMessage['isReplyMessage'] == true
                           ? Row(
                               children: [
                                 Padding(
                                   padding:
-                                      EdgeInsets.only(right: size.width * 0.03),
+                                      EdgeInsets.only(right: size.width * 0.02),
                                   child: SvgPicture.asset(
                                       "assets/icons/reply-fill.svg"),
                                 ),
                                 Text(
                                   'ตอบกลับ : ',
                                   style:
-                                      TextStyle(color: greyDark, fontSize: 14),
+                                      TextStyle(color: greyDark, fontSize: 12),
                                 ),
                                 currentMessage['type'] == 'text'
                                     ? Text(
                                         currentMessage['replyFromMessage'],
                                         style: TextStyle(
-                                            color: greyDark, fontSize: 14),
+                                            color: greyDark, fontSize: 12),
                                         maxLines: 1,
                                         textAlign: TextAlign.left,
                                         overflow: TextOverflow.ellipsis,
