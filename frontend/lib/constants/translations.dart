@@ -53,6 +53,7 @@ class LocaleString extends Translations {
           "InfoSex": "Sex",
           "InfoMale": "Male",
           "InfoFemale": "Female",
+          "ValidateAge" : "",
           //Language Info
           "InfoLangHeader": "Language Information",
           "InfoLangDesc":
@@ -268,6 +269,7 @@ class LocaleString extends Translations {
           "InfoSex": "เพศ",
           "InfoMale": "ชาย",
           "InfoFemale": "หญิง",
+          "ValidateAge" : "",
           //Language Info
           "InfoLangHeader": "ข้อมูลภาษา",
           "InfoLangDesc":
