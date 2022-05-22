@@ -10,6 +10,7 @@ import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/admin/request_blocked.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/manage/add_country.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/manage/basic_card.dart';
@@ -56,24 +57,32 @@ class _ManageBlockedScreenBody extends State<ManageBlockedScreenBody> {
           decoration: BoxDecoration(
               color: textLight, borderRadius: BorderRadius.circular(20)),
           child: Column(children: [
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.drafts_rounded),
-                  color: primaryColor,
-                ),
-                SizedBox(
-                  width: size.width * 0.03,
-                ),
-                const Text(
-                  "คำร้องขอการกู้คืนบัญชีของผู้ใช้งาน",
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      color: textDark),
-                )
-              ],
+            Expanded(
+              child: InkWell(
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.drafts_rounded),
+                      color: primaryColor,
+                    ),
+                    SizedBox(
+                      width: size.width * 0.03,
+                    ),
+                    const Text(
+                      "คำร้องขอการกู้คืนบัญชีของผู้ใช้งาน",
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: textDark),
+                    )
+                  ],
+                ),onTap: () {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  return const RequestBlocked();
+                }));
+              },
+              ),
             ),
           ]),
         ),
