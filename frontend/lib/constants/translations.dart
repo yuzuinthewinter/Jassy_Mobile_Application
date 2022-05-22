@@ -63,6 +63,11 @@ class LocaleString extends Translations {
           "InfoLevelFirstLanguage": "Level of First Language",
           "InfoLanguageInterest": "Language Interest",
           "InfoLevelLanguageInterest": "Level of Language Interest",
+          //handle phase one
+          "PhaseOneSuccessHeader": "Step One\nRegistration is Successful.",
+          "PhaseOneSuccessDetail": "Press next step button\nto verify your identity by face.",
+          "PhaseOneGoToApp": "Go to App",
+          "PhaseOneGoToPhaseTwo": "Next Step",
           //Profile Picture Upload
           "ProfilePictureUpload": "Please upload your profile picture.",
           "ProfilePictureDesc":
@@ -289,6 +294,11 @@ class LocaleString extends Translations {
           "InfoLevelFirstLanguage": "ระดับของภาษาที่หนึ่ง",
           "InfoLanguageInterest": "ภาษาที่สนใจ",
           "InfoLevelLanguageInterest": "ระดับของภาษาที่สนใจ",
+          //handle phase one
+          "PhaseOneSuccessHeader": "ขั้นตอนที่ 1\nการลงทะเบียนข้อมูลสำเร็จ",
+          "PhaseOneSuccessDetail": "กดถัดไปเพื่อยืนยันตัวตนด้วยใบหน้า",
+          "PhaseOneGoToApp": "ไปยังหน้าหลัก",
+          "PhaseOneGoToPhaseTwo": "ต่อไป",
           //Profile Picture Upload
           "ProfilePictureUpload": "อัปโหลดรูปภาพโพรไฟล์ของของคุณ",
           "ProfilePictureDesc":

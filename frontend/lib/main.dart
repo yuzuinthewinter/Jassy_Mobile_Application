@@ -66,20 +66,25 @@ class _AppScreen extends State<App> {
         // TODO: loading
         return Expanded(
           child: Container(
-            decoration: const BoxDecoration(
-            gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            stops: [
-              0.3,
-              0.5,
-              0.8,
-            ],
-            colors: [Color(0xFFE6E3FF), Color(0xFFFFEAEF), Color(0xFFFFEAC4)]),
-          ),
-            child: Lottie.asset("assets/images/loading.json",)
-          ),
-         ); // l
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: [
+                      0.3,
+                      0.5,
+                      0.8,
+                    ],
+                    colors: [
+                      Color(0xFFE6E3FF),
+                      Color(0xFFFFEAEF),
+                      Color(0xFFFFEAC4)
+                    ]),
+              ),
+              child: Lottie.asset(
+                "assets/images/loading.json",
+              )),
+        ); // l
       },
     );
   }
@@ -99,13 +104,20 @@ class AuthGate extends StatelessWidget {
       if (data['userStatus'] == 'admin') {
         Navigator.of(context).pushNamed(Routes.AdminJassyHome);
       } else if (data['userStatus'] == 'user') {
-        if (data['isAuth'] == true) {
-          Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [2, true, false]);
+        if (data['isUser'] == true) {
+          if (data['isAuth'] == true) {
+            Navigator.of(context)
+                .pushNamed(Routes.JassyHome, arguments: [2, true, false]);//isBlocked == false
+          } else {
+            return Navigator.of(context)
+                .pushNamed(Routes.JassyHome, arguments: [4, false, true]);
+          }
         } else {
-          return Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [4, false, true]);
+          return Navigator.of(context).pushNamed(Routes.RegisterProfile);
         }
       } else if (data['userStatus'] == 'blocked') {
-        return Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [4, true, true]);
+        return Navigator.of(context)
+            .pushNamed(Routes.JassyHome, arguments: [4, true, true]);
       }
     } else {
       return Navigator.of(context).pushNamed(Routes.LandingPage);
@@ -128,9 +140,8 @@ class AuthGate extends StatelessWidget {
         }
         return Expanded(
           child: Container(
-            color: greyLightest, 
-            child: Lottie.asset("assets/images/loading.json")
-          ),
+              color: greyLightest,
+              child: Lottie.asset("assets/images/loading.json")),
         );
       },
     );

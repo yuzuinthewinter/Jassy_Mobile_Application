@@ -116,7 +116,7 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
                                     text: 'WarningAuthUser'.tr,
                                     okPress: () {
                                       Navigator.of(context).pop();
-                                      Navigator.of(context).pushNamed(Routes.RegisterProfile);
+                                      Navigator.of(context).pushNamed(Routes.PhaseOneSuccess);
                                     },
                                   );
                                 });
