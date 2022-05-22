@@ -70,9 +70,9 @@ class SettingScreen extends StatelessWidget {
                   fontFamily: 'kanit',
                   fontWeight: FontWeight.w600),
             ),
-            Text(
+            const Text(
               'Administrator',
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 16,
                   fontFamily: 'kanit',
                   fontWeight: FontWeight.w400),
@@ -93,9 +93,9 @@ class SettingScreen extends StatelessWidget {
                   icon: SvgPicture.asset("assets/icons/app_setting_icon.svg"),
                   text: 'ProfileAppSetting'.tr,
                   onTab: () {
-                    // Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                    //   return const AppSetting();
-                    // }));
+                    Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                      return AppSetting(user);
+                    }));
                   },
                 ),
                 ProfileMenu(

@@ -74,7 +74,7 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                           );
                         }
                         if (snapshot.data!.docs.isEmpty) {
-                          return const Center(child: Text('Save something'));
+                          return const Center(child: Text(''));
                         }
                         var memo = snapshot.data!.docs[0];
                         return ListView.builder(
