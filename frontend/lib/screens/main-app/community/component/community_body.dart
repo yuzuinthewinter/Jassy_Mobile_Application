@@ -278,6 +278,8 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                 .compareTo(DateFormat('dd/MM/yyyy KK:mm a')
                     .format(DateTime.parse(a['date'].toDate().toString())));
           });
+          sortPostList = sortPostList.toSet().toList();
+
           return SizedBox(
               width: size.width,
               height: size.height * 0.47,
