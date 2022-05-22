@@ -53,6 +53,7 @@ class LocaleString extends Translations {
           "InfoSex": "Sex",
           "InfoMale": "Male",
           "InfoFemale": "Female",
+          "ValidateAge" : "You are not of legal age to create an account.",
           //Language Info
           "InfoLangHeader": "Language Information",
           "InfoLangDesc":
@@ -278,6 +279,7 @@ class LocaleString extends Translations {
           "InfoSex": "เพศ",
           "InfoMale": "ชาย",
           "InfoFemale": "หญิง",
+          "ValidateAge" : "คุณอายุยังไม่ถึงเกณฑ์ที่จะสร้างบัญชี",
           //Language Info
           "InfoLangHeader": "ข้อมูลภาษา",
           "InfoLangDesc":

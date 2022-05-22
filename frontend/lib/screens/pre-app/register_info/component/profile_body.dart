@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/disable_toggle_button.dart';
+import 'package:flutter_application_1/component/calculate/cal_age.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/header_style2.dart';
 import 'package:flutter_application_1/component/input_feilds/required_text_field_label.dart';
@@ -120,7 +121,7 @@ class _BodyState extends State<Body> {
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               hintText: "InfoLastname".tr,
-                              hintStyle: TextStyle(color: greyDark),
+                              hintStyle: const TextStyle(color: greyDark),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
                               fillColor: textLight,
@@ -151,7 +152,7 @@ class _BodyState extends State<Body> {
                             },
                           ),
                         ),
-                        RequiredTextFieldLabel(textLabel: "InfoDateBirth"),
+                        RequiredTextFieldLabel(textLabel: "InfoDateBirth".tr),
                         Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 20.0),
@@ -182,10 +183,10 @@ class _BodyState extends State<Body> {
                               labelText:
                                   DateFormat.yMd().format(_selectedDateTime),
                               hintText: DateFormat.yMd().format(DateTime.now()),
-                              hintStyle: TextStyle(color: greyDark),
+                              hintStyle: const TextStyle(color: greyDark),
                               fillColor: textLight,
                               filled: true,
-                              suffixIcon: Icon(
+                              suffixIcon: const Icon(
                                 Icons.arrow_forward_ios,
                                 size: 20,
                               ),
@@ -208,9 +209,18 @@ class _BodyState extends State<Body> {
                               birthDate = formatter.format(_selectedDateTime);
                               userInfo.birthDate = birthDate;
                             },
+                            validator: (String? birthDate) {
+                              final DateFormat formatter =
+                                  DateFormat('yyyy-MM-dd');
+                              birthDate = formatter.format(_selectedDateTime);
+                              int age = calculateAge(DateTime.parse(birthDate));
+                              if (age < 15) {
+                                return 'ValidateAge'.tr;
+                              } return null;
+                            },
                           ),
                         ),
-                        RequiredTextFieldLabel(textLabel: "InfoSex"),
+                        RequiredTextFieldLabel(textLabel: "InfoSex".tr),
                         Center(
                           child: Wrap(
                               spacing: size.width * 0.03,
@@ -246,6 +256,7 @@ class _BodyState extends State<Body> {
                         ),
                         Center(
                           child: DisableToggleButton(
+                            color: firstNameController.text.isEmpty || lastnameController.text.isEmpty ? grey : primaryColor,
                             text: "NextButton".tr,
                             minimumSize: Size(size.width * 0.8, size.height * 0.05),
                             press: () {
