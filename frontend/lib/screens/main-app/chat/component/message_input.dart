@@ -239,20 +239,25 @@ class _BodyState extends State<MessageInput> {
                             top: size.height * 0.02,
                             left: size.height * 0.03,
                             right: size.height * 0.03),
-                        child: Row(children: [
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                           const Text(
                             'Reply : ',
                             style: TextStyle(color: greyDark, fontSize: 14),
                           ),
                           controller.type.value == 'text'
-                              ? Text(
-                                  controller.message.value,
-                                  style:
-                                      TextStyle(color: greyDark, fontSize: 14),
-                                  maxLines: 1,
-                                  textAlign: TextAlign.left,
-                                  overflow: TextOverflow.ellipsis,
-                                )
+                              ? Container(
+                                constraints:
+                                  BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
+                                child: Text(
+                                    controller.message.value,
+                                    style:
+                                        TextStyle(color: greyDark, fontSize: 14),
+                                    maxLines: null,
+                                    textAlign: TextAlign.left,
+                                  ),
+                              )
                               : controller.type.value == 'image'
                                   ? Image.network(
                                       controller.message.value,

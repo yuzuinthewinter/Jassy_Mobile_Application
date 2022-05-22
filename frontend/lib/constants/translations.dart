@@ -147,6 +147,10 @@ class LocaleString extends Translations {
           "FindChatPartner":
               "Let's start searching for a language exchange partner. !",
           "DeleteConversation": "Delete conversation",
+          "Reply": "reply",
+          "Copy": "copy",
+          "Translate": "translate",
+          "LikeMassage" : "like",
           //Appbar Chat
           "StatusActiveNow": "Active now",
           "StatusActiveAfew": "Active a few minutes ago",
@@ -377,6 +381,10 @@ class LocaleString extends Translations {
           "FindChatPartner":
               "เริ่มต้นค้นหาคู่สนทนาเพื่อแลกเปลี่ยนภาษากันเถอะ !",
           "DeleteConversation": "ลบการสนทนา",
+          "Reply": "ตอบกลับ",
+          "Copy": "คัดลอก",
+          "Translate": "แปลภาษา",
+          "LikeMassage" : "ชอบ",
           //Appbar Chat
           "StatusActiveNow": "กำลังใช้งาน",
           "StatusActiveAfew": "ใช้งานเมื่อไม่กี่นาทีที่แล้ว",
