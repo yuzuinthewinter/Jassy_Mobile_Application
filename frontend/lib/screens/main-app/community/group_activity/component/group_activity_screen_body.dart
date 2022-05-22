@@ -302,7 +302,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                                       height: widget.user['userStatus'] ==
                                               'admin'
                                           ? MediaQuery.of(context).size.height *
-                                              0.16
+                                              0.12
                                           : post['postby'] == widget.user['uid']
                                               ? MediaQuery.of(context)
                                                       .size
