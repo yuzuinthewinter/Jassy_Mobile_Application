@@ -7,6 +7,7 @@ import 'package:flutter_application_1/component/header_style/jassy_gradient_colo
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/screens/main-app/profile/help_center/community_feedback.dart';
 import 'package:flutter_application_1/screens/main-app/profile/help_center/suspended_users.dart';
+import 'package:flutter_application_1/screens/pre-app/register_info/component/phase_one_success.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/utils.dart';
 
@@ -68,7 +69,10 @@ class HelpCenter extends StatelessWidget {
                         : Expanded(
                             child: InkWell(
                             onTap: () {
-                              // Todo: faceReg
+                              Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                return PhaseOneSuccess();
+                              }));
                             },
                             child: Row(
                               children: [

@@ -73,7 +73,8 @@ class _BodyState extends State<Body> {
       },
       'isShowActive': true,
       'isActive': true,
-      'isAuth': true,
+      'isAuth': false,
+      'isUser': true,
     });
   }
 
@@ -372,8 +373,7 @@ class _BodyState extends State<Body> {
                 }
                 Navigator.pushNamed(
                   context,
-                  Routes.SuccessPage,
-                  arguments: 'RegisterSuccess',
+                  Routes.PhaseOneSuccess,
                 );
               },
             ),

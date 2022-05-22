@@ -63,6 +63,7 @@ class _BodyState extends State<Body> {
         'isShowActive': true,
         'isActive': false,
         'isAuth': false,
+        'isUser': false,
         'groups': const [],
         'hideUser': const [],
       });
@@ -154,6 +155,7 @@ class _BodyState extends State<Body> {
           'isShowActive': true,
           'isActive': false,
           'isAuth': false,
+          'isUser': false,
           'groups': const [],
           'hideUser': const [],
         });
