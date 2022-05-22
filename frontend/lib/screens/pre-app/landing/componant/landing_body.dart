@@ -6,7 +6,9 @@ import 'package:flutter_application_1/component/background.dart';
 import 'package:flutter_application_1/component/button/change_languages_button.dart';
 import 'package:flutter_application_1/component/button/round_button.dart';
 import 'package:flutter_application_1/component/term_and_policies.dart';
+import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/screens/pre-app/landing/componant/privacy_policy.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -56,7 +58,17 @@ class _Body extends State<Body> {
             text: 'LandingRegister'.tr, //------------------------------
             minimumSize: Size(size.width * 0.8, size.height * 0.05),
             press: () {
-              Navigator.pushNamed(context, Routes.RegisterPage);
+              showDialog(
+                context: context, 
+                builder: (context) {
+                  return PrivacyPolicy(
+                    okPress: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, Routes.RegisterPage);
+                    }
+                  );
+                }
+              );
             },
           ),
           const AccountExistsLogin(),
@@ -64,12 +76,6 @@ class _Body extends State<Body> {
             height: size.height * 0.07,
           ),
           const TermAndPolicies(),
-          // TODO: change language button on landing page.
-          // ElevatedButton(
-          //    onPressed: () {
-          //      buildLanguageDialog(context);
-          //    },
-          //    child: Text('*')),
         ],
       ),
     );

@@ -36,7 +36,7 @@ class MarkAsLikePopUp extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 OutlinedButtonComponent(
-                  text: "ยกเลิก", 
+                  text: "Cancel".tr, 
                   minimumSize: Size(size.width * 0.3, size.height * 0.05), 
                   press: () {Navigator.of(context).pop();}
                 ),
