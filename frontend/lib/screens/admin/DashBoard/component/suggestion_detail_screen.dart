@@ -62,26 +62,72 @@ class _SuggestDetailPage extends State<SuggestDetailPage> {
                     fontWeight: FontWeight.w600),
               ),
               SizedBox(
+                height: size.height * 0.005,
+              ),
+              RichText(
+                text: TextSpan(
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'kanit',
+                      fontWeight: FontWeight.w400,
+                      color: textDark,
+                    ),
+                    children: [
+                      TextSpan(
+                          text:
+                              '${StringUtils.capitalize(user['language']['defaultLanguage'])} '),
+                      const WidgetSpan(
+                          child: Icon(
+                        Icons.sync_alt,
+                        size: 20,
+                        color: textDark,
+                      )),
+                      TextSpan(
+                          text:
+                              ' ${StringUtils.capitalize(user['language']['interestedLanguage'])}'),
+                    ]),
+              ),
+              SizedBox(
                 height: size.height * 0.04,
               ),
               Text(
                 StringUtils.capitalize(widget.suggest['suggestHeader']),
-                textAlign: TextAlign.left,
+                textAlign: TextAlign.start,
                 style: const TextStyle(
                     fontSize: 20,
                     fontFamily: 'kanit',
                     fontWeight: FontWeight.w600),
               ),
               SizedBox(
-                height: size.height * 0.04,
+                height: size.height * 0.015,
               ),
-              Text(
-                StringUtils.capitalize(widget.suggest['suggestDetail']),
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'kanit',
-                    fontWeight: FontWeight.w600),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
+                child: TextFormField(
+                  readOnly: true,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 10,
+                  decoration: InputDecoration(
+                    hintText: widget.suggest['suggestDetail'],
+                    hintStyle: const TextStyle(color: greyDark),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 10.0),
+                    fillColor: textLight,
+                    filled: true,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide:
+                            const BorderSide(color: textLight, width: 0.0)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                      borderSide: const BorderSide(color: textLight),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                      borderSide: const BorderSide(color: textLight),
+                    ),
+                  ),
+                ),
               ),
             ],
           );
