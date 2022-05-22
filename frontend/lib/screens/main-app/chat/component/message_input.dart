@@ -92,6 +92,7 @@ class _BodyState extends State<MessageInput> {
   }
 
   File? pickedImage;
+  bool isPickedImage = false;
   Future pickImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
@@ -179,6 +180,34 @@ class _BodyState extends State<MessageInput> {
         _message = controller.message.value;
         return Column(
           children: [
+            pickedImage != null 
+            ? Stack(
+              children: [
+                Align(
+                      alignment: Alignment.center,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: Image.file(
+                          File(pickedImage!.path), 
+                          fit: BoxFit.cover, 
+                          height: size.height * 0.2, 
+                          width: size.width * 0.6,
+                      ),
+                    ),
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      pickedImage = null;
+                    });
+                  },
+                  child: SvgPicture.asset(
+                    "assets/icons/close_circle.svg",
+                    width: size.height * 0.05,
+                  ),
+                )
+              ],
+            ) : Container(),
             _isReply
                 ? !isCurrentChat
                     ? Container(
@@ -294,9 +323,14 @@ class _BodyState extends State<MessageInput> {
                       width: widget.size.height * 0.02,
                     ),
                     InkWell(
-                        onTap: () =>
-                            sendMessage(messageController.text, typemessage),
-                        child: SvgPicture.asset("assets/icons/send.svg")),
+                        onTap: () {
+                          setState(() {
+                            pickedImage = null;
+                          });
+                          return sendMessage(messageController.text, typemessage);
+                        },
+                        child: SvgPicture.asset("assets/icons/send.svg")
+                    ),
                   ],
                 )),
             isMore
@@ -308,24 +342,24 @@ class _BodyState extends State<MessageInput> {
                         right: size.height * 0.03),
                     child: Row(
                       children: [
-                        InkWell(
-                          onTap: () {
-                            selectFile();
-                          },
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.description,
-                                size: size.height * 0.05,
-                                color: primaryColor,
-                              ),
-                              const Text("ไฟล์")
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.1,
-                        ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     selectFile();
+                        //   },
+                        //   child: Column(
+                        //     children: [
+                        //       Icon(
+                        //         Icons.description,
+                        //         size: size.height * 0.05,
+                        //         color: primaryColor,
+                        //       ),
+                        //       const Text("ไฟล์")
+                        //     ],
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   width: size.width * 0.1,
+                        // ),
                         InkWell(
                           onTap: () {
                             pickImage(ImageSource.camera);
