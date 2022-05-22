@@ -73,7 +73,7 @@ class _SuggestionScreen extends State<SuggestionScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: size.height * 0.01),
                         width: size.width,
-                        height: size.height * 0.05,
+                        height: size.height * 0.06,
                         decoration: BoxDecoration(
                             color: textLight,
                             borderRadius: BorderRadius.circular(15)),

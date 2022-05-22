@@ -59,7 +59,7 @@ class _ManageLanguageScreenBody extends State<ManageLanguageScreenBody> {
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.add_location_rounded),
+                  icon: const Icon(Icons.translate_rounded),
                   color: primaryColor,
                 ),
                 SizedBox(

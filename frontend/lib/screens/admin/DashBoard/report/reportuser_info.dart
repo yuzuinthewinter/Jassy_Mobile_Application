@@ -67,124 +67,160 @@ class _ReportUserInfoPage extends State<ReportUserInfoPage> {
             ),
           ),
           SizedBox(
-            height: size.height * 0.04,
+            height: size.height * 0.02,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-            child: Container(
-              constraints: const BoxConstraints(maxHeight: double.infinity),
+          Text(
+            widget.report['reportHeader'],
+            maxLines: null,
+            style: const TextStyle(
+                fontSize: 20, fontFamily: 'kanit', fontWeight: FontWeight.w600),
+            textAlign: TextAlign.left,
+          ),
+          SizedBox(
+            height: size.height * 0.02,
+          ),
+          Expanded(
+            child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Text(
-                    widget.report['reportHeader'],
-                    maxLines: null,
-                    style: const TextStyle(fontSize: 16),
-                    textAlign: TextAlign.left,
-                  ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  Text(
-                    widget.report['reportDetail'],
-                    maxLines: null,
-                    style: const TextStyle(fontSize: 16),
-                    textAlign: TextAlign.left,
-                  ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      context.pushTransparentRoute(ImageMessageDetail(
-                          urlImage: widget.report['reportImage']));
-                    },
-                    child: Container(
-                      constraints: BoxConstraints(
-                          maxHeight: size.height * 0.2,
-                          maxWidth: double.infinity),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          image: DecorationImage(
-                              image: NetworkImage(widget.report['reportImage']),
-                              fit: BoxFit.cover)),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.02),
+                    decoration: BoxDecoration(
+                        color: textLight,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.1),
+                          child: Container(
+                            constraints: const BoxConstraints(
+                                maxHeight: double.infinity),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: size.height * 0.02,
+                                ),
+                                Text(
+                                  widget.report['reportDetail'],
+                                  maxLines: null,
+                                  style: const TextStyle(fontSize: 16),
+                                  textAlign: TextAlign.left,
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.02,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    context.pushTransparentRoute(
+                                        ImageMessageDetail(
+                                            urlImage:
+                                                widget.report['reportImage']));
+                                  },
+                                  child: Container(
+                                    constraints: BoxConstraints(
+                                        maxHeight: size.height * 0.2,
+                                        maxWidth: double.infinity),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                widget.report['reportImage']),
+                                            fit: BoxFit.cover)),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.02,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.02),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: size.height * 0.025),
+                    width: size.width,
+                    height: size.height * 0.14,
+                    decoration: BoxDecoration(
+                        color: textLight,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Column(children: [
+                      Expanded(
+                          child: InkWell(
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.warning_rounded),
+                              color: secoundary,
+                            ),
+                            SizedBox(
+                              width: size.width * 0.03,
+                            ),
+                            Text(
+                              "การรายงานอื่นๆ",
+                              style: TextStyle(color: textMadatory),
+                            ),
+                            Spacer(),
+                            // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.push(context,
+                              CupertinoPageRoute(builder: (context) {
+                            return ListReportUserScreen(widget.user);
+                          }));
+                        },
+                      )),
+                      Expanded(
+                          child: InkWell(
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.warning_rounded),
+                              color: secoundary,
+                            ),
+                            SizedBox(
+                              width: size.width * 0.03,
+                            ),
+                            Text(
+                              "ระงับการใช้งานผู้ใช้",
+                              style: TextStyle(color: textMadatory),
+                            ),
+                            Spacer(),
+                            // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
+                          ],
+                        ),
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return WarningPopUpWithButton(
+                                  text: 'WarningReport'.tr,
+                                  okPress: () {
+                                    warningChangeStatusUser();
+                                  },
+                                );
+                              });
+                        },
+                      )),
+                    ]),
                   ),
                 ],
               ),
             ),
           ),
           SizedBox(
-            height: size.height * 0.03,
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-            padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
-            width: size.width,
-            height: size.height * 0.15,
-            decoration: BoxDecoration(
-                color: textLight, borderRadius: BorderRadius.circular(20)),
-            child: Column(children: [
-              Expanded(
-                  child: InkWell(
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.warning_rounded),
-                      color: secoundary,
-                    ),
-                    SizedBox(
-                      width: size.width * 0.03,
-                    ),
-                    Text(
-                      "การรายงานอื่นๆ",
-                      style: TextStyle(color: textMadatory),
-                    ),
-                    Spacer(),
-                    // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
-                  ],
-                ),
-                onTap: () {
-                  Navigator.push(context,
-                      CupertinoPageRoute(builder: (context) {
-                    return ListReportUserScreen(widget.user);
-                  }));
-                },
-              )),
-              Expanded(
-                  child: InkWell(
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.warning_rounded),
-                      color: secoundary,
-                    ),
-                    SizedBox(
-                      width: size.width * 0.03,
-                    ),
-                    Text(
-                      "ระงับการใช้งานผู้ใช้",
-                      style: TextStyle(color: textMadatory),
-                    ),
-                    Spacer(),
-                    // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
-                  ],
-                ),
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return WarningPopUpWithButton(
-                          text: 'WarningReport'.tr,
-                          okPress: () {
-                            warningChangeStatusUser();
-                          },
-                        );
-                      });
-                },
-              )),
-            ]),
+            height: size.height * 0.04,
           ),
         ],
       ),

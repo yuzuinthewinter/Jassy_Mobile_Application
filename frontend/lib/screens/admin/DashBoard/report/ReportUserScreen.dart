@@ -29,9 +29,6 @@ class _ReportUserScreenBody extends State<ReportUserScreenBody> {
     return Column(children: [
       CurvedWidget(child: JassyGradientColor()),
       SizedBox(
-        height: size.height * 0.04,
-      ),
-      SizedBox(
         height: size.height * 0.6,
         width: size.width,
         child: StreamBuilder<QuerySnapshot>(
@@ -60,7 +57,7 @@ class _ReportUserScreenBody extends State<ReportUserScreenBody> {
                           padding: EdgeInsets.symmetric(
                               horizontal: size.height * 0.01),
                           width: size.width,
-                          height: size.height * 0.07,
+                          height: size.height * 0.06,
                           decoration: BoxDecoration(
                               color: textLight,
                               borderRadius: BorderRadius.circular(15)),

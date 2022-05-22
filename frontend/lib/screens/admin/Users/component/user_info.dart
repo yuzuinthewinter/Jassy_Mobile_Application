@@ -87,7 +87,9 @@ class _UserInfoPage extends State<UserInfoPage> {
             margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
             padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
             width: size.width,
-            height: size.height * 0.15,
+            height: widget.user['userStatus'] == 'admin'
+                ? size.height * 0.075
+                : size.height * 0.15,
             decoration: BoxDecoration(
                 color: textLight, borderRadius: BorderRadius.circular(20)),
             child: Column(
