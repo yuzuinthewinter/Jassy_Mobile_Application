@@ -17,7 +17,7 @@ class LocaleString extends Translations {
           "LandingLogin": "Log In",
           "LandingPreTermOfService": "By creating an account you agree to our",
           "LandingTermOfService": "Term of service",
-          "LandingPrivacy": "Privacy",
+          "LandingPrivacy": "Privacy Policy",
           //Register Page
           "RegisterByPhone": "Register with Phone Number",
           "RegisterByFaceBook": "Register with Facebook",
@@ -137,9 +137,9 @@ class LocaleString extends Translations {
           "ChatRead": "Read",
           "ChatHintText": "Enter a message",
           "ChatShowReport": "You can not message this account.",
-          "NoChatPartner": "You don’t currently have a chat partner.",
-          "FindChatPartner":
-              "Let's start searching for a language exchange partner. !",
+          "NoChatPartner" : "You don’t currently have a chat partner.",
+          "FindChatPartner" : "Let's start searching for a language exchange partner. !",
+          "DeleteConversation" : "Delete conversation",
           //Appbar Chat
           "StatusActiveNow": "Active now",
           "StatusActiveAfew": "Active a few minutes ago",
@@ -190,6 +190,15 @@ class LocaleString extends Translations {
           "ProfileAboutJassy": "About Jassy",
           "ProfileLogOut": "Log Out",
 
+          //Help Center
+          "unverifiedUsers" : "For unverified users",
+          "CommunityFeedback" : "Community feedback",
+          "SuspendedUsers" : "For suspended users",
+          "FeedBack" : "Feedback",
+          "FeedBackDetail" : "Feedback details",
+          "RequestTitle" : "File a petition that has been suspended",
+          "RequestDetail" : "Petition details",
+
           //Profile Setting Page
           "ProfileDesc": "Description",
           "ProfileSaveChange": "Save Change",
@@ -214,7 +223,9 @@ class LocaleString extends Translations {
           "NextButton": "Next",
 
           //Confirm
-          "Confirm": "Confirm"
+          "Confirm" : "Confirm",
+          "Agree" : "Agree",
+          "Cancel" : "Cancel",
         },
         'th_TH': {
           // Conjunction
@@ -347,9 +358,9 @@ class LocaleString extends Translations {
           "ChatRead": "อ่านแล้ว",
           "ChatHintText": "พิมพ์ข้อความ",
           "ChatShowReport": "ไม่สามารถส่งข้อความกับบุคคลนี้ได้อีก",
-          "NoChatPartner": "คุณยังไม่มีคู่สนทนาในขณะนี้",
-          "FindChatPartner":
-              "เริ่มต้นค้นหาคู่สนทนาเพื่อแลกเปลี่ยนภาษากันเถอะ !",
+          "NoChatPartner" : "คุณยังไม่มีคู่สนทนาในขณะนี้",
+          "FindChatPartner" : "เริ่มต้นค้นหาคู่สนทนาเพื่อแลกเปลี่ยนภาษากันเถอะ !",
+          "DeleteConversation" : "ลบการสนทนา",
           //Appbar Chat
           "StatusActiveNow": "กำลังใช้งาน",
           "StatusActiveAfew": "ใช้งานเมื่อไม่กี่นาทีที่แล้ว",
@@ -400,6 +411,15 @@ class LocaleString extends Translations {
           "ProfileAboutJassy": "เกี่ยวกับแจสซี่",
           "ProfileLogOut": "ออกจากระบบ",
 
+          //Help Center
+          "unverifiedUsers" : "สำหรับผู้ใช้ที่ยังไม่ยืนยันตัวตน",
+          "CommunityFeedback" : "ข้อเสนอแนะสำหรับชุมชน",
+          "SuspendedUsers" : "สำหรับผู้ใช้ที่โดนระงับการใช้งาน",
+          "FeedBack" : "ข้อเสนอแนะ",
+          "FeedBackDetail" : "รายละเอียดข้อเสนอแนะ",
+          "RequestTitle" : "ยื่นคำร้องการถูกระงับการใช้งาน",
+          "RequestDetail" : "รายระเอียดการยื่นคำร้อง",
+
           //Profile Setting Page
           "ProfileDesc": "คำบรรยายของคุณ",
           "ProfileSaveChange": "บันทึกการเปลี่ยนแปลง",
@@ -423,7 +443,9 @@ class LocaleString extends Translations {
           "NextButton": "ต่อไป",
 
           //Confirm
-          "Confirm": "ตกลง"
+          "Confirm" : "ตกลง",
+          "Agree" : "ยอมรับ",
+          "Cancel" : "ยกเลิก",
         },
       };
 }

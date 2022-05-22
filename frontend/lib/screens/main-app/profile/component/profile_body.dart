@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/main-app/profile/app_setting/app_setting.dart';
+import 'package:flutter_application_1/screens/main-app/profile/help_center/help_center.dart';
 import 'package:flutter_application_1/screens/main-app/profile/mark_as_like/mark_message_as_like.dart';
 import 'package:flutter_application_1/screens/main-app/profile/profile_setting/profile_setting.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
@@ -143,11 +144,16 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                   },
                 ),
                 ProfileMenu(
-                  size: size,
-                  icon: SvgPicture.asset("assets/icons/help_center_icon.svg"),
-                  text: "ProfileHelp".tr,
-                  onTab: () {},
-                ),
+                    size: size,
+                    icon: SvgPicture.asset("assets/icons/help_center_icon.svg"),
+                    text: "ProfileHelp".tr,
+                    onTab: () {
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) {
+                        return HelpCenter();
+                      }));
+                    },
+                ),     
                 ProfileMenu(
                   size: size,
                   icon: SvgPicture.asset("assets/icons/about_jassy_icon.svg"),

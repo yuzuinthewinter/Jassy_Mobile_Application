@@ -141,6 +141,7 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                   }
                   var user = snapshot.data!.docs;
                   return GridView.builder(
+                    padding: EdgeInsets.only(top: size.height * 0.15),
                       physics: const ScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
