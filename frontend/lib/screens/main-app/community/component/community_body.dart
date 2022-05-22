@@ -115,17 +115,17 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
           ),
         ),
         SizedBox(
-          height: size.height * 0.03,
+          height: size.height * 0.02,
         ),
         Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.03, vertical: size.height * 0.01),
+                horizontal: size.width * 0.02, vertical: size.height * 0.01),
             child: widget.user['userStatus'] != 'admin'
                 ? Column(
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.03,
+                            horizontal: size.width * 0.01,
                             vertical: size.height * 0.01),
                         child: Row(children: [
                           Text(
@@ -141,37 +141,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                               headText: "CommuNoFeed".tr,
                               descText: "CommuStartJoin".tr,
                               size: size)
-                          : SizedBox(
-                              width: size.width,
-                              height: size.height * 0.46,
-                              child: ListView.separated(
-                                  padding:
-                                      EdgeInsets.only(top: size.height * 0.02),
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemCount: getAllPost().length,
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return SizedBox(
-                                      height: size.height * 0.03,
-                                    );
-                                  },
-                                  itemBuilder: (context, index) {
-                                    var postlist = getAllPost();
-                                    return InkWell(
-                                      onTap: () {
-                                        Navigator.push(context,
-                                            CupertinoPageRoute(
-                                                builder: (context) {
-                                          return PostDetail(
-                                            postid: postlist[index],
-                                          );
-                                        }));
-                                      },
-                                      child: newsCard(postlist[index], context),
-                                    );
-                                  }),
-                            ),
+                          : getNewsFeed(context),
                     ],
                   )
                 : Column(
@@ -272,6 +242,69 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                   )),
       ],
     );
+  }
+
+  Widget getNewsFeed(context) {
+    var size = MediaQuery.of(context).size;
+    var postlist = getAllPost();
+    List sortPostList = [];
+    // return Text(postlist.toString());
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('Posts')
+            .snapshots(includeMetadataChanges: true),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text('Something went wrong');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: Text(''));
+          }
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text(''));
+          }
+          var posts = snapshot.data!.docs;
+
+          for (var postid in postlist) {
+            for (var post in posts) {
+              if (postid == post['postid']) {
+                sortPostList.add(post);
+              }
+            }
+          }
+          sortPostList.sort((a, b) {
+            return DateFormat('dd/MM/yyyy KK:mm a')
+                .format(DateTime.parse(b['date'].toDate().toString()))
+                .compareTo(DateFormat('dd/MM/yyyy KK:mm a')
+                    .format(DateTime.parse(a['date'].toDate().toString())));
+          });
+          return SizedBox(
+              width: size.width,
+              height: size.height * 0.48,
+              child: ListView.separated(
+                  padding: EdgeInsets.only(top: size.height * 0.02),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: sortPostList.length,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      height: size.height * 0.02,
+                    );
+                  },
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            CupertinoPageRoute(builder: (context) {
+                          return PostDetail(
+                            postid: sortPostList[index]['postid'],
+                          );
+                        }));
+                      },
+                      child: newsCard(sortPostList[index]['postid'], context),
+                    );
+                  }));
+        });
   }
 
   Widget newsCard(postid, context) {
