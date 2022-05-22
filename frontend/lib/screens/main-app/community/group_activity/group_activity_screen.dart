@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/appbar/community_activity_appbar.dart';
+import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/component/member_group.dart';
 import 'package:flutter_application_1/screens/main-app/community/group_activity/component/group_activity_screen_body.dart';
 import 'package:flutter_application_1/screens/main-app/community/group_activity/component/write_post.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -8,6 +11,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/utils.dart';
 
 enum MenuItem { item1, item2 }
+
+enum AdminMenuItem { item1 }
 
 class GroupActivityScreen extends StatefulWidget {
   final groupActivity;
@@ -129,17 +134,40 @@ class _GroupActivityScreenState extends State<GroupActivityScreen> {
                           )),
                       PopupMenuItem(
                           value: MenuItem.item2,
-                          onTap: () async {
-                            await leaveGroup();
-                            Navigator.of(context).pop();
+                          onTap: () {
+                            widget.user['userStatus'] == 'admin'
+                                ? Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MemberGroup(widget.groupActivity)))
+                                : showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return WarningPopUpWithButton(
+                                        text: 'WarningLeave'.tr,
+                                        okPress: () {
+                                          leaveGroup();
+                                          Navigator.of(context).pop();
+                                        },
+                                      );
+                                    });
                           },
                           child: Row(
                             children: [
-                              SvgPicture.asset("assets/icons/leave_group.svg"),
+                              widget.user['userStatus'] == 'admin'
+                                  ? const Icon(
+                                      Icons.person_rounded,
+                                      color: primaryColor,
+                                    )
+                                  : SvgPicture.asset(
+                                      "assets/icons/leave_group.svg"),
                               SizedBox(
                                 width: size.width * 0.03,
                               ),
-                              Text("GroupLeave".tr),
+                              widget.user['userStatus'] == 'admin'
+                                  ? Text('สมาชิก')
+                                  : Text("GroupLeave".tr),
                             ],
                           )),
                     ],
@@ -148,7 +176,10 @@ class _GroupActivityScreenState extends State<GroupActivityScreen> {
                       color: primaryDarker,
                     ),
                   )
-                : const SizedBox.shrink()
+                : widget.user['userStatus'] == 'admin'
+                    ? const SizedBox
+                        .shrink() //todo: to see member groups -> MemberGroup(widget.groupActivity)
+                    : const SizedBox.shrink()
           ],
         ),
         body: GroupActivityScreenBody(

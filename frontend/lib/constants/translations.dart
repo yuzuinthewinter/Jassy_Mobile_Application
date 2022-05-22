@@ -137,9 +137,10 @@ class LocaleString extends Translations {
           "ChatRead": "Read",
           "ChatHintText": "Enter a message",
           "ChatShowReport": "You can not message this account.",
-          "NoChatPartner" : "You don’t currently have a chat partner.",
-          "FindChatPartner" : "Let's start searching for a language exchange partner. !",
-          "DeleteConversation" : "Delete conversation",
+          "NoChatPartner": "You don’t currently have a chat partner.",
+          "FindChatPartner":
+              "Let's start searching for a language exchange partner. !",
+          "DeleteConversation": "Delete conversation",
           //Appbar Chat
           "StatusActiveNow": "Active now",
           "StatusActiveAfew": "Active a few minutes ago",
@@ -191,13 +192,13 @@ class LocaleString extends Translations {
           "ProfileLogOut": "Log Out",
 
           //Help Center
-          "unverifiedUsers" : "For unverified users",
-          "CommunityFeedback" : "Community feedback",
-          "SuspendedUsers" : "For suspended users",
-          "FeedBack" : "Feedback",
-          "FeedBackDetail" : "Feedback details",
-          "RequestTitle" : "File a petition that has been suspended",
-          "RequestDetail" : "Petition details",
+          "unverifiedUsers": "For unverified users",
+          "CommunityFeedback": "Community feedback",
+          "SuspendedUsers": "For suspended users",
+          "FeedBack": "Feedback",
+          "FeedBackDetail": "Feedback details",
+          "RequestTitle": "File a petition that has been suspended",
+          "RequestDetail": "Petition details",
 
           //Profile Setting Page
           "ProfileDesc": "Description",
@@ -212,13 +213,22 @@ class LocaleString extends Translations {
           "LanguageSetting": "Language",
 
           //Popup
+          "WarningAdminBlocked":
+              "Are you sure you\nwant to suspend this account?",
+          "WarningAdminUnblocked":
+              "Are you sure you want to\ncancel suspend this account?",
+          "WarningBlocked":
+              "Your account\nhas been suspended,\nPlease contact\nhelp center for recovery",
+          "WarningAuthUser":
+              "Registration is not complete yet,\nPlease register again.",
+          "WarningLeave": "Are you sure you\nwant to leave this group ?",
           "RegisterSuccess": "Success",
           "NextButton": "Next",
 
           //Confirm
-          "Confirm" : "Confirm",
-          "Agree" : "Agree",
-          "Cancel" : "Cancel",
+          "Confirm": "Confirm",
+          "Agree": "Agree",
+          "Cancel": "Cancel",
         },
         'th_TH': {
           // Conjunction
@@ -351,9 +361,10 @@ class LocaleString extends Translations {
           "ChatRead": "อ่านแล้ว",
           "ChatHintText": "พิมพ์ข้อความ",
           "ChatShowReport": "ไม่สามารถส่งข้อความกับบุคคลนี้ได้อีก",
-          "NoChatPartner" : "คุณยังไม่มีคู่สนทนาในขณะนี้",
-          "FindChatPartner" : "เริ่มต้นค้นหาคู่สนทนาเพื่อแลกเปลี่ยนภาษากันเถอะ !",
-          "DeleteConversation" : "ลบการสนทนา",
+          "NoChatPartner": "คุณยังไม่มีคู่สนทนาในขณะนี้",
+          "FindChatPartner":
+              "เริ่มต้นค้นหาคู่สนทนาเพื่อแลกเปลี่ยนภาษากันเถอะ !",
+          "DeleteConversation": "ลบการสนทนา",
           //Appbar Chat
           "StatusActiveNow": "กำลังใช้งาน",
           "StatusActiveAfew": "ใช้งานเมื่อไม่กี่นาทีที่แล้ว",
@@ -405,13 +416,13 @@ class LocaleString extends Translations {
           "ProfileLogOut": "ออกจากระบบ",
 
           //Help Center
-          "unverifiedUsers" : "สำหรับผู้ใช้ที่ยังไม่ยืนยันตัวตน",
-          "CommunityFeedback" : "ข้อเสนอแนะสำหรับชุมชน",
-          "SuspendedUsers" : "สำหรับผู้ใช้ที่โดนระงับการใช้งาน",
-          "FeedBack" : "ข้อเสนอแนะ",
-          "FeedBackDetail" : "รายละเอียดข้อเสนอแนะ",
-          "RequestTitle" : "ยื่นคำร้องการถูกระงับการใช้งาน",
-          "RequestDetail" : "รายระเอียดการยื่นคำร้อง",
+          "unverifiedUsers": "สำหรับผู้ใช้ที่ยังไม่ยืนยันตัวตน",
+          "CommunityFeedback": "ข้อเสนอแนะสำหรับชุมชน",
+          "SuspendedUsers": "สำหรับผู้ใช้ที่โดนระงับการใช้งาน",
+          "FeedBack": "ข้อเสนอแนะ",
+          "FeedBackDetail": "รายละเอียดข้อเสนอแนะ",
+          "RequestTitle": "ยื่นคำร้องการถูกระงับการใช้งาน",
+          "RequestDetail": "รายระเอียดการยื่นคำร้อง",
 
           //Profile Setting Page
           "ProfileDesc": "คำบรรยายของคุณ",
@@ -426,13 +437,21 @@ class LocaleString extends Translations {
           "LanguageSetting": "ภาษา",
 
           //Popup
+          "WarningAdminBlocked": "คุณต้องการระงับ\nการใช้งานผู้ใช้รายนี้ ?",
+          "WarningAdminUnblocked":
+              "คุณต้องการยกเลิกระงับ\nการใช้งานผู้ใช้รายนี้ ?",
+          "WarningBlocked":
+              "บัญชีของคุณถูกระงับการใช้งาน\nหากต้องการกู้คืนบัญชี\nกรุณาติดต่อศูนย์ช่วยเหลือผู้ใช้",
+          "WarningAuthUser":
+              "การลงทะเบียนเข้าใช้งานยังไม่สมบูรณ์\nกรุณาลงทะเบียนใหม่",
+          "WarningLeave": "คุณต้องการออกจากกลุ่มนี้ ?",
           "RegisterSuccess": "ลงทะเบียนสำเร็จ",
           "NextButton": "ต่อไป",
 
           //Confirm
-          "Confirm" : "ตกลง",
-          "Agree" : "ยอมรับ",
-          "Cancel" : "ยกเลิก",
+          "Confirm": "ตกลง",
+          "Agree": "ยอมรับ",
+          "Cancel": "ยกเลิก",
         },
       };
 }

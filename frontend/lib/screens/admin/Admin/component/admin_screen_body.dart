@@ -10,6 +10,7 @@ import 'package:flutter_application_1/component/header_style/jassy_gradient_colo
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/screens/admin/Users/component/user_card.dart';
+import 'package:flutter_application_1/screens/admin/Users/component/user_info.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_card.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -30,6 +31,10 @@ class AdminScreenBody extends StatefulWidget {
 class _AdminScreenBody extends State<AdminScreenBody> {
   var currentUser = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
+  bool isToggleShowUser = false;
+  bool isSearchEmpty = true;
+  String query = '';
+  TextEditingController searchController = TextEditingController();
 
   getDifferance(timestamp) {
     DateTime now = DateTime.now();
@@ -52,6 +57,24 @@ class _AdminScreenBody extends State<AdminScreenBody> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    searchController = TextEditingController();
+    searchController.addListener(() {
+      final isSearchEmpty = searchController.text.isNotEmpty;
+      setState(() {
+        this.isSearchEmpty = !isSearchEmpty;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double iconSize = 40;
     Size size = MediaQuery.of(context).size;
@@ -61,8 +84,11 @@ class _AdminScreenBody extends State<AdminScreenBody> {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
           child: TextFormField(
-            // controller: passwordController,
-            // obscureText: isHiddenPassword,
+            controller: searchController,
+            onChanged: (desc) {
+              desc = searchController.text;
+              setState(() {});
+            },
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               prefixIcon: SvgPicture.asset(
@@ -92,10 +118,12 @@ class _AdminScreenBody extends State<AdminScreenBody> {
           height: size.height * 0.6,
           width: size.width,
           child: StreamBuilder<QuerySnapshot>(
-            //call all user
             stream: FirebaseFirestore.instance
                 .collection('Users')
-                .where('userStatus', isEqualTo: 'admin')
+                .where('name.firstname',
+                    isGreaterThanOrEqualTo: searchController.text.toLowerCase())
+                .where('name.firstname',
+                    isLessThan: searchController.text.toLowerCase() + 'z')
                 .snapshots(includeMetadataChanges: true),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
@@ -103,71 +131,135 @@ class _AdminScreenBody extends State<AdminScreenBody> {
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: Text(''),
                 );
               }
-              if (snapshot.data!.docs.isEmpty) {
-                return const Center(child: Text(''));
-              }
+              var data = snapshot.data!.docs;
               return ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 20.0, horizontal: 20.0),
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (context, int index) {
-                    var data = snapshot.data!.docs;
-                    return Column(children: [
-                      Container(
-                        // margin:
-                        // EdgeInsets.symmetric(horizontal: size.width * 0.13),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: size.height * 0.01),
-                        width: size.width,
-                        height: size.height * 0.07,
-                        decoration: BoxDecoration(
-                            color: textLight,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Column(children: [
-                          UserCard(
-                            size: size,
-                            icon: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.verified_rounded),
-                              color: data[index]['isAuth'] == true
-                                  ? data[index]['report'].length < 5
-                                      ? primaryColor
-                                      : greyDark
-                                  : textLight,
-                            ),
-                            text: StringUtils.capitalize(
-                                            data[index]['name']['firstname']) ==
-                                        '' &&
-                                    StringUtils.capitalize(
-                                            data[index]['name']['lastname']) ==
-                                        ''
-                                ? '-'
-                                : '${StringUtils.capitalize(data[index]['name']['firstname'])} ${StringUtils.capitalize(data[index]['name']['lastname'])}',
-                            reportIcon: IconButton(
-                              onPressed: () {},
-                              icon: Icon(data[index]['report'].length < 5
-                                  ? Icons.report_problem_rounded
-                                  : Icons.cancel_rounded),
-                              color: data[index]['report'].length < 3
-                                  ? textLight
-                                  : data[index]['report'].length < 5
-                                      ? tertiary
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 20.0),
+                itemCount: data.length,
+                itemBuilder: (context, int index) {
+                  if (data[index]['userStatus'] == 'admin') {
+                    if (searchController.text.toLowerCase() == '') {
+                      return Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.height * 0.01),
+                            width: size.width,
+                            height: size.height * 0.07,
+                            decoration: BoxDecoration(
+                                color: textLight,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Column(children: [
+                              UserCard(
+                                size: size,
+                                icon: IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.verified_rounded),
+                                  color: data[index]['isAuth'] == true
+                                      ? data[index]['report'].length < 5
+                                          ? primaryColor
+                                          : greyDark
                                       : textLight,
-                            ),
-                            onTab: () {},
+                                ),
+                                text: StringUtils.capitalize(data[index]['name']
+                                                ['firstname']) ==
+                                            '' &&
+                                        StringUtils.capitalize(data[index]
+                                                ['name']['lastname']) ==
+                                            ''
+                                    ? '-'
+                                    : '${StringUtils.capitalize(data[index]['name']['firstname'])} ${StringUtils.capitalize(data[index]['name']['lastname'])}',
+                                reportIcon: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(data[index]['report'].length < 5
+                                      ? Icons.warning_rounded
+                                      : Icons.cancel_rounded),
+                                  color: data[index]['report'].length < 3
+                                      ? textLight
+                                      : data[index]['report'].length < 5
+                                          ? tertiary
+                                          : textLight,
+                                ),
+                                onTab: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        UserInfoPage(data[index]),
+                                  );
+                                },
+                              ),
+                            ]),
                           ),
-                        ]),
-                      ),
-                      SizedBox(
-                        height: size.height * 0.015,
-                      ),
-                    ]
-                        // Text(data[index]['name'].toString());
-                        );
-                  });
+                          SizedBox(
+                            height: size.height * 0.015,
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.height * 0.01),
+                            width: size.width,
+                            height: size.height * 0.07,
+                            decoration: BoxDecoration(
+                                color: textLight,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Column(children: [
+                              UserCard(
+                                size: size,
+                                icon: IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.verified_rounded),
+                                  color: data[index]['isAuth'] == true
+                                      ? data[index]['report'].length < 5
+                                          ? primaryColor
+                                          : greyDark
+                                      : textLight,
+                                ),
+                                text: StringUtils.capitalize(data[index]['name']
+                                                ['firstname']) ==
+                                            '' &&
+                                        StringUtils.capitalize(data[index]
+                                                ['name']['lastname']) ==
+                                            ''
+                                    ? '-'
+                                    : '${StringUtils.capitalize(data[index]['name']['firstname'])} ${StringUtils.capitalize(data[index]['name']['lastname'])}',
+                                reportIcon: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(data[index]['report'].length < 5
+                                      ? Icons.warning_rounded
+                                      : Icons.cancel_rounded),
+                                  color: data[index]['report'].length < 3
+                                      ? textLight
+                                      : data[index]['report'].length < 5
+                                          ? tertiary
+                                          : textLight,
+                                ),
+                                onTab: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        UserInfoPage(data[index]),
+                                  );
+                                },
+                              ),
+                            ]),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.015,
+                          ),
+                        ],
+                      );
+                    }
+                  }
+                  return const SizedBox.shrink();
+                },
+              );
             },
           ),
         ),

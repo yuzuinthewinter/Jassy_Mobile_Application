@@ -70,21 +70,21 @@ class SettingScreen extends StatelessWidget {
                   fontFamily: 'kanit',
                   fontWeight: FontWeight.w600),
             ),
-            Text(
+            const Text(
               'Administrator',
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 16,
                   fontFamily: 'kanit',
                   fontWeight: FontWeight.w400),
             ),
             SizedBox(
-              height: size.height * 0.04,
+              height: size.height * 0.07,
             ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
               padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
               width: size.width,
-              height: size.height * 0.24,
+              height: size.height * 0.15,
               decoration: BoxDecoration(
                   color: textLight, borderRadius: BorderRadius.circular(20)),
               child: Column(children: [
@@ -93,9 +93,9 @@ class SettingScreen extends StatelessWidget {
                   icon: SvgPicture.asset("assets/icons/app_setting_icon.svg"),
                   text: 'ProfileAppSetting'.tr,
                   onTab: () {
-                    // Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                    //   return const AppSetting();
-                    // }));
+                    Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                      return AppSetting(user);
+                    }));
                   },
                 ),
                 ProfileMenu(
@@ -104,6 +104,19 @@ class SettingScreen extends StatelessWidget {
                   text: "เกี่ยวกับแจสซี่",
                   onTab: () {},
                 ),
+              ]),
+            ),
+            SizedBox(
+              height: size.height * 0.04,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: size.width * 0.13),
+              padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
+              width: size.width,
+              height: size.height * 0.075,
+              decoration: BoxDecoration(
+                  color: textLight, borderRadius: BorderRadius.circular(20)),
+              child: Column(children: [
                 Expanded(
                     child: InkWell(
                   child: Row(

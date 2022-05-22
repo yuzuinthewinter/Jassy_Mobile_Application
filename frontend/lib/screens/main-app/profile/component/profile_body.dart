@@ -64,7 +64,9 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
               height: size.height * 0.01,
             ),
             Text(
-              StringUtils.capitalize(user['name']['firstname']) + ' ' + StringUtils.capitalize(user['name']['lastname']),
+              StringUtils.capitalize(user['name']['firstname']) +
+                  ' ' +
+                  StringUtils.capitalize(user['name']['lastname']),
               style: const TextStyle(
                   fontSize: 20,
                   fontFamily: 'kanit',
@@ -115,7 +117,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                         return SavedPost(user);
                       }));
                     },
-                  ),                  
+                  ),
                 ],
               ),
             ),
@@ -131,16 +133,16 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                   color: textLight, borderRadius: BorderRadius.circular(20)),
               child: Column(children: [
                 ProfileMenu(
-                    size: size,
-                    icon: SvgPicture.asset("assets/icons/app_setting_icon.svg"),
-                    text: 'ProfileAppSetting'.tr,
-                    onTab: () {
-                      Navigator.push(context,
-                          CupertinoPageRoute(builder: (context) {
-                        return AppSetting(user);
-                      }));
-                    },
-                  ),
+                  size: size,
+                  icon: SvgPicture.asset("assets/icons/app_setting_icon.svg"),
+                  text: 'ProfileAppSetting'.tr,
+                  onTab: () {
+                    Navigator.push(context,
+                        CupertinoPageRoute(builder: (context) {
+                      return AppSetting(user);
+                    }));
+                  },
+                ),
                 ProfileMenu(
                     size: size,
                     icon: SvgPicture.asset("assets/icons/help_center_icon.svg"),
@@ -148,7 +150,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                     onTab: () {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
-                        return HelpCenter();
+                        return HelpCenter(user);
                       }));
                     },
                 ),     

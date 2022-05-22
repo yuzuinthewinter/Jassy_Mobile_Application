@@ -110,35 +110,6 @@ class _CommunityFeedBackState extends State<CommunityFeedBack> {
                 },
               ),
             ),
-            // Todo: disable detail in admin
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
-            //   child: TextFormField(
-            //     readOnly: true,
-            //     keyboardType: TextInputType.multiline,
-            //     maxLines: 5,
-            //     decoration: InputDecoration(
-            //       // Todo: add detail in hint text
-            //       hintText: "Need new Communityyyyyyyyyyyyyyy",
-            //       hintStyle: const TextStyle(color: greyDark),
-            //       contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-            //       fillColor: textLight,
-            //       filled: true,
-            //       border: OutlineInputBorder(
-            //         borderRadius: BorderRadius.circular(40),
-            //         borderSide: const BorderSide(
-            //           color: textLight, width: 0.0)),
-            //       enabledBorder: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(40.0),
-            //       borderSide:const BorderSide(color: textLight),),
-            //             focusedBorder: OutlineInputBorder(
-            //               borderRadius: BorderRadius.circular(40.0),
-            //               borderSide:
-            //               const BorderSide(color: textLight),
-            //               ),
-            //         ),
-            //   ),
-            // ),
             const Spacer(),
             Center(
                child: DisableToggleButton(

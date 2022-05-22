@@ -12,6 +12,7 @@ import 'package:flutter_application_1/component/text/report_choice.dart';
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/report/reportGroup.dart';
 import 'package:flutter_application_1/screens/main-app/community/admin/add_community.dart';
 import 'package:flutter_application_1/screens/main-app/community/admin/manage_community.dart';
 import 'package:flutter_application_1/screens/main-app/community/community_search/community_search.dart';
@@ -62,7 +63,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
           padding: EdgeInsets.symmetric(
               horizontal: size.width * 0.03, vertical: size.height * 0.01),
           child: Row(children: [
-            widget.user['userStatus'] == 'user'
+            widget.user['userStatus'] != 'admin'
                 ? widget.user['groups'].length != 0
                     ? Text("CommuMyGroup".tr,
                         style: const TextStyle(
@@ -119,7 +120,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
         Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: size.width * 0.03, vertical: size.height * 0.01),
-            child: widget.user['userStatus'] == 'user'
+            child: widget.user['userStatus'] != 'admin'
                 ? Column(
                     children: [
                       Padding(
@@ -132,23 +133,6 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                             style: const TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w700),
                           ),
-                          // const Spacer(),
-                          // widget.user['userStatus'] == 'user'
-                          //     ? InkWell(
-                          //         onTap: () {
-                          //           Navigator.push(context,
-                          //               CupertinoPageRoute(builder: (context) {
-                          //             return MyGroup(widget.community, widget.user);
-                          //           }));
-                          //         },
-                          //         child: Text("CommuMyGroup".tr,
-                          //             style: TextStyle(
-                          //               fontSize: 16,
-                          //               color: primaryColor,
-                          //             )))
-                          //     : Container(
-                          //         width: 1,
-                          //       ),
                         ]),
                       ),
                       // Todo: isEmpty show NoNewsWidget
@@ -255,7 +239,12 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                         child: Column(children: [
                           Expanded(
                               child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                return const ReportGroupScreen();
+                              }));
+                            },
                             child: Row(
                               children: [
                                 IconButton(
@@ -312,7 +301,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
     var currentUser = FirebaseAuth.instance.currentUser;
     CollectionReference savePosts =
         FirebaseFirestore.instance.collection('SavePosts');
-        
+
     savePost(post) async {
       var queryPost = savePosts.where('savedBy', isEqualTo: currentUser!.uid);
       QuerySnapshot querySnapshot = await queryPost.get();

@@ -100,16 +100,20 @@ Widget groupForSearchWidget(group, context, user) {
               ),
             ),
             // add icon
-            user['userStatus'] == 'user'
-                ? isMember == true
-                    ? const SizedBox.shrink()
-                    : InkWell(
-                        onTap: () {},
-                        child: Icon(
-                          Icons.add_circle_rounded,
-                          color: primaryColor,
-                          size: size.width * 0.1,
-                        ))
+            user['userStatus'] != 'admin'
+                ? user['userStatus'] == 'user'
+                    ? isMember == true
+                        ? const SizedBox.shrink()
+                        : InkWell(
+                            onTap: () {},
+                            child: Icon(
+                              Icons.add_circle_rounded,
+                              color: primaryColor,
+                              size: size.width * 0.1,
+                            ))
+                    : Container(
+                        width: 1,
+                      )
                 : Container(
                     width: 1,
                   )

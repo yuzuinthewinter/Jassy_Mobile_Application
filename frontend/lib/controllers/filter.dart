@@ -34,7 +34,9 @@ class FilterController extends GetxController {
     "Proficiency"
   ];
   final List<String> _GenderChoicesLists = [
-   "Male", "Female", "LGBTQ+",
+    "Male",
+    "Female",
+    "LGBTQ+",
     "FilterNoneGender".tr
   ];
 
@@ -68,8 +70,13 @@ class FilterController extends GetxController {
       final user = snapshot.docs[0];
 
       int userAge = calculateAge(DateTime.parse(user['birthDate'].toString()));
-
-      currentRangeValues = RangeValues(userAge - 3, userAge + 3).obs;
+      if (userAge <= 17) {
+        currentRangeValues = RangeValues(15, 20).obs;
+      } else if (userAge >= 58) {
+        currentRangeValues = RangeValues(55, 60).obs;
+      } else {
+        currentRangeValues = RangeValues(userAge - 3, userAge + 3).obs;
+      }
 
       _LanguageChoicesLists.forEachIndexed((index, lang) => {
             if (user['language']['interestedLanguage'].toLowerCase() ==

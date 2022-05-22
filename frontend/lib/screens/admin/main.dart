@@ -14,7 +14,8 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AdminJassyHome extends StatefulWidget {
-  const AdminJassyHome({Key? key}) : super(key: key);
+  final indexpage;
+  const AdminJassyHome(this.indexpage, {Key? key}) : super(key: key);
 
   @override
   State<AdminJassyHome> createState() => _AdminJassyHomeState();
@@ -38,6 +39,12 @@ class _AdminJassyHomeState extends State<AdminJassyHome>
     const AdminScreen(),
     SettingScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.indexpage;
+  }
 
   @override
   Widget build(BuildContext context) {

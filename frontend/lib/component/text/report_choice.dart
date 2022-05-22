@@ -73,14 +73,13 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
   }
 
   sendReport() async {
-    print(widget.text);
-    print(reportFilled);
     DocumentReference docRef = await reportUser.add({
       'reportHeader': widget.text,
       'reportDetail': reportFilled,
       'reportImage': urlImage,
       'reportTime': DateTime.now(),
       'reportBy': currentUser!.uid,
+      'reportUserId': widget.userid,
     });
     await users.doc(widget.userid).update({
       'report': FieldValue.arrayUnion([docRef.id]),
@@ -100,7 +99,7 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
       'liked': FieldValue.arrayRemove([widget.userid]),
     });
     await chats.doc(widget.chatid).delete();
-    Navigator.of(context).popAndPushNamed(Routes.JassyHome, arguments: 3);
+    Navigator.of(context).popAndPushNamed(Routes.JassyHome, arguments: [3, true, false]);
   }
 
   @override

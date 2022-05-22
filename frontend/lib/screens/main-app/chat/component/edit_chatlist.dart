@@ -48,7 +48,7 @@ class _EditChatListState extends State<EditChatList> {
       });
       await chatRooms.doc(chat['chatid']).delete();
     }
-    Navigator.of(context).popAndPushNamed(Routes.JassyHome, arguments: 3);
+    Navigator.of(context).popAndPushNamed(Routes.JassyHome, arguments: [3, true, false]);
   }
 
   removeChat() async {

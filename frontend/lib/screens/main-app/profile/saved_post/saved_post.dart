@@ -65,7 +65,7 @@ class _SavedPostState extends State<SavedPost> {
                         );
                       }
                       if (snapshot.data!.docs.isEmpty) {
-                        return const Center(child: Text('Save something'));
+                        return const Center(child: Text(''));
                       }
                       var savepost = snapshot.data!.docs[0];
                       return ListView.builder(
@@ -119,7 +119,7 @@ class _SavedPostState extends State<SavedPost> {
             );
           }
           if (snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('Save something'));
+            return const Center(child: Text(''));
           }
           var post = snapshot.data!.docs[0];
           return StreamBuilder<QuerySnapshot>(
@@ -137,7 +137,7 @@ class _SavedPostState extends State<SavedPost> {
                 );
               }
               if (snapshot.data!.docs.isEmpty) {
-                return const Center(child: Text('Save something'));
+                return const Center(child: Text(''));
               }
               var postOwner = snapshot.data!.docs[0];
               return StreamBuilder<QuerySnapshot>(
@@ -155,7 +155,7 @@ class _SavedPostState extends State<SavedPost> {
                     );
                   }
                   if (snapshot.data!.docs.isEmpty) {
-                    return const Center(child: Text('Save something'));
+                    return const Center(child: Text(''));
                   }
                   var group = snapshot.data!.docs[0];
                   return Row(

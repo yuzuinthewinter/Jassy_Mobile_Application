@@ -85,47 +85,49 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
           ),
         ),
         isSearchEmpty
-            ? Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.05,
-                        vertical: size.height * 0.02),
-                    child: Row(children: [
-                      Text(
-                        "CommuRecommand".tr,
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w700),
-                      )
-                    ]),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: size.width * 0.02),
-                    child: SizedBox(
-                      height: size.height * 0.1,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: widget.groups.length,
-                        itemBuilder: (context, index) {
-                          var group = widget.groups[index];
-                          bool isMember = false;
-                          for (var groupid in widget.user['groups']) {
-                            if (groupid == group['groupid']) {
-                              isMember = true;
-                            }
-                          }
-                          return isMember == true
-                              ? const SizedBox.shrink()
-                              : communityCard(widget.user, group, context);
-                        },
+            ? widget.user['userStatus'] == 'admin'
+                ? const SizedBox.shrink()
+                : Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.05,
+                            vertical: size.height * 0.02),
+                        child: Row(children: [
+                          Text(
+                            "CommuRecommand".tr,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w700),
+                          )
+                        ]),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.03,
-                  ),
-                ],
-              )
+                      Padding(
+                        padding: EdgeInsets.only(left: size.width * 0.02),
+                        child: SizedBox(
+                          height: size.height * 0.1,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: widget.groups.length,
+                            itemBuilder: (context, index) {
+                              var group = widget.groups[index];
+                              bool isMember = false;
+                              for (var groupid in widget.user['groups']) {
+                                if (groupid == group['groupid']) {
+                                  isMember = true;
+                                }
+                              }
+                              return isMember == true
+                                  ? const SizedBox.shrink()
+                                  : communityCard(widget.user, group, context);
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.03,
+                      ),
+                    ],
+                  )
             : const SizedBox.shrink(),
         Padding(
             padding: EdgeInsets.symmetric(
@@ -137,7 +139,11 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
                       vertical: size.height * 0.01),
                   child: Row(children: [
                     Text(
-                      isSearchEmpty ? "CommuMyGroup".tr : "CommuResults".tr,
+                      isSearchEmpty
+                          ? widget.user['userStatus'] == 'admin'
+                              ? "กลุ่มทั้งหมด"
+                              : "CommuMyGroup".tr
+                          : "CommuResults".tr,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                     ),
@@ -176,17 +182,27 @@ class _CommunitySearchBodyState extends State<CommunitySearchBody> {
                     }
                   }
                   return isSearchEmpty
-                      ? isMember == true
+                      ? widget.user['userStatus'] == 'admin'
                           ? Column(
                               children: [
                                 groupForSearchWidget(
-                                    group, context, widget.user),
+                                    data[index], context, widget.user),
                                 SizedBox(
                                   height: size.height * 0.03,
                                 ),
                               ],
                             )
-                          : const SizedBox.shrink()
+                          : isMember == true
+                              ? Column(
+                                  children: [
+                                    groupForSearchWidget(
+                                        group, context, widget.user),
+                                    SizedBox(
+                                      height: size.height * 0.03,
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox.shrink()
                       : Column(
                           children: [
                             groupForSearchWidget(

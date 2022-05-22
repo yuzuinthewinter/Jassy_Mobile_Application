@@ -99,7 +99,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
           language.levelInterestedLanguage.toLowerCase(),
     });
     //todo: popup change profile success
-    Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 4);
+    Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [4, true, false]);
   }
 
   @override

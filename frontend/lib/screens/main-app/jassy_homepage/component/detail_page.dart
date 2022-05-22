@@ -63,14 +63,6 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
 
   createChatRoom(String userid) async {
     var chatMember = [userid, currentUser!.uid];
-    // await users.doc(userid).update({
-    //   'likesby': FieldValue.arrayRemove([currentUser!.uid]),
-    //   'liked': FieldValue.arrayRemove([currentUser!.uid]),
-    // });
-    // await users.doc(currentUser!.uid).update({
-    //   'likesby': FieldValue.arrayRemove([userid]),
-    //   'liked': FieldValue.arrayRemove([userid]),
-    // });
 
     DocumentReference docRef = await chatRooms.add({
       'member': chatMember,
@@ -79,6 +71,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
       'unseenCount': 0,
       'sentBy': '',
       'messages': [],
+      'type': '',
     });
     await chatRooms.doc(docRef.id).update({
       'chatid': docRef.id,
@@ -207,7 +200,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                         color: greyDark,
                                         fontWeight: FontWeight.w700),
                                     children: [
-                                      TextSpan(text: widget.user['country']),
+                                      TextSpan(text: StringUtils.capitalize(widget.user['country'])),
                                       // const TextSpan(text: ", "),
                                       // TextSpan(text: widget.user.city),
                                       // const TextSpan(text: " "),
@@ -247,7 +240,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                 padding: EdgeInsets.only(left: 20),
                                 // TODO widget.user.motherLanguage
                                 child: Text(
-                                    widget.user['language']['defaultLanguage']),
+                                    StringUtils.capitalize(widget.user['language']['defaultLanguage'])),
                               ),
                               motherLanguageProgressBar(widget.user['language']
                                   ['levelDefaultLanguage']),
@@ -259,8 +252,8 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                               Padding(
                                 padding: EdgeInsets.only(left: 20),
                                 // TODO widget.user.interestLanguage
-                                child: Text(widget.user['language']
-                                    ['interestedLanguage']),
+                                child: Text(StringUtils.capitalize(widget.user['language']
+                                    ['interestedLanguage'])),
                               ),
                               interestLanguageProgressBar(widget
                                   .user['language']['levelInterestedLanguage']),
@@ -269,7 +262,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                         ],
                       ),
                       // TODO widget.user.desc
-                      Text(widget.user['desc'])
+                      Text(StringUtils.capitalize(widget.user['desc']))
                     ]),
                   )
                 ],

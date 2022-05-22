@@ -82,7 +82,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
       'liked': FieldValue.arrayRemove([widget.user['uid']]),
     });
     await chats.doc(widget.chatid).delete();
-    Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 3);
+    Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [3, true, false]);
   }
 
   bool isInRoom = false;
