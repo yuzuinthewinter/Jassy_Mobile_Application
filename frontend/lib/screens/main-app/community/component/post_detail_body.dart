@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:comment_tree/comment_tree.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/like_button_widget.dart';
@@ -31,14 +34,6 @@ class _PostDetailBodyState extends State<PostDetailBody> {
   late FocusNode myFocusNode;
   var currentUser = FirebaseAuth.instance.currentUser;
   var getpost;
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    messageController.dispose();
-    myFocusNode.dispose();
-    super.dispose();
-  }
 
   @override
   void initState() {
@@ -75,7 +70,15 @@ class _PostDetailBodyState extends State<PostDetailBody> {
       'comments': FieldValue.arrayUnion([docRef.id])
     });
     messageController.clear();
+    // messageController.dispose();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
     messageController.dispose();
+    myFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -90,46 +93,46 @@ class _PostDetailBodyState extends State<PostDetailBody> {
         Expanded(
           child: SingleChildScrollView(
             child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection("Posts")
-                    .where('postid', isEqualTo: widget.postid)
-                    .snapshots(includeMetadataChanges: true),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return const Text('Something went wrong');
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: Text(''));
-                  }
-                  if (snapshot.data!.docs.isEmpty) {
-                    return const Center(child: Text(''));
-                  }
-                  var post = snapshot.data!.docs[0];
-                  getpost = post;
-                  return StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('Users')
-                        .where('uid', isEqualTo: post['postby'])
-                        .snapshots(includeMetadataChanges: true),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text('Something went wrong');
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: Text(''));
-                      }
-                      if (snapshot.data!.docs.isEmpty) {
-                        return const Center(child: Text(''));
-                      }
-                      var queryUser = snapshot.data!.docs[0];
-                      return FullPostDetail(
-                        post: post,
-                        user: queryUser,
-                        myFocusNode: myFocusNode,
-                      );
-                    },
-                  );
-                }),
+                  stream: FirebaseFirestore.instance
+                      .collection("Posts")
+                      .where('postid', isEqualTo: widget.postid)
+                      .snapshots(includeMetadataChanges: true),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: Text(''));
+                    }
+                    if (snapshot.data!.docs.isEmpty) {
+                      return const Center(child: Text(''));
+                    }
+                    var post = snapshot.data!.docs[0];
+                    getpost = post;
+                    return StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('Users')
+                          .where('uid', isEqualTo: post['postby'])
+                          .snapshots(includeMetadataChanges: true),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text('Something went wrong');
+                        }
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: Text(''));
+                        }
+                        if (snapshot.data!.docs.isEmpty) {
+                          return const Center(child: Text(''));
+                        }
+                        var queryUser = snapshot.data!.docs[0];
+                        return FullPostDetail(
+                          post: post,
+                          user: queryUser,
+                          myFocusNode: myFocusNode,
+                        );
+                      },
+                    );
+                  }),
           ),
         ),
         CommentInput(
@@ -305,8 +308,65 @@ class FullPostDetail extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(
+          height: size.height * 0.03,
+        ),
         //TODO: show comment here
-        // SingleChildScrollView(child: JassyCommentTree(post, user)),
+        ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            padding: EdgeInsets.only(top: 0,),
+            itemCount: post['comments'].length,
+            itemBuilder: (index, context) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.08, vertical: size.width * 0.04),
+                child: Column(
+                  children: [
+                    Row(  
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: AssetImage("assets/images/user3.jpg"),
+                          radius: size.width * 0.05,
+                        ),
+                        SizedBox(width: size.width * 0.03,),
+                        Container(
+                          constraints:
+                            BoxConstraints(maxWidth: size.width * 0.7),
+                          padding: EdgeInsets.only(right: size.width * 0.03, left: size.width * 0.03, bottom: size.width * 0.03, top: size.width * 0.015),
+                          decoration: BoxDecoration(
+                            color: textLight,
+                            borderRadius: BorderRadius.circular(20)),
+                          child: RichText(
+                            text: const TextSpan(
+                              style: TextStyle(
+                                color: textDark,
+                                fontFamily: 'Kanit',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16
+                              ),
+                              children: [
+                                TextSpan(text: "name surname\n"),
+                                TextSpan(
+                                  text: "commemttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16
+                                  )
+                                ),
+                              ]
+                            ),
+                          )
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }
+          ),
+        
       ],
     );
   }
