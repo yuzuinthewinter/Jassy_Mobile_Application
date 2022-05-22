@@ -54,10 +54,12 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
 
   likeUser(userid) {
     users.doc(currentUser!.uid).update({
-      'liked': FieldValue.arrayUnion([userid]), //like โดย
+      'liked': FieldValue.arrayUnion([userid]),
+      'hideUser': FieldValue.arrayUnion([userid]), //cu //like โดย
     });
     users.doc(userid).update({
-      'likesby': FieldValue.arrayUnion([currentUser!.uid]), //like โดย
+      'likesby': FieldValue.arrayUnion([currentUser!.uid]),
+      'hideUser': FieldValue.arrayUnion([currentUser!.uid]), //like โดย
     });
   }
 
@@ -200,7 +202,9 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                         color: greyDark,
                                         fontWeight: FontWeight.w700),
                                     children: [
-                                      TextSpan(text: StringUtils.capitalize(widget.user['country'])),
+                                      TextSpan(
+                                          text: StringUtils.capitalize(
+                                              widget.user['country'])),
                                       // const TextSpan(text: ", "),
                                       // TextSpan(text: widget.user.city),
                                       // const TextSpan(text: " "),
@@ -239,8 +243,8 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                               Padding(
                                 padding: EdgeInsets.only(left: 20),
                                 // TODO widget.user.motherLanguage
-                                child: Text(
-                                    StringUtils.capitalize(widget.user['language']['defaultLanguage'])),
+                                child: Text(StringUtils.capitalize(widget
+                                    .user['language']['defaultLanguage'])),
                               ),
                               motherLanguageProgressBar(widget.user['language']
                                   ['levelDefaultLanguage']),
@@ -252,8 +256,8 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                               Padding(
                                 padding: EdgeInsets.only(left: 20),
                                 // TODO widget.user.interestLanguage
-                                child: Text(StringUtils.capitalize(widget.user['language']
-                                    ['interestedLanguage'])),
+                                child: Text(StringUtils.capitalize(widget
+                                    .user['language']['interestedLanguage'])),
                               ),
                               interestLanguageProgressBar(widget
                                   .user['language']['levelInterestedLanguage']),
