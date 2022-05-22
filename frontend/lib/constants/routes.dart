@@ -10,7 +10,9 @@ import 'package:flutter_application_1/screens/pre-app/login/login.dart';
 import 'package:flutter_application_1/screens/pre-app/register/create_password.dart';
 import 'package:flutter_application_1/screens/pre-app/register/enter_otp.dart';
 import 'package:flutter_application_1/screens/pre-app/register/phone_register.dart';
+import 'package:flutter_application_1/screens/pre-app/register_info/component/phase_one_success.dart';
 import 'package:flutter_application_1/screens/pre-app/register_info/language.dart';
+import 'package:flutter_application_1/screens/pre-app/register_info/picture_upload.dart';
 import 'package:flutter_application_1/screens/pre-app/register_info/profile.dart';
 import 'package:flutter_application_1/screens/pre-app/register/register_page.dart';
 
@@ -20,6 +22,8 @@ class Routes extends RouteGenerator {
   //Register
   static const String RegisterPage = '/RegisterPage';
   static const String PhoneRegister = '/PhoneRegister';
+  static const String PhaseOneSuccess = '/PhaseOneSuccess';
+  static const String PictureUpload = '/PictureUpload';
   static const String EnterOTP = '/EnterOTP';
   static const String CreatePassword = '/CreatePassword';
 
@@ -49,6 +53,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const RegisterPage());
       case Routes.PhoneRegister:
         return MaterialPageRoute(builder: (_) => const PhoneRegister());
+      case Routes.PhaseOneSuccess:
+        return MaterialPageRoute(builder: (_) => const PhaseOneSuccess());
+      case Routes.PictureUpload:
+        return MaterialPageRoute(builder: (_) => const PictureUpload());
       case Routes.EnterOTP:
         List<String> data = settings.arguments as List<String>;
         return MaterialPageRoute(builder: (_) => EnterOTP(data[0], data[1]));
@@ -75,7 +83,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const LandingPage());
       case Routes.JassyHome:
         List<dynamic> data = settings.arguments as List<dynamic>;
-        return MaterialPageRoute(builder: (_) => JassyHome(data[0], data[1], data[2]));
+        return MaterialPageRoute(
+            builder: (_) => JassyHome(data[0], data[1], data[2]));
       case Routes.ChatScreen:
         return MaterialPageRoute(builder: (_) => const ChatScreenBody());
 
