@@ -10,7 +10,6 @@ import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
-import 'package:flutter_application_1/screens/admin/DashBoard/admin/add_admin.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/manage/add_country.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/manage/basic_card.dart';
@@ -27,72 +26,32 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 // NOTE: chat card in all chat page show name lastest message and unread notification
-class ManageAdminScreenBody extends StatefulWidget {
-  const ManageAdminScreenBody({Key? key, this.userData}) : super(key: key);
+class AddNewAdmin extends StatefulWidget {
+  const AddNewAdmin({Key? key, this.userData}) : super(key: key);
   // ignore: prefer_typing_uninitialized_variables
   final userData;
 
   @override
-  State<ManageAdminScreenBody> createState() => _ManageAdminScreenBody();
+  State<AddNewAdmin> createState() => _AddNewAdmin();
 }
 
-class _ManageAdminScreenBody extends State<ManageAdminScreenBody> {
+class _AddNewAdmin extends State<AddNewAdmin> {
   @override
   Widget build(BuildContext context) {
     double iconSize = 40;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: BackAndCloseAppBar(text: "การจัดการผู้ดูแลระบบ"),
+      appBar: BackAndCloseAppBar(text: "การจัดการเพิ่มผู้ดูแลระบบ"),
       body: Column(children: [
         CurvedWidget(child: JassyGradientColor()),
-        //TODO: for add admin
-        // Container(
-        //   margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-        //   padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
-        //   width: size.width,
-        //   height: size.height * 0.06,
-        //   decoration: BoxDecoration(
-        //       color: textLight, borderRadius: BorderRadius.circular(20)),
-        //   child: Column(children: [
-        //     Expanded(
-        //         child: InkWell(
-        //       child: Row(
-        //         children: [
-        //           IconButton(
-        //             onPressed: () {},
-        //             icon: const Icon(Icons.person_add_alt_rounded),
-        //             color: primaryColor,
-        //           ),
-        //           SizedBox(
-        //             width: size.width * 0.03,
-        //           ),
-        //           const Text(
-        //             "การจัดการเพิ่มผู้ดูแลระบบ",
-        //             style: TextStyle(
-        //                 fontSize: 15,
-        //                 fontWeight: FontWeight.w400,
-        //                 color: textDark),
-        //           ),
-        //           Spacer(),
-        //           // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
-        //         ],
-        //       ),
-        //       onTap: () {
-        //         Navigator.push(context, CupertinoPageRoute(builder: (context) {
-        //           return AddNewAdmin();
-        //         }));
-        //       },
-        //     )),
-        //   ]),
-        // ),
         SizedBox(
           height: size.height * 0.6,
           width: size.width,
           child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('Users')
-                .where('userStatus', isEqualTo: 'admin')
+                .where('userStatus', isEqualTo: 'user')
                 .snapshots(includeMetadataChanges: true),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
@@ -109,19 +68,29 @@ class _ManageAdminScreenBody extends State<ManageAdminScreenBody> {
                     vertical: 20.0, horizontal: 20.0),
                 itemCount: data.length,
                 itemBuilder: (context, int index) {
+                  if (data[index]['report'].length > 0) {
+                    return const SizedBox.shrink();
+                  }
                   return Column(
                     children: [
                       Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: size.height * 0.01),
                         width: size.width,
-                        height: size.height * 0.06,
+                        height: size.height * 0.05,
                         decoration: BoxDecoration(
                             color: textLight,
                             borderRadius: BorderRadius.circular(15)),
                         child: Column(children: [
-                          BasicCard(
+                          UserCard(
                             size: size,
+                            icon: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.verified_rounded),
+                              color: data[index]['isAuth'] == true
+                                  ? greyLight
+                                  : textLight,
+                            ),
                             text:
                                 '${StringUtils.capitalize(data[index]['name']['firstname'])} ${StringUtils.capitalize(data[index]['name']['lastname'])}',
                             onTab: () {
@@ -131,6 +100,11 @@ class _ManageAdminScreenBody extends State<ManageAdminScreenBody> {
                                     UserInfoPage(data[index]),
                               );
                             },
+                            reportIcon: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.verified_rounded),
+                              color: textLight,
+                            ),
                           ),
                         ]),
                       ),

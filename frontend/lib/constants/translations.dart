@@ -137,8 +137,9 @@ class LocaleString extends Translations {
           "ChatRead": "Read",
           "ChatHintText": "Enter a message",
           "ChatShowReport": "You can not message this account.",
-          "NoChatPartner" : "You don’t currently have a chat partner.",
-          "FindChatPartner" : "Let's start searching for a language exchange partner. !",
+          "NoChatPartner": "You don’t currently have a chat partner.",
+          "FindChatPartner":
+              "Let's start searching for a language exchange partner. !",
           //Appbar Chat
           "StatusActiveNow": "Active now",
           "StatusActiveAfew": "Active a few minutes ago",
@@ -208,11 +209,12 @@ class LocaleString extends Translations {
               "Are you sure you want to\ncancel suspend this account?",
           "WarningBlocked":
               "Your account\nhas been suspended,\nPlease contact\nhelp center for recovery",
+          "WarningLeave": "Are you sure you\nwant to leave this group ?",
           "RegisterSuccess": "Success",
           "NextButton": "Next",
 
           //Confirm
-          "Confirm" : "Confirm"
+          "Confirm": "Confirm"
         },
         'th_TH': {
           // Conjunction
@@ -345,8 +347,9 @@ class LocaleString extends Translations {
           "ChatRead": "อ่านแล้ว",
           "ChatHintText": "พิมพ์ข้อความ",
           "ChatShowReport": "ไม่สามารถส่งข้อความกับบุคคลนี้ได้อีก",
-          "NoChatPartner" : "คุณยังไม่มีคู่สนทนาในขณะนี้",
-          "FindChatPartner" : "เริ่มต้นค้นหาคู่สนทนาเพื่อแลกเปลี่ยนภาษากันเถอะ !",
+          "NoChatPartner": "คุณยังไม่มีคู่สนทนาในขณะนี้",
+          "FindChatPartner":
+              "เริ่มต้นค้นหาคู่สนทนาเพื่อแลกเปลี่ยนภาษากันเถอะ !",
           //Appbar Chat
           "StatusActiveNow": "กำลังใช้งาน",
           "StatusActiveAfew": "ใช้งานเมื่อไม่กี่นาทีที่แล้ว",
@@ -415,11 +418,12 @@ class LocaleString extends Translations {
               "คุณต้องการยกเลิกระงับ\nการใช้งานผู้ใช้รายนี้ ?",
           "WarningBlocked":
               "บัญชีของคุณถูกระงับการใช้งาน\nหากต้องการกู้คืนบัญชี\nกรุณาติดต่อศูนย์ช่วยเหลือผู้ใช้",
+          "WarningLeave": "คุณต้องการออกจากกลุ่มนี้ ?",
           "RegisterSuccess": "ลงทะเบียนสำเร็จ",
           "NextButton": "ต่อไป",
 
           //Confirm
-          "Confirm" : "ตกลง"
+          "Confirm": "ตกลง"
         },
       };
 }

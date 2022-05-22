@@ -27,95 +27,58 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 // NOTE: chat card in all chat page show name lastest message and unread notification
-class ManageAdminScreenBody extends StatefulWidget {
-  const ManageAdminScreenBody({Key? key, this.userData}) : super(key: key);
+class MemberGroup extends StatefulWidget {
+  const MemberGroup(
+    this.group, {
+    Key? key,
+  }) : super(key: key);
   // ignore: prefer_typing_uninitialized_variables
-  final userData;
+  final group;
 
   @override
-  State<ManageAdminScreenBody> createState() => _ManageAdminScreenBody();
+  State<MemberGroup> createState() => _MemberGroup();
 }
 
-class _ManageAdminScreenBody extends State<ManageAdminScreenBody> {
+class _MemberGroup extends State<MemberGroup> {
   @override
   Widget build(BuildContext context) {
     double iconSize = 40;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: BackAndCloseAppBar(text: "การจัดการผู้ดูแลระบบ"),
+      appBar: BackAndCloseAppBar(text: "สมาชิก"),
       body: Column(children: [
         CurvedWidget(child: JassyGradientColor()),
-        //TODO: for add admin
-        // Container(
-        //   margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-        //   padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
-        //   width: size.width,
-        //   height: size.height * 0.06,
-        //   decoration: BoxDecoration(
-        //       color: textLight, borderRadius: BorderRadius.circular(20)),
-        //   child: Column(children: [
-        //     Expanded(
-        //         child: InkWell(
-        //       child: Row(
-        //         children: [
-        //           IconButton(
-        //             onPressed: () {},
-        //             icon: const Icon(Icons.person_add_alt_rounded),
-        //             color: primaryColor,
-        //           ),
-        //           SizedBox(
-        //             width: size.width * 0.03,
-        //           ),
-        //           const Text(
-        //             "การจัดการเพิ่มผู้ดูแลระบบ",
-        //             style: TextStyle(
-        //                 fontSize: 15,
-        //                 fontWeight: FontWeight.w400,
-        //                 color: textDark),
-        //           ),
-        //           Spacer(),
-        //           // Icon(Icons.arrow_forward_ios, size: 20, color: textMadatory,)
-        //         ],
-        //       ),
-        //       onTap: () {
-        //         Navigator.push(context, CupertinoPageRoute(builder: (context) {
-        //           return AddNewAdmin();
-        //         }));
-        //       },
-        //     )),
-        //   ]),
-        // ),
         SizedBox(
           height: size.height * 0.6,
           width: size.width,
-          child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('Users')
-                .where('userStatus', isEqualTo: 'admin')
-                .snapshots(includeMetadataChanges: true),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Text('Something went wrong');
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: Text(''),
-                );
-              }
-              var data = snapshot.data!.docs;
-              return ListView.builder(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 20.0),
-                itemCount: data.length,
-                itemBuilder: (context, int index) {
+          child: ListView.builder(
+            padding:
+                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+            itemCount: widget.group['membersID'].length,
+            itemBuilder: (context, int index) {
+              return StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('Users')
+                    .where('uid', isEqualTo: widget.group['membersID'][index])
+                    .snapshots(includeMetadataChanges: true),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Something went wrong');
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: Text(''),
+                    );
+                  }
+                  var user = snapshot.data!.docs[0];
                   return Column(
                     children: [
                       Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: size.height * 0.01),
                         width: size.width,
-                        height: size.height * 0.06,
+                        height: size.height * 0.05,
                         decoration: BoxDecoration(
                             color: textLight,
                             borderRadius: BorderRadius.circular(15)),
@@ -123,12 +86,12 @@ class _ManageAdminScreenBody extends State<ManageAdminScreenBody> {
                           BasicCard(
                             size: size,
                             text:
-                                '${StringUtils.capitalize(data[index]['name']['firstname'])} ${StringUtils.capitalize(data[index]['name']['lastname'])}',
+                                '${StringUtils.capitalize(user['name']['firstname'])} ${StringUtils.capitalize(user['name']['lastname'])}',
                             onTab: () {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
-                                    UserInfoPage(data[index]),
+                                    UserInfoPage(user),
                               );
                             },
                           ),

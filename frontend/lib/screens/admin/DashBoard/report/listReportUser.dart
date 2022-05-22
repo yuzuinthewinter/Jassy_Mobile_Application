@@ -29,9 +29,6 @@ class ListReportUserScreen extends StatelessWidget {
       body: Column(children: [
         CurvedWidget(child: JassyGradientColor()),
         SizedBox(
-          height: size.height * 0.02,
-        ),
-        SizedBox(
           height: size.height * 0.6,
           width: size.width,
           child: user['report'].length == 0
