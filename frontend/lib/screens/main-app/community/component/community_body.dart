@@ -282,7 +282,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
 
           return SizedBox(
               width: size.width,
-              height: size.height * 0.48,
+              height: size.height * 0.47,
               child: ListView.separated(
                   padding: EdgeInsets.only(top: size.height * 0.02),
                   scrollDirection: Axis.vertical,
@@ -521,7 +521,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .height *
-                                                    0.24,
+                                                    0.2,
                                                 padding: const EdgeInsets.only(
                                                     top: 5.0,
                                                     left: 20.0,
@@ -668,41 +668,41 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                                                 )
                                                               : const SizedBox
                                                                   .shrink(),
-                                                          Expanded(
-                                                            child: InkWell(
-                                                              onTap: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                                setState(() {
-                                                                  isNotificationOn =
-                                                                      !isNotificationOn;
-                                                                });
-                                                              },
-                                                              child: Row(
-                                                                children: [
-                                                                  isNotificationOn
-                                                                      ? SvgPicture
-                                                                          .asset(
-                                                                              "assets/icons/notification_off.svg")
-                                                                      : SvgPicture
-                                                                          .asset(
-                                                                              "assets/icons/notification_on.svg"),
-                                                                  SizedBox(
-                                                                    width: size
-                                                                            .width *
-                                                                        0.03,
-                                                                  ),
-                                                                  isNotificationOn
-                                                                      ? Text(
-                                                                          "MenuNotificationOff"
-                                                                              .tr)
-                                                                      : Text(
-                                                                          "MenuNotificationOn"
-                                                                              .tr)
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
+                                                          // Expanded(
+                                                          //   child: InkWell(
+                                                          //     onTap: () {
+                                                          //       Navigator.pop(
+                                                          //           context);
+                                                          //       setState(() {
+                                                          //         isNotificationOn =
+                                                          //             !isNotificationOn;
+                                                          //       });
+                                                          //     },
+                                                          //     child: Row(
+                                                          //       children: [
+                                                          //         isNotificationOn
+                                                          //             ? SvgPicture
+                                                          //                 .asset(
+                                                          //                     "assets/icons/notification_off.svg")
+                                                          //             : SvgPicture
+                                                          //                 .asset(
+                                                          //                     "assets/icons/notification_on.svg"),
+                                                          //         SizedBox(
+                                                          //           width: size
+                                                          //                   .width *
+                                                          //               0.03,
+                                                          //         ),
+                                                          //         isNotificationOn
+                                                          //             ? Text(
+                                                          //                 "MenuNotificationOff"
+                                                          //                     .tr)
+                                                          //             : Text(
+                                                          //                 "MenuNotificationOn"
+                                                          //                     .tr)
+                                                          //       ],
+                                                          //     ),
+                                                          //   ),
+                                                          // ),
                                                         ],
                                                       ),
                                                     ),
@@ -744,6 +744,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                     maxHeight: double.infinity),
                                 child: post['picture'] != ''
                                     ? Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             post['text'],
@@ -758,9 +759,11 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                           InkWell(
                                             onTap: () {
                                               context.pushTransparentRoute(
-                                                  ImageMessageDetail(
-                                                      urlImage:
-                                                          post['picture']));
+                                                  InteractiveViewer(
+                                                    child: ImageMessageDetail(
+                                                        urlImage:
+                                                            post['picture']),
+                                                  ));
                                             },
                                             child: Container(
                                               constraints: BoxConstraints(

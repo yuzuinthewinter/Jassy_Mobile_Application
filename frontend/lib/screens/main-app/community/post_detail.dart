@@ -86,57 +86,57 @@ class _PostDetailState extends State<PostDetail> {
           color: primaryDarker,
           onPressed: () => Navigator.of(context).pop(),
         ),
-        actions: [
-          PopupMenuButton<MenuItem>(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            onSelected: (value) => {
-              if (value == MenuItem.item1)
-                {
-                  setState(() {
-                    isNotificationOn = !isNotificationOn;
-                  }),
-                }
-              else if (value == MenuItem.item2)
-                {
-                  // Todo: group leave
-                }
-            },
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                  value: MenuItem.item1,
-                  onTap: () {},
-                  child: Row(
-                    children: [
-                      isNotificationOn
-                          ? SvgPicture.asset(
-                              "assets/icons/notification_off.svg")
-                          : SvgPicture.asset(
-                              "assets/icons/notification_on.svg"),
-                      SizedBox(
-                        width: size.width * 0.03,
-                      ),
-                      isNotificationOn
-                          ? Text("MenuNotificationOff".tr)
-                          : Text("MenuNotificationOn".tr),
-                    ],
-                  )),
-              // PopupMenuItem(
-              //     value: MenuItem.item2,
-              //     child: Row(
-              //       children: [
-              //         SvgPicture.asset("assets/icons/leave_group.svg"),
-              //         SizedBox(width: size.width * 0.03,),
-              //         Text("GroupLeave".tr),
-              //       ],
-              //   )),
-            ],
-            icon: const Icon(
-              Icons.more_vert,
-              color: primaryDarker,
-            ),
-          )
-        ],
+        // actions: [
+        //   PopupMenuButton<MenuItem>(
+        //     shape:
+        //         RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        //     onSelected: (value) => {
+        //       if (value == MenuItem.item1)
+        //         {
+        //           setState(() {
+        //             isNotificationOn = !isNotificationOn;
+        //           }),
+        //         }
+        //       else if (value == MenuItem.item2)
+        //         {
+        //           // Todo: group leave
+        //         }
+        //     },
+        //     itemBuilder: (context) => [
+        //       PopupMenuItem(
+        //           value: MenuItem.item1,
+        //           onTap: () {},
+        //           child: Row(
+        //             children: [
+        //               isNotificationOn
+        //                   ? SvgPicture.asset(
+        //                       "assets/icons/notification_off.svg")
+        //                   : SvgPicture.asset(
+        //                       "assets/icons/notification_on.svg"),
+        //               SizedBox(
+        //                 width: size.width * 0.03,
+        //               ),
+        //               isNotificationOn
+        //                   ? Text("MenuNotificationOff".tr)
+        //                   : Text("MenuNotificationOn".tr),
+        //             ],
+        //           )),
+        //       // PopupMenuItem(
+        //       //     value: MenuItem.item2,
+        //       //     child: Row(
+        //       //       children: [
+        //       //         SvgPicture.asset("assets/icons/leave_group.svg"),
+        //       //         SizedBox(width: size.width * 0.03,),
+        //       //         Text("GroupLeave".tr),
+        //       //       ],
+        //       //   )),
+        //     ],
+        //     icon: const Icon(
+        //       Icons.more_vert,
+        //       color: primaryDarker,
+        //     ),
+        //   )
+        // ],
       ),
       body: PostDetailBody(postid: widget.postid),
      

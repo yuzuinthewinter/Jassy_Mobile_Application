@@ -4,12 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ChatSelectedAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String text;
-  final Widget action;
+  // final Widget action;
   
   const ChatSelectedAppBar({
     Key? key, 
     this.text = '', 
-    required this.action,
+    // required this.action,
   }) : super(key: key);
 
   @override
@@ -25,9 +25,6 @@ class ChatSelectedAppBar extends StatelessWidget implements PreferredSizeWidget 
       //   color: primaryDarker,
       //   onPressed: () => Navigator.of(context).pop(),
       // ),
-      actions: [
-        action
-      ],
     );
   }
 

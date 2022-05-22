@@ -130,6 +130,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Column(
@@ -199,24 +200,25 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                 {reportModalBottomSheet(context), print('report')}
             },
             itemBuilder: (context) => [
-              PopupMenuItem(
-                  value: MenuItem.item1,
-                  child: Row(
-                    children: [
-                      isNotificationOn
-                          ? SvgPicture.asset("assets/icons/notification_on.svg")
-                          : SvgPicture.asset(
-                              "assets/icons/notification_off.svg"),
-                      isNotificationOn
-                          ? Text("MenuNotificationOn".tr)
-                          : Text("MenuNotificationOff".tr),
-                    ],
-                  )),
+              // PopupMenuItem(
+              //     value: MenuItem.item1,
+              //     child: Row(
+              //       children: [
+              //         isNotificationOn
+              //             ? SvgPicture.asset("assets/icons/notification_on.svg")
+              //             : SvgPicture.asset(
+              //                 "assets/icons/notification_off.svg"),
+              //         isNotificationOn
+              //             ? Text("MenuNotificationOn".tr)
+              //             : Text("MenuNotificationOff".tr),
+              //       ],
+              //     )),
               PopupMenuItem(
                   value: MenuItem.item2,
                   child: Row(
                     children: [
                       SvgPicture.asset("assets/icons/cancel_pairing.svg"),
+                      SizedBox(width: size.width * 0.02,),
                       Text("MenuUnmatch".tr),
                     ],
                   )),
@@ -225,6 +227,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                   child: Row(
                     children: [
                       SvgPicture.asset("assets/icons/report.svg"),
+                      SizedBox(width: size.width * 0.02,),
                       Text("MenuReport".tr),
                     ],
                   )),

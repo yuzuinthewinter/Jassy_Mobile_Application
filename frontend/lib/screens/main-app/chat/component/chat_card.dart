@@ -170,21 +170,44 @@ class _ChatCardBody extends State<ChatCard> {
                                 ),
                               ],
                             )),
-                            currentUser!.uid == widget.chat['sentBy']
+                            Column(
+                              children: [
+                                Text(
+                                  // chat['lastTimestamp']
+                                  getDate(widget.chat['lastTimestamp']),
+                                  style: const TextStyle(
+                                      fontSize: 12, color: greyDark),
+                                ),
+                                SizedBox(height: size.height * 0.015,),
+                                currentUser!.uid == widget.chat['sentBy']
                                 ? const SizedBox.shrink()
                                 : widget.chat['unseenCount'] == 0
                                     ? const SizedBox.shrink()
-                                    : Text(
-                                        // chat['lastTimestamp']
-                                        widget.chat['unseenCount'].toString(),
-                                        style: const TextStyle(
-                                            fontSize: 12, color: textMadatory),
-                                      ),
-                            Text(
-                              // chat['lastTimestamp']
-                              getDate(widget.chat['lastTimestamp']),
-                              style: const TextStyle(
-                                  fontSize: 12, color: greyDark),
+                                    : Stack(
+                                      children: [
+                                        Container(
+                                          height: 20,
+                                          width: 20,
+                                          decoration: BoxDecoration(
+                                              color: tertiary,
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .scaffoldBackgroundColor)),
+                                        ),
+                                        Positioned(
+                                          right: 6,
+                                          bottom: 1.3,
+                                          child: Text(
+                                              // chat['lastTimestamp']
+                                              widget.chat['unseenCount'].toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 12, color: textLight),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                              ],
                             )
                           ],
                         ),

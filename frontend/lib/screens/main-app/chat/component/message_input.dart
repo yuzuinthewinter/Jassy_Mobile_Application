@@ -99,6 +99,7 @@ class _BodyState extends State<MessageInput> {
   }
 
   File? pickedImage;
+  bool isPickedImage = false;
   Future pickImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
@@ -186,29 +187,77 @@ class _BodyState extends State<MessageInput> {
         _message = controller.message.value;
         return Column(
           children: [
+            pickedImage != null 
+            ? Container(
+              padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.width * 0.05),
+              decoration: const BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: primaryLight, width: 1)
+                )
+              ),
+              child: Stack(
+                children: [
+                  Align(
+                        alignment: Alignment.center,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: Image.file(
+                            File(pickedImage!.path), 
+                            fit: BoxFit.cover, 
+                            height: size.height * 0.2, 
+                            width: size.width * 0.6,
+                        ),
+                      ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          pickedImage = null;
+                        });
+                      },
+                      child: SvgPicture.asset(
+                        "assets/icons/close_circle.svg",
+                        width: size.height * 0.04,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ) : Container(),
             _isReply
                 ? !isCurrentChat
                     ? Container(
                         alignment: Alignment.centerLeft,
-                        height: size.height * 0.1,
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            top: BorderSide(color: primaryLight, width: 1)
+                          )
+                        ),
                         padding: EdgeInsets.only(
                             top: size.height * 0.02,
                             left: size.height * 0.03,
                             right: size.height * 0.03),
-                        child: Row(children: [
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                           const Text(
                             'Reply : ',
                             style: TextStyle(color: greyDark, fontSize: 14),
                           ),
                           controller.type.value == 'text'
-                              ? Text(
-                                  controller.message.value,
-                                  style:
-                                      TextStyle(color: greyDark, fontSize: 14),
-                                  maxLines: 1,
-                                  textAlign: TextAlign.left,
-                                  overflow: TextOverflow.ellipsis,
-                                )
+                              ? Container(
+                                constraints:
+                                  BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
+                                child: Text(
+                                    controller.message.value,
+                                    style:
+                                        TextStyle(color: greyDark, fontSize: 14),
+                                    maxLines: null,
+                                    textAlign: TextAlign.left,
+                                  ),
+                              )
                               : controller.type.value == 'image'
                                   ? Image.network(
                                       controller.message.value,
@@ -241,7 +290,7 @@ class _BodyState extends State<MessageInput> {
                                       },
                                       child: SvgPicture.asset(
                                         "assets/icons/close_circle.svg",
-                                        width: size.height * 0.05,
+                                        width: size.height * 0.035,
                                       )))),
                         ]))
                     : const SizedBox.shrink()
@@ -301,9 +350,16 @@ class _BodyState extends State<MessageInput> {
                       width: widget.size.height * 0.02,
                     ),
                     InkWell(
-                        onTap: () =>
-                            sendMessage(messageController.text, typemessage),
-                        child: SvgPicture.asset("assets/icons/send.svg")),
+                        onTap: () {
+                          if(messageController.text.isNotEmpty) {
+                            setState(() {
+                              pickedImage = null;
+                            });
+                          return sendMessage(messageController.text, typemessage);
+                          }
+                        },
+                        child: SvgPicture.asset("assets/icons/send.svg")
+                    ),
                   ],
                 )),
             isMore
@@ -315,24 +371,24 @@ class _BodyState extends State<MessageInput> {
                         right: size.height * 0.03),
                     child: Row(
                       children: [
-                        InkWell(
-                          onTap: () {
-                            selectFile();
-                          },
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.description,
-                                size: size.height * 0.05,
-                                color: primaryColor,
-                              ),
-                              const Text("ไฟล์")
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.1,
-                        ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     selectFile();
+                        //   },
+                        //   child: Column(
+                        //     children: [
+                        //       Icon(
+                        //         Icons.description,
+                        //         size: size.height * 0.05,
+                        //         color: primaryColor,
+                        //       ),
+                        //       const Text("ไฟล์")
+                        //     ],
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   width: size.width * 0.1,
+                        // ),
                         InkWell(
                           onTap: () {
                             pickImage(ImageSource.camera);

@@ -57,14 +57,17 @@ class _CommunityAppBarState extends State<CommunityAppBar> {
           color: primaryDarker,
         ),
         widget.user['userStatus'] == 'user'
-            ? IconButton(
-                onPressed: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => const Filter()));
-                },
-                icon: SvgPicture.asset("assets/icons/notification_icon.svg"),
-                color: primaryDarker,
+            ? Container(
+                width: 1,
               )
+            // IconButton(
+            //     onPressed: () {
+            //       // Navigator.push(context,
+            //       //     MaterialPageRoute(builder: (context) => const Filter()));
+            //     },
+            //     icon: SvgPicture.asset("assets/icons/notification_icon.svg"),
+            //     color: primaryDarker,
+            //   )
             : Container(
                 width: 1,
               ),

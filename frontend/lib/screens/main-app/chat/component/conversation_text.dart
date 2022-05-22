@@ -263,30 +263,38 @@ class _BodyState extends State<ConversationText> {
                     controller: _controller,
                     pressType: PressType.longPress,
                     arrowColor: primaryDarker,
-                    child: Column(children: [
+                    child: Column(
+                      crossAxisAlignment: isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
                       currentMessage['isReplyMessage'] == true
                           ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
                                   padding:
-                                      EdgeInsets.only(right: size.width * 0.03),
+                                      EdgeInsets.only(right: size.width * 0.02),
                                   child: SvgPicture.asset(
                                       "assets/icons/reply-fill.svg"),
                                 ),
                                 Text(
-                                  'ตอบกลับ : ',
+                                  "Reply".tr + " : ",
                                   style:
-                                      TextStyle(color: greyDark, fontSize: 14),
+                                      TextStyle(color: greyDark, fontSize: 12),
                                 ),
                                 currentMessage['type'] == 'text'
-                                    ? Text(
-                                        currentMessage['replyFromMessage'],
-                                        style: TextStyle(
-                                            color: greyDark, fontSize: 14),
-                                        maxLines: 1,
-                                        textAlign: TextAlign.left,
-                                        overflow: TextOverflow.ellipsis,
-                                      )
+                                    ? Container(
+                                      constraints:
+                        BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
+                                      child: Text(
+                                          currentMessage['replyFromMessage'],
+                                          style: TextStyle(
+                                              color: greyDark, fontSize: 12),
+                                          maxLines: null,
+                                          textAlign: TextAlign.left,
+                                          // overflow: TextOverflow.ellipsis,
+                                        ),
+                                    )
                                     : currentMessage['type'] == 'image'
                                         ? Image.network(
                                             currentMessage['url'],
@@ -339,10 +347,10 @@ class _BodyState extends State<ConversationText> {
 
   Widget _buildLongPressMenu(message, _controller) {
     List<ItemModel> menuItems = [
-      ItemModel(id: 1, text: "ตอบกลับ", icon: "assets/icons/reply_icon.svg"),
-      ItemModel(id: 2, text: "คัดลอก", icon: "assets/icons/copy_icon.svg"),
-      ItemModel(id: 3, text: "แปล", icon: "assets/icons/translate_icon.svg"),
-      ItemModel(id: 4, text: "ชอบ", icon: "assets/icons/favorite_icon.svg"),
+      ItemModel(id: 1, text: "Reply".tr, icon: "assets/icons/reply_icon.svg"),
+      ItemModel(id: 2, text: "Copy".tr, icon: "assets/icons/copy_icon.svg"),
+      ItemModel(id: 3, text: "Translate".tr, icon: "assets/icons/translate_icon.svg"),
+      ItemModel(id: 4, text: "Like".tr, icon: "assets/icons/favorite_icon.svg"),
     ];
     var item1 = menuItems[0].id;
     var item2 = menuItems[1].id;
@@ -549,8 +557,10 @@ class TypeImageMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.pushTransparentRoute(ImageMessageDetail(
-            isCurrentUser: isCurrentUser, currentMessage: currentMessage));
+        context.pushTransparentRoute(InteractiveViewer(
+          child: ImageMessageDetail(
+              isCurrentUser: isCurrentUser, currentMessage: currentMessage),
+        ));
       },
       child: Container(
         constraints: BoxConstraints(

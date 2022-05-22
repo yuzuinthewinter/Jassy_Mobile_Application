@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:comment_tree/comment_tree.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -265,25 +266,38 @@ class FullPostDetail extends StatelessWidget {
           child: Container(
               constraints: const BoxConstraints(maxHeight: double.infinity),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     post['text'],
                     maxLines: null,
                     style: TextStyle(fontSize: 16),
                   ),
+                  SizedBox(
+                    height: size.height * 0.025,
+                  ),
                   post['picture'].isNotEmpty
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Container(
-                            width: size.width * 0.5,
-                            height: size.height * 0.3,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(post['picture']),
-                                  fit: BoxFit.cover),
+                      ? InkWell(
+                        onTap: () {
+                          context.pushTransparentRoute(
+                            InteractiveViewer(
+                               child: ImageMessageDetail(
+                                   urlImage: post['picture']),
+                               ));
+                            },
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Container(
+                              width: size.width,
+                              height: size.height * 0.4,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(post['picture']),
+                                    fit: BoxFit.cover),
+                              ),
                             ),
                           ),
-                        )
+                      )
                       : const SizedBox.shrink(),
                 ],
               )),
@@ -486,9 +500,9 @@ class FullPostDetail extends StatelessWidget {
                                   ? MediaQuery.of(context).size.height * 0.12
                                   : post['postby'] == current['uid']
                                       ? MediaQuery.of(context).size.height *
-                                          0.30
+                                          0.2
                                       : MediaQuery.of(context).size.height *
-                                          0.24,
+                                          0.2,
                               padding: const EdgeInsets.only(
                                   top: 5.0, left: 20.0, right: 20, bottom: 15),
                               child: Stack(
@@ -644,36 +658,36 @@ class FullPostDetail extends StatelessWidget {
                                                   )
                                                 : const SizedBox.shrink(),
                                         current['userStatus'] == 'admin'
-                                            ? const SizedBox.shrink()
-                                            : Expanded(
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    isNotificationOn =
-                                                        !isNotificationOn;
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      isNotificationOn
-                                                          ? SvgPicture.asset(
-                                                              "assets/icons/notification_off.svg")
-                                                          : SvgPicture.asset(
-                                                              "assets/icons/notification_on.svg"),
-                                                      SizedBox(
-                                                        width:
-                                                            size.width * 0.03,
-                                                      ),
-                                                      isNotificationOn
-                                                          ? Text(
-                                                              "MenuNotificationOff"
-                                                                  .tr)
-                                                          : Text(
-                                                              "MenuNotificationOn"
-                                                                  .tr)
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
+                                            ? const SizedBox.shrink() : const SizedBox.shrink()
+                                            // : Expanded(
+                                            //     child: InkWell(
+                                            //       onTap: () {
+                                            //         isNotificationOn =
+                                            //             !isNotificationOn;
+                                            //         Navigator.pop(context);
+                                            //       },
+                                            //       child: Row(
+                                            //         children: [
+                                            //           isNotificationOn
+                                            //               ? SvgPicture.asset(
+                                            //                   "assets/icons/notification_off.svg")
+                                            //               : SvgPicture.asset(
+                                            //                   "assets/icons/notification_on.svg"),
+                                            //           SizedBox(
+                                            //             width:
+                                            //                 size.width * 0.03,
+                                            //           ),
+                                            //           isNotificationOn
+                                            //               ? Text(
+                                            //                   "MenuNotificationOff"
+                                            //                       .tr)
+                                            //               : Text(
+                                            //                   "MenuNotificationOn"
+                                            //                       .tr)
+                                            //         ],
+                                            //       ),
+                                            //     ),
+                                            //   ),
                                       ],
                                     ),
                                   ),
@@ -701,6 +715,40 @@ class FullPostDetail extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ImageMessageDetail extends StatelessWidget {
+  const ImageMessageDetail({
+    Key? key,
+    required this.urlImage,
+  }) : super(key: key);
+
+  final urlImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: DismissiblePage(
+      onDismissed: () {
+        Navigator.of(context).pop();
+      },
+      direction: DismissiblePageDismissDirection.multi,
+      child: urlImage.isNotEmpty
+          ? Image.network(
+              urlImage,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.contain,
+            )
+          : Image.asset(
+              //todo: default image
+              "assets/images/chat_message.jpg",
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.contain,
+            ),
+    ));
   }
 }
 

@@ -3,9 +3,11 @@ import 'package:flutter_application_1/theme/index.dart';
 
 class HeaderText extends StatelessWidget {
   final String text;
+  final double fontsize;
   const HeaderText({
     Key? key, 
     required this.text,
+    this.fontsize = 18.0
   }) : super(key: key);
 
   @override
@@ -15,8 +17,8 @@ class HeaderText extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.left,
-        style: const TextStyle(
-        fontSize: 18, 
+        style: TextStyle(
+        fontSize: fontsize, 
         fontWeight: FontWeight.w500,
         color: textDark
         ),
