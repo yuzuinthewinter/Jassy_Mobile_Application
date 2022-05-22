@@ -31,6 +31,11 @@ class _BodyState extends State<MessageInput> {
   List<String> status = ['unread', 'read'];
   var currentUser = FirebaseAuth.instance.currentUser;
 
+  CollectionReference chats =
+      FirebaseFirestore.instance.collection('ChatRooms');
+  CollectionReference messages =
+      FirebaseFirestore.instance.collection('Messages');
+
   TextEditingController messageController = TextEditingController();
   ReplyController replyController = Get.put(ReplyController());
   bool _isReply = false;
@@ -38,6 +43,7 @@ class _BodyState extends State<MessageInput> {
   String _chatid = '';
   String _message = '';
   String typemessage = 'text';
+  int count = 0;
 
   @override
   void dispose() {
@@ -55,13 +61,17 @@ class _BodyState extends State<MessageInput> {
       isCurrentChat = true;
     }
     super.initState();
+    getCurrentCount();
+  }
+
+  getCurrentCount() async {
+    var snapshot = await chats.where('chatid', isEqualTo: widget.chatid).get();
+    if (snapshot.docs.isNotEmpty) {
+      count = snapshot.docs[0]['unseenCount'];
+    }
   }
 
   sendMessage(message, type) async {
-    CollectionReference chats =
-        FirebaseFirestore.instance.collection('ChatRooms');
-    CollectionReference messages =
-        FirebaseFirestore.instance.collection('Messages');
     DocumentReference docRef = await messages.add({
       'message': message,
       'sentBy': currentUser!.uid,
@@ -76,9 +86,6 @@ class _BodyState extends State<MessageInput> {
     messageController.clear();
     await messages.doc(docRef.id).update({
       'messageID': docRef.id,
-    });
-    await chats.doc(widget.chatid).update({
-      'unseenCount': 1,
     });
     await chats.doc(widget.chatid).update({
       'messages': FieldValue.arrayUnion([docRef.id]),
