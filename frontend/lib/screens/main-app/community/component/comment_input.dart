@@ -5,11 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 class CommentInput extends StatefulWidget {
   final Size size;
   final Widget child;
+  final VoidCallback onTab;
 
   const CommentInput({
     Key? key,
     required this.size, 
     required this.child, 
+    required this.onTab,
   }) : super(key: key);
 
   @override
@@ -44,10 +46,10 @@ class _BodyState extends State<CommentInput> {
             BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor),
         child: Row(
           children: [
-            InkWell(
-                // TODO: add add icon detail (ammie)
-                onTap: () {},
-                child: SvgPicture.asset("assets/icons/add_circle.svg")),
+            // InkWell(
+            //     // TODO: add add icon detail (ammie)
+            //     onTap: () {},
+            //     child: SvgPicture.asset("assets/icons/add_circle.svg")),
             SizedBox(
               width: widget.size.height * 0.01,
             ),
@@ -58,7 +60,7 @@ class _BodyState extends State<CommentInput> {
               width: widget.size.height * 0.02,
             ),
             InkWell(
-                onTap: () {},
+                onTap: widget.onTab,
                 child: SvgPicture.asset("assets/icons/send.svg"))
           ],
         ));
