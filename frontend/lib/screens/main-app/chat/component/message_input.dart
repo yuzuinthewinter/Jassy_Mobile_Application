@@ -188,38 +188,53 @@ class _BodyState extends State<MessageInput> {
         return Column(
           children: [
             pickedImage != null 
-            ? Stack(
-              children: [
-                Align(
-                      alignment: Alignment.center,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: Image.file(
-                          File(pickedImage!.path), 
-                          fit: BoxFit.cover, 
-                          height: size.height * 0.2, 
-                          width: size.width * 0.6,
+            ? Container(
+              padding: EdgeInsets.symmetric(horizontal: size.width *0.05, vertical: size.width *0.01),
+              decoration: const BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: primaryLight, width: 1)
+                )
+              ),
+              child: Stack(
+                children: [
+                  Align(
+                        alignment: Alignment.center,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: Image.file(
+                            File(pickedImage!.path), 
+                            fit: BoxFit.cover, 
+                            height: size.height * 0.2, 
+                            width: size.width * 0.6,
+                        ),
+                      ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          pickedImage = null;
+                        });
+                      },
+                      child: SvgPicture.asset(
+                        "assets/icons/close_circle.svg",
+                        width: size.height * 0.04,
                       ),
                     ),
-                ),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      pickedImage = null;
-                    });
-                  },
-                  child: SvgPicture.asset(
-                    "assets/icons/close_circle.svg",
-                    width: size.height * 0.05,
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ) : Container(),
             _isReply
                 ? !isCurrentChat
                     ? Container(
                         alignment: Alignment.centerLeft,
-                        height: size.height * 0.1,
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            top: BorderSide(color: primaryLight, width: 1)
+                          )
+                        ),
                         padding: EdgeInsets.only(
                             top: size.height * 0.02,
                             left: size.height * 0.03,
@@ -270,7 +285,7 @@ class _BodyState extends State<MessageInput> {
                                       },
                                       child: SvgPicture.asset(
                                         "assets/icons/close_circle.svg",
-                                        width: size.height * 0.05,
+                                        width: size.height * 0.035,
                                       )))),
                         ]))
                     : const SizedBox.shrink()
