@@ -17,7 +17,7 @@ class LocaleString extends Translations {
           "LandingLogin": "Log In",
           "LandingPreTermOfService": "By creating an account you agree to our",
           "LandingTermOfService": "Term of service",
-          "LandingPrivacy": "Privacy",
+          "LandingPrivacy": "Privacy Policy",
           //Register Page
           "RegisterByPhone": "Register with Phone Number",
           "RegisterByFaceBook": "Register with Facebook",
@@ -139,6 +139,7 @@ class LocaleString extends Translations {
           "ChatShowReport": "You can not message this account.",
           "NoChatPartner" : "You don’t currently have a chat partner.",
           "FindChatPartner" : "Let's start searching for a language exchange partner. !",
+          "DeleteConversation" : "Delete conversation",
           //Appbar Chat
           "StatusActiveNow": "Active now",
           "StatusActiveAfew": "Active a few minutes ago",
@@ -215,7 +216,9 @@ class LocaleString extends Translations {
           "NextButton": "Next",
 
           //Confirm
-          "Confirm" : "Confirm"
+          "Confirm" : "Confirm",
+          "Agree" : "Agree",
+          "Cancel" : "Cancel",
         },
         'th_TH': {
           // Conjunction
@@ -350,6 +353,7 @@ class LocaleString extends Translations {
           "ChatShowReport": "ไม่สามารถส่งข้อความกับบุคคลนี้ได้อีก",
           "NoChatPartner" : "คุณยังไม่มีคู่สนทนาในขณะนี้",
           "FindChatPartner" : "เริ่มต้นค้นหาคู่สนทนาเพื่อแลกเปลี่ยนภาษากันเถอะ !",
+          "DeleteConversation" : "ลบการสนทนา",
           //Appbar Chat
           "StatusActiveNow": "กำลังใช้งาน",
           "StatusActiveAfew": "ใช้งานเมื่อไม่กี่นาทีที่แล้ว",
@@ -426,7 +430,9 @@ class LocaleString extends Translations {
           "NextButton": "ต่อไป",
 
           //Confirm
-          "Confirm" : "ตกลง"
+          "Confirm" : "ตกลง",
+          "Agree" : "ยอมรับ",
+          "Cancel" : "ยกเลิก",
         },
       };
 }

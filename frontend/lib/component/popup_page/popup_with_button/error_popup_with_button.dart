@@ -36,7 +36,7 @@ class ErrorPopUpWithButton extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                OutlinedButtonComponent(text: "ยกเลิก", minimumSize: Size(size.width * 0.3, size.height * 0.05), press: () {Navigator.of(context).pop();}),
+                OutlinedButtonComponent(text: "Cancel".tr, minimumSize: Size(size.width * 0.3, size.height * 0.05), press: () {Navigator.of(context).pop();}),
                 SizedBox(width: size.width * 0.04,),
                 RoundButton(
                   text: "Confirm".tr, 

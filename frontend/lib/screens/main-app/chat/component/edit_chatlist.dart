@@ -380,14 +380,14 @@ class _EditChatListState extends State<EditChatList> {
             children: [
               OutlinedButtonComponent(
                   // Todo: unpair
-                  text: "ยกเลิกการจับคู่",
+                  text: "MenuUnmatch".tr,
                   minimumSize: Size(size.width * 0.45, size.height * 0.05),
                   press: () {
                     unMatch();
                   }),
               RoundButton(
                   // Todo: del chat
-                  text: "ลบการสนทนา",
+                  text: "DeleteConversation".tr,
                   minimumSize: Size(size.width * 0.45, size.height * 0.05),
                   press: () {
                     removeChat();
