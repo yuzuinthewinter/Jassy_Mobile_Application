@@ -38,12 +38,21 @@ class _BodyState extends State<ConversationText> {
       FirebaseFirestore.instance.collection('MemoMessages');
   var currentUser = FirebaseAuth.instance.currentUser;
 
-  final _LanguageChoicesLists = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
+  final _LanguageChoicesLists = [
+    'Cambodian',
+    'English',
+    'Indonesian',
+    'Japanese',
+    'Korean',
+    'Thai',
+  ];
   ReplyController replyController = Get.put(ReplyController());
   bool _isReply = false;
   String _message = '';
   String _chatid = '';
   String _type = 'text';
+  int count = -1;
+
   getTime(timestamp) {
     DateTime datatime = DateTime.parse(timestamp.toDate().toString());
     String formattedTime = DateFormat('KK:mm a').format(datatime);
@@ -53,6 +62,12 @@ class _BodyState extends State<ConversationText> {
   checkReadMessage(messageid) async {
     await messagesdb.doc(messageid).update({
       'status': 'read',
+    });
+  }
+
+  updateCountMessage(messageid) async {
+    await chats.doc(widget.chatid).update({
+      'unseenCount': count,
     });
   }
 
@@ -188,6 +203,9 @@ class _BodyState extends State<ConversationText> {
             widget.inRoom == true &&
             currentMessage['sentBy'] != currentUser!.uid) {
           checkReadMessage(currentMessage['messageID']);
+        }
+        if (currentMessage['status'] == 'unread') {
+          count = count + 1;
         }
         return Padding(
           padding: const EdgeInsets.all(8.0),
