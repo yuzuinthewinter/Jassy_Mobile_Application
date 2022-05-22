@@ -519,7 +519,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .height *
-                                                    0.24,
+                                                    0.2,
                                                 padding: const EdgeInsets.only(
                                                     top: 5.0,
                                                     left: 20.0,
@@ -666,41 +666,41 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                                                 )
                                                               : const SizedBox
                                                                   .shrink(),
-                                                          Expanded(
-                                                            child: InkWell(
-                                                              onTap: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                                setState(() {
-                                                                  isNotificationOn =
-                                                                      !isNotificationOn;
-                                                                });
-                                                              },
-                                                              child: Row(
-                                                                children: [
-                                                                  isNotificationOn
-                                                                      ? SvgPicture
-                                                                          .asset(
-                                                                              "assets/icons/notification_off.svg")
-                                                                      : SvgPicture
-                                                                          .asset(
-                                                                              "assets/icons/notification_on.svg"),
-                                                                  SizedBox(
-                                                                    width: size
-                                                                            .width *
-                                                                        0.03,
-                                                                  ),
-                                                                  isNotificationOn
-                                                                      ? Text(
-                                                                          "MenuNotificationOff"
-                                                                              .tr)
-                                                                      : Text(
-                                                                          "MenuNotificationOn"
-                                                                              .tr)
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
+                                                          // Expanded(
+                                                          //   child: InkWell(
+                                                          //     onTap: () {
+                                                          //       Navigator.pop(
+                                                          //           context);
+                                                          //       setState(() {
+                                                          //         isNotificationOn =
+                                                          //             !isNotificationOn;
+                                                          //       });
+                                                          //     },
+                                                          //     child: Row(
+                                                          //       children: [
+                                                          //         isNotificationOn
+                                                          //             ? SvgPicture
+                                                          //                 .asset(
+                                                          //                     "assets/icons/notification_off.svg")
+                                                          //             : SvgPicture
+                                                          //                 .asset(
+                                                          //                     "assets/icons/notification_on.svg"),
+                                                          //         SizedBox(
+                                                          //           width: size
+                                                          //                   .width *
+                                                          //               0.03,
+                                                          //         ),
+                                                          //         isNotificationOn
+                                                          //             ? Text(
+                                                          //                 "MenuNotificationOff"
+                                                          //                     .tr)
+                                                          //             : Text(
+                                                          //                 "MenuNotificationOn"
+                                                          //                     .tr)
+                                                          //       ],
+                                                          //     ),
+                                                          //   ),
+                                                          // ),
                                                         ],
                                                       ),
                                                     ),

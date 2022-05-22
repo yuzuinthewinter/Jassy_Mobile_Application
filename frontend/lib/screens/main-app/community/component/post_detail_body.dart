@@ -500,9 +500,9 @@ class FullPostDetail extends StatelessWidget {
                                   ? MediaQuery.of(context).size.height * 0.12
                                   : post['postby'] == current['uid']
                                       ? MediaQuery.of(context).size.height *
-                                          0.30
+                                          0.2
                                       : MediaQuery.of(context).size.height *
-                                          0.24,
+                                          0.2,
                               padding: const EdgeInsets.only(
                                   top: 5.0, left: 20.0, right: 20, bottom: 15),
                               child: Stack(
@@ -658,36 +658,36 @@ class FullPostDetail extends StatelessWidget {
                                                   )
                                                 : const SizedBox.shrink(),
                                         current['userStatus'] == 'admin'
-                                            ? const SizedBox.shrink()
-                                            : Expanded(
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    isNotificationOn =
-                                                        !isNotificationOn;
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      isNotificationOn
-                                                          ? SvgPicture.asset(
-                                                              "assets/icons/notification_off.svg")
-                                                          : SvgPicture.asset(
-                                                              "assets/icons/notification_on.svg"),
-                                                      SizedBox(
-                                                        width:
-                                                            size.width * 0.03,
-                                                      ),
-                                                      isNotificationOn
-                                                          ? Text(
-                                                              "MenuNotificationOff"
-                                                                  .tr)
-                                                          : Text(
-                                                              "MenuNotificationOn"
-                                                                  .tr)
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
+                                            ? const SizedBox.shrink() : const SizedBox.shrink()
+                                            // : Expanded(
+                                            //     child: InkWell(
+                                            //       onTap: () {
+                                            //         isNotificationOn =
+                                            //             !isNotificationOn;
+                                            //         Navigator.pop(context);
+                                            //       },
+                                            //       child: Row(
+                                            //         children: [
+                                            //           isNotificationOn
+                                            //               ? SvgPicture.asset(
+                                            //                   "assets/icons/notification_off.svg")
+                                            //               : SvgPicture.asset(
+                                            //                   "assets/icons/notification_on.svg"),
+                                            //           SizedBox(
+                                            //             width:
+                                            //                 size.width * 0.03,
+                                            //           ),
+                                            //           isNotificationOn
+                                            //               ? Text(
+                                            //                   "MenuNotificationOff"
+                                            //                       .tr)
+                                            //               : Text(
+                                            //                   "MenuNotificationOn"
+                                            //                       .tr)
+                                            //         ],
+                                            //       ),
+                                            //     ),
+                                            //   ),
                                       ],
                                     ),
                                   ),
