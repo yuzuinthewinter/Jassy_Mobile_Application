@@ -112,27 +112,6 @@ class _GroupActivityScreenState extends State<GroupActivityScreen> {
                     },
                     itemBuilder: (context) => [
                       PopupMenuItem(
-                          value: MenuItem.item1,
-                          onTap: () {
-                            // print(isNotificationOn);
-                            // _toggleNotification;
-                          },
-                          child: Row(
-                            children: [
-                              isNotificationOn
-                                  ? SvgPicture.asset(
-                                      "assets/icons/notification_off.svg")
-                                  : SvgPicture.asset(
-                                      "assets/icons/notification_on.svg"),
-                              SizedBox(
-                                width: size.width * 0.03,
-                              ),
-                              isNotificationOn
-                                  ? Text("MenuNotificationOff".tr)
-                                  : Text("MenuNotificationOn".tr),
-                            ],
-                          )),
-                      PopupMenuItem(
                           value: MenuItem.item2,
                           onTap: () {
                             widget.user['userStatus'] == 'admin'
