@@ -67,11 +67,13 @@ class _PostDetailBodyState extends State<PostDetailBody> {
       'date': DateTime.now(),
       'likes': [],
     });
+    await comments.doc(docRef.id).update({
+      'commentid': docRef.id,
+    });
     await posts.doc(postid).update({
       'comments': FieldValue.arrayUnion([docRef.id])
     });
     messageController.clear();
-    // messageController.dispose();
   }
 
   @override
@@ -94,46 +96,46 @@ class _PostDetailBodyState extends State<PostDetailBody> {
         Expanded(
           child: SingleChildScrollView(
             child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection("Posts")
-                      .where('postid', isEqualTo: widget.postid)
-                      .snapshots(includeMetadataChanges: true),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return const Text('Something went wrong');
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: Text(''));
-                    }
-                    if (snapshot.data!.docs.isEmpty) {
-                      return const Center(child: Text(''));
-                    }
-                    var post = snapshot.data!.docs[0];
-                    getpost = post;
-                    return StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('Users')
-                          .where('uid', isEqualTo: post['postby'])
-                          .snapshots(includeMetadataChanges: true),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text('Something went wrong');
-                        }
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: Text(''));
-                        }
-                        if (snapshot.data!.docs.isEmpty) {
-                          return const Center(child: Text(''));
-                        }
-                        var queryUser = snapshot.data!.docs[0];
-                        return FullPostDetail(
-                          post: post,
-                          user: queryUser,
-                          myFocusNode: myFocusNode,
-                        );
-                      },
-                    );
-                  }),
+                stream: FirebaseFirestore.instance
+                    .collection("Posts")
+                    .where('postid', isEqualTo: widget.postid)
+                    .snapshots(includeMetadataChanges: true),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Something went wrong');
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: Text(''));
+                  }
+                  if (snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text(''));
+                  }
+                  var post = snapshot.data!.docs[0];
+                  getpost = post;
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Users')
+                        .where('uid', isEqualTo: post['postby'])
+                        .snapshots(includeMetadataChanges: true),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: Text(''));
+                      }
+                      if (snapshot.data!.docs.isEmpty) {
+                        return const Center(child: Text(''));
+                      }
+                      var queryUser = snapshot.data!.docs[0];
+                      return FullPostDetail(
+                        post: post,
+                        user: queryUser,
+                        myFocusNode: myFocusNode,
+                      );
+                    },
+                  );
+                }),
           ),
         ),
         CommentInput(
@@ -327,60 +329,107 @@ class FullPostDetail extends StatelessWidget {
         ),
         //TODO: show comment here
         ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
-            padding: EdgeInsets.only(top: 0,),
+            padding: const EdgeInsets.only(
+              top: 0,
+            ),
             itemCount: post['comments'].length,
-            itemBuilder: (index, context) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.08, vertical: size.width * 0.04),
-                child: Column(
-                  children: [
-                    Row(  
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: AssetImage("assets/images/user3.jpg"),
-                          radius: size.width * 0.05,
-                        ),
-                        SizedBox(width: size.width * 0.03,),
-                        Container(
-                          constraints:
-                            BoxConstraints(maxWidth: size.width * 0.7),
-                          padding: EdgeInsets.only(right: size.width * 0.03, left: size.width * 0.03, bottom: size.width * 0.03, top: size.width * 0.015),
-                          decoration: BoxDecoration(
-                            color: textLight,
-                            borderRadius: BorderRadius.circular(20)),
-                          child: RichText(
-                            text: const TextSpan(
-                              style: TextStyle(
-                                color: textDark,
-                                fontFamily: 'Kanit',
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16
-                              ),
+            itemBuilder: (context, index) {
+              return StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Comments')
+                      .where('commentid', isEqualTo: post['comments'][index])
+                      .snapshots(includeMetadataChanges: true),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: Text(''));
+                    }
+                    if (snapshot.data!.docs.isEmpty) {
+                      return const Center(child: Text(''));
+                    }
+                    var comment = snapshot.data!.docs[0];
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.08,
+                          vertical: size.height * 0.01),
+                      child: StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('Users')
+                              .where('uid', isEqualTo: comment['commentBy'])
+                              .snapshots(includeMetadataChanges: true),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return const Text('Something went wrong');
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(child: Text(''));
+                            }
+                            if (snapshot.data!.docs.isEmpty) {
+                              return const Center(child: Text(''));
+                            }
+                            var user = snapshot.data!.docs[0];
+                            return Column(
                               children: [
-                                TextSpan(text: "name surname\n"),
-                                TextSpan(
-                                  text: "commemttttttttttttttttttttttttttttttttttttttttttttttttttttt",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16
-                                  )
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage: user['profilePic']
+                                              .isNotEmpty
+                                          ? NetworkImage(user['profilePic'][0])
+                                          : const AssetImage(
+                                                  "assets/images/user3.jpg")
+                                              as ImageProvider,
+                                      radius: size.width * 0.05,
+                                    ),
+                                    SizedBox(
+                                      width: size.width * 0.03,
+                                    ),
+                                    Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth: size.width * 0.7),
+                                        padding: EdgeInsets.only(
+                                            right: size.width * 0.03,
+                                            left: size.width * 0.03,
+                                            bottom: size.width * 0.03,
+                                            top: size.width * 0.015),
+                                        decoration: BoxDecoration(
+                                            color: textLight,
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: RichText(
+                                          text: TextSpan(
+                                              style: TextStyle(
+                                                  color: textDark,
+                                                  fontFamily: 'Kanit',
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 16),
+                                              children: [
+                                                TextSpan(
+                                                    text:
+                                                        '${StringUtils.capitalize(user['name']['firstname'])} ${StringUtils.capitalize(user['name']['lastname'])}\n'),
+                                                TextSpan(
+                                                    text: comment['comment'],
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 16)),
+                                              ]),
+                                        ))
+                                  ],
                                 ),
-                              ]
-                            ),
-                          )
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }
-          ),
-        
+                              ],
+                            );
+                          }),
+                    );
+                  });
+            }),
       ],
     );
   }
