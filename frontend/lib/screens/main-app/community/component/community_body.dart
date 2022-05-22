@@ -723,9 +723,11 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                           InkWell(
                                             onTap: () {
                                               context.pushTransparentRoute(
-                                                  ImageMessageDetail(
-                                                      urlImage:
-                                                          post['picture']));
+                                                  InteractiveViewer(
+                                                    child: ImageMessageDetail(
+                                                        urlImage:
+                                                            post['picture']),
+                                                  ));
                                             },
                                             child: Container(
                                               constraints: BoxConstraints(

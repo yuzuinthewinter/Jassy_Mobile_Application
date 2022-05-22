@@ -93,8 +93,10 @@ class _ReportPostInfoPage extends State<ReportPostInfoPage> {
                             ),
                             InkWell(
                               onTap: () {
-                                context.pushTransparentRoute(ImageMessageDetail(
-                                    urlImage: widget.report['reportImage']));
+                                context.pushTransparentRoute(InteractiveViewer(
+                                  child: ImageMessageDetail(
+                                      urlImage: widget.report['reportImage']),
+                                ));
                               },
                               child: Container(
                                 constraints: BoxConstraints(

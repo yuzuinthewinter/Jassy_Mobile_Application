@@ -592,8 +592,10 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                                       InkWell(
                                         onTap: () {
                                           context.pushTransparentRoute(
-                                              ImageMessageDetail(
-                                                  urlImage: post['picture']));
+                                              InteractiveViewer(
+                                                child: ImageMessageDetail(
+                                                    urlImage: post['picture']),
+                                              ));
                                         },
                                         child: Container(
                                           constraints: BoxConstraints(

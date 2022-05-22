@@ -531,8 +531,10 @@ class TypeImageMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.pushTransparentRoute(ImageMessageDetail(
-            isCurrentUser: isCurrentUser, currentMessage: currentMessage));
+        context.pushTransparentRoute(InteractiveViewer(
+          child: ImageMessageDetail(
+              isCurrentUser: isCurrentUser, currentMessage: currentMessage),
+        ));
       },
       child: Container(
         constraints: BoxConstraints(
