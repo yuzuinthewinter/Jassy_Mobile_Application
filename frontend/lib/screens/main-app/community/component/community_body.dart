@@ -280,7 +280,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
           });
           return SizedBox(
               width: size.width,
-              height: size.height * 0.48,
+              height: size.height * 0.47,
               child: ListView.separated(
                   padding: EdgeInsets.only(top: size.height * 0.02),
                   scrollDirection: Axis.vertical,
