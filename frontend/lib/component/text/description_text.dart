@@ -3,9 +3,11 @@ import 'package:flutter_application_1/theme/index.dart';
 
 class DescriptionText extends StatelessWidget {
   final String text;
+  final double fontsize;
   const DescriptionText({
     Key? key, 
     required this.text,
+    this.fontsize = 16.0
   }) : super(key: key);
 
   @override
@@ -15,8 +17,8 @@ class DescriptionText extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.left,
-        style: const TextStyle(
-        fontSize: 16, 
+        style: TextStyle(
+        fontSize: fontsize, 
         fontWeight: FontWeight.w500,
         color: greyDark
         ),
