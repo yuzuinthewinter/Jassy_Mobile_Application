@@ -264,25 +264,38 @@ class FullPostDetail extends StatelessWidget {
           child: Container(
               constraints: const BoxConstraints(maxHeight: double.infinity),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     post['text'],
                     maxLines: null,
                     style: TextStyle(fontSize: 16),
                   ),
+                  SizedBox(
+                    height: size.height * 0.025,
+                  ),
                   post['picture'].isNotEmpty
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Container(
-                            width: size.width * 0.5,
-                            height: size.height * 0.3,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(post['picture']),
-                                  fit: BoxFit.cover),
+                      ? InkWell(
+                        onTap: () {
+                          context.pushTransparentRoute(
+                            InteractiveViewer(
+                               child: ImageMessageDetail(
+                                   urlImage: post['picture']),
+                               ));
+                            },
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Container(
+                              width: size.width,
+                              height: size.height * 0.4,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(post['picture']),
+                                    fit: BoxFit.cover),
+                              ),
                             ),
                           ),
-                        )
+                      )
                       : const SizedBox.shrink(),
                 ],
               )),
