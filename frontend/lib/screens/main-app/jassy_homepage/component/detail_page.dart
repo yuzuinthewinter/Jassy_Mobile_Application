@@ -63,14 +63,6 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
 
   createChatRoom(String userid) async {
     var chatMember = [userid, currentUser!.uid];
-    // await users.doc(userid).update({
-    //   'likesby': FieldValue.arrayRemove([currentUser!.uid]),
-    //   'liked': FieldValue.arrayRemove([currentUser!.uid]),
-    // });
-    // await users.doc(currentUser!.uid).update({
-    //   'likesby': FieldValue.arrayRemove([userid]),
-    //   'liked': FieldValue.arrayRemove([userid]),
-    // });
 
     DocumentReference docRef = await chatRooms.add({
       'member': chatMember,
@@ -79,6 +71,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
       'unseenCount': 0,
       'sentBy': '',
       'messages': [],
+      'type': '',
     });
     await chatRooms.doc(docRef.id).update({
       'chatid': docRef.id,
