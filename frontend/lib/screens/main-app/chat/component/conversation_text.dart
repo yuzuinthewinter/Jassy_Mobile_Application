@@ -69,16 +69,16 @@ class _BodyState extends State<ConversationText> {
 
   replyMessage(message) {
     _isReply = true;
-
+    _chatid = widget.chatid;
     replyController.updateReply(message['message'], _isReply, _chatid, _type);
   }
 
   @override
   void initState() {
     _isReply = replyController.isReply.value;
-    _message = replyController.message.toString();
-    _chatid = widget.chatid;
-    _type = replyController.type.toString();
+    _message = replyController.message.value.toString();
+    _chatid = replyController.chatid.value.toString();
+    _type = replyController.type.value.toString();
     super.initState();
   }
 

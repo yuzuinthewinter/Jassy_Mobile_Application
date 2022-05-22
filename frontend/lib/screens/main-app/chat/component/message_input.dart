@@ -33,7 +33,8 @@ class _BodyState extends State<MessageInput> {
 
   TextEditingController messageController = TextEditingController();
   ReplyController replyController = Get.put(ReplyController());
-  late bool _isReply;
+  bool _isReply = false;
+  bool isCurrentChat = false;
   String _chatid = '';
   String _message = '';
   String typemessage = 'text';
@@ -48,8 +49,11 @@ class _BodyState extends State<MessageInput> {
   @override
   void initState() {
     _isReply = replyController.isReply.value;
-    _message = replyController.message.toString();
-    _chatid = replyController.chatid.toString();
+    _message = replyController.message.value.toString();
+    _chatid = replyController.chatid.value.toString();
+    if (_chatid == widget.chatid) {
+      isCurrentChat = true;
+    }
     super.initState();
   }
 
@@ -175,61 +179,65 @@ class _BodyState extends State<MessageInput> {
         _message = controller.message.value;
         return Column(
           children: [
-            _isReply && _chatid == widget.chatid
-                ? Container(
-                    alignment: Alignment.centerLeft,
-                    height: size.height * 0.1,
-                    padding: EdgeInsets.only(
-                        top: size.height * 0.02,
-                        left: size.height * 0.03,
-                        right: size.height * 0.03),
-                    child: Row(children: [
-                      const Text(
-                        'Reply : ',
-                        style: TextStyle(color: greyDark, fontSize: 14),
-                      ),
-                      controller.type.value == 'text'
-                          ? Text(
-                              controller.message.value,
-                              style: TextStyle(color: greyDark, fontSize: 14),
-                              maxLines: 1,
-                              textAlign: TextAlign.left,
-                              overflow: TextOverflow.ellipsis,
-                            )
-                          : controller.type.value == 'image'
-                              ? Image.network(
+            _isReply
+                ? !isCurrentChat
+                    ? Container(
+                        alignment: Alignment.centerLeft,
+                        height: size.height * 0.1,
+                        padding: EdgeInsets.only(
+                            top: size.height * 0.02,
+                            left: size.height * 0.03,
+                            right: size.height * 0.03),
+                        child: Row(children: [
+                          const Text(
+                            'Reply : ',
+                            style: TextStyle(color: greyDark, fontSize: 14),
+                          ),
+                          controller.type.value == 'text'
+                              ? Text(
                                   controller.message.value,
-                                  width: MediaQuery.of(context).size.width,
-                                  height: MediaQuery.of(context).size.height,
-                                  fit: BoxFit.contain,
-                                )
-                              : const Text(
-                                  'File',
                                   style:
                                       TextStyle(color: greyDark, fontSize: 14),
                                   maxLines: 1,
                                   textAlign: TextAlign.left,
                                   overflow: TextOverflow.ellipsis,
-                                ),
-                      const Spacer(),
-                      Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Align(
-                              alignment: Alignment.topRight,
-                              child: InkWell(
-                                  onTap: () async {
-                                    setState(() {
-                                      controller.isReply.value = false;
-                                      _isReply = controller.isReply.value;
-                                    });
-                                    replyController.updateReply(
-                                        '', _isReply, _chatid, typemessage);
-                                  },
-                                  child: SvgPicture.asset(
-                                    "assets/icons/close_circle.svg",
-                                    width: size.height * 0.05,
-                                  )))),
-                    ]))
+                                )
+                              : controller.type.value == 'image'
+                                  ? Image.network(
+                                      controller.message.value,
+                                      width: MediaQuery.of(context).size.width,
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      fit: BoxFit.contain,
+                                    )
+                                  : const Text(
+                                      'File',
+                                      style: TextStyle(
+                                          color: greyDark, fontSize: 14),
+                                      maxLines: 1,
+                                      textAlign: TextAlign.left,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                          const Spacer(),
+                          Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: InkWell(
+                                      onTap: () async {
+                                        setState(() {
+                                          controller.isReply.value = false;
+                                          _isReply = controller.isReply.value;
+                                        });
+                                        replyController.updateReply(
+                                            '', _isReply, _chatid, typemessage);
+                                      },
+                                      child: SvgPicture.asset(
+                                        "assets/icons/close_circle.svg",
+                                        width: size.height * 0.05,
+                                      )))),
+                        ]))
+                    : const SizedBox.shrink()
                 : const SizedBox.shrink(),
             Container(
                 padding:

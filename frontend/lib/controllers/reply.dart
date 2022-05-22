@@ -17,4 +17,11 @@ class ReplyController extends GetxController {
     type.value = getType;
     update();
   }
+
+  fetchReply() {
+    isReply.obs;
+    message.obs;
+    chatid.obs;
+    type.obs;
+  }
 }
