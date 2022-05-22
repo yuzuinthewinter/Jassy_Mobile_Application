@@ -577,11 +577,15 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                         constraints:
                             const BoxConstraints(maxHeight: double.infinity),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               post['text'],
                               maxLines: null,
                               style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(
+                              height: size.height * 0.03,
                             ),
                             post['picture'].isNotEmpty
                                 ? Column(

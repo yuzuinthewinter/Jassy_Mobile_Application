@@ -709,6 +709,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                     maxHeight: double.infinity),
                                 child: post['picture'] != ''
                                     ? Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             post['text'],
