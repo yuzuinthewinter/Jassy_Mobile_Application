@@ -150,7 +150,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                     onTab: () {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
-                        return HelpCenter();
+                        return HelpCenter(user);
                       }));
                     },
                 ),     

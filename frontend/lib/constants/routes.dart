@@ -74,8 +74,8 @@ class RouteGenerator {
       case Routes.LandingPage:
         return MaterialPageRoute(builder: (_) => const LandingPage());
       case Routes.JassyHome:
-        var data = settings.arguments ?? 2;
-        return MaterialPageRoute(builder: (_) => JassyHome(data));
+        List<dynamic> data = settings.arguments as List<dynamic>;
+        return MaterialPageRoute(builder: (_) => JassyHome(data[0], data[1], data[2]));
       case Routes.ChatScreen:
         return MaterialPageRoute(builder: (_) => const ChatScreenBody());
 

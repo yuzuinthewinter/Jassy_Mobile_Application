@@ -99,7 +99,7 @@ class _ReportTypeChoice extends State<ReportTypeChoice> {
       'liked': FieldValue.arrayRemove([widget.userid]),
     });
     await chats.doc(widget.chatid).delete();
-    Navigator.of(context).popAndPushNamed(Routes.JassyHome, arguments: 3);
+    Navigator.of(context).popAndPushNamed(Routes.JassyHome, arguments: [3, true, false]);
   }
 
   @override

@@ -41,7 +41,7 @@ class _FilterBodyState extends State<FilterBody> {
   saveFilter() async {
     await filterController.updateFilter(
         _languageIndex, _languageLevelIndex, _genderIndex, _currentRangeValues);
-    Navigator.of(context).popAndPushNamed(Routes.JassyHome, arguments: 0);
+    Navigator.of(context).popAndPushNamed(Routes.JassyHome, arguments: [0, true, false]);
   }
 
   resetFilter() {

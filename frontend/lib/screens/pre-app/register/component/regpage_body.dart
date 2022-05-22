@@ -34,7 +34,7 @@ class _BodyState extends State<Body> {
     if (querySnapshot.docs.isNotEmpty) {
       var data = querySnapshot.docs[0];
       if (data['isAuth'] == true) {
-        Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 4);
+        Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [2, true, false]);
       }
     } else {
       await users.doc(currentUser.uid).set({
@@ -127,7 +127,7 @@ class _BodyState extends State<Body> {
       if (querySnapshot.docs.isNotEmpty) {
         var data = querySnapshot.docs[0];
         if (data['isAuth'] == true) {
-          Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 4);
+          Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [2, true, false]);
         }
       } else {
         await users.doc(currentUser.uid).set({

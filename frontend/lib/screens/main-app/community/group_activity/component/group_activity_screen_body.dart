@@ -45,7 +45,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
     await users.doc(currentUser!.uid).update({
       'groups': FieldValue.arrayUnion([widget.groupActivity['groupid']]),
     });
-    Navigator.of(context).pushNamed(Routes.JassyHome, arguments: 2);
+    Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [2, true, false]);
   }
 
   bool isNotificationOn = false;

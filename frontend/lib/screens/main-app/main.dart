@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
+import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/controllers/filter.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_screen_body.dart';
 import 'package:flutter_application_1/screens/main-app/community/community.dart';
@@ -15,7 +16,9 @@ import 'package:get/get.dart';
 
 class JassyHome extends StatefulWidget {
   final indexpage;
-  JassyHome(this.indexpage);
+  final isAuth;
+  final isBlocked;
+  JassyHome(this.indexpage, this.isAuth, this.isBlocked);
 
   @override
   State<JassyHome> createState() => _JassyHomeState();
@@ -38,9 +41,7 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     _currentIndex = widget.indexpage;
-    if (_currentIndex == 4) {
-      isBlocked = true;
-    }
+    isBlocked = widget.isBlocked;
     WidgetsBinding.instance.addObserver(this);
     setStatus(true, DateTime.now());
     screens = [
@@ -107,16 +108,30 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
                           !isBlocked ? _currentIndex = index : _currentIndex;
                         });
                         if (isBlocked) {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return WarningPopUpWithButton(
-                                  text: 'WarningBlocked'.tr,
-                                  okPress: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                );
-                              });
+                          if (widget.isAuth == false) {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return WarningPopUpWithButton(
+                                    text: 'WarningAuthUser'.tr,
+                                    okPress: () {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pushNamed(Routes.RegisterProfile);
+                                    },
+                                  );
+                                });
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return WarningPopUpWithButton(
+                                    text: 'WarningBlocked'.tr,
+                                    okPress: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  );
+                                });
+                          }
                         }
                       },
                       items: [
