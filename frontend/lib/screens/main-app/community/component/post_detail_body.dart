@@ -18,10 +18,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class PostDetailBody extends StatefulWidget {
-  final post;
-  final user;
-  const PostDetailBody({Key? key, required this.post, required this.user})
-      : super(key: key);
+  final postid;
+  // final user;
+  const PostDetailBody({Key? key, required this.postid}) : super(key: key);
 
   @override
   State<PostDetailBody> createState() => _PostDetailBodyState();
@@ -31,6 +30,7 @@ class _PostDetailBodyState extends State<PostDetailBody> {
   TextEditingController messageController = TextEditingController();
   late FocusNode myFocusNode;
   var currentUser = FirebaseAuth.instance.currentUser;
+  var getpost;
 
   @override
   void dispose() {
@@ -47,8 +47,141 @@ class _PostDetailBodyState extends State<PostDetailBody> {
     super.initState();
   }
 
-  bool isNotificationOn = false;
-  bool isSavedPost = false;
+  // checkSavePost() async {
+  //   CollectionReference savePost =
+  //       FirebaseFirestore.instance.collection('SavePosts');
+  //   if (widget.post['postid']) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+
+  String type = 'text';
+  addComment(postid, comment) async {
+    var currentUser = FirebaseAuth.instance.currentUser;
+    CollectionReference comments =
+        FirebaseFirestore.instance.collection('Comments');
+    CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
+    DocumentReference docRef = await comments.add({
+      'postid': postid,
+      'comment': comment,
+      'type': type,
+      'commentBy': currentUser!.uid,
+      'date': DateTime.now(),
+      'likes': [],
+    });
+    await posts.doc(postid).update({
+      'comments': FieldValue.arrayUnion([docRef.id])
+    });
+    messageController.clear();
+    messageController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Column(
+      children: [
+        CurvedWidget(
+            child: JassyGradientColor(
+          gradientHeight: size.height * 0.23,
+        )),
+        Expanded(
+          child: SingleChildScrollView(
+            child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection("Posts")
+                    .where('postid', isEqualTo: widget.postid)
+                    .snapshots(includeMetadataChanges: true),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Something went wrong');
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: Text(''));
+                  }
+                  if (snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text(''));
+                  }
+                  var post = snapshot.data!.docs[0];
+                  getpost = post;
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Users')
+                        .where('uid', isEqualTo: post['postby'])
+                        .snapshots(includeMetadataChanges: true),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: Text(''));
+                      }
+                      if (snapshot.data!.docs.isEmpty) {
+                        return const Center(child: Text(''));
+                      }
+                      var queryUser = snapshot.data!.docs[0];
+                      return FullPostDetail(
+                        post: post,
+                        user: queryUser,
+                        myFocusNode: myFocusNode,
+                      );
+                    },
+                  );
+                }),
+          ),
+        ),
+        CommentInput(
+          size: size,
+          onTab: () {
+            addComment(getpost['postid'], messageController.text);
+          },
+          child: inputConsole(),
+        ),
+      ],
+    );
+  }
+
+  Widget inputConsole() {
+    return TextField(
+      controller: messageController,
+      focusNode: myFocusNode,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+        hintText: "GroupPostCommentHintText".tr,
+        filled: true,
+        fillColor: textLight,
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 10, horizontal: 20.0),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(40),
+            borderSide: const BorderSide(color: primaryLighter, width: 0.0)),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(40.0),
+          borderSide: const BorderSide(color: primaryLighter),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(40.0),
+          borderSide: const BorderSide(color: primaryLighter),
+        ),
+      ),
+    );
+  }
+}
+
+class FullPostDetail extends StatelessWidget {
+  FullPostDetail({
+    Key? key,
+    required this.post,
+    required this.user,
+    required this.myFocusNode,
+  }) : super(key: key);
+  final post;
+  final user;
+  final myFocusNode;
+
+  var currentUser = FirebaseAuth.instance.currentUser;
 
   getDifferance(timestamp) {
     DateTime now = DateTime.now();
@@ -72,6 +205,9 @@ class _PostDetailBodyState extends State<PostDetailBody> {
       return formattedDaywithyear;
     }
   }
+
+  bool isNotificationOn = false;
+  bool isSavedPost = false;
 
   CollectionReference savePosts =
       FirebaseFirestore.instance.collection('SavePosts');
@@ -97,7 +233,7 @@ class _PostDetailBodyState extends State<PostDetailBody> {
     });
   }
 
-  deletePost(post) async {
+  deletePost(post, context) async {
     CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
     CollectionReference groups =
         FirebaseFirestore.instance.collection('Community');
@@ -108,506 +244,352 @@ class _PostDetailBodyState extends State<PostDetailBody> {
     Navigator.of(context).pop();
   }
 
-  // checkSavePost() async {
-  //   CollectionReference savePost =
-  //       FirebaseFirestore.instance.collection('SavePosts');
-  //   if (widget.post['postid']) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CurvedWidget(
-            child: JassyGradientColor(
-          gradientHeight: size.height * 0.23,
-        )),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // writer avatar
-                      CircleAvatar(
-                        backgroundImage: !widget.user['profilePic'].isEmpty
-                            ? NetworkImage(widget.user['profilePic'][0])
-                            : const AssetImage("assets/images/user3.jpg")
-                                as ImageProvider,
-                        radius: size.width * 0.07,
-                      ),
-                      // writer name and post date
-                      // Todo: change date format
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.05),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${StringUtils.capitalize(widget.user['name']['firstname'])} ${StringUtils.capitalize(widget.user['name']['lastname'])}',
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                              SizedBox(
-                                height: size.height * 0.001,
-                              ),
-                              Text(
-                                getDifferance(widget.post['date']),
-                                style: const TextStyle(color: greyDark),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                          onTap: () {
-                            showModalBottomSheet(
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(20))),
-                                context: context,
-                                builder: (context) {
-                                  return StreamBuilder<QuerySnapshot>(
-                                      stream: FirebaseFirestore.instance
-                                          .collection('Users')
-                                          .where('uid',
-                                              isEqualTo: currentUser!.uid)
-                                          .snapshots(
-                                              includeMetadataChanges: true),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasError) {
-                                          return const Text(
-                                              'Something went wrong');
-                                        }
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return const Center(
-                                            child: Text(''),
-                                          );
-                                        }
-                                        var current = snapshot.data!.docs[0];
-                                        return Container(
-                                          height:
-                                              current['userStatus'] == 'admin'
-                                                  ? MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.12
-                                                  : widget.post['postby'] ==
-                                                          current['uid']
-                                                      ? MediaQuery.of(context)
-                                                              .size
-                                                              .height *
-                                                          0.30
-                                                      : MediaQuery.of(context)
-                                                              .size
-                                                              .height *
-                                                          0.24,
-                                          padding: const EdgeInsets.only(
-                                              top: 5.0,
-                                              left: 20.0,
-                                              right: 20,
-                                              bottom: 15),
-                                          child: Stack(
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.02),
-                                                child: Column(
-                                                  children: [
-                                                    current['userStatus'] ==
-                                                            'admin'
-                                                        ? const SizedBox
-                                                            .shrink()
-                                                        : isSavedPost == false
-                                                            ? Expanded(
-                                                                child: InkWell(
-                                                                  onTap:
-                                                                      () async {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                    setState(
-                                                                        () {
-                                                                      isSavedPost =
-                                                                          true;
-                                                                    });
-                                                                    await savePost(
-                                                                        widget
-                                                                            .post,
-                                                                        current);
-                                                                  },
-                                                                  child: Row(
-                                                                    children: [
-                                                                      SvgPicture
-                                                                          .asset(
-                                                                              "assets/icons/saved_lists.svg"),
-                                                                      SizedBox(
-                                                                        width: size.width *
-                                                                            0.03,
-                                                                      ),
-                                                                      const Text(
-                                                                          "บันทึกโพสต์")
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            : Expanded(
-                                                                child: InkWell(
-                                                                  onTap:
-                                                                      () async {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                    setState(
-                                                                        () {
-                                                                      isSavedPost =
-                                                                          false;
-                                                                    });
-                                                                    await unsavePost(
-                                                                        widget
-                                                                            .post);
-                                                                  },
-                                                                  child: Row(
-                                                                    children: [
-                                                                      SvgPicture
-                                                                          .asset(
-                                                                              "assets/icons/unsaved_list.svg"),
-                                                                      SizedBox(
-                                                                        width: size.width *
-                                                                            0.03,
-                                                                      ),
-                                                                      const Text(
-                                                                          "เลิกบันทึกโพสต์")
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                    current['userStatus'] ==
-                                                            'admin'
-                                                        ? const SizedBox
-                                                            .shrink() //TODO: report list
-                                                        : widget.post[
-                                                                    'postby'] !=
-                                                                current['uid']
-                                                            ? Expanded(
-                                                                child: InkWell(
-                                                                  onTap: () {
-                                                                    // Todo: Report
-                                                                    reportModalBottomSheet(
-                                                                        context,
-                                                                        widget
-                                                                            .user,
-                                                                        widget.post[
-                                                                            'postid']);
-                                                                    // line 613
-                                                                  },
-                                                                  child: Row(
-                                                                    children: [
-                                                                      SvgPicture
-                                                                          .asset(
-                                                                              "assets/icons/report.svg"),
-                                                                      SizedBox(
-                                                                        width: size.width *
-                                                                            0.03,
-                                                                      ),
-                                                                      Text("GroupPostReport"
-                                                                          .tr)
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            : const SizedBox
-                                                                .shrink(),
-                                                    current['userStatus'] ==
-                                                            'admin'
-                                                        ? Expanded(
-                                                            child: InkWell(
-                                                              onTap: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                                showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (context) {
-                                                                      return WarningPopUpWithButton(
-                                                                        text: 'GroupDeleteWarning'
-                                                                            .tr,
-                                                                        okPress:
-                                                                            () {
-                                                                          deletePost(
-                                                                              widget.post);
-                                                                        },
-                                                                      );
-                                                                    });
-                                                              },
-                                                              child: Row(
-                                                                children: [
-                                                                  SvgPicture.asset(
-                                                                      "assets/icons/del_bin_circle.svg"),
-                                                                  SizedBox(
-                                                                    width: size
-                                                                            .width *
-                                                                        0.03,
-                                                                  ),
-                                                                  Text(
-                                                                      "GroupPostDelete"
-                                                                          .tr)
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : widget.post[
-                                                                    'postby'] ==
-                                                                current['uid']
-                                                            ? Expanded(
-                                                                child: InkWell(
-                                                                  onTap: () {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                    showDialog(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (context) {
-                                                                          return WarningPopUpWithButton(
-                                                                            text:
-                                                                                'GroupDeleteWarning'.tr,
-                                                                            okPress:
-                                                                                () {
-                                                                              deletePost(widget.post);
-                                                                            },
-                                                                          );
-                                                                        });
-                                                                  },
-                                                                  child: Row(
-                                                                    children: [
-                                                                      SvgPicture
-                                                                          .asset(
-                                                                              "assets/icons/del_bin_circle.svg"),
-                                                                      SizedBox(
-                                                                        width: size.width *
-                                                                            0.03,
-                                                                      ),
-                                                                      Text("GroupPostDelete"
-                                                                          .tr)
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            : const SizedBox
-                                                                .shrink(),
-                                                    current['userStatus'] ==
-                                                            'admin'
-                                                        ? const SizedBox
-                                                            .shrink()
-                                                        : Expanded(
-                                                            child: InkWell(
-                                                              onTap: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                                setState(() {
-                                                                  isNotificationOn =
-                                                                      !isNotificationOn;
-                                                                });
-                                                              },
-                                                              child: Row(
-                                                                children: [
-                                                                  isNotificationOn
-                                                                      ? SvgPicture
-                                                                          .asset(
-                                                                              "assets/icons/notification_off.svg")
-                                                                      : SvgPicture
-                                                                          .asset(
-                                                                              "assets/icons/notification_on.svg"),
-                                                                  SizedBox(
-                                                                    width: size
-                                                                            .width *
-                                                                        0.03,
-                                                                  ),
-                                                                  isNotificationOn
-                                                                      ? Text(
-                                                                          "MenuNotificationOff"
-                                                                              .tr)
-                                                                      : Text(
-                                                                          "MenuNotificationOn"
-                                                                              .tr)
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Align(
-                                                  alignment: Alignment.topRight,
-                                                  child: IconButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.close,
-                                                        color: primaryDarker,
-                                                      ))),
-                                            ],
-                                          ),
-                                        );
-                                      });
-                                });
-                          },
-                          child: Icon(
-                            Icons.more_horiz,
-                            color: primaryColor,
-                            size: size.width * 0.08,
-                          ))
-                    ],
+        HeaderPost(context),
+        SizedBox(
+          height: size.height * 0.02,
+        ),
+        // post text
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+          child: Container(
+              constraints: const BoxConstraints(maxHeight: double.infinity),
+              child: Column(
+                children: [
+                  Text(
+                    post['text'],
+                    maxLines: null,
+                    style: TextStyle(fontSize: 16),
                   ),
-                ),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-                // post text
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                  child: Container(
-                      constraints:
-                          const BoxConstraints(maxHeight: double.infinity),
-                      child: Column(
-                        children: [
-                          Text(
-                            widget.post['text'],
-                            maxLines: null,
-                            style: TextStyle(fontSize: 16),
+                  post['picture'].isNotEmpty
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Container(
+                            width: size.width * 0.5,
+                            height: size.height * 0.3,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(post['picture']),
+                                  fit: BoxFit.cover),
+                            ),
                           ),
-                          widget.post['picture'].isNotEmpty
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Container(
-                                    width: size.width * 0.5,
-                                    height: size.height * 0.3,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              widget.post['picture']),
-                                          fit: BoxFit.cover),
-                                    ),
-                                  ),
-                                )
-                              : const SizedBox.shrink(),
-                        ],
-                      )),
-                ),
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-                // like and comment icon
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                  child: Row(
-                    children: [
-                      //todo: trigger new event
-                      LikeButtonWidget(widget.post, currentUser!.uid),
-                      SizedBox(width: size.width * 0.05),
-                      InkWell(
-                          onTap: () {
-                            FocusScope.of(context).requestFocus(myFocusNode);
-                          },
-                          child: SvgPicture.asset(
-                            "assets/icons/comment_icon.svg",
-                            width: size.width * 0.07,
-                          ))
-                    ],
-                  ),
-                ),
-                // SingleChildScrollView(child: JassyCommentTree()),
-              ],
-            ),
+                        )
+                      : const SizedBox.shrink(),
+                ],
+              )),
+        ),
+        SizedBox(
+          height: size.height * 0.03,
+        ),
+        // like and comment icon
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+          child: Row(
+            children: [
+              //todo: trigger new event
+              LikeButtonWidget(post, currentUser!.uid),
+              SizedBox(width: size.width * 0.05),
+              InkWell(
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(myFocusNode);
+                  },
+                  child: SvgPicture.asset(
+                    "assets/icons/comment_icon.svg",
+                    width: size.width * 0.07,
+                  ))
+            ],
           ),
         ),
-        CommentInput(
-          size: size,
-          child: Input(myFocusNode: myFocusNode),
-        ),
+        //TODO: show comment here
+        // SingleChildScrollView(child: JassyCommentTree(post, user)),
       ],
     );
   }
-}
 
-// input text with nodefocus
-class Input extends StatelessWidget {
-  const Input({
-    Key? key,
-    required this.myFocusNode,
-  }) : super(key: key);
-
-  final FocusNode myFocusNode;
-
-  //TODO: implement add comment
-  //String type = 'text';
-  // addComment(postid, comment) async {
-  //   var currentUser = FirebaseAuth.instance.currentUser;
-  //   CollectionReference comments =
-  //       FirebaseFirestore.instance.collection('Comments');
-  //   CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
-  //   DocumentReference docRef = await comments.add({
-  //     'postid': postid,
-  //     'comment': comment,
-  //     'type': type,
-  //     'commentBy': currentUser!.uid,
-  //     'date': DateTime.now(),
-  //     'likes': [],
-  //   });
-  //   await posts.doc(postid).update({
-  //     'comments': FieldValue.arrayUnion([docRef.id])
-  //   });
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      // controller: messageController,
-      focusNode: myFocusNode,
-      textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(
-        hintText: "GroupPostCommentHintText".tr,
-        suffixIcon: InkWell(
-            // TODO : add emoji picker (ammie)
-            onTap: () {
-              print("emoji");
-            },
-            child: const Icon(
-              Icons.sentiment_satisfied_alt,
-              color: primaryColor,
-            )),
-        filled: true,
-        fillColor: textLight,
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 10, horizontal: 20.0),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(40),
-            borderSide: const BorderSide(color: primaryLighter, width: 0.0)),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(40.0),
-          borderSide: const BorderSide(color: primaryLighter),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(40.0),
-          borderSide: const BorderSide(color: primaryLighter),
-        ),
+  Widget HeaderPost(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // writer avatar
+          CircleAvatar(
+            backgroundImage: user['profilePic'].isNotEmpty
+                ? NetworkImage(user['profilePic'][0])
+                : const AssetImage("assets/images/user3.jpg") as ImageProvider,
+            radius: size.width * 0.07,
+          ),
+          // writer name and post date
+          // Todo: change date format
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${StringUtils.capitalize(user['name']['firstname'])} ${StringUtils.capitalize(user['name']['lastname'])}',
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.001,
+                  ),
+                  Text(
+                    getDifferance(post['date']),
+                    style: const TextStyle(color: greyDark),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          InkWell(
+              onTap: () {
+                showModalBottomSheet(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20))),
+                    context: context,
+                    builder: (context) {
+                      return StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('Users')
+                              .where('uid', isEqualTo: currentUser!.uid)
+                              .snapshots(includeMetadataChanges: true),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return const Text('Something went wrong');
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: Text(''),
+                              );
+                            }
+                            var current = snapshot.data!.docs[0];
+                            return Container(
+                              height: current['userStatus'] == 'admin'
+                                  ? MediaQuery.of(context).size.height * 0.12
+                                  : post['postby'] == current['uid']
+                                      ? MediaQuery.of(context).size.height *
+                                          0.30
+                                      : MediaQuery.of(context).size.height *
+                                          0.24,
+                              padding: const EdgeInsets.only(
+                                  top: 5.0, left: 20.0, right: 20, bottom: 15),
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top:
+                                            MediaQuery.of(context).size.height *
+                                                0.02),
+                                    child: Column(
+                                      children: [
+                                        current['userStatus'] == 'admin'
+                                            ? const SizedBox.shrink()
+                                            : isSavedPost == false
+                                                ? Expanded(
+                                                    child: InkWell(
+                                                      onTap: () async {
+                                                        Navigator.pop(context);
+                                                        isSavedPost = true;
+                                                        await savePost(
+                                                            post, current);
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              "assets/icons/saved_lists.svg"),
+                                                          SizedBox(
+                                                            width: size.width *
+                                                                0.03,
+                                                          ),
+                                                          const Text(
+                                                              "บันทึกโพสต์")
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Expanded(
+                                                    child: InkWell(
+                                                      onTap: () async {
+                                                        Navigator.pop(context);
+                                                        isSavedPost = false;
+                                                        await unsavePost(post);
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              "assets/icons/unsaved_list.svg"),
+                                                          SizedBox(
+                                                            width: size.width *
+                                                                0.03,
+                                                          ),
+                                                          const Text(
+                                                              "เลิกบันทึกโพสต์")
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                        current['userStatus'] == 'admin'
+                                            ? const SizedBox
+                                                .shrink() //TODO: report list
+                                            : post['postby'] != current['uid']
+                                                ? Expanded(
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        // Todo: Report
+                                                        reportModalBottomSheet(
+                                                            context,
+                                                            user,
+                                                            post['postid']);
+                                                        // line 613
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              "assets/icons/report.svg"),
+                                                          SizedBox(
+                                                            width: size.width *
+                                                                0.03,
+                                                          ),
+                                                          Text("GroupPostReport"
+                                                              .tr)
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                : const SizedBox.shrink(),
+                                        current['userStatus'] == 'admin'
+                                            ? Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.of(context).pop();
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return WarningPopUpWithButton(
+                                                            text:
+                                                                'GroupDeleteWarning'
+                                                                    .tr,
+                                                            okPress: () {
+                                                              deletePost(post,
+                                                                  context);
+                                                            },
+                                                          );
+                                                        });
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                          "assets/icons/del_bin_circle.svg"),
+                                                      SizedBox(
+                                                        width:
+                                                            size.width * 0.03,
+                                                      ),
+                                                      Text("GroupPostDelete".tr)
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                            : post['postby'] == current['uid']
+                                                ? Expanded(
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return WarningPopUpWithButton(
+                                                                text:
+                                                                    'GroupDeleteWarning'
+                                                                        .tr,
+                                                                okPress: () {
+                                                                  deletePost(
+                                                                      post,
+                                                                      context);
+                                                                },
+                                                              );
+                                                            });
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              "assets/icons/del_bin_circle.svg"),
+                                                          SizedBox(
+                                                            width: size.width *
+                                                                0.03,
+                                                          ),
+                                                          Text("GroupPostDelete"
+                                                              .tr)
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                : const SizedBox.shrink(),
+                                        current['userStatus'] == 'admin'
+                                            ? const SizedBox.shrink()
+                                            : Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    isNotificationOn =
+                                                        !isNotificationOn;
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      isNotificationOn
+                                                          ? SvgPicture.asset(
+                                                              "assets/icons/notification_off.svg")
+                                                          : SvgPicture.asset(
+                                                              "assets/icons/notification_on.svg"),
+                                                      SizedBox(
+                                                        width:
+                                                            size.width * 0.03,
+                                                      ),
+                                                      isNotificationOn
+                                                          ? Text(
+                                                              "MenuNotificationOff"
+                                                                  .tr)
+                                                          : Text(
+                                                              "MenuNotificationOn"
+                                                                  .tr)
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                      ],
+                                    ),
+                                  ),
+                                  Align(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          icon: const Icon(
+                                            Icons.close,
+                                            color: primaryDarker,
+                                          ))),
+                                ],
+                              ),
+                            );
+                          });
+                    });
+              },
+              child: Icon(
+                Icons.more_horiz,
+                color: primaryColor,
+                size: size.width * 0.08,
+              ))
+        ],
       ),
     );
   }
