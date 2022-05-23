@@ -59,9 +59,15 @@ class _EditChatListState extends State<EditChatList> {
     // }
   }
 
+  bool isSelected = false;
+  void isSelect () {
+    setState(() {
+      isSelected = !isSelected;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool isSelected = false;
     var size = MediaQuery.of(context).size;
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -216,9 +222,7 @@ class _EditChatListState extends State<EditChatList> {
                                       for (var user in data) {
                                         return InkWell(
                                           onTap: () {
-                                            setState(() {
-                                              isSelected = !isSelected;
-                                            });
+                                            isSelect();
                                             isSelected
                                                 ? checkList.add(
                                                     userList[index]['chatid'])
@@ -378,20 +382,20 @@ class _EditChatListState extends State<EditChatList> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              OutlinedButtonComponent(
+              RoundButton(
                   // Todo: unpair
                   text: "MenuUnmatch".tr,
-                  minimumSize: Size(size.width * 0.45, size.height * 0.05),
+                  minimumSize: Size(size.width * 0.7, size.height * 0.05),
                   press: () {
                     unMatch();
                   }),
-              RoundButton(
-                  // Todo: del chat
-                  text: "DeleteConversation".tr,
-                  minimumSize: Size(size.width * 0.45, size.height * 0.05),
-                  press: () {
-                    removeChat();
-                  })
+              // RoundButton(
+              //     // Todo: del chat
+              //     text: "DeleteConversation".tr,
+              //     minimumSize: Size(size.width * 0.45, size.height * 0.05),
+              //     press: () {
+              //       removeChat();
+              //     })
             ],
           ),
           SizedBox(

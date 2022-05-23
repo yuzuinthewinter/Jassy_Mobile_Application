@@ -359,8 +359,10 @@ class _BodyState extends State<ConversationText> {
 
     Size size = MediaQuery.of(context).size;
     return Container(
-      width: size.width * 0.6,
-      height: size.height * 0.08,
+      constraints: BoxConstraints(
+        maxWidth: size.width * 0.65,
+        maxHeight: size.height * 0.08,
+      ),
       decoration: const BoxDecoration(
         color: primaryDarker,
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -408,15 +410,14 @@ class _BodyState extends State<ConversationText> {
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.close,
                                               color: primaryDark,
                                             ))),
                                     Padding(
                                       padding: EdgeInsets.only(
                                           top: size.height * 0.03),
-                                      child: Expanded(
-                                        child: ListView.builder(
+                                      child: ListView.builder(
                                             scrollDirection: Axis.vertical,
                                             shrinkWrap: true,
                                             itemCount:
@@ -424,6 +425,7 @@ class _BodyState extends State<ConversationText> {
                                             itemBuilder: (context, index) {
                                               return InkWell(
                                                   onTap: () {
+                                                    Navigator.of(context).pop();
                                                     AddFavorite(
                                                         message['messageID'],
                                                         _LanguageChoicesLists[
@@ -442,7 +444,7 @@ class _BodyState extends State<ConversationText> {
                                                         _LanguageChoicesLists[
                                                             index]),
                                                   ));
-                                            }),
+                                            },
                                       ),
                                     ),
                                   ],
@@ -456,13 +458,11 @@ class _BodyState extends State<ConversationText> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SvgPicture.asset(item.icon),
-                        Container(
-                          margin: EdgeInsets.only(top: 2),
-                          child: Text(
+                        Text(
                             item.text,
-                            style: TextStyle(color: Colors.white, fontSize: 12),
+                            style: TextStyle(color: Colors.white, fontSize: 12,),
+                            textAlign: TextAlign.center,
                           ),
-                        ),
                       ],
                     ),
                   ),

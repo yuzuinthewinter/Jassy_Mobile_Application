@@ -18,7 +18,7 @@ class TextFieldLabel extends StatelessWidget {
             textLabel,
             style: const TextStyle(
               color: textDark,
-              fontSize: 16, 
+              fontSize: 14, 
               fontWeight: FontWeight.w500,
             ),
           ),

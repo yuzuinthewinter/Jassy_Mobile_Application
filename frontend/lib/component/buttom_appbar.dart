@@ -15,7 +15,7 @@ class _BottomAppbarMenuState extends State<BottomAppbarMenu> {
   final screens = [
     const Center(child: Text('home'),),
     const Center(child: Text('likes'),),
-    const Center(child: Text(''),),
+    const Center(child: Text('community'),),
     const Center(child: Text('chat'),),
     const Center(child: Text('profile'),),
   ];
@@ -51,7 +51,7 @@ class _BottomAppbarMenuState extends State<BottomAppbarMenu> {
                 items: [
                   BottomNavigationBarItem(icon: Icon(Icons.home), label: 'MainPage'.tr,),
                   BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: 'LikePage'.tr),
-                  BottomNavigationBarItem(icon: Icon(Icons.category), label: ''),
+                  BottomNavigationBarItem(icon: Icon(Icons.category), label: 'CommuPage'.tr),
                   BottomNavigationBarItem(icon: Icon(Icons.forum_outlined), label: 'ChatPage'.tr),
                   BottomNavigationBarItem(icon: Icon(Icons.person), label: 'ProfilePage'.tr)
                 ]),

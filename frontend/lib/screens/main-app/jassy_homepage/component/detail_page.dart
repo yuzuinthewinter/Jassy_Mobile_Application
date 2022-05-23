@@ -255,10 +255,9 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                     ? likeUser(widget.user['uid'])
                                     : createChatRoom(widget.user['uid']);
                               },
-                              child: Expanded(
-                                  child: SvgPicture.asset(widget.isMainPage
+                              child: SvgPicture.asset(widget.isMainPage
                                       ? "assets/icons/heart_button.svg"
-                                      : "assets/icons/ms_button.svg"))),
+                                      : "assets/icons/ms_button.svg")),
                         )
                       ]),
                   DescTabBar(tabController: tabController),

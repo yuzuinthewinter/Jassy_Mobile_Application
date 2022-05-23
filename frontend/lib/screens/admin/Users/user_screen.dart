@@ -10,6 +10,7 @@ class UserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       appBar: NoActionAppBar(text: "การจัดการผู้ใช้งาน"),
       body: UserScreenBody(),
     );

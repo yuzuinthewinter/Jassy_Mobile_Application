@@ -7,7 +7,7 @@ class DescriptionText extends StatelessWidget {
   const DescriptionText({
     Key? key, 
     required this.text,
-    this.fontsize = 16.0
+    this.fontsize = 14.0
   }) : super(key: key);
 
   @override

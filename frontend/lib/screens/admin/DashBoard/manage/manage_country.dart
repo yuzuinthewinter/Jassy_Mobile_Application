@@ -51,7 +51,7 @@ class _ManageCountryScreenBody extends State<ManageCountryScreenBody> {
           margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
           padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
           width: size.width,
-          height: size.height * 0.06,
+          height: size.height * 0.062,
           decoration: BoxDecoration(
               color: textLight, borderRadius: BorderRadius.circular(20)),
           child: Column(children: [
@@ -59,7 +59,7 @@ class _ManageCountryScreenBody extends State<ManageCountryScreenBody> {
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.add_location_rounded),
+                  icon: const Icon(Icons.add_location_rounded,),
                   color: primaryColor,
                 ),
                 SizedBox(

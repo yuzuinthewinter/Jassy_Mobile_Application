@@ -91,10 +91,11 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Stack(
+    return Column(
       children: [
         Expanded(
           child: Column(children: [
+            const CurvedWidget(child: JassyGradientColor()),
             StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('Users')
@@ -145,46 +146,47 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                     );
                   }
                   var user = snapshot.data!.docs;
-                  return GridView.builder(
-                      padding: EdgeInsets.only(top: size.height * 0.15),
-                      physics: const ScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: size.width / size.height / 0.75,
-                          crossAxisCount: 2),
-                      itemCount: user[0]['likesby'].length,
-                      itemBuilder: (context, index) {
-                        return StreamBuilder<QuerySnapshot>(
-                            stream: FirebaseFirestore.instance
-                                .collection('Users')
-                                .where('uid',
-                                    isEqualTo: user[0]['likesby'][index])
-                                .snapshots(includeMetadataChanges: true),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return const Text('Something went wrong');
-                              }
-                              if (!snapshot.hasData ||
-                                  snapshot.data!.docs.isEmpty) {
-                                return const Center(child: Text(' '));
-                              }
-                              var cardUser = snapshot.data!.docs[0];
-                              bool isSameRoom = false;
-                              for (var card in cardUser['chats']) {
-                                for (var chat in user[0]['chats']) {
-                                  if (card == chat) {
-                                    isSameRoom = true;
+                  return Expanded(
+                    child: GridView.builder(
+                        padding: EdgeInsets.only(top: 0),
+                        physics: const ScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: size.width / size.height / 0.75,
+                            crossAxisCount: 2),
+                        itemCount: user[0]['likesby'].length,
+                        itemBuilder: (context, index) {
+                          return StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('Users')
+                                  .where('uid',
+                                      isEqualTo: user[0]['likesby'][index])
+                                  .snapshots(includeMetadataChanges: true),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return const Text('Something went wrong');
+                                }
+                                if (!snapshot.hasData ||
+                                    snapshot.data!.docs.isEmpty) {
+                                  return const Center(child: Text(' '));
+                                }
+                                var cardUser = snapshot.data!.docs[0];
+                                bool isSameRoom = false;
+                                for (var card in cardUser['chats']) {
+                                  for (var chat in user[0]['chats']) {
+                                    if (card == chat) {
+                                      isSameRoom = true;
+                                    }
                                   }
                                 }
-                              }
-                              return gridViewCard(cardUser, isSameRoom);
-                            });
-                      });
+                                return gridViewCard(cardUser, isSameRoom);
+                              });
+                        }),
+                  );
                 })
           ]),
         ),
-        const CurvedWidget(child: JassyGradientColor()),
       ],
     );
   }
@@ -320,11 +322,10 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                                   onTap: () {
                                     createChatRoom(user['uid'].toString());
                                   },
-                                  child: Expanded(
-                                      child: SvgPicture.asset(
+                                  child: SvgPicture.asset(
                                     "assets/icons/ms_button.svg",
                                     width: size.width * 0.12,
-                                  ))),
+                                  )),
                             )
                     ],
                   ),

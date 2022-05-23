@@ -25,7 +25,7 @@ class WritePostAppBar extends StatelessWidget implements PreferredSizeWidget {
           size: 20,
         ),
         color: primaryDarker,
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () => {FocusScope.of(context).unfocus(), Navigator.of(context).pop()},
       ),
       actions: [
         TextButton(

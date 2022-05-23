@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,7 +23,7 @@ void main() async {
 
 //use this
 class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+  const App({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _AppScreen();
@@ -91,12 +92,12 @@ class _AppScreen extends State<App> {
 }
 
 class AuthGate extends StatelessWidget {
-  AuthGate({Key? key}) : super(key: key);
+  AuthGate({Key key}) : super(key: key);
   var currentUser = FirebaseAuth.instance.currentUser;
 
   checkUserAuth(context) async {
     var users = FirebaseFirestore.instance.collection('Users');
-    var queryUser = users.where('uid', isEqualTo: currentUser!.uid);
+    var queryUser = users.where('uid', isEqualTo: currentUser.uid);
     var snapshot = await queryUser.get();
 
     if (snapshot.docs.isNotEmpty) {
@@ -126,7 +127,7 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
+    return StreamBuilder<User>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -135,7 +136,7 @@ class AuthGate extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.active) {
           checkUserAuth(context);
         }
-        if (currentUser!.uid == null) {
+        if (currentUser.uid == null) {
           return const LandingPage();
         }
         return Expanded(
