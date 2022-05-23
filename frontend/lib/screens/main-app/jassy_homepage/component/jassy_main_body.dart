@@ -431,9 +431,8 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                             onTap: () {
                               likeUser(user['uid']);
                             },
-                            child: Expanded(
-                                child: SvgPicture.asset(
-                                    "assets/icons/heart_button.svg"))),
+                            child: SvgPicture.asset(
+                                    "assets/icons/heart_button.svg")),
                       )
                     ],
                   ),

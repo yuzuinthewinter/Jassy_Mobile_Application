@@ -388,6 +388,7 @@ class _BodyState extends State<ConversationText> {
                         //translate
                         print("translate");
                       } else {
+                        Navigator.of(context).pop();
                         showModalBottomSheet(
                             isScrollControlled: true,
                             shape: const RoundedRectangleBorder(

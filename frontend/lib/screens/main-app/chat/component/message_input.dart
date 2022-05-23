@@ -351,7 +351,7 @@ class _BodyState extends State<MessageInput> {
                     ),
                     InkWell(
                         onTap: () {
-                          if(messageController.text.isNotEmpty) {
+                          if(messageController.text.isNotEmpty || pickedImage != null) {
                             setState(() {
                               pickedImage = null;
                             });

@@ -86,10 +86,11 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Stack(
+    return Column(
       children: [
         Expanded(
           child: Column(children: [
+            const CurvedWidget(child: JassyGradientColor()),
             StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('Users')
@@ -140,22 +141,22 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                     );
                   }
                   var user = snapshot.data!.docs;
-                  return GridView.builder(
-                    padding: EdgeInsets.only(top: size.height * 0.15),
-                      physics: const ScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: size.width / size.height / 0.75,
-                          crossAxisCount: 2),
-                      itemCount: user[0]['likesby'].length,
-                      itemBuilder: (context, index) {
-                        return gridViewCard(user[0]['likesby'][index]);
-                      });
+                  return Expanded(
+                    child: GridView.builder(
+                      padding: EdgeInsets.only(top: 0),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: size.width / size.height / 0.75,
+                            crossAxisCount: 2),
+                        itemCount: user[0]['likesby'].length,
+                        itemBuilder: (context, index) {
+                          return  gridViewCard(user[0]['likesby'][index]);
+                        }),
+                  );
                 })
           ]),
         ),
-        const CurvedWidget(child: JassyGradientColor()),
       ],
     );
   }
@@ -297,11 +298,10 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                                   onTap: () {
                                     createChatRoom(user['uid'].toString());
                                   },
-                                  child: Expanded(
-                                      child: SvgPicture.asset(
+                                  child: SvgPicture.asset(
                                     "assets/icons/ms_button.svg",
                                     width: size.width * 0.12,
-                                  ))),
+                                  )),
                             )
                           ],
                         ),
