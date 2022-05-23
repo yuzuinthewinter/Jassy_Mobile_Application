@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class JassyGradientColor extends StatelessWidget {
   final double gradientHeight;
   const JassyGradientColor({
-    Key? key, this.gradientHeight = 140,
+    Key? key, this.gradientHeight = 115,
   }) : super(key: key);
 
   @override
