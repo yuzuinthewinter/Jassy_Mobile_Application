@@ -8,60 +8,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:746123936665:android:31f2250189745e256dc908",
-        "android_client_info": {
-          "package_name": "com.example.flutter_application_1"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "746123936665-0mjdsm3a9o6u6pdkg9m7gjgghm53vcni.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.flutter_application_1",
-            "certificate_hash": "83373e543eaab49166b6b98f011d85e3a4008060"
-          }
-        },
-        {
-          "client_id": "746123936665-i51a7uvk23jf7sbkq4kmj23omtriv15i.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.flutter_application_1",
-            "certificate_hash": "feeb95601088c76089b78739cbaacdaca0fcc3d2"
-          }
-        },
-        {
-          "client_id": "746123936665-c3mamesh8dreql5g2vnhu9ivj7doha1p.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCrtv3yyOg8EUMgwRivJltaWsmPo6QD3ik"
-        },
-        {
-          "current_key": "AIzaSyCBFfUc9SM1yqvy7i0MtPbQMi9Yg6NR_SQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "746123936665-c3mamesh8dreql5g2vnhu9ivj7doha1p.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:746123936665:android:6fa8f4e08bbf653d6dc908",
         "android_client_info": {
           "package_name": "com.jassygroup.jassy_language_app"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "746123936665-5jnpqictno5rpk82ikti4gajv2bs4rf2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jassygroup.jassy_language_app",
+            "certificate_hash": "8cbe94bb0081f0129ed7099b70fba106e41ea8c5"
+          }
+        },
+        {
+          "client_id": "746123936665-a98fm3ri1emc8k9aue1p3sfatdk1voo6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jassygroup.jassy_language_app",
+            "certificate_hash": "42d8b99462afaa22222d10b5b9a220adf225829b"
+          }
+        },
         {
           "client_id": "746123936665-essltfct2j02fd0dln51am8nej586srh.apps.googleusercontent.com",
           "client_type": 1,
@@ -84,9 +52,6 @@
         }
       ],
       "api_key": [
-        {
-          "current_key": "AIzaSyCrtv3yyOg8EUMgwRivJltaWsmPo6QD3ik"
-        },
         {
           "current_key": "AIzaSyCBFfUc9SM1yqvy7i0MtPbQMi9Yg6NR_SQ"
         }
