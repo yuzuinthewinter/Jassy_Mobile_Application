@@ -138,130 +138,132 @@ class _UserScreenBody extends State<UserScreenBody> {
                     child: Lottie.asset("assets/images/loading.json"));
               }
               var data = snapshot.data!.docs;
-              return ListView.builder(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 20.0),
-                itemCount: data.length,
-                itemBuilder: (context, int index) {
-                  if (data[index]['userStatus'] == 'user') {
-                    if (searchController.text.toLowerCase() == '') {
-                      return Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: size.height * 0.01),
-                            width: size.width,
-                            height: size.height * 0.07,
-                            decoration: BoxDecoration(
-                                color: textLight,
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Column(children: [
-                              UserCard(
-                                size: size,
-                                icon: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.verified_rounded),
-                                  color: data[index]['isAuth'] == true
-                                      ? data[index]['report'].length < 5
-                                          ? primaryColor
-                                          : greyDark
-                                      : textLight,
+              return Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 20.0),
+                  itemCount: data.length,
+                  itemBuilder: (context, int index) {
+                    if (data[index]['userStatus'] == 'user') {
+                      if (searchController.text.toLowerCase() == '') {
+                        return Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.height * 0.01),
+                              width: size.width,
+                              height: size.height * 0.07,
+                              decoration: BoxDecoration(
+                                  color: textLight,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Column(children: [
+                                UserCard(
+                                  size: size,
+                                  icon: IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.verified_rounded),
+                                    color: data[index]['isAuth'] == true
+                                        ? data[index]['report'].length < 5
+                                            ? primaryColor
+                                            : greyDark
+                                        : textLight,
+                                  ),
+                                  text: StringUtils.capitalize(data[index]['name']
+                                                  ['firstname']) ==
+                                              '' &&
+                                          StringUtils.capitalize(data[index]
+                                                  ['name']['lastname']) ==
+                                              ''
+                                      ? '-'
+                                      : '${StringUtils.capitalize(data[index]['name']['firstname'])} ${StringUtils.capitalize(data[index]['name']['lastname'])}',
+                                  reportIcon: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(data[index]['report'].length < 5
+                                        ? Icons.warning_rounded
+                                        : Icons.cancel_rounded),
+                                    color: data[index]['report'].length < 3
+                                        ? textLight
+                                        : data[index]['report'].length < 5
+                                            ? tertiary
+                                            : textLight,
+                                  ),
+                                  onTab: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          UserInfoPage(data[index]),
+                                    );
+                                  },
                                 ),
-                                text: StringUtils.capitalize(data[index]['name']
-                                                ['firstname']) ==
-                                            '' &&
-                                        StringUtils.capitalize(data[index]
-                                                ['name']['lastname']) ==
-                                            ''
-                                    ? '-'
-                                    : '${StringUtils.capitalize(data[index]['name']['firstname'])} ${StringUtils.capitalize(data[index]['name']['lastname'])}',
-                                reportIcon: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(data[index]['report'].length < 5
-                                      ? Icons.warning_rounded
-                                      : Icons.cancel_rounded),
-                                  color: data[index]['report'].length < 3
-                                      ? textLight
-                                      : data[index]['report'].length < 5
-                                          ? tertiary
-                                          : textLight,
+                              ]),
+                            ),
+                            SizedBox(
+                              height: size.height * 0.015,
+                            ),
+                          ],
+                        );
+                      } else {
+                        return Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.height * 0.01),
+                              width: size.width,
+                              height: size.height * 0.07,
+                              decoration: BoxDecoration(
+                                  color: textLight,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Column(children: [
+                                UserCard(
+                                  size: size,
+                                  icon: IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.verified_rounded),
+                                    color: data[index]['isAuth'] == true
+                                        ? data[index]['report'].length < 5
+                                            ? primaryColor
+                                            : greyDark
+                                        : textLight,
+                                  ),
+                                  text: StringUtils.capitalize(data[index]['name']
+                                                  ['firstname']) ==
+                                              '' &&
+                                          StringUtils.capitalize(data[index]
+                                                  ['name']['lastname']) ==
+                                              ''
+                                      ? '-'
+                                      : '${StringUtils.capitalize(data[index]['name']['firstname'])} ${StringUtils.capitalize(data[index]['name']['lastname'])}',
+                                  reportIcon: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(data[index]['report'].length < 5
+                                        ? Icons.warning_rounded
+                                        : Icons.cancel_rounded),
+                                    color: data[index]['report'].length < 3
+                                        ? textLight
+                                        : data[index]['report'].length < 5
+                                            ? tertiary
+                                            : textLight,
+                                  ),
+                                  onTab: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          UserInfoPage(data[index]),
+                                    );
+                                  },
                                 ),
-                                onTab: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        UserInfoPage(data[index]),
-                                  );
-                                },
-                              ),
-                            ]),
-                          ),
-                          SizedBox(
-                            height: size.height * 0.015,
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: size.height * 0.01),
-                            width: size.width,
-                            height: size.height * 0.07,
-                            decoration: BoxDecoration(
-                                color: textLight,
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Column(children: [
-                              UserCard(
-                                size: size,
-                                icon: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.verified_rounded),
-                                  color: data[index]['isAuth'] == true
-                                      ? data[index]['report'].length < 5
-                                          ? primaryColor
-                                          : greyDark
-                                      : textLight,
-                                ),
-                                text: StringUtils.capitalize(data[index]['name']
-                                                ['firstname']) ==
-                                            '' &&
-                                        StringUtils.capitalize(data[index]
-                                                ['name']['lastname']) ==
-                                            ''
-                                    ? '-'
-                                    : '${StringUtils.capitalize(data[index]['name']['firstname'])} ${StringUtils.capitalize(data[index]['name']['lastname'])}',
-                                reportIcon: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(data[index]['report'].length < 5
-                                      ? Icons.warning_rounded
-                                      : Icons.cancel_rounded),
-                                  color: data[index]['report'].length < 3
-                                      ? textLight
-                                      : data[index]['report'].length < 5
-                                          ? tertiary
-                                          : textLight,
-                                ),
-                                onTab: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        UserInfoPage(data[index]),
-                                  );
-                                },
-                              ),
-                            ]),
-                          ),
-                          SizedBox(
-                            height: size.height * 0.015,
-                          ),
-                        ],
-                      );
+                              ]),
+                            ),
+                            SizedBox(
+                              height: size.height * 0.015,
+                            ),
+                          ],
+                        );
+                      }
                     }
-                  }
-                  return const SizedBox.shrink();
-                },
+                    return const SizedBox.shrink();
+                  },
+                ),
               );
             },
           ),

@@ -39,7 +39,7 @@ class ListReportUserScreen extends StatelessWidget {
                     ),
                     SvgPicture.asset(
                       "assets/images/no_user_filter.svg",
-                      width: size.width * 0.72,
+                      width: size.width * 0.6,
                     ),
                     SizedBox(
                       height: size.height * 0.05,

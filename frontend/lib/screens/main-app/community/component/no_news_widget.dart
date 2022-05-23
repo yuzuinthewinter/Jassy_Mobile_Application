@@ -18,19 +18,16 @@ class NoNewsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: size.height * 0.02,
-        ),
         SvgPicture.asset(
           "assets/images/no_news_image.svg",
-          width: size.width * 0.55,
+          width: size.width * 0.52,
         ),
         SizedBox(
-          height: size.height * 0.02,
+          height: size.height * 0.01,
         ),
         Text(
           headText,
-          style: TextStyle(fontSize: 18, color: textDark),
+          style: TextStyle(fontSize: 16, color: textDark),
           textAlign: TextAlign.center,
         ),
         SizedBox(
@@ -38,7 +35,7 @@ class NoNewsWidget extends StatelessWidget {
         ),
         Text(
           descText,
-          style: TextStyle(fontSize: 16, color: greyDark),
+          style: TextStyle(fontSize: 14, color: greyDark),
           textAlign: TextAlign.center,
         ),
       ],
