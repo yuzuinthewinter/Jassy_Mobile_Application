@@ -246,7 +246,6 @@ class _SavedPostState extends State<SavedPost> {
       await savePosts.doc(currentUser!.uid).update({
         'saved': FieldValue.arrayRemove([postid]),
       });
-      Navigator.of(context).pop();
     }
 
     return showModalBottomSheet(
@@ -316,6 +315,7 @@ class _SavedPostState extends State<SavedPost> {
                       InkWell(
                         onTap: () {
                           unsavePost(postid);
+                          Navigator.of(context).pop();
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(
