@@ -35,6 +35,7 @@ class _PostDetailBodyState extends State<PostDetailBody> {
   late FocusNode myFocusNode;
   var currentUser = FirebaseAuth.instance.currentUser;
   var getpost;
+  var getgroupid;
 
   @override
   void initState() {
@@ -112,6 +113,7 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                   }
                   var post = snapshot.data!.docs[0];
                   getpost = post;
+                  getgroupid = post['groupid'];
                   return StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('Users')
@@ -138,12 +140,47 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                 }),
           ),
         ),
-        CommentInput(
-          size: size,
-          onTab: () {
-            addComment(getpost['postid'], messageController.text);
-          },
-          child: inputConsole(),
+        StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('Users')
+                  .where('uid', isEqualTo: currentUser!.uid)
+                  .snapshots(includeMetadataChanges: true),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('Something went wrong');
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: Text(''));
+                }
+                if (snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text(''));
+                }
+                var user = snapshot.data!.docs[0];
+                bool isMember = false;
+                for (var groupid in user['groups']) {
+                  if (groupid == getgroupid) {
+                    isMember = true;
+                  }
+                }
+                return user['userStatus'] == 'admin'
+                    ? CommentInput(
+                        size: size,
+                        onTab: () {
+                          addComment(getpost['postid'], messageController.text);
+                        },
+                        child: inputConsole(),
+                      )
+                    : isMember
+                        ? CommentInput(
+                            size: size,
+                            onTab: () {
+                              addComment(
+                                  getpost['postid'], messageController.text);
+                            },
+                            child: inputConsole(),
+                          )
+                        : const SizedBox.shrink();
+              }
         ),
       ],
     );
@@ -278,14 +315,13 @@ class FullPostDetail extends StatelessWidget {
                   ),
                   post['picture'].isNotEmpty
                       ? InkWell(
-                        onTap: () {
-                          context.pushTransparentRoute(
-                            InteractiveViewer(
-                               child: ImageMessageDetail(
-                                   urlImage: post['picture']),
-                               ));
-                            },
-                        child: ClipRRect(
+                          onTap: () {
+                            context.pushTransparentRoute(InteractiveViewer(
+                              child:
+                                  ImageMessageDetail(urlImage: post['picture']),
+                            ));
+                          },
+                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
                             child: Container(
                               width: size.width,
@@ -297,7 +333,7 @@ class FullPostDetail extends StatelessWidget {
                               ),
                             ),
                           ),
-                      )
+                        )
                       : const SizedBox.shrink(),
                 ],
               )),
@@ -499,8 +535,7 @@ class FullPostDetail extends StatelessWidget {
                               height: current['userStatus'] == 'admin'
                                   ? MediaQuery.of(context).size.height * 0.12
                                   : post['postby'] == current['uid']
-                                      ? MediaQuery.of(context).size.height *
-                                          0.2
+                                      ? MediaQuery.of(context).size.height * 0.2
                                       : MediaQuery.of(context).size.height *
                                           0.2,
                               padding: const EdgeInsets.only(
@@ -658,36 +693,37 @@ class FullPostDetail extends StatelessWidget {
                                                   )
                                                 : const SizedBox.shrink(),
                                         current['userStatus'] == 'admin'
-                                            ? const SizedBox.shrink() : const SizedBox.shrink()
-                                            // : Expanded(
-                                            //     child: InkWell(
-                                            //       onTap: () {
-                                            //         isNotificationOn =
-                                            //             !isNotificationOn;
-                                            //         Navigator.pop(context);
-                                            //       },
-                                            //       child: Row(
-                                            //         children: [
-                                            //           isNotificationOn
-                                            //               ? SvgPicture.asset(
-                                            //                   "assets/icons/notification_off.svg")
-                                            //               : SvgPicture.asset(
-                                            //                   "assets/icons/notification_on.svg"),
-                                            //           SizedBox(
-                                            //             width:
-                                            //                 size.width * 0.03,
-                                            //           ),
-                                            //           isNotificationOn
-                                            //               ? Text(
-                                            //                   "MenuNotificationOff"
-                                            //                       .tr)
-                                            //               : Text(
-                                            //                   "MenuNotificationOn"
-                                            //                       .tr)
-                                            //         ],
-                                            //       ),
-                                            //     ),
-                                            //   ),
+                                            ? const SizedBox.shrink()
+                                            : const SizedBox.shrink()
+                                        // : Expanded(
+                                        //     child: InkWell(
+                                        //       onTap: () {
+                                        //         isNotificationOn =
+                                        //             !isNotificationOn;
+                                        //         Navigator.pop(context);
+                                        //       },
+                                        //       child: Row(
+                                        //         children: [
+                                        //           isNotificationOn
+                                        //               ? SvgPicture.asset(
+                                        //                   "assets/icons/notification_off.svg")
+                                        //               : SvgPicture.asset(
+                                        //                   "assets/icons/notification_on.svg"),
+                                        //           SizedBox(
+                                        //             width:
+                                        //                 size.width * 0.03,
+                                        //           ),
+                                        //           isNotificationOn
+                                        //               ? Text(
+                                        //                   "MenuNotificationOff"
+                                        //                       .tr)
+                                        //               : Text(
+                                        //                   "MenuNotificationOn"
+                                        //                       .tr)
+                                        //         ],
+                                        //       ),
+                                        //     ),
+                                        //   ),
                                       ],
                                     ),
                                   ),
