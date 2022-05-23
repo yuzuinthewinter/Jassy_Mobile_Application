@@ -84,7 +84,7 @@ class _PostDetailState extends State<PostDetail> {
             size: 20,
           ),
           color: primaryDarker,
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => {FocusScope.of(context).unfocus(), Navigator.of(context).pop()},
         ),
         // actions: [
         //   PopupMenuButton<MenuItem>(

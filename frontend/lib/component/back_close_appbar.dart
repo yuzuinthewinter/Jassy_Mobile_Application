@@ -19,7 +19,7 @@ class BackAndCloseAppBar extends StatelessWidget implements PreferredSizeWidget 
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, size: 20,),
         color: primaryDarker,
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () => {FocusScope.of(context).unfocus(), Navigator.of(context).pop()},
       ),
       actions: [
         IconButton(
