@@ -107,7 +107,7 @@ class AuthGate extends StatelessWidget {
         if (data['isUser'] == true) {
           if (data['isAuth'] == true) {
             Navigator.of(context)
-                .pushNamed(Routes.JassyHome, arguments: [2, true, false]);//isBlocked == false
+                .pushNamed(Routes.JassyHome, arguments: [4, true, false]);//isBlocked == false
           } else {
             return Navigator.of(context)
                 .pushNamed(Routes.JassyHome, arguments: [4, false, true]);
