@@ -11,6 +11,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:convert';
 
 import 'package:lottie/lottie.dart';
@@ -34,16 +35,19 @@ class _BodyState extends State<Body> {
     if (querySnapshot.docs.isNotEmpty) {
       var data = querySnapshot.docs[0];
       if (data['isAuth'] == true) {
-        Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [2, true, false]);
+        Navigator.of(context)
+            .pushNamed(Routes.JassyHome, arguments: [2, true, false]);
       }
     } else {
+      final DateFormat formatter = DateFormat('yyyy-MM-dd');
+      var birthDate = formatter.format(DateTime.now());
       await users.doc(currentUser.uid).set({
         'uid': currentUser.uid,
         'name': {
           'firstname': '${profile['first_name'].toLowerCase()}',
           'lastname': '${profile['last_name'].toLowerCase()}',
         },
-        'birthDate': '',
+        'birthDate': birthDate,
         'gender': '',
         'country': '',
         'language': {
@@ -128,16 +132,19 @@ class _BodyState extends State<Body> {
       if (querySnapshot.docs.isNotEmpty) {
         var data = querySnapshot.docs[0];
         if (data['isAuth'] == true) {
-          Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [2, true, false]);
+          Navigator.of(context)
+              .pushNamed(Routes.JassyHome, arguments: [2, true, false]);
         }
       } else {
+        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        var birthDate = formatter.format(DateTime.now());
         await users.doc(currentUser.uid).set({
           'uid': currentUser.uid,
           'name': {
             'firstname': splitname[0].toLowerCase(),
             'lastname': splitname[1].toLowerCase(),
           },
-          'birthDate': '',
+          'birthDate': birthDate,
           'gender': '',
           'country': '',
           'language': {
@@ -177,21 +184,26 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
     return isLoading
         ? Expanded(
-          child: Container(
-            decoration: const BoxDecoration(
-            gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            stops: [
-              0.3,
-              0.5,
-              0.8,
-            ],
-            colors: [Color(0xFFE6E3FF), Color(0xFFFFEAEF), Color(0xFFFFEAC4)]),
-            ),
-            child: Lottie.asset("assets/images/loading.json",)
-          ),
-        )
+            child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      stops: [
+                        0.3,
+                        0.5,
+                        0.8,
+                      ],
+                      colors: [
+                        Color(0xFFE6E3FF),
+                        Color(0xFFFFEAEF),
+                        Color(0xFFFFEAC4)
+                      ]),
+                ),
+                child: Lottie.asset(
+                  "assets/images/loading.json",
+                )),
+          )
         : Background(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

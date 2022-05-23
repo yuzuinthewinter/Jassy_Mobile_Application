@@ -8,6 +8,7 @@ import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class Body extends StatefulWidget {
   final String phoneNumber;
@@ -72,19 +73,22 @@ class _BodyState extends State<Body> {
           if (data['userStatus'] == 'admin') {
             Navigator.of(context).pushNamed(Routes.AdminJassyHome);
           } else {
-            Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [2, true, false]);
+            Navigator.of(context)
+                .pushNamed(Routes.JassyHome, arguments: [2, true, false]);
           }
         } else {
           return Navigator.of(context).pushNamed(Routes.RegisterProfile);
         }
       } else {
+        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        var birthDate = formatter.format(DateTime.now());
         await users.doc(currentUser.uid).set({
           'uid': currentUser.uid,
           'name': {
             'firstname': '',
             'lastname': '',
           },
-          'birthDate': '',
+          'birthDate': birthDate,
           'gender': '',
           'country': '',
           'language': {

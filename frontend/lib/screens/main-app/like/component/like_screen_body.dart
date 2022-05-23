@@ -34,7 +34,6 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
 
   createChatRoom(String userid) async {
     var chatMember = [userid, currentUser!.uid];
-
     DocumentReference docRef = await chatRooms.add({
       'member': chatMember,
       'lastMessageSent': '',
@@ -73,13 +72,19 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
     }));
   }
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   removeLike(userid) async {
     await users.doc(currentUser!.uid).update({
       'likesby': FieldValue.arrayRemove([userid]),
       'hideUser': FieldValue.arrayRemove([userid]), //current user like ใคร
     });
     await users.doc(userid).update({
-      'liked': FieldValue.arrayRemove([currentUser!.uid]), //current user like ใคร
+      'liked':
+          FieldValue.arrayRemove([currentUser!.uid]), //current user like ใคร
     });
   }
 
@@ -143,7 +148,8 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                   var user = snapshot.data!.docs;
                   return Expanded(
                     child: GridView.builder(
-                      padding: EdgeInsets.only(top: 0),
+                        padding: EdgeInsets.only(top: 0),
+                        physics: const ScrollPhysics(),
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -151,7 +157,31 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                             crossAxisCount: 2),
                         itemCount: user[0]['likesby'].length,
                         itemBuilder: (context, index) {
-                          return  gridViewCard(user[0]['likesby'][index]);
+                          return StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('Users')
+                                  .where('uid',
+                                      isEqualTo: user[0]['likesby'][index])
+                                  .snapshots(includeMetadataChanges: true),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return const Text('Something went wrong');
+                                }
+                                if (!snapshot.hasData ||
+                                    snapshot.data!.docs.isEmpty) {
+                                  return const Center(child: Text(' '));
+                                }
+                                var cardUser = snapshot.data!.docs[0];
+                                bool isSameRoom = false;
+                                for (var card in cardUser['chats']) {
+                                  for (var chat in user[0]['chats']) {
+                                    if (card == chat) {
+                                      isSameRoom = true;
+                                    }
+                                  }
+                                }
+                                return gridViewCard(cardUser, isSameRoom);
+                              });
                         }),
                   );
                 })
@@ -161,138 +191,132 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
     );
   }
 
-  Widget gridViewCard(user) {
+  Widget gridViewCard(user, isSameRoom) {
     var size = MediaQuery.of(context).size;
-    return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('Users')
-            .where('uid', isEqualTo: user)
-            .snapshots(includeMetadataChanges: true),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Text('Something went wrong');
-          }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text(' '));
-          }
-          List<dynamic> snap = snapshot.data!.docs;
-          var user = snap[0];
-          return GestureDetector(
-            onTap: (() {
-              Navigator.of(context).push(PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) {
-                final curvedAnimation = CurvedAnimation(
-                  parent: animation,
-                  curve: const Interval(0, 0.5),
-                );
-                return FadeTransition(
-                  opacity: curvedAnimation,
-                  child: DetailPage(
-                      user: user, isMainPage: false, animation: animation),
-                );
-              }));
-              print("each card");
-            }),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Stack(
-                children: [
-                  Hero(
-                    tag: user['profilePic'],
-                    child: Container(
-                      width: size.width,
-                      height: size.height,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          image: DecorationImage(
-                              image: !user['profilePic'].isEmpty
-                                  ? NetworkImage(user['profilePic'][0])
-                                  : const AssetImage("assets/images/user3.jpg")
-                                      as ImageProvider,
-                              fit: BoxFit.cover)),
-                    ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Align(
-                          alignment: Alignment.topRight,
-                          child: InkWell(
-                              onTap: () {
-                                removeLike(user['uid']);
-                              },
-                              child: SvgPicture.asset(
-                                "assets/icons/close_circle.svg",
-                                width: size.width * 0.05,
-                              )))),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+    // return Text(isSameRoom.toString());
+    return GestureDetector(
+      onTap: (() {
+        Navigator.of(context).push(PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) {
+          final curvedAnimation = CurvedAnimation(
+            parent: animation,
+            curve: const Interval(0, 0.5),
+          );
+          return FadeTransition(
+            opacity: curvedAnimation,
+            child:
+                DetailPage(user: user, isMainPage: false, animation: animation),
+          );
+        }));
+      }),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Stack(
+          children: [
+            Hero(
+              tag: user['profilePic'],
+              child: Container(
+                width: size.width,
+                height: size.height,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                        image: !user['profilePic'].isEmpty
+                            ? NetworkImage(user['profilePic'][0])
+                            : const AssetImage("assets/images/user3.jpg")
+                                as ImageProvider,
+                        fit: BoxFit.cover)),
+              ),
+            ),
+            Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Align(
+                    alignment: Alignment.topRight,
+                    child: InkWell(
+                        onTap: () {
+                          removeLike(user['uid']);
+                        },
+                        child: SvgPicture.asset(
+                          "assets/icons/close_circle.svg",
+                          width: size.width * 0.05,
+                        )))),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: size.height * 0.08,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                      borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(20))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        height: size.height * 0.08,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.5),
-                            borderRadius: const BorderRadius.vertical(
-                                bottom: Radius.circular(20))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            fontSize: 8,
-                                            fontFamily: "kanit",
-                                            fontWeight: FontWeight.w700),
-                                        children: [
-                                          TextSpan(text: user['country']),
-                                        ]),
-                                  ),
-                                  RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontFamily: "kanit",
-                                            fontWeight: FontWeight.w900),
-                                        children: [
-                                          TextSpan(
-                                              text: StringUtils.capitalize(
-                                                  user['name']['firstname'])),
-                                          const TextSpan(text: ", "),
-                                          TextSpan(
-                                              text: calculateAge(DateTime.parse(
-                                                      user['birthDate']
-                                                          .toString()))
-                                                  .toString())
-                                        ]),
-                                  ),
-                                  RichText(
-                                    text: const TextSpan(
-                                        style: TextStyle(
-                                            fontSize: 9,
-                                            fontFamily: "kanit",
-                                            fontWeight: FontWeight.w700),
-                                        children: [
-                                          TextSpan(text: "TH"),
-                                          WidgetSpan(
-                                              child: Icon(
-                                            Icons.sync_alt,
-                                            size: 10,
-                                            color: textLight,
-                                          )),
-                                          TextSpan(text: "KR"),
-                                        ]),
-                                  ),
-                                ],
-                              ),
+                            RichText(
+                              text: TextSpan(
+                                  style: const TextStyle(
+                                      fontSize: 8,
+                                      fontFamily: "kanit",
+                                      fontWeight: FontWeight.w700),
+                                  children: [
+                                    TextSpan(
+                                        text: StringUtils.capitalize(
+                                            user['country'])),
+                                  ]),
                             ),
-                            // Todo: wait for chat icon
-                            Padding(
+                            RichText(
+                              text: TextSpan(
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "kanit",
+                                      fontWeight: FontWeight.w900),
+                                  children: [
+                                    TextSpan(
+                                        text: StringUtils.capitalize(
+                                            user['name']['firstname'])),
+                                    const TextSpan(text: ", "),
+                                    TextSpan(
+                                        text: calculateAge(DateTime.parse(
+                                                user['birthDate'].toString()))
+                                            .toString())
+                                  ]),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                  style: const TextStyle(
+                                      fontSize: 9,
+                                      fontFamily: "kanit",
+                                      fontWeight: FontWeight.w700),
+                                  children: [
+                                    TextSpan(
+                                        text: StringUtils.capitalize(
+                                            user['language']
+                                                ['defaultLanguage'])),
+                                    const WidgetSpan(
+                                        child: Icon(
+                                      Icons.sync_alt,
+                                      size: 10,
+                                      color: textLight,
+                                    )),
+                                    TextSpan(
+                                        text: StringUtils.capitalize(
+                                            user['language']
+                                                ['interestedLanguage'])),
+                                  ]),
+                            ),
+                          ],
+                        ),
+                      ),
+                      isSameRoom == true
+                          ? const SizedBox.shrink()
+                          : Padding(
                               padding: const EdgeInsets.only(right: 10),
                               child: InkWell(
                                   onTap: () {
@@ -303,15 +327,14 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                                     width: size.width * 0.12,
                                   )),
                             )
-                          ],
-                        ),
-                      ),
                     ],
-                  )
-                ],
-              ),
-            ),
-          );
-        });
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
