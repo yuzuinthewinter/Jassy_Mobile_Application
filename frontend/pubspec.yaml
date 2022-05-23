@@ -58,6 +58,7 @@ dependencies:
   collection: ^1.16.0
   dismissible_page: ^0.7.2
   shared_preferences: ^2.0.15
+  flutter_lints: ^1.0.4
 
   # firebase
   firebase_storage: ^10.2.15
@@ -75,6 +76,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.9.2"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/jassy_icon.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/jassy_icon.png"
 
   flutter_localizations:
     sdk: flutter
