@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 
@@ -15,15 +16,16 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
   bool isLike = false;
 
   CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
+  var currentUser = FirebaseAuth.instance.currentUser;
 
   likeToPost(isLike) async {
     if (isLike == true) {
       await posts.doc(widget.post['postid']).update({
-        'likes': FieldValue.arrayUnion([widget.userid]),
+        'likes': FieldValue.arrayUnion([currentUser!.uid]),
       });
     } else {
       await posts.doc(widget.post['postid']).update({
-        'likes': FieldValue.arrayRemove([widget.userid]),
+        'likes': FieldValue.arrayRemove([currentUser!.uid]),
       });
     }
   }
@@ -32,24 +34,17 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     for (var userid in widget.post['likes']) {
-      if (userid == widget.userid) {
+      if (currentUser!.uid == userid) {
         isLike = true;
       }
     }
     return LikeButton(
       size: size.width * 0.07,
-      // likeBuilder: (isLike) {
-      //   final color = isLike ? Colors.red : Colors.grey;
-      //   return Icon(Icons.favorite, color: color,);
-      // },
-      // countBuilder: (count, isLike, text) {
-
-      // },
       isLiked: isLike,
       likeCount: widget.post['likes'].length,
       onTap: (isLike) async {
-        this.isLike = !isLike;
-        likeToPost(!isLike);
+        isLike = !isLike;
+        likeToPost(isLike);
         widget.post['likes'].length += this.isLike ? 1 : -1;
         return this.isLike;
       },

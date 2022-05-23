@@ -629,7 +629,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                     padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                     child: Row(
                       children: [
-                        LikeButtonWidget(post, user['uid']),
+                        LikeButtonWidget(post, currentUser!.uid),
                         SizedBox(width: size.width * 0.05),
                         InkWell(
                             onTap: () {

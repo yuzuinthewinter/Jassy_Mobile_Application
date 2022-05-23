@@ -1,5 +1,6 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -247,7 +248,6 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
   Widget getNewsFeed(context) {
     var size = MediaQuery.of(context).size;
     var postlist = getAllPost();
-    List sortPostList = [];
     // return Text(postlist.toString());
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -265,6 +265,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
           }
           var posts = snapshot.data!.docs;
 
+          List sortPostList = [];
           for (var postid in postlist) {
             for (var post in posts) {
               if (postid == post['postid']) {
@@ -272,13 +273,17 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
               }
             }
           }
-          sortPostList.sort((a, b) {
+          print('1 ${sortPostList.length.toString()}');
+          List sortPosts = sortPostList.toSet().toList();
+          print('2 ${sortPostList.length.toString()}');
+          sortPosts.toSet().toList().sort((a, b) {
             return DateFormat('dd/MM/yyyy KK:mm a')
                 .format(DateTime.parse(b['date'].toDate().toString()))
                 .compareTo(DateFormat('dd/MM/yyyy KK:mm a')
                     .format(DateTime.parse(a['date'].toDate().toString())));
           });
-          sortPostList = sortPostList.toSet().toList();
+
+          print('3 ${sortPosts.length.toString()}');
 
           return SizedBox(
               width: size.width,
@@ -287,23 +292,24 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                   padding: EdgeInsets.only(top: size.height * 0.02),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: sortPostList.length,
+                  itemCount: sortPosts.toSet().toList().length,
                   separatorBuilder: (BuildContext context, int index) {
                     return SizedBox(
                       height: size.height * 0.02,
                     );
                   },
                   itemBuilder: (context, index) {
+                    int reverse = sortPosts.length - 1 - index;
                     return InkWell(
                       onTap: () {
                         Navigator.push(context,
                             CupertinoPageRoute(builder: (context) {
                           return PostDetail(
-                            postid: sortPostList[index]['postid'],
+                            postid: sortPosts[reverse]['postid'],
                           );
                         }));
                       },
-                      child: newsCard(sortPostList[index]['postid'], context),
+                      child: newsCard(sortPosts[reverse]['postid'], context),
                     );
                   }));
         });
@@ -368,7 +374,6 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
       await groups.doc(post['groupid']).update({
         'postsID': FieldValue.arrayRemove([post['postid']]),
       });
-      Navigator.of(context).pop();
     }
 
     // checkSavePost() {
@@ -647,6 +652,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                                                             return WarningPopUpWithButton(
                                                                               text: 'GroupDeleteWarning'.tr,
                                                                               okPress: () {
+                                                                                Navigator.of(context).pop();
                                                                                 deletePost(post);
                                                                               },
                                                                             );
@@ -744,7 +750,8 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                     maxHeight: double.infinity),
                                 child: post['picture'] != ''
                                     ? Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             post['text'],
@@ -760,10 +767,9 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                             onTap: () {
                                               context.pushTransparentRoute(
                                                   InteractiveViewer(
-                                                    child: ImageMessageDetail(
-                                                        urlImage:
-                                                            post['picture']),
-                                                  ));
+                                                child: ImageMessageDetail(
+                                                    urlImage: post['picture']),
+                                              ));
                                             },
                                             child: Container(
                                               constraints: BoxConstraints(
@@ -796,7 +802,7 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                   horizontal: size.width * 0.1),
                               child: Row(
                                 children: [
-                                  LikeButtonWidget(post, user['uid']),
+                                  LikeButtonWidget(post, currentUser!.uid),
                                   SizedBox(width: size.width * 0.05),
                                   InkWell(
                                       onTap: () {
