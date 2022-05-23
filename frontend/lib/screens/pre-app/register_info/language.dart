@@ -15,6 +15,7 @@ class RegisterLanguage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: true,
       appBar: BackAndCloseAppBar(
         text: "LandingRegister".tr,
       ),

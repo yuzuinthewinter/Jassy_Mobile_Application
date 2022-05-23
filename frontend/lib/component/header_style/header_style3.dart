@@ -7,9 +7,10 @@ class HeaderStyle3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
-      height: 270,
+      height: size.height * 0.3,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
         begin: Alignment.topLeft,

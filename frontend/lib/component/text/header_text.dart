@@ -7,7 +7,7 @@ class HeaderText extends StatelessWidget {
   const HeaderText({
     Key? key, 
     required this.text,
-    this.fontsize = 18.0
+    this.fontsize = 16.0
   }) : super(key: key);
 
   @override

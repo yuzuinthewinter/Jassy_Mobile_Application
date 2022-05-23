@@ -79,11 +79,12 @@ class _BodyState extends State<Body> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 20.0),
                           child: TextFormField(
+                            style: const TextStyle(fontSize: 14),
                             controller: firstNameController,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               hintText: "InfoFirstname".tr,
-                              hintStyle: const TextStyle(color: greyDark),
+                              hintStyle: const TextStyle(color: greyDark, fontSize: 14),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
                               fillColor: textLight,
@@ -118,10 +119,11 @@ class _BodyState extends State<Body> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 20.0),
                           child: TextFormField(
+                            style: const TextStyle(fontSize: 14),
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               hintText: "InfoLastname".tr,
-                              hintStyle: const TextStyle(color: greyDark),
+                              hintStyle: const TextStyle(color: greyDark, fontSize: 14),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
                               fillColor: textLight,
@@ -182,8 +184,9 @@ class _BodyState extends State<Body> {
                                   vertical: 15.0, horizontal: 10.0),
                               labelText:
                                   DateFormat.yMd().format(_selectedDateTime),
+                              labelStyle: const TextStyle(fontSize: 14),
                               hintText: DateFormat.yMd().format(DateTime.now()),
-                              hintStyle: const TextStyle(color: greyDark),
+                              hintStyle: const TextStyle(color: greyDark, fontSize: 14),
                               fillColor: textLight,
                               filled: true,
                               suffixIcon: const Icon(
@@ -231,7 +234,7 @@ class _BodyState extends State<Body> {
                                 return ChoiceChip(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: size.width * 0.04),
-                                  label: Text(_choicesLists[index]),
+                                  label: Text(_choicesLists[index], style: TextStyle(fontSize: 14),),
                                   selected: _defaultChoiceIndex == index,
                                   onSelected: (value) {
                                     setState(() {
@@ -272,6 +275,20 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                 ),
+                // Center(
+                //           child: DisableToggleButton(
+                //             color: firstNameController.text.isEmpty || lastnameController.text.isEmpty ? grey : primaryColor,
+                //             text: "NextButton".tr,
+                //             minimumSize: Size(size.width * 0.8, size.height * 0.05),
+                //             press: () {
+                //               if (_formKey.currentState!.validate()) {
+                //                 _formKey.currentState!.save();
+                //                 Navigator.pushNamed(context, Routes.RegisterLanguage,
+                //                     arguments: [name, userInfo]);
+                //               }
+                //             },
+                //           ),
+                //         ),
               ],
             ),
           );

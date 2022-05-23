@@ -107,6 +107,7 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     final _formKey = GlobalKey<FormState>();
     return Form(
       key: _formKey,
@@ -144,6 +145,7 @@ class _BodyState extends State<Body> {
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 15.0, horizontal: 10.0),
                           labelText: countryItem[countryIndex],
+                          labelStyle: const TextStyle(fontSize: 14),
                           fillColor: textLight,
                           filled: true,
                           suffixIcon: const Icon(
@@ -189,6 +191,7 @@ class _BodyState extends State<Body> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         labelText: languageItems[defaultIndex],
+                        labelStyle: const TextStyle(fontSize: 14),
                         fillColor: textLight,
                         filled: true,
                         suffixIcon: const Icon(
@@ -237,6 +240,7 @@ class _BodyState extends State<Body> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         labelText: languageLevelItems[defaultLevelIndex],
+                        labelStyle: const TextStyle(fontSize: 14),
                         fillColor: textLight,
                         filled: true,
                         suffixIcon: const Icon(
@@ -284,6 +288,7 @@ class _BodyState extends State<Body> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         labelText: languageItems[interestIndex],
+                        labelStyle: const TextStyle(fontSize: 14),
                         fillColor: textLight,
                         filled: true,
                         suffixIcon: const Icon(
@@ -333,6 +338,7 @@ class _BodyState extends State<Body> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         labelText: languageLevelItems[interestLevelIndex],
+                        labelStyle: const TextStyle(fontSize: 14),
                         fillColor: textLight,
                         filled: true,
                         suffixIcon: const Icon(
@@ -365,7 +371,7 @@ class _BodyState extends State<Body> {
           Center(
             child: DisableToggleButton(
               text: "NextButton".tr,
-              minimumSize: const Size(279, 36),
+              minimumSize: Size(size.width * 0.8, size.height * 0.05),
               press: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
@@ -396,7 +402,7 @@ class _BodyState extends State<Body> {
                   .map((item) => Center(
                         child: Text(
                           item,
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 14),
                         ),
                       ))
                   .toList(),
@@ -425,7 +431,7 @@ class _BodyState extends State<Body> {
                   .map((item) => Center(
                         child: Text(
                           item,
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 14),
                         ),
                       ))
                   .toList(),
@@ -454,7 +460,7 @@ class _BodyState extends State<Body> {
                   .map((item) => Center(
                         child: Text(
                           item,
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 14),
                         ),
                       ))
                   .toList(),
@@ -483,7 +489,7 @@ class _BodyState extends State<Body> {
                   .map((item) => Center(
                         child: Text(
                           item,
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 14),
                         ),
                       ))
                   .toList(),
@@ -512,7 +518,7 @@ class _BodyState extends State<Body> {
                   .map((item) => Center(
                         child: Text(
                           item,
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 14),
                         ),
                       ))
                   .toList(),
