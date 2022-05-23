@@ -66,46 +66,83 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
   createChatRoom(String userid) async {
     var chatMember = [userid, currentUser!.uid];
 
-    DocumentReference docRef = await chatRooms.add({
-      'member': chatMember,
-      'lastMessageSent': '',
-      'lastTimestamp': DateTime.now(),
-      'unseenCount': 0,
-      'sentBy': '',
-      'messages': [],
-      'type': '',
-    });
-    await chatRooms.doc(docRef.id).update({
-      'chatid': docRef.id,
-    });
-    await users.doc(chatMember[0]).update({
-      'chats': FieldValue.arrayUnion([docRef.id]),
-      'hideUser': FieldValue.arrayUnion([chatMember[1]]),
-    });
-    await users.doc(chatMember[1]).update({
-      'chats': FieldValue.arrayUnion([docRef.id]),
-      'hideUser': FieldValue.arrayUnion([chatMember[0]]),
-    });
-    var user = users.where('uid', isEqualTo: userid);
-    var snapshot = await user.get();
-    final data = snapshot.docs[0];
+    if (isHaveRoom) {
+      var user = users.where('uid', isEqualTo: userid);
+      var snapshot = await user.get();
+      final data = snapshot.docs[0];
 
-    var thisUser = users.where('uid', isEqualTo: currentUser!.uid);
-    var snapshotUser = await thisUser.get();
-    final userData = snapshotUser.docs[0];
+      var thisUser = users.where('uid', isEqualTo: currentUser!.uid);
+      var snapshotUser = await thisUser.get();
+      final userData = snapshotUser.docs[0];
 
-    Navigator.push(context, CupertinoPageRoute(builder: (context) {
-      // NOTE: click each card to go to chat room
-      return ChatRoom(
-        chatid: docRef.id,
-        user: data,
-        currentUser: userData,
-      );
-    }));
+      Navigator.push(context, CupertinoPageRoute(builder: (context) {
+        return ChatRoom(
+          chatid: getIdRoom,
+          user: data,
+          currentUser: userData,
+        );
+      }));
+    } else {
+      DocumentReference docRef = await chatRooms.add({
+        'member': chatMember,
+        'lastMessageSent': '',
+        'lastTimestamp': DateTime.now(),
+        'unseenCount': 0,
+        'sentBy': '',
+        'messages': [],
+        'type': '',
+      });
+      await chatRooms.doc(docRef.id).update({
+        'chatid': docRef.id,
+      });
+      await users.doc(chatMember[0]).update({
+        'chats': FieldValue.arrayUnion([docRef.id]),
+        'hideUser': FieldValue.arrayUnion([chatMember[1]]),
+      });
+      await users.doc(chatMember[1]).update({
+        'chats': FieldValue.arrayUnion([docRef.id]),
+        'hideUser': FieldValue.arrayUnion([chatMember[0]]),
+      });
+      var user = users.where('uid', isEqualTo: userid);
+      var snapshot = await user.get();
+      final data = snapshot.docs[0];
+
+      var thisUser = users.where('uid', isEqualTo: currentUser!.uid);
+      var snapshotUser = await thisUser.get();
+      final userData = snapshotUser.docs[0];
+
+      Navigator.push(context, CupertinoPageRoute(builder: (context) {
+        // NOTE: click each card to go to chat room
+        return ChatRoom(
+          chatid: docRef.id,
+          user: data,
+          currentUser: userData,
+        );
+      }));
+    }
+  }
+
+  bool isHaveRoom = false;
+  String getIdRoom = '';
+  String getuserid = '';
+  checkHaveRoom() async {
+    var chatMember = [widget.user['uid'], currentUser!.uid];
+    var snap = await chatRooms.get();
+
+    if (snap.docs.isNotEmpty) {
+      final chats = snap.docs;
+      for (var chat in chats) {
+        if (chat['member'].toString() == chatMember.toString()) {
+          isHaveRoom = true;
+          getIdRoom = chat['chatid'];
+        }
+      }
+    }
   }
 
   @override
   void initState() {
+    checkHaveRoom();
     tabController = TabController(length: 2, vsync: this);
 
     tabController.addListener(() {
@@ -205,10 +242,6 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                       TextSpan(
                                           text: StringUtils.capitalize(
                                               widget.user['country'])),
-                                      // const TextSpan(text: ", "),
-                                      // TextSpan(text: widget.user.city),
-                                      // const TextSpan(text: " "),
-                                      // TextSpan(text: widget.user.time)
                                     ]),
                               ),
                             ],
