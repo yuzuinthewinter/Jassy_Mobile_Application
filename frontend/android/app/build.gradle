@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '3'
+    flutterVersionCode = '1'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.1'
+    flutterVersionName = '1.0'
 }
 
 def keystoreProperties = new Properties()
@@ -34,7 +34,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 31
-    ndkVersion 24.0.8215888
+    // ndkVersion 24.0.8215888
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -70,9 +70,9 @@ android {
    buildTypes {
        release {
            signingConfig signingConfigs.release
-           ndk {
-                debugSymbolLevel 'SYMBOL_TABLE'
-            }
+        //    ndk {
+        //         debugSymbolLevel 'SYMBOL_TABLE'
+        //     }
        }
    }
 }
