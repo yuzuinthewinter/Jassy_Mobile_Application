@@ -21,6 +21,12 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
@@ -34,6 +40,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 31
+    // ndkVersion 24.0.8215888
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -50,7 +57,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.flutter_application_1"
+        applicationId "com.jassygroup.jassy_language_app"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
@@ -58,7 +65,7 @@ android {
         multiDexEnabled true
     }
 
-   signingConfigs {
+    signingConfigs {
        release {
            keyAlias keystoreProperties['keyAlias']
            keyPassword keystoreProperties['keyPassword']
@@ -69,9 +76,11 @@ android {
    buildTypes {
        release {
            signingConfig signingConfigs.release
+        //    ndk {
+        //         debugSymbolLevel 'SYMBOL_TABLE'
+        //     }
        }
    }
-
 }
 
 flutter {
@@ -79,6 +88,7 @@ flutter {
 }
 
 dependencies {
+    implementation 'com.google.android.material:material:1.7.0-alpha01'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-firestore:24.0.2'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10'
