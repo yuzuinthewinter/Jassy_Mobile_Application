@@ -336,12 +336,30 @@ class _ChatCardBody extends State<ChatCard> {
                                 ? const SizedBox.shrink()
                                 : widget.chat['unseenCount'] == 0
                                     ? const SizedBox.shrink()
-                                    : Text(
-                                        // chat['lastTimestamp']
-                                        widget.chat['unseenCount'].toString(),
-                                        style: const TextStyle(
-                                            fontSize: 12, color: textMadatory),
-                                      ),
+                                    : Stack(
+                                      children: [
+                                        Container(
+                                          height: 20,
+                                          width: 20,
+                                          decoration: BoxDecoration(
+                                              color: tertiary,
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .scaffoldBackgroundColor)),
+                                        ),
+                                        Positioned(
+                                          right: 6,
+                                          bottom: 1.3,
+                                          child: Text(
+                                              // chat['lastTimestamp']
+                                              widget.chat['unseenCount'].toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 12, color: textLight),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             Text(
                               // chat['lastTimestamp']
                               getDate(widget.chat['lastTimestamp']),

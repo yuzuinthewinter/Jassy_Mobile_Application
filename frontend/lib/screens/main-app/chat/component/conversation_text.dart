@@ -418,8 +418,7 @@ class _BodyState extends State<ConversationText> {
                                     Padding(
                                       padding: EdgeInsets.only(
                                           top: size.height * 0.03),
-                                      child: Expanded(
-                                        child: ListView.builder(
+                                      child: ListView.builder(
                                             scrollDirection: Axis.vertical,
                                             shrinkWrap: true,
                                             itemCount:
@@ -446,7 +445,7 @@ class _BodyState extends State<ConversationText> {
                                                         _LanguageChoicesLists[
                                                             index]),
                                                   ));
-                                            }),
+                                            },
                                       ),
                                     ),
                                   ],
