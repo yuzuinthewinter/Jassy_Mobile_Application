@@ -107,10 +107,10 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                   }
                 }
                 return widget.user['groups'].length != 0
-                    ? isMember == true
-                        ? communityCard(widget.user, group, context)
-                        : const SizedBox.shrink()
-                    : communityCard(widget.user, group, context);
+                        ? isMember == true
+                            ? communityCard(widget.user, group, context)
+                            : const SizedBox.shrink()
+                        : communityCard(widget.user, group, context);
               },
             ),
           ),
@@ -273,17 +273,13 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
               }
             }
           }
-          print('1 ${sortPostList.length.toString()}');
           List sortPosts = sortPostList.toSet().toList();
-          print('2 ${sortPostList.length.toString()}');
           sortPosts.toSet().toList().sort((a, b) {
             return DateFormat('dd/MM/yyyy KK:mm a')
                 .format(DateTime.parse(b['date'].toDate().toString()))
                 .compareTo(DateFormat('dd/MM/yyyy KK:mm a')
                     .format(DateTime.parse(a['date'].toDate().toString())));
           });
-
-          print('3 ${sortPosts.length.toString()}');
 
           return SizedBox(
               width: size.width,
