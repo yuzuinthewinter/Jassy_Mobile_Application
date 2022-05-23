@@ -129,7 +129,7 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                               context: context,
                               builder: (context) {
                                 return WarningPopUpWithButton(
-                                  text: 'GroupActivity'.tr,
+                                  text: 'GroupWarningJoin'.tr,
                                   okPress: () {
                                     Navigator.of(context).pop();
                                   },
