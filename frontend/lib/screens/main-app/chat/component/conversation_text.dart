@@ -359,8 +359,10 @@ class _BodyState extends State<ConversationText> {
 
     Size size = MediaQuery.of(context).size;
     return Container(
-      width: size.width * 0.6,
-      height: size.height * 0.08,
+      constraints: BoxConstraints(
+        maxWidth: size.width * 0.65,
+        maxHeight: size.height * 0.08,
+      ),
       decoration: const BoxDecoration(
         color: primaryDarker,
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -458,13 +460,11 @@ class _BodyState extends State<ConversationText> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SvgPicture.asset(item.icon),
-                        Container(
-                          margin: EdgeInsets.only(top: 2),
-                          child: Text(
+                        Text(
                             item.text,
-                            style: TextStyle(color: Colors.white, fontSize: 12),
+                            style: TextStyle(color: Colors.white, fontSize: 12,),
+                            textAlign: TextAlign.center,
                           ),
-                        ),
                       ],
                     ),
                   ),
