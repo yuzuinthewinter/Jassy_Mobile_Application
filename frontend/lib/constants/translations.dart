@@ -53,7 +53,7 @@ class LocaleString extends Translations {
           "InfoSex": "Sex",
           "InfoMale": "Male",
           "InfoFemale": "Female",
-          "ValidateAge" : "You are not of legal age to create an account.",
+          "ValidateAge": "You are not of legal age to create an account.",
           //Language Info
           "InfoLangHeader": "Language Information",
           "InfoLangDesc":
@@ -65,7 +65,8 @@ class LocaleString extends Translations {
           "InfoLevelLanguageInterest": "Level of Language Interest",
           //handle phase one
           "PhaseOneSuccessHeader": "Step One\nRegistration is Successful.",
-          "PhaseOneSuccessDetail": "Press next step button\nto verify your identity by face.",
+          "PhaseOneSuccessDetail":
+              "Press next step button\nto verify your identity by face.",
           "PhaseOneGoToApp": "Go to App",
           "PhaseOneGoToPhaseTwo": "Next Step",
           //Profile Picture Upload
@@ -117,6 +118,7 @@ class LocaleString extends Translations {
           //Group Activity
           "GroupActivity": "Group Activities",
           "GroupJoin": "Join Group",
+          "GroupWarningJoin": "You have to join this group first",
           "GroupMember": "Member",
           "GroupNotificationOff": "Turn off group notifications",
           "GroupNotificationOn": "Turn on group notifications",
@@ -150,7 +152,7 @@ class LocaleString extends Translations {
           "Reply": "reply",
           "Copy": "copy",
           "Translate": "translate",
-          "LikeMassage" : "like",
+          "LikeMassage": "like",
           //Appbar Chat
           "StatusActiveNow": "Active now",
           "StatusActiveAfew": "Active a few minutes ago",
@@ -288,7 +290,7 @@ class LocaleString extends Translations {
           "InfoSex": "เพศ",
           "InfoMale": "ชาย",
           "InfoFemale": "หญิง",
-          "ValidateAge" : "คุณอายุยังไม่ถึงเกณฑ์ที่จะสร้างบัญชี",
+          "ValidateAge": "คุณอายุยังไม่ถึงเกณฑ์ที่จะสร้างบัญชี",
           //Language Info
           "InfoLangHeader": "ข้อมูลภาษา",
           "InfoLangDesc":
@@ -351,6 +353,7 @@ class LocaleString extends Translations {
           //Group Activity
           "GroupActivity": "กิจกรรมของกลุ่ม",
           "GroupJoin": "เข้าร่วมกลุ่ม",
+          "GroupWarningJoin": "โปรดเข้าร่วมกลุ่มเพื่อรับข่าวสาร",
           "GroupMember": "สมาชิก",
           "GroupNotificationOff": "ปิดการแจ้งเตือนกลุ่ม",
           "GroupNotificationOn": "เปิดการแจ้งเตือนกลุ่ม",
@@ -384,7 +387,7 @@ class LocaleString extends Translations {
           "Reply": "ตอบกลับ",
           "Copy": "คัดลอก",
           "Translate": "แปลภาษา",
-          "LikeMassage" : "ชอบ",
+          "LikeMassage": "ชอบ",
           //Appbar Chat
           "StatusActiveNow": "กำลังใช้งาน",
           "StatusActiveAfew": "ใช้งานเมื่อไม่กี่นาทีที่แล้ว",

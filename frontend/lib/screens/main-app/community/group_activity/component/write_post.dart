@@ -113,69 +113,77 @@ class _WritePostState extends State<WritePost> {
           await uploadFile();
         }
         createPost();
-        Navigator.pop(context);
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
       }),
       body: Container(
         color: textLight,
         child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CurvedWidget(
-                    child: JassyGradientColor(
-                  gradientHeight: size.height * 0.23,
-                )),
-                Expanded(
-                  child: KeyboardActions(
-                    config: _buildConfig(context),
-                    child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CurvedWidget(
+                child: JassyGradientColor(
+              gradientHeight: size.height * 0.23,
+            )),
+            Expanded(
+              child: KeyboardActions(
+                config: _buildConfig(context),
+                child: Column(
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                              child: CircleAvatar(
-                                backgroundImage: !widget.user['profilePic'].isEmpty
-                                    ? NetworkImage(widget.user['profilePic'][0])
-                                    : const AssetImage("assets/images/user3.jpg")
-                                        as ImageProvider,
-                                radius: size.width * 0.05,
-                              ),
-                            ),
-                            Text(
-                              '${StringUtils.capitalize(widget.user['name']['firstname'])} ${StringUtils.capitalize(widget.user['name']['lastname'])}',
-                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
-                          child: TextFormField(
-                            autofocus: true,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "GroupPostHintText".tr,
-                              hintMaxLines: 4,
-                            ),
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            focusNode: writingTextFocus,
-                            controller: writingTextController,
-                            onChanged: (String text) {
-                              text = writingTextController.text;
-                              postText = text;
-                            },
+                          padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.05),
+                          child: CircleAvatar(
+                            backgroundImage: !widget.user['profilePic'].isEmpty
+                                ? NetworkImage(widget.user['profilePic'][0])
+                                : const AssetImage("assets/images/user3.jpg")
+                                    as ImageProvider,
+                            radius: size.width * 0.05,
                           ),
                         ),
-                        pickedFile != null 
-                        ? Image.file(File(pickedFile!.path!), fit: BoxFit.cover, height: MediaQuery.of(context).size.height * 0.6, width: double.infinity,)
-                        : Container(),
+                        Text(
+                          '${StringUtils.capitalize(widget.user['name']['firstname'])} ${StringUtils.capitalize(widget.user['name']['lastname'])}',
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w700),
+                        ),
                       ],
                     ),
-                  ),
-                )
-              ],
-            ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: size.width * 0.07),
+                      child: TextFormField(
+                        autofocus: true,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "GroupPostHintText".tr,
+                          hintMaxLines: 4,
+                        ),
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        focusNode: writingTextFocus,
+                        controller: writingTextController,
+                        onChanged: (String text) {
+                          text = writingTextController.text;
+                          postText = text;
+                        },
+                      ),
+                    ),
+                    pickedFile != null
+                        ? Image.file(
+                            File(pickedFile!.path!),
+                            fit: BoxFit.cover,
+                            height: MediaQuery.of(context).size.height * 0.6,
+                            width: double.infinity,
+                          )
+                        : Container(),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

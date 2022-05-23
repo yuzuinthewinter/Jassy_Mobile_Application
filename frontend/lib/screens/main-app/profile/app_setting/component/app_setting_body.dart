@@ -75,7 +75,7 @@ class _AppSettingBodyState extends State<AppSettingBody> {
                       style: const TextStyle(fontSize: 18),
                     ),
                     const Spacer(),
-                    ChangeLanguagesButton()
+                    const ChangeLanguagesButton()
                   ],
                 ),
               ),

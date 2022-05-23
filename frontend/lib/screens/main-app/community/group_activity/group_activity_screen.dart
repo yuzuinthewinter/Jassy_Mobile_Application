@@ -165,7 +165,7 @@ class _GroupActivityScreenState extends State<GroupActivityScreen> {
           user: widget.user,
           groupActivity: widget.groupActivity,
         ),
-        floatingActionButton: isMember == true
+        floatingActionButton: widget.user['userStatus'] == 'admin'
             ? FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
@@ -177,6 +177,18 @@ class _GroupActivityScreenState extends State<GroupActivityScreen> {
                 child: const Icon(Icons.mode_edit_rounded),
                 backgroundColor: primaryColor,
               )
-            : const SizedBox.shrink());
+            : isMember == true
+                ? FloatingActionButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WritePost(
+                                  widget.user, widget.groupActivity)));
+                    },
+                    child: const Icon(Icons.mode_edit_rounded),
+                    backgroundColor: primaryColor,
+                  )
+                : const SizedBox.shrink());
   }
 }
