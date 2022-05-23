@@ -59,9 +59,15 @@ class _EditChatListState extends State<EditChatList> {
     // }
   }
 
+  bool isSelected = false;
+  void isSelect () {
+    setState(() {
+      isSelected = !isSelected;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool isSelected = false;
     var size = MediaQuery.of(context).size;
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -216,9 +222,7 @@ class _EditChatListState extends State<EditChatList> {
                                       for (var user in data) {
                                         return InkWell(
                                           onTap: () {
-                                            setState(() {
-                                              isSelected = !isSelected;
-                                            });
+                                            isSelect();
                                             isSelected
                                                 ? checkList.add(
                                                     userList[index]['chatid'])
