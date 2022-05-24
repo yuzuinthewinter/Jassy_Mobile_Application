@@ -59,7 +59,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
               inRoom: widget.inRoom,
             ),
           ),
-          widget.user['report'].length < 3
+          widget.user['report'].length < 5 || widget.user['userStatus'] != 'blocked'
               ? MessageInput(
                   size: size, chatid: widget.chatid)
               : Center(
