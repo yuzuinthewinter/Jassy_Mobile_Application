@@ -34,8 +34,6 @@ class _PostDetailBodyState extends State<PostDetailBody> {
   TextEditingController messageController = TextEditingController();
   late FocusNode myFocusNode;
   var currentUser = FirebaseAuth.instance.currentUser;
-  var getpost;
-  var getgroupid;
 
   @override
   void initState() {
@@ -88,33 +86,31 @@ class _PostDetailBodyState extends State<PostDetailBody> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Column(
-      children: [
-        CurvedWidget(
-            child: JassyGradientColor(
-          gradientHeight: size.height * 0.23,
-        )),
-        Expanded(
-          child: SingleChildScrollView(
-            child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection("Posts")
-                    .where('postid', isEqualTo: widget.postid)
-                    .snapshots(includeMetadataChanges: true),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return const Text('Something went wrong');
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: Text(''));
-                  }
-                  if (snapshot.data!.docs.isEmpty) {
-                    return const Center(child: Text(''));
-                  }
-                  var post = snapshot.data!.docs[0];
-                  getpost = post;
-                  getgroupid = post['groupid'];
-                  return StreamBuilder<QuerySnapshot>(
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection("Posts")
+            .where('postid', isEqualTo: widget.postid)
+            .snapshots(includeMetadataChanges: true),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text('Something went wrong');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: Text(''));
+          }
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text(''));
+          }
+          var post = snapshot.data!.docs[0];
+          return Column(
+            children: [
+              CurvedWidget(
+                  child: JassyGradientColor(
+                gradientHeight: size.height * 0.23,
+              )),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('Users')
                         .where('uid', isEqualTo: post['postby'])
@@ -136,54 +132,53 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                         myFocusNode: myFocusNode,
                       );
                     },
-                  );
-                }),
-          ),
-        ),
-        StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('Users')
-                  .where('uid', isEqualTo: currentUser!.uid)
-                  .snapshots(includeMetadataChanges: true),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Text('Something went wrong');
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: Text(''));
-                }
-                if (snapshot.data!.docs.isEmpty) {
-                  return const Center(child: Text(''));
-                }
-                var user = snapshot.data!.docs[0];
-                bool isMember = false;
-                for (var groupid in user['groups']) {
-                  if (groupid == getgroupid) {
-                    isMember = true;
-                  }
-                }
-                return user['userStatus'] == 'admin'
-                    ? CommentInput(
-                        size: size,
-                        onTab: () {
-                          addComment(getpost['postid'], messageController.text);
-                        },
-                        child: inputConsole(),
-                      )
-                    : isMember
+                  ),
+                ),
+              ),
+              StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Users')
+                      .where('uid', isEqualTo: currentUser!.uid)
+                      .snapshots(includeMetadataChanges: true),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: Text(''));
+                    }
+                    if (snapshot.data!.docs.isEmpty) {
+                      return const Center(child: Text(''));
+                    }
+                    var user = snapshot.data!.docs[0];
+                    bool isMember = false;
+                    for (var groupid in user['groups']) {
+                      if (groupid == post['groupid']) {
+                        isMember = true;
+                      }
+                    }
+                    return user['userStatus'] == 'admin'
                         ? CommentInput(
                             size: size,
                             onTab: () {
-                              addComment(
-                                  getpost['postid'], messageController.text);
+                              addComment(post['postid'], messageController.text);
                             },
                             child: inputConsole(),
                           )
-                        : const SizedBox.shrink();
-              }
-        ),
-      ],
-    );
+                        : isMember
+                            ? CommentInput(
+                                size: size,
+                                onTab: () {
+                                  addComment(
+                                      post['postid'], messageController.text);
+                                },
+                                child: inputConsole(),
+                              )
+                            : const SizedBox.shrink();
+                  }),
+            ],
+          );
+        });
   }
 
   Widget inputConsole() {
