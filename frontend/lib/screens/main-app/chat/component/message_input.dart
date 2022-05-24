@@ -11,6 +11,7 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 
 class MessageInput extends StatefulWidget {
   final Size size;
@@ -44,6 +45,7 @@ class _BodyState extends State<MessageInput> {
   String _message = '';
   String typemessage = 'text';
   int count = 0;
+  bool isWaitingUpload = false;
 
   @override
   void dispose() {
@@ -98,17 +100,18 @@ class _BodyState extends State<MessageInput> {
     replyController.updateReply('', false, '', type);
   }
 
-  File? pickedImage;
+  XFile? pickedImage;
   bool isPickedImage = false;
   Future pickImage(ImageSource source) async {
     try {
-      final image = await ImagePicker().pickImage(source: source);
+      final XFile? image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
 
-      final imageTemporary = File(image.path);
+      // final imageTemporary = File(image.path);
       setState(() {
-        pickedImage = imageTemporary;
+        pickedImage = image;
         typemessage = 'image';
+        isWaitingUpload = true;
       });
       await uploadImage();
     } on PlatformException catch (e) {
@@ -150,6 +153,7 @@ class _BodyState extends State<MessageInput> {
     setState(() {
       urlFile = urlDownload;
       uploadTask = null;
+      isWaitingUpload = false;
     });
   }
 
@@ -187,112 +191,119 @@ class _BodyState extends State<MessageInput> {
         _message = controller.message.value;
         return Column(
           children: [
-            pickedImage != null 
-            ? Container(
-              padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.width * 0.05),
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: primaryLight, width: 1)
-                )
-              ),
-              child: Stack(
-                children: [
-                  Align(
-                        alignment: Alignment.center,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: Image.file(
-                            File(pickedImage!.path), 
-                            fit: BoxFit.cover, 
-                            height: size.height * 0.2, 
-                            width: size.width * 0.6,
+            pickedImage != null
+                ? Container(
+                    padding: EdgeInsets.only(
+                        left: size.width * 0.05,
+                        right: size.width * 0.05,
+                        top: size.width * 0.05),
+                    decoration: const BoxDecoration(
+                        border: Border(
+                            top: BorderSide(color: primaryLight, width: 1))),
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: Image.file(
+                              File(pickedImage!.path),
+                              fit: BoxFit.cover,
+                              height: size.height * 0.2,
+                              width: size.width * 0.6,
+                            ),
+                          ),
                         ),
-                      ),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          pickedImage = null;
-                        });
-                      },
-                      child: SvgPicture.asset(
-                        "assets/icons/close_circle.svg",
-                        width: size.height * 0.04,
-                      ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                pickedImage = null;
+                              });
+                            },
+                            child: SvgPicture.asset(
+                              "assets/icons/close_circle.svg",
+                              width: size.height * 0.04,
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   )
-                ],
-              ),
-            ) : Container(),
+                : Container(),
             _isReply
                 ? !isCurrentChat
                     ? Container(
                         alignment: Alignment.centerLeft,
                         decoration: const BoxDecoration(
-                          border: Border(
-                            top: BorderSide(color: primaryLight, width: 1)
-                          )
-                        ),
+                            border: Border(
+                                top:
+                                    BorderSide(color: primaryLight, width: 1))),
                         padding: EdgeInsets.only(
                             top: size.height * 0.02,
                             left: size.height * 0.03,
                             right: size.height * 0.03),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                          const Text(
-                            'Reply : ',
-                            style: TextStyle(color: greyDark, fontSize: 14),
-                          ),
-                          controller.type.value == 'text'
-                              ? Container(
-                                constraints:
-                                  BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
-                                child: Text(
-                                    controller.message.value,
-                                    style:
-                                        TextStyle(color: greyDark, fontSize: 14),
-                                    maxLines: null,
-                                    textAlign: TextAlign.left,
-                                  ),
-                              )
-                              : controller.type.value == 'image'
-                                  ? Image.network(
-                                      controller.message.value,
-                                      width: MediaQuery.of(context).size.width,
-                                      height:
-                                          MediaQuery.of(context).size.height,
-                                      fit: BoxFit.contain,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Reply : ',
+                                style: TextStyle(color: greyDark, fontSize: 14),
+                              ),
+                              controller.type.value == 'text'
+                                  ? Container(
+                                      constraints: BoxConstraints(
+                                          maxWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.6),
+                                      child: Text(
+                                        controller.message.value,
+                                        style: TextStyle(
+                                            color: greyDark, fontSize: 14),
+                                        maxLines: null,
+                                        textAlign: TextAlign.left,
+                                      ),
                                     )
-                                  : const Text(
-                                      'File',
-                                      style: TextStyle(
-                                          color: greyDark, fontSize: 14),
-                                      maxLines: 1,
-                                      textAlign: TextAlign.left,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                          const Spacer(),
-                          Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: InkWell(
-                                      onTap: () async {
-                                        setState(() {
-                                          controller.isReply.value = false;
-                                          _isReply = controller.isReply.value;
-                                        });
-                                        replyController.updateReply(
-                                            '', _isReply, _chatid, typemessage);
-                                      },
-                                      child: SvgPicture.asset(
-                                        "assets/icons/close_circle.svg",
-                                        width: size.height * 0.035,
-                                      )))),
-                        ]))
+                                  : controller.type.value == 'image'
+                                      ? Image.network(
+                                          controller.message.value,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          fit: BoxFit.contain,
+                                        )
+                                      : const Text(
+                                          'File',
+                                          style: TextStyle(
+                                              color: greyDark, fontSize: 14),
+                                          maxLines: 1,
+                                          textAlign: TextAlign.left,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                              const Spacer(),
+                              Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: InkWell(
+                                          onTap: () async {
+                                            setState(() {
+                                              controller.isReply.value = false;
+                                              _isReply =
+                                                  controller.isReply.value;
+                                            });
+                                            replyController.updateReply('',
+                                                _isReply, _chatid, typemessage);
+                                          },
+                                          child: SvgPicture.asset(
+                                            "assets/icons/close_circle.svg",
+                                            width: size.height * 0.035,
+                                          )))),
+                            ]))
                     : const SizedBox.shrink()
                 : const SizedBox.shrink(),
             Container(
@@ -351,15 +362,20 @@ class _BodyState extends State<MessageInput> {
                     ),
                     InkWell(
                         onTap: () {
-                          if(messageController.text.isNotEmpty || pickedImage != null) {
+                          if (messageController.text.isNotEmpty ||
+                              pickedImage != null) {
                             setState(() {
                               pickedImage = null;
                             });
-                          return sendMessage(messageController.text, typemessage);
+                            return sendMessage(
+                                messageController.text, typemessage);
                           }
                         },
-                        child: SvgPicture.asset("assets/icons/send.svg")
-                    ),
+                        child: isWaitingUpload
+                            ? Lottie.asset("assets/images/loading.json", width: 24, height: 24)
+                            : SvgPicture.asset(
+                                "assets/icons/send.svg",
+                              )),
                   ],
                 )),
             isMore
