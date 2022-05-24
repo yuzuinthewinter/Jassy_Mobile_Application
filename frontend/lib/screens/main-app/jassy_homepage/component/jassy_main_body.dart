@@ -296,7 +296,6 @@ class _JassyMainBodyState extends State<JassyMainBody> {
             },
           ),
         ),
-        // SizedBox(height: size.height * 0.1,)
       ],
     );
   }
