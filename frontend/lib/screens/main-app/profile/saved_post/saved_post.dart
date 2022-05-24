@@ -170,7 +170,7 @@ class _SavedPostState extends State<SavedPost> {
                             image: DecorationImage(
                               // Todo: if post has image show post image im only text show writer profilepics (or use group pic)
                               image: NetworkImage(post['picture'] == ''
-                                  ? postOwner['profilePic'][0] == ''
+                                  ? postOwner['profilePic'].length == 0
                                       ? group['coverPic']
                                       : postOwner['profilePic'][0]
                                   : post['picture']),
