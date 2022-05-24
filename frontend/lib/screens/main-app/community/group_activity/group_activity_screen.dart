@@ -10,7 +10,7 @@ import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/utils.dart';
 
-enum MenuItem { item1, item2 }
+enum MenuItem { item1 }
 
 enum AdminMenuItem { item1 }
 
@@ -101,20 +101,7 @@ class _GroupActivityScreenState extends State<GroupActivityScreen> {
                     onSelected: (value) => {
                       if (value == MenuItem.item1)
                         {
-                          setState(() {
-                            isNotificationOn = !isNotificationOn;
-                          }),
-                        }
-                      else if (value == MenuItem.item2)
-                        {
-                          // Todo: group leave
-                        }
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                          value: MenuItem.item2,
-                          onTap: () {
-                            widget.user['userStatus'] == 'admin'
+                          widget.user['userStatus'] == 'admin'
                                 ? Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -123,15 +110,19 @@ class _GroupActivityScreenState extends State<GroupActivityScreen> {
                                 : showDialog(
                                     context: context,
                                     builder: (context) {
-                                      return WarningPopUpWithButton(
-                                        text: 'WarningLeave'.tr,
-                                        okPress: () {
-                                          leaveGroup();
-                                          Navigator.of(context).pop();
-                                        },
-                                      );
-                                    });
-                          },
+                                  return WarningPopUpWithButton(
+                                      text: 'WarningLeave'.tr,
+                                      okPress: () {
+                                      Navigator.of(context).pop();
+                                     leaveGroup();
+                                },
+                             );
+                          })
+                        }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                          value: MenuItem.item1,
                           child: Row(
                             children: [
                               widget.user['userStatus'] == 'admin'
