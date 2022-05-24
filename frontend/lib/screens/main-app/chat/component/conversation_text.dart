@@ -72,21 +72,22 @@ class _BodyState extends State<ConversationText> {
   }
 
   AddFavorite(messageid, languageName) async {
+    var languageHeader = languageName.toLowerCase();
     var queryFav = memos.where('owner', isEqualTo: currentUser!.uid);
     QuerySnapshot querySnapshot = await queryFav.get();
     if (querySnapshot.docs.isNotEmpty) {
       await memos.doc(currentUser!.uid).update({
         'owner': currentUser!.uid,
         'pingroup': [],
-        'listLanguage': FieldValue.arrayUnion([languageName]),
-        '$languageName': FieldValue.arrayUnion([messageid]),
+        'listLanguage': FieldValue.arrayUnion([languageHeader]),
+        '$languageHeader': FieldValue.arrayUnion([messageid]),
       });
     } else {
       await memos.doc(currentUser!.uid).set({
         'owner': currentUser!.uid,
         'pingroup': [],
-        'listLanguage': FieldValue.arrayUnion([languageName]),
-        '$languageName': FieldValue.arrayUnion([messageid]),
+        'listLanguage': FieldValue.arrayUnion([languageHeader]),
+        '$languageHeader': FieldValue.arrayUnion([messageid]),
       });
     }
     Navigator.of(context).pop();
