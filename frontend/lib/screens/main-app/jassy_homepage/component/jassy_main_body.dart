@@ -106,73 +106,41 @@ class _JassyMainBodyState extends State<JassyMainBody> {
     return Column(
       children: [
         const CurvedWidget(child: JassyGradientColor()),
-        StreamBuilder<QuerySnapshot>(
-          stream:
-              usersdb.where('uid', isNotEqualTo: currentUser!.uid).snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Text('Something went wrong');
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: Lottie.asset("assets/images/loading.json"),
-              );
-            }
-            var users = snapshot.data!.docs;
-            return StreamBuilder<QuerySnapshot>(
-                stream: usersdb
-                    .where('uid', isEqualTo: currentUser!.uid)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return const Text('Something went wrong');
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  var thisuser = snapshot.data!.docs[0];
-
-                  List queryUser = [];
-                  int indexLanguage = 0;
-                  for (var user in users) {
-                    int age = calculateAge(
-                        DateTime.parse(user['birthDate'].toString()));
-
-                    if (user['userStatus'] == 'user') {
-                      _LanguageLevelChoicesLists.forEachIndexed(
-                          (index, lvlang) {
-                        if ('${user['language']['levelDefaultLanguage']}'
-                                .toLowerCase() ==
-                            _LanguageLevelChoicesLists[index].toLowerCase()) {
-                          indexLanguage = index;
-                        }
-                      });
-                      if (filter.language.toLowerCase() ==
-                          user['language']['defaultLanguage'].toLowerCase()) {
-                        if (_languageLevelIndex <= indexLanguage) {
-                          if (_currentRangeValues.start.round().toInt() <=
-                                  age &&
-                              age <= _currentRangeValues.end.round().toInt()) {
-                            if (filter.gender.toLowerCase() ==
-                                user['gender'].toLowerCase()) {
-                              queryUser.add(user);
-                            } else if (filter.gender.toLowerCase() ==
-                                "FilterNoneGender".tr.toLowerCase()) {
-                              queryUser.add(user);
-                            }
-                          }
-                        }
-                      }
+        Expanded(
+          child: StreamBuilder<QuerySnapshot>(
+            stream:
+                usersdb.where('uid', isNotEqualTo: currentUser!.uid).snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Text('Something went wrong');
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Lottie.asset("assets/images/loading.json"),
+                );
+              }
+              var users = snapshot.data!.docs;
+              return StreamBuilder<QuerySnapshot>(
+                  stream: usersdb
+                      .where('uid', isEqualTo: currentUser!.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
                     }
-                  }
-                  for (var hide in thisuser['hideUser']) {
-                    queryUser.removeWhere((user) => hide.contains(user['uid']));
-                  }
-                  //query for no one on list: new generate list user
-                  if (queryUser.isEmpty) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    var thisuser = snapshot.data!.docs[0];
+        
+                    List queryUser = [];
+                    int indexLanguage = 0;
                     for (var user in users) {
+                      int age = calculateAge(
+                          DateTime.parse(user['birthDate'].toString()));
+        
                       if (user['userStatus'] == 'user') {
                         _LanguageLevelChoicesLists.forEachIndexed(
                             (index, lvlang) {
@@ -185,30 +153,38 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                         if (filter.language.toLowerCase() ==
                             user['language']['defaultLanguage'].toLowerCase()) {
                           if (_languageLevelIndex <= indexLanguage) {
-                            queryUser.add(user);
+                            if (_currentRangeValues.start.round().toInt() <=
+                                    age &&
+                                age <= _currentRangeValues.end.round().toInt()) {
+                              if (filter.gender.toLowerCase() ==
+                                  user['gender'].toLowerCase()) {
+                                queryUser.add(user);
+                              } else if (filter.gender.toLowerCase() ==
+                                  "FilterNoneGender".tr.toLowerCase()) {
+                                queryUser.add(user);
+                              }
+                            }
                           }
                         }
                       }
                     }
                     for (var hide in thisuser['hideUser']) {
-                      queryUser
-                          .removeWhere((user) => hide.contains(user['uid']));
+                      queryUser.removeWhere((user) => hide.contains(user['uid']));
                     }
+                    //query for no one on list: new generate list user
                     if (queryUser.isEmpty) {
                       for (var user in users) {
                         if (user['userStatus'] == 'user') {
                           _LanguageLevelChoicesLists.forEachIndexed(
                               (index, lvlang) {
-                            if ('${user['language']['levelInterestedLanguage']}'
+                            if ('${user['language']['levelDefaultLanguage']}'
                                     .toLowerCase() ==
-                                _LanguageLevelChoicesLists[index]
-                                    .toLowerCase()) {
+                                _LanguageLevelChoicesLists[index].toLowerCase()) {
                               indexLanguage = index;
                             }
                           });
                           if (filter.language.toLowerCase() ==
-                              user['language']['interestedLanguage']
-                                  .toLowerCase()) {
+                              user['language']['defaultLanguage'].toLowerCase()) {
                             if (_languageLevelIndex <= indexLanguage) {
                               queryUser.add(user);
                             }
@@ -222,80 +198,105 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                       if (queryUser.isEmpty) {
                         for (var user in users) {
                           if (user['userStatus'] == 'user') {
+                            _LanguageLevelChoicesLists.forEachIndexed(
+                                (index, lvlang) {
+                              if ('${user['language']['levelInterestedLanguage']}'
+                                      .toLowerCase() ==
+                                  _LanguageLevelChoicesLists[index]
+                                      .toLowerCase()) {
+                                indexLanguage = index;
+                              }
+                            });
                             if (filter.language.toLowerCase() ==
                                 user['language']['interestedLanguage']
                                     .toLowerCase()) {
-                              queryUser.add(user);
+                              if (_languageLevelIndex <= indexLanguage) {
+                                queryUser.add(user);
+                              }
                             }
                           }
                         }
                         for (var hide in thisuser['hideUser']) {
-                          queryUser.removeWhere(
-                              (user) => hide.contains(user['uid']));
+                          queryUser
+                              .removeWhere((user) => hide.contains(user['uid']));
                         }
                         if (queryUser.isEmpty) {
-                          return Column(
-                            children: [
-                              SizedBox(
-                                height: size.height * 0.12,
-                              ),
-                              SvgPicture.asset(
-                                "assets/images/no_user_filter.svg",
-                                width: size.width * 0.72,
-                              ),
-                              SizedBox(
-                                height: size.height * 0.05,
-                              ),
-                              Text(
-                                'MainNoUserTitle'.tr,
-                                style: const TextStyle(
-                                    fontSize: 18, color: textDark),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(
-                                height: size.height * 0.012,
-                              ),
-                              Text(
-                                'MainNoUserDesc'.tr,
-                                style: const TextStyle(
-                                    fontSize: 14, color: greyDark),
-                              ),
-                            ],
-                          );
+                          for (var user in users) {
+                            if (user['userStatus'] == 'user') {
+                              if (filter.language.toLowerCase() ==
+                                  user['language']['interestedLanguage']
+                                      .toLowerCase()) {
+                                queryUser.add(user);
+                              }
+                            }
+                          }
+                          for (var hide in thisuser['hideUser']) {
+                            queryUser.removeWhere(
+                                (user) => hide.contains(user['uid']));
+                          }
+                          if (queryUser.isEmpty) {
+                            return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/images/no_user_filter.svg",
+                                          width: size.width * 0.72,
+                                        ),
+                                        // SizedBox(
+                                        //   height: size.height * 0.05,
+                                        // ),
+                                        Text(
+                                          'MainNoUserTitle'.tr,
+                                          style: const TextStyle(
+                                              fontSize: 18, color: textDark),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(
+                                          height: size.height * 0.012,
+                                        ),
+                                        Text(
+                                          'MainNoUserDesc'.tr,
+                                          style: const TextStyle(
+                                              fontSize: 14, color: greyDark),
+                                        ),
+                                      ],
+                            );
+                          }
                         }
                       }
+                      queryUser.removeWhere(
+                          (user) => thisuser['hideUser'].contains(user['uid']));
+                      return CarouselSlider.builder(
+                        itemCount: queryUser.length,
+                        itemBuilder: (context, index, child) {
+                          return carouselCard(queryUser[index]);
+                        },
+                        options: CarouselOptions(
+                            height: size.height * 0.70,
+                            // aspectRatio: 0.75,
+                            enlargeCenterPage: true,
+                            enlargeStrategy: CenterPageEnlargeStrategy.height,
+                            enableInfiniteScroll: false),
+                      );
+                    } else {
+                      return CarouselSlider.builder(
+                        itemCount: queryUser.length,
+                        itemBuilder: (context, index, child) {
+                          return carouselCard(queryUser[index]);
+                        },
+                        options: CarouselOptions(
+                            height: size.height * 0.7,
+                            // aspectRatio: 0.75,
+                            enlargeCenterPage: true,
+                            enlargeStrategy: CenterPageEnlargeStrategy.height,
+                            enableInfiniteScroll: false),
+                      );
                     }
-                    queryUser.removeWhere(
-                        (user) => thisuser['hideUser'].contains(user['uid']));
-                    return CarouselSlider.builder(
-                      itemCount: queryUser.length,
-                      itemBuilder: (context, index, child) {
-                        return carouselCard(queryUser[index]);
-                      },
-                      options: CarouselOptions(
-                          // height: size.height * 0.70,
-                          aspectRatio: 0.75,
-                          enlargeCenterPage: true,
-                          enlargeStrategy: CenterPageEnlargeStrategy.height,
-                          enableInfiniteScroll: false),
-                    );
-                  } else {
-                    return CarouselSlider.builder(
-                      itemCount: queryUser.length,
-                      itemBuilder: (context, index, child) {
-                        return carouselCard(queryUser[index]);
-                      },
-                      options: CarouselOptions(
-                          // height: size.height * 0.70,
-                          aspectRatio: 0.75,
-                          enlargeCenterPage: true,
-                          enlargeStrategy: CenterPageEnlargeStrategy.height,
-                          enableInfiniteScroll: false),
-                    );
-                  }
-                });
-          },
+                  });
+            },
+          ),
         ),
+        // SizedBox(height: size.height * 0.1,)
       ],
     );
   }
@@ -323,7 +324,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
         }));
       }),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(size.height * 0.01),
         child: Stack(
           children: [
             Hero(
@@ -365,7 +366,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: size.height * 0.02),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -378,10 +379,6 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                       fontWeight: FontWeight.w700),
                                   children: [
                                     TextSpan(text: StringUtils.capitalize(user['country'])),
-                                    // const TextSpan(text: ", "),
-                                    // TextSpan(text: data.city),
-                                    // const TextSpan(text: " "),
-                                    // TextSpan(text: data.time)
                                   ]),
                             ),
                             RichText(
@@ -426,7 +423,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 20),
+                        padding: EdgeInsets.only(right: size.height * 0.02),
                         child: InkWell(
                             onTap: () {
                               likeUser(user['uid']);
