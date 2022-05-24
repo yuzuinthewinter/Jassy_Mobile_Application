@@ -72,13 +72,24 @@ class _BodyState extends State<ConversationText> {
   }
 
   AddFavorite(messageid, languageName) async {
-    languageName = languageName.toLowerCase();
-    await memos.doc(currentUser!.uid).update({
-      'owner': currentUser!.uid,
-      'pingroup': [],
-      'listLanguage': FieldValue.arrayUnion([languageName]),
-      '$languageName': FieldValue.arrayUnion([messageid]),
-    });
+    var languageHeader = languageName.toLowerCase();
+    var queryFav = memos.where('owner', isEqualTo: currentUser!.uid);
+    QuerySnapshot querySnapshot = await queryFav.get();
+    if (querySnapshot.docs.isNotEmpty) {
+      await memos.doc(currentUser!.uid).update({
+        'owner': currentUser!.uid,
+        'pingroup': [],
+        'listLanguage': FieldValue.arrayUnion([languageHeader]),
+        '$languageHeader': FieldValue.arrayUnion([messageid]),
+      });
+    } else {
+      await memos.doc(currentUser!.uid).set({
+        'owner': currentUser!.uid,
+        'pingroup': [],
+        'listLanguage': FieldValue.arrayUnion([languageHeader]),
+        '$languageHeader': FieldValue.arrayUnion([messageid]),
+      });
+    }
     Navigator.of(context).pop();
   }
 
@@ -264,71 +275,79 @@ class _BodyState extends State<ConversationText> {
                     pressType: PressType.longPress,
                     arrowColor: primaryDarker,
                     child: Column(
-                      crossAxisAlignment: isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-                      // mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                      currentMessage['isReplyMessage'] == true
-                          ? Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(right: size.width * 0.02),
-                                  child: SvgPicture.asset(
-                                      "assets/icons/reply-fill.svg"),
-                                ),
-                                Text(
-                                  "Reply".tr + " : ",
-                                  style:
-                                      TextStyle(color: greyDark, fontSize: 12),
-                                ),
-                                currentMessage['type'] == 'text'
-                                    ? Container(
-                                      constraints:
-                        BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
-                                      child: Text(
-                                          currentMessage['replyFromMessage'],
-                                          style: TextStyle(
-                                              color: greyDark, fontSize: 12),
-                                          maxLines: null,
-                                          textAlign: TextAlign.left,
-                                          // overflow: TextOverflow.ellipsis,
-                                        ),
-                                    )
-                                    : currentMessage['type'] == 'image'
-                                        ? Image.network(
-                                            currentMessage['url'],
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: MediaQuery.of(context)
-                                                .size
-                                                .height,
-                                            fit: BoxFit.contain,
+                        crossAxisAlignment: isCurrentUser
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
+                        // mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          currentMessage['isReplyMessage'] == true
+                              ? Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          right: size.width * 0.02),
+                                      child: SvgPicture.asset(
+                                          "assets/icons/reply-fill.svg"),
+                                    ),
+                                    Text(
+                                      "Reply".tr + " : ",
+                                      style: TextStyle(
+                                          color: greyDark, fontSize: 12),
+                                    ),
+                                    currentMessage['type'] == 'text'
+                                        ? Container(
+                                            constraints: BoxConstraints(
+                                                maxWidth: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.6),
+                                            child: Text(
+                                              currentMessage[
+                                                  'replyFromMessage'],
+                                              style: TextStyle(
+                                                  color: greyDark,
+                                                  fontSize: 12),
+                                              maxLines: null,
+                                              textAlign: TextAlign.left,
+                                              // overflow: TextOverflow.ellipsis,
+                                            ),
                                           )
-                                        : const Text(
-                                            'File',
-                                            style: TextStyle(
-                                                color: greyDark, fontSize: 14),
-                                            maxLines: 1,
-                                            textAlign: TextAlign.left,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                              ],
-                            )
-                          : const SizedBox.shrink(),
-                      currentMessage['type'] == 'text'
-                          ? TypeTextMessage(
-                              isCurrentUser: isCurrentUser,
-                              currentMessage: currentMessage)
-                          : currentMessage['type'] == 'image'
-                              ? TypeImageMessage(
+                                        : currentMessage['type'] == 'image'
+                                            ? Image.network(
+                                                currentMessage['url'],
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                height: MediaQuery.of(context)
+                                                    .size
+                                                    .height,
+                                                fit: BoxFit.contain,
+                                              )
+                                            : const Text(
+                                                'File',
+                                                style: TextStyle(
+                                                    color: greyDark,
+                                                    fontSize: 14),
+                                                maxLines: 1,
+                                                textAlign: TextAlign.left,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                  ],
+                                )
+                              : const SizedBox.shrink(),
+                          currentMessage['type'] == 'text'
+                              ? TypeTextMessage(
                                   isCurrentUser: isCurrentUser,
                                   currentMessage: currentMessage)
-                              : TypeFileMessage(
-                                  isCurrentUser: isCurrentUser,
-                                  currentMessage: currentMessage),
-                    ]),
+                              : currentMessage['type'] == 'image'
+                                  ? TypeImageMessage(
+                                      isCurrentUser: isCurrentUser,
+                                      currentMessage: currentMessage)
+                                  : TypeFileMessage(
+                                      isCurrentUser: isCurrentUser,
+                                      currentMessage: currentMessage),
+                        ]),
                   ),
                   if (!isCurrentUser) ...[
                     Text(
@@ -349,7 +368,8 @@ class _BodyState extends State<ConversationText> {
     List<ItemModel> menuItems = [
       ItemModel(id: 1, text: "Reply".tr, icon: "assets/icons/reply_icon.svg"),
       ItemModel(id: 2, text: "Copy".tr, icon: "assets/icons/copy_icon.svg"),
-      ItemModel(id: 3, text: "Translate".tr, icon: "assets/icons/translate_icon.svg"),
+      ItemModel(
+          id: 3, text: "Translate".tr, icon: "assets/icons/translate_icon.svg"),
       ItemModel(id: 4, text: "Like".tr, icon: "assets/icons/favorite_icon.svg"),
     ];
     var item1 = menuItems[0].id;
@@ -418,33 +438,29 @@ class _BodyState extends State<ConversationText> {
                                       padding: EdgeInsets.only(
                                           top: size.height * 0.03),
                                       child: ListView.builder(
-                                            scrollDirection: Axis.vertical,
-                                            shrinkWrap: true,
-                                            itemCount:
-                                                _LanguageChoicesLists.length,
-                                            itemBuilder: (context, index) {
-                                              return InkWell(
-                                                  onTap: () {
-                                                    Navigator.of(context).pop();
-                                                    AddFavorite(
-                                                        message['messageID'],
-                                                        _LanguageChoicesLists[
-                                                            index]);
-                                                  },
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal:
-                                                                size.width *
-                                                                    0.05,
-                                                            vertical:
-                                                                size.height *
-                                                                    0.015),
-                                                    child: Text(
-                                                        _LanguageChoicesLists[
-                                                            index]),
-                                                  ));
-                                            },
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        itemCount: _LanguageChoicesLists.length,
+                                        itemBuilder: (context, index) {
+                                          return InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                                AddFavorite(
+                                                    message['messageID'],
+                                                    _LanguageChoicesLists[
+                                                        index]);
+                                              },
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        size.width * 0.05,
+                                                    vertical:
+                                                        size.height * 0.015),
+                                                child: Text(
+                                                    _LanguageChoicesLists[
+                                                        index]),
+                                              ));
+                                        },
                                       ),
                                     ),
                                   ],
@@ -459,10 +475,13 @@ class _BodyState extends State<ConversationText> {
                       children: <Widget>[
                         SvgPicture.asset(item.icon),
                         Text(
-                            item.text,
-                            style: TextStyle(color: Colors.white, fontSize: 12,),
-                            textAlign: TextAlign.center,
+                          item.text,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
                           ),
+                          textAlign: TextAlign.center,
+                        ),
                       ],
                     ),
                   ),
