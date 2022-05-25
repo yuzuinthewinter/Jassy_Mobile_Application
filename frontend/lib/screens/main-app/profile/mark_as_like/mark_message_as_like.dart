@@ -10,6 +10,7 @@ import 'package:flutter_application_1/screens/main-app/profile/mark_as_like/mess
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:basic_utils/basic_utils.dart';
+import 'package:get/utils.dart';
 
 class MarkMessageAsLike extends StatefulWidget {
   final user;
@@ -22,6 +23,7 @@ class MarkMessageAsLike extends StatefulWidget {
 class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
   List colors = [primaryLightest, tertiaryLightest, secoundaryLightest];
   bool isSelected = false;
+  int? selectedIndex;
   final _LanguageChoicesLists = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
 
   @override
@@ -30,20 +32,20 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: MarkMessageAsLikeAppBar(
-        actionWidget: IconButton(
+        actionWidget: TextButton.icon(
           onPressed: () {
             print(isSelected);
             setState(() {
               isSelected = !isSelected;
             });
           },
+          label: isSelected ? Text(
+                  "Cancel".tr,
+                  style: TextStyle(fontSize: 16, color: textMadatory),
+                ) : Text(""),
           icon: isSelected
-              ? Text(
-                  "ลบ",
-                  style: TextStyle(fontSize: 18, color: textMadatory),
-                )
-              : const Icon(Icons.check_circle_outline_rounded),
-          color: primaryDarker,
+              ? Text("")
+              : const Icon(Icons.check_circle_outline_rounded, color: primaryDarker,),
         ),
       ),
       body: Column(
@@ -79,15 +81,48 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                         var memo = snapshot.data!.docs[0];
                         return ListView.builder(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 20.0, horizontal: 20.0),
+                                vertical: 0.0, horizontal: 20.0),
                             itemCount: memo['listLanguage'].length,
                             itemBuilder: (context, int index) {
                               var language =
                                   memo['listLanguage'][index].toLowerCase();
                               return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   memo[language].length > 0
-                                      ? Container(
+                                      ? 
+                                      isSelected ? InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            selectedIndex = index;
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            selectedIndex == index ? SvgPicture.asset("assets/icons/check_circle.svg") : SvgPicture.asset("assets/icons/uncheck_circle.svg"),
+                                            Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: size.width * 0.02,
+                                                vertical: size.height * 0.02),
+                                            child: Text(
+                                              StringUtils.capitalize(language),
+                                              style: TextStyle(fontSize: 20, color: greyDark),
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          selectedIndex == index 
+                                          ? TextButton.icon(
+                                              onPressed: () {
+                                                //Todo: delete list
+                                                print("del");
+                                              }, 
+                                              icon: SvgPicture.asset("assets/icons/del_bin.svg", width: size.width * 0.03,), 
+                                              label: Text("Delete".tr, style: TextStyle(fontSize: 16, color: primaryDarker))
+                                            ) : Text("")
+                                          ],
+                                        ),
+                                      ):
+                                      Container(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: size.width * 0.02,
                                               vertical: size.height * 0.02),
@@ -173,37 +208,26 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
           var message = snapshot.data!.docs[0];
           return InkWell(
             onTap: () {
-              int color = index.toInt() % listLanguage.length.toInt();
-              Navigator.push(
+              int color = index.toInt() % colors.length.toInt();
+              isSelected == false ? Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => MessageAsLikeDetail(
                             color: color,
                             message: message,
                             language: language,
-                          )));
+                          ))) : Container();
             },
             child: Container(
               padding: EdgeInsets.all(size.height * 0.015),
               color:
-                  colors[index.toInt() % memo['listLanguage'].length.toInt()],
+                  colors[index.toInt() % colors.length.toInt()],
               child: Stack(
                 children: [
                   Align(
                       alignment: Alignment.topRight,
                       child: isSelected
-                          ? InkWell(
-                              onTap: () {
-                                // Todo: setState is not update
-                                setState(() {
-                                  isCheck == !isCheck;
-                                });
-                              },
-                              child: isCheck
-                                  ? SvgPicture.asset(
-                                      "assets/icons/check_circle.svg")
-                                  : SvgPicture.asset(
-                                      "assets/icons/uncheck_circle.svg"))
+                          ? Container()
                           : InkWell(
                               onTap: () {
                                 showDialog(
@@ -218,7 +242,7 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                                   "assets/icons/del_bin.svg"))),
                   SizedBox(height: size.height * 0.01),
                   Align(
-                    alignment: Alignment.center,
+                    alignment: Alignment.centerLeft,
                     child: message['type'] == 'text'
                         ? Text(
                             message['message'],

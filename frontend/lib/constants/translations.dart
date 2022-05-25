@@ -241,6 +241,7 @@ class LocaleString extends Translations {
           "Confirm": "Confirm",
           "Agree": "Agree",
           "Cancel": "Cancel",
+          "Delete" : "Delete",
         },
         'th_TH': {
           // Conjunction
@@ -475,6 +476,7 @@ class LocaleString extends Translations {
           "Confirm": "ตกลง",
           "Agree": "ยอมรับ",
           "Cancel": "ยกเลิก",
+          "Delete" : "ลบ",
         },
       };
 }
