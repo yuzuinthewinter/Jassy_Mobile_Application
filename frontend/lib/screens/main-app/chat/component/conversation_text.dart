@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismissible_page/dismissible_page.dart';
@@ -11,7 +12,6 @@ import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
-import 'package:translator/translator.dart';
 
 class ConversationText extends StatefulWidget {
   final chatid;
@@ -52,6 +52,7 @@ class _BodyState extends State<ConversationText> {
   String _chatid = '';
   String _type = 'text';
   int count = -1;
+  bool _isTranslate = false;
 
   getTime(timestamp) {
     DateTime datatime = DateTime.parse(timestamp.toDate().toString());
@@ -184,7 +185,7 @@ class _BodyState extends State<ConversationText> {
           itemBuilder: (context, index) {
             int reversedIndex =
                 snapshot.data!.docs[0]['messages'].length - 1 - index;
-            CustomPopupMenuController _controller = CustomPopupMenuController();
+            CustomPopupMenuController _controller = CustomPopupMenuController();            
             return getMessage(snapshot.data!.docs[0]['messages'][reversedIndex],
                 widget.user['isActive'], _controller);
           },
@@ -339,7 +340,8 @@ class _BodyState extends State<ConversationText> {
                           currentMessage['type'] == 'text'
                               ? TypeTextMessage(
                                   isCurrentUser: isCurrentUser,
-                                  currentMessage: currentMessage)
+                                  currentMessage: currentMessage,
+                                  translate: _isTranslate,)
                               : currentMessage['type'] == 'image'
                                   ? TypeImageMessage(
                                       isCurrentUser: isCurrentUser,
@@ -378,6 +380,7 @@ class _BodyState extends State<ConversationText> {
     var item4 = menuItems[3].id;
 
     Size size = MediaQuery.of(context).size;
+    bool isDismiss = true;
     return Container(
       constraints: BoxConstraints(
         maxWidth: size.width * 0.65,
@@ -407,7 +410,16 @@ class _BodyState extends State<ConversationText> {
                         Clipboard.setData(
                             ClipboardData(text: message['message']));
                       } else if (item.id == item3) {
+                        Flushbar(
+                          title: 'Title',
+                          message: 'messageeeeee',
+                          backgroundColor: primaryDarker,
+                          duration: null,
+                        ).show(context);
                         //translate
+                        // setState(() {
+                        //   _isTranslate = !_isTranslate;
+                        // });
                         print("translate");
                       } else {
                         showModalBottomSheet(
@@ -428,7 +440,7 @@ class _BodyState extends State<ConversationText> {
                                         alignment: Alignment.topRight,
                                         child: IconButton(
                                             onPressed: () {
-                                              Navigator.of(context).pop();
+                                              Navigator.pop(context);
                                             },
                                             icon: const Icon(
                                               Icons.close,
@@ -444,7 +456,7 @@ class _BodyState extends State<ConversationText> {
                                         itemBuilder: (context, index) {
                                           return InkWell(
                                               onTap: () {
-                                                Navigator.of(context).pop();
+                                                Navigator.pop(context);
                                                 AddFavorite(
                                                     message['messageID'],
                                                     _LanguageChoicesLists[
@@ -497,6 +509,42 @@ class TypeTextMessage extends StatelessWidget {
     Key? key,
     required this.isCurrentUser,
     required this.currentMessage,
+    required this.translate
+  }) : super(key: key);
+
+  final bool isCurrentUser;
+  final bool translate;
+  final currentMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints:
+          BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+          color: isCurrentUser ? primaryLighter : textLight,
+          borderRadius: BorderRadius.circular(20)),
+      child: 
+      // Column(
+      //   children: [
+          // isCurrentUser == false ? translate ? Text(currentMessage['message']) : SizedBox.shrink() : SizedBox.shrink(),
+          // isCurrentUser == false ? translate ? const Divider(
+          //   thickness: 2,
+          //   color: greyLight,
+          // ) : SizedBox.shrink() : SizedBox.shrink(),
+          Text(currentMessage['message']),
+        // ],
+      // ),
+    );
+  }
+}
+
+class TypeTextTranslate extends StatelessWidget {
+  const TypeTextTranslate({
+    Key? key,
+    required this.isCurrentUser,
+    required this.currentMessage,
   }) : super(key: key);
 
   final bool isCurrentUser;
@@ -511,7 +559,16 @@ class TypeTextMessage extends StatelessWidget {
       decoration: BoxDecoration(
           color: isCurrentUser ? primaryLighter : textLight,
           borderRadius: BorderRadius.circular(20)),
-      child: Text(currentMessage['message']),
+      child: Column(
+        children: [
+          Text("currentMessage['message']sssssssssssssssssssssssssssssssssssssssssssss"),
+          Divider(
+            thickness: 2,
+            color: greyLight,
+          ),
+          Text(currentMessage['message']),
+        ],
+      ),
     );
   }
 }
