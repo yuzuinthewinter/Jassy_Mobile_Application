@@ -16,11 +16,13 @@ import 'package:translator/translator.dart';
 class ConversationText extends StatefulWidget {
   final chatid;
   final user;
+  final currentUser;
   final inRoom;
 
   const ConversationText({
     Key? key,
     required this.user,
+    required this.currentUser,
     required this.chatid,
     required this.inRoom,
   }) : super(key: key);
@@ -39,13 +41,23 @@ class _BodyState extends State<ConversationText> {
   var currentUser = FirebaseAuth.instance.currentUser;
 
   final _LanguageChoicesLists = [
-    'Cambodian',
+    'Khmer',
     'English',
     'Indonesian',
     'Japanese',
     'Korean',
     'Thai',
   ];
+
+  final List locale = [
+    {'name': 'khmer', 'code': 'km'},
+    {'name': 'English', 'code': 'en'},
+    {'name': 'Indonesian', 'code': 'id'},
+    {'name': 'Japanese', 'code': 'ja'},
+    {'name': 'Korean', 'code': 'ko'},
+    {'name': 'Thai', 'code': 'th'},
+  ];
+
   ReplyController replyController = Get.put(ReplyController());
   bool _isReply = false;
   String _message = '';
@@ -99,12 +111,32 @@ class _BodyState extends State<ConversationText> {
     replyController.updateReply(message['message'], _isReply, _chatid, _type);
   }
 
+  var translation;
+  var langCode;
+
+  getLangCode() async {
+    for (var local in locale) {
+      if (local['name'].toLowerCase() ==
+          widget.currentUser['language']['defaultLanguage'].toLowerCase()) {
+        langCode = local['code'];
+      }
+    }
+  }
+
+  translate(message) async {
+    final translator = GoogleTranslator();
+    translation =
+        await translator.translate(message['message'], to: '$langCode');
+    print('${translation.targetLanguage.name} : $translation');
+  }
+
   @override
   void initState() {
     _isReply = replyController.isReply.value;
     _message = replyController.message.value.toString();
     _chatid = replyController.chatid.value.toString();
     _type = replyController.type.value.toString();
+    getLangCode();
     super.initState();
   }
 
@@ -339,7 +371,8 @@ class _BodyState extends State<ConversationText> {
                           currentMessage['type'] == 'text'
                               ? TypeTextMessage(
                                   isCurrentUser: isCurrentUser,
-                                  currentMessage: currentMessage)
+                                  currentMessage: currentMessage,
+                                  translate: translation)
                               : currentMessage['type'] == 'image'
                                   ? TypeImageMessage(
                                       isCurrentUser: isCurrentUser,
@@ -407,8 +440,7 @@ class _BodyState extends State<ConversationText> {
                         Clipboard.setData(
                             ClipboardData(text: message['message']));
                       } else if (item.id == item3) {
-                        //translate
-                        print("translate");
+                        translate(message);
                       } else {
                         showModalBottomSheet(
                             isScrollControlled: true,
@@ -497,10 +529,12 @@ class TypeTextMessage extends StatelessWidget {
     Key? key,
     required this.isCurrentUser,
     required this.currentMessage,
+    required this.translate,
   }) : super(key: key);
 
   final bool isCurrentUser;
   final currentMessage;
+  final translate;
 
   @override
   Widget build(BuildContext context) {
@@ -592,7 +626,7 @@ class TypeImageMessage extends StatelessWidget {
             image: DecorationImage(
                 image: currentMessage['url'].isNotEmpty
                     ? NetworkImage(currentMessage['url'])
-                    : const AssetImage("assets/images/chat_message.jpg")
+                    : const AssetImage("assets/images/default-image.png")
                         as ImageProvider,
                 fit: BoxFit.cover)),
       ),
@@ -626,7 +660,7 @@ class ImageMessageDetail extends StatelessWidget {
               fit: BoxFit.contain,
             )
           : Image.asset(
-              "assets/images/chat_message.jpg",
+              "assets/images/default-image.png",
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               fit: BoxFit.contain,

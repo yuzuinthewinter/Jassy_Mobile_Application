@@ -38,7 +38,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
   late RangeValues _currentRangeValues;
 
   final _LanguageChoicesLists = [
-    'Cambodian',
+    'khmer',
     'English',
     'Indonesian',
     'Japanese',
@@ -54,7 +54,9 @@ class _JassyMainBodyState extends State<JassyMainBody> {
     "Proficiency"
   ];
   final List<String> _GenderChoicesLists = [
-    "Male", "Female", "LGBTQ+",
+    "Male",
+    "Female",
+    "LGBTQ+",
     "FilterNoneGender".tr
   ];
 
@@ -377,7 +379,9 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                       fontFamily: "kanit",
                                       fontWeight: FontWeight.w700),
                                   children: [
-                                    TextSpan(text: StringUtils.capitalize(user['country'])),
+                                    TextSpan(
+                                        text: StringUtils.capitalize(
+                                            user['country'])),
                                     // const TextSpan(text: ", "),
                                     // TextSpan(text: data.city),
                                     // const TextSpan(text: " "),
@@ -409,8 +413,9 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                       fontWeight: FontWeight.w700),
                                   children: [
                                     TextSpan(
-                                        text: StringUtils.capitalize(user['language']
-                                            ['defaultLanguage'])),
+                                        text: StringUtils.capitalize(
+                                            user['language']
+                                                ['defaultLanguage'])),
                                     const WidgetSpan(
                                         child: Icon(
                                       Icons.sync_alt,
@@ -418,8 +423,9 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                       color: textLight,
                                     )),
                                     TextSpan(
-                                        text: StringUtils.capitalize(user['language']
-                                            ['interestedLanguage'])),
+                                        text: StringUtils.capitalize(
+                                            user['language']
+                                                ['interestedLanguage'])),
                                   ]),
                             ),
                           ],
@@ -432,7 +438,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                               likeUser(user['uid']);
                             },
                             child: SvgPicture.asset(
-                                    "assets/icons/heart_button.svg")),
+                                "assets/icons/heart_button.svg")),
                       )
                     ],
                   ),

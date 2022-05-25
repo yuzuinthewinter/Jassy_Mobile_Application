@@ -107,10 +107,10 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                   }
                 }
                 return widget.user['groups'].length != 0
-                        ? isMember == true
-                            ? communityCard(widget.user, group, context)
-                            : const SizedBox.shrink()
-                        : communityCard(widget.user, group, context);
+                    ? isMember == true
+                        ? communityCard(widget.user, group, context)
+                        : const SizedBox.shrink()
+                    : communityCard(widget.user, group, context);
               },
             ),
           ),
@@ -845,7 +845,7 @@ class ImageMessageDetail extends StatelessWidget {
             )
           : Image.asset(
               //todo: default image
-              "assets/images/chat_message.jpg",
+              "assets/images/default-image.png",
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               fit: BoxFit.contain,

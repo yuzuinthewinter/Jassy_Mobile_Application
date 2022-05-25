@@ -700,7 +700,7 @@ class ImageMessageDetail extends StatelessWidget {
             )
           : Image.asset(
               //todo: default image
-              "assets/images/chat_message.jpg",
+              "assets/images/default-image.png",
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               fit: BoxFit.contain,
