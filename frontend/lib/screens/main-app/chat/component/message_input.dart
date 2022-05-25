@@ -12,6 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:translator/translator.dart';
 
 class MessageInput extends StatefulWidget {
   final Size size;
@@ -372,7 +373,8 @@ class _BodyState extends State<MessageInput> {
                           }
                         },
                         child: isWaitingUpload
-                            ? Lottie.asset("assets/images/loading.json", width: 24, height: 24)
+                            ? Lottie.asset("assets/images/loading.json",
+                                width: 24, height: 24)
                             : SvgPicture.asset(
                                 "assets/icons/send.svg",
                               )),

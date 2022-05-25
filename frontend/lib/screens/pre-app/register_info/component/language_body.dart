@@ -42,7 +42,14 @@ class _BodyState extends State<Body> {
     "Advanced",
     "Proficiency"
   ];
-  final languageItems = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
+  final languageItems = [
+    'khmer',
+    'English',
+    'Indonesian',
+    'Japanese',
+    'Korean',
+    'Thai',
+  ];
   final countryItem = ['Cambodia', 'Indonesia', 'Japan', 'Korea', 'Thailand'];
 
   int countryIndex = 0;

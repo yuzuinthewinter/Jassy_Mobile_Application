@@ -12,15 +12,18 @@ import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:translator/translator.dart';
 
 class ConversationText extends StatefulWidget {
   final chatid;
   final user;
+  final currentUser;
   final inRoom;
 
   const ConversationText({
     Key? key,
     required this.user,
+    required this.currentUser,
     required this.chatid,
     required this.inRoom,
   }) : super(key: key);
@@ -39,13 +42,23 @@ class _BodyState extends State<ConversationText> {
   var currentUser = FirebaseAuth.instance.currentUser;
 
   final _LanguageChoicesLists = [
-    'Cambodian',
+    'Khmer',
     'English',
     'Indonesian',
     'Japanese',
     'Korean',
     'Thai',
   ];
+
+  final List locale = [
+    {'name': 'khmer', 'code': 'km'},
+    {'name': 'English', 'code': 'en'},
+    {'name': 'Indonesian', 'code': 'id'},
+    {'name': 'Japanese', 'code': 'ja'},
+    {'name': 'Korean', 'code': 'ko'},
+    {'name': 'Thai', 'code': 'th'},
+  ];
+
   ReplyController replyController = Get.put(ReplyController());
   bool _isReply = false;
   String _message = '';
@@ -100,12 +113,31 @@ class _BodyState extends State<ConversationText> {
     replyController.updateReply(message['message'], _isReply, _chatid, _type);
   }
 
+  var translation;
+  var langCode;
+
+  getLangCode() async {
+    for (var local in locale) {
+      if (local['name'].toLowerCase() ==
+          widget.currentUser['language']['defaultLanguage'].toLowerCase()) {
+        langCode = local['code'];
+      }
+    }
+  }
+
+  translate(message) async {
+    final translator = GoogleTranslator();
+    translation =
+        await translator.translate(message['message'], to: '$langCode');
+  }
+
   @override
   void initState() {
     _isReply = replyController.isReply.value;
     _message = replyController.message.value.toString();
     _chatid = replyController.chatid.value.toString();
     _type = replyController.type.value.toString();
+    getLangCode();
     super.initState();
   }
 
@@ -185,7 +217,7 @@ class _BodyState extends State<ConversationText> {
           itemBuilder: (context, index) {
             int reversedIndex =
                 snapshot.data!.docs[0]['messages'].length - 1 - index;
-            CustomPopupMenuController _controller = CustomPopupMenuController();            
+            CustomPopupMenuController _controller = CustomPopupMenuController();
             return getMessage(snapshot.data!.docs[0]['messages'][reversedIndex],
                 widget.user['isActive'], _controller);
           },
@@ -341,7 +373,8 @@ class _BodyState extends State<ConversationText> {
                               ? TypeTextMessage(
                                   isCurrentUser: isCurrentUser,
                                   currentMessage: currentMessage,
-                                  translate: _isTranslate,)
+                                  translate: translation,
+                                )
                               : currentMessage['type'] == 'image'
                                   ? TypeImageMessage(
                                       isCurrentUser: isCurrentUser,
@@ -399,7 +432,7 @@ class _BodyState extends State<ConversationText> {
                       border: Border(
                           right: BorderSide(color: textLight, width: 0.1))),
                   child: InkWell(
-                    onTap: () {
+                    onTap: () async {
                       // Todo: add onTab here
                       _controller.hideMenu();
                       if (item.id == item1) {
@@ -410,17 +443,23 @@ class _BodyState extends State<ConversationText> {
                         Clipboard.setData(
                             ClipboardData(text: message['message']));
                       } else if (item.id == item3) {
+                        await translate(message);
                         Flushbar(
-                          title: 'Title',
-                          message: 'messageeeeee',
+                          title: message['message'],
+                          message: translation.toString(),
                           backgroundColor: primaryDarker,
                           duration: null,
                         ).show(context);
+                        await Future.delayed(
+                          const Duration(seconds: 5),
+                          () => 'Data Loaded',
+                        );
+                        Navigator.of(context).pop();
                         //translate
                         // setState(() {
                         //   _isTranslate = !_isTranslate;
                         // });
-                        print("translate");
+                        // print("translate");
                       } else {
                         showModalBottomSheet(
                             isScrollControlled: true,
@@ -509,12 +548,12 @@ class TypeTextMessage extends StatelessWidget {
     Key? key,
     required this.isCurrentUser,
     required this.currentMessage,
-    required this.translate
+    required this.translate,
   }) : super(key: key);
 
   final bool isCurrentUser;
-  final bool translate;
   final currentMessage;
+  final translate;
 
   @override
   Widget build(BuildContext context) {
@@ -525,16 +564,16 @@ class TypeTextMessage extends StatelessWidget {
       decoration: BoxDecoration(
           color: isCurrentUser ? primaryLighter : textLight,
           borderRadius: BorderRadius.circular(20)),
-      child: 
-      // Column(
-      //   children: [
+      child:
+          // Column(
+          //   children: [
           // isCurrentUser == false ? translate ? Text(currentMessage['message']) : SizedBox.shrink() : SizedBox.shrink(),
           // isCurrentUser == false ? translate ? const Divider(
           //   thickness: 2,
           //   color: greyLight,
           // ) : SizedBox.shrink() : SizedBox.shrink(),
           Text(currentMessage['message']),
-        // ],
+      // ],
       // ),
     );
   }
@@ -545,6 +584,7 @@ class TypeTextTranslate extends StatelessWidget {
     Key? key,
     required this.isCurrentUser,
     required this.currentMessage,
+    // required this.translation,
   }) : super(key: key);
 
   final bool isCurrentUser;
@@ -561,7 +601,7 @@ class TypeTextTranslate extends StatelessWidget {
           borderRadius: BorderRadius.circular(20)),
       child: Column(
         children: [
-          Text("currentMessage['message']sssssssssssssssssssssssssssssssssssssssssssss"),
+          // Text(translation),
           Divider(
             thickness: 2,
             color: greyLight,
@@ -649,7 +689,7 @@ class TypeImageMessage extends StatelessWidget {
             image: DecorationImage(
                 image: currentMessage['url'].isNotEmpty
                     ? NetworkImage(currentMessage['url'])
-                    : const AssetImage("assets/images/chat_message.jpg")
+                    : const AssetImage("assets/images/default-image.png")
                         as ImageProvider,
                 fit: BoxFit.cover)),
       ),
@@ -683,7 +723,7 @@ class ImageMessageDetail extends StatelessWidget {
               fit: BoxFit.contain,
             )
           : Image.asset(
-              "assets/images/chat_message.jpg",
+              "assets/images/default-image.png",
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               fit: BoxFit.contain,

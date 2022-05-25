@@ -10,12 +10,14 @@ class MessageScreenBody extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   final chatid;
   final user;
+  final currentUser;
   final inRoom;
 
   const MessageScreenBody(
       {Key? key,
       required this.chatid,
       required this.user,
+      required this.currentUser,
       required this.inRoom})
       : super(key: key);
 
@@ -55,6 +57,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
           Expanded(
             child: ConversationText(
               user: widget.user,
+              currentUser: widget.currentUser,
               chatid: widget.chatid,
               inRoom: widget.inRoom,
             ),

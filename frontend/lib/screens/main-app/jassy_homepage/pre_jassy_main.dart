@@ -24,7 +24,14 @@ class _PreJassyMainBodyState extends State<PreJassyMain> {
   int _languageLevelIndex = 0;
   final int _genderIndex = 3;
 
-  final _LanguageChoicesLists = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
+  final _LanguageChoicesLists = [
+    'khmer',
+    'English',
+    'Indonesian',
+    'Japanese',
+    'Korean',
+    'Thai',
+  ];
   final List<String> _LanguageLevelChoicesLists = [
     "Beginner",
     "Elementary",
@@ -34,7 +41,9 @@ class _PreJassyMainBodyState extends State<PreJassyMain> {
     "Proficiency"
   ];
   final List<String> _GenderChoicesLists = [
-    "Male", "Female", "LGBTQ+",
+    "Male",
+    "Female",
+    "LGBTQ+",
     "FilterNoneGender".tr
   ];
   RangeValues _currentRangeValues = const RangeValues(20, 30);

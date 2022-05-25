@@ -17,7 +17,14 @@ class FilterBody extends StatefulWidget {
 }
 
 class _FilterBodyState extends State<FilterBody> {
-  final _LanguageChoicesLists = ['Cambodian', 'English', 'Indonesian', 'Japanese', 'Korean', 'Thai',];
+  final _LanguageChoicesLists = [
+    'khmer',
+    'English',
+    'Indonesian',
+    'Japanese',
+    'Korean',
+    'Thai',
+  ];
   final List<String> _LanguageLevelChoicesLists = [
     "Beginner",
     "Elementary",
@@ -27,7 +34,9 @@ class _FilterBodyState extends State<FilterBody> {
     "Proficiency"
   ];
   final List<String> _GenderChoicesLists = [
-    "Male", "Female", "LGBTQ+",
+    "Male",
+    "Female",
+    "LGBTQ+",
     "FilterNoneGender".tr
   ];
 
@@ -41,7 +50,8 @@ class _FilterBodyState extends State<FilterBody> {
   saveFilter() async {
     await filterController.updateFilter(
         _languageIndex, _languageLevelIndex, _genderIndex, _currentRangeValues);
-    Navigator.of(context).popAndPushNamed(Routes.JassyHome, arguments: [0, true, false]);
+    Navigator.of(context)
+        .popAndPushNamed(Routes.JassyHome, arguments: [0, true, false]);
   }
 
   resetFilter() {

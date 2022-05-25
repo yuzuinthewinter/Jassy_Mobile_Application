@@ -241,6 +241,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
       ),
       body: MessageScreenBody(
         user: widget.user,
+        currentUser: widget.currentUser,
         chatid: widget.chatid,
         inRoom: isInRoom,
       ),
