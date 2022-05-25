@@ -136,10 +136,18 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                 child: widget.user['userStatus'] != 'admin'
                     ? // Todo: isEmpty show NoNewsWidget
                             getAllPost().length == 0
-                                ? NoNewsWidget(
-                                    headText: "CommuNoFeed".tr,
-                                    descText: "CommuStartJoin".tr,
-                                    size: size)
+                                ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: NoNewsWidget(
+                                          headText: "CommuNoFeed".tr,
+                                          descText: "CommuStartJoin".tr,
+                                          size: size),
+                                    ),
+                                  ],
+                                )
                                 : getNewsFeed(context)
                     : Column(
                         children: [
