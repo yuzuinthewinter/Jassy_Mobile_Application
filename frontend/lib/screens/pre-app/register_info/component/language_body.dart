@@ -43,7 +43,7 @@ class _BodyState extends State<Body> {
     "Proficiency"
   ];
   final languageItems = [
-    'khmer',
+    'Khmer',
     'English',
     'Indonesian',
     'Japanese',

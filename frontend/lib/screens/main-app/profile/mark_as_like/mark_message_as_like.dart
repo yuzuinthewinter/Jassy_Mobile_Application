@@ -24,7 +24,7 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
   List colors = [primaryLightest, tertiaryLightest, secoundaryLightest];
   bool isSelected = false;
   final _LanguageChoicesLists = [
-    'khmer',
+    'Khmer',
     'English',
     'Indonesian',
     'Japanese',
@@ -46,13 +46,18 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
               isSelected = !isSelected;
             });
           },
-          label: isSelected ? Text(
+          label: isSelected
+              ? Text(
                   "Cancel".tr,
                   style: TextStyle(fontSize: 16, color: textMadatory),
-                ) : Text(""),
+                )
+              : Text(""),
           icon: isSelected
               ? Text("")
-              : const Icon(Icons.check_circle_outline_rounded, color: primaryDarker,),
+              : const Icon(
+                  Icons.check_circle_outline_rounded,
+                  color: primaryDarker,
+                ),
         ),
       ),
       body: Column(
@@ -97,48 +102,72 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   memo[language].length > 0
-                                      ? 
-                                      isSelected ? InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            selectedIndex = index;
-                                          });
-                                        },
-                                        child: Row(
-                                          children: [
-                                            selectedIndex == index ? SvgPicture.asset("assets/icons/check_circle.svg") : SvgPicture.asset("assets/icons/uncheck_circle.svg"),
-                                            Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: size.width * 0.02,
-                                                vertical: size.height * 0.02),
-                                            child: Text(
-                                              StringUtils.capitalize(language),
-                                              style: TextStyle(fontSize: 20, color: greyDark),
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          selectedIndex == index 
-                                          ? TextButton.icon(
-                                              onPressed: () {
-                                                //Todo: delete list
-                                                print("del");
-                                              }, 
-                                              icon: SvgPicture.asset("assets/icons/del_bin.svg", width: size.width * 0.03,), 
-                                              label: Text("Delete".tr, style: TextStyle(fontSize: 16, color: primaryDarker))
-                                            ) : Text("")
-                                          ],
-                                        ),
-                                      ):
-                                      Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: size.width * 0.02,
-                                              vertical: size.height * 0.02),
-                                          child: Text(
-                                            StringUtils.capitalize(language),
-                                            style: TextStyle(
-                                                fontSize: 20, color: greyDark),
-                                          ),
-                                        )
+                                      ? isSelected
+                                          ? InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  selectedIndex = index;
+                                                });
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  selectedIndex == index
+                                                      ? SvgPicture.asset(
+                                                          "assets/icons/check_circle.svg")
+                                                      : SvgPicture.asset(
+                                                          "assets/icons/uncheck_circle.svg"),
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal:
+                                                                size.width *
+                                                                    0.02,
+                                                            vertical:
+                                                                size.height *
+                                                                    0.02),
+                                                    child: Text(
+                                                      StringUtils.capitalize(
+                                                          language),
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: greyDark),
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  selectedIndex == index
+                                                      ? TextButton.icon(
+                                                          onPressed: () {
+                                                            //Todo: delete list
+                                                            print("del");
+                                                          },
+                                                          icon:
+                                                              SvgPicture.asset(
+                                                            "assets/icons/del_bin.svg",
+                                                            width: size.width *
+                                                                0.03,
+                                                          ),
+                                                          label: Text(
+                                                              "Delete".tr,
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  color:
+                                                                      primaryDarker)))
+                                                      : Text("")
+                                                ],
+                                              ),
+                                            )
+                                          : Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: size.width * 0.02,
+                                                  vertical: size.height * 0.02),
+                                              child: Text(
+                                                StringUtils.capitalize(
+                                                    language),
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: greyDark),
+                                              ),
+                                            )
                                       : const SizedBox.shrink(),
                                   Container(
                                     margin: EdgeInsets.symmetric(
@@ -216,19 +245,20 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
           return InkWell(
             onTap: () {
               int color = index.toInt() % colors.length.toInt();
-              isSelected == false ? Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MessageAsLikeDetail(
-                            color: color,
-                            message: message,
-                            language: language,
-                          ))) : Container();
+              isSelected == false
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MessageAsLikeDetail(
+                                color: color,
+                                message: message,
+                                language: language,
+                              )))
+                  : Container();
             },
             child: Container(
               padding: EdgeInsets.all(size.height * 0.015),
-              color:
-                  colors[index.toInt() % colors.length.toInt()],
+              color: colors[index.toInt() % colors.length.toInt()],
               child: Stack(
                 children: [
                   Align(

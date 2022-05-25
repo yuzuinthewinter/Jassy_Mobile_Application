@@ -51,7 +51,7 @@ class _BodyState extends State<ConversationText> {
   ];
 
   final List locale = [
-    {'name': 'khmer', 'code': 'km'},
+    {'name': 'Khmer', 'code': 'km'},
     {'name': 'English', 'code': 'en'},
     {'name': 'Indonesian', 'code': 'id'},
     {'name': 'Japanese', 'code': 'ja'},

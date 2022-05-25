@@ -38,7 +38,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
   late RangeValues _currentRangeValues;
 
   final _LanguageChoicesLists = [
-    'khmer',
+    'Khmer',
     'English',
     'Indonesian',
     'Japanese',
@@ -110,8 +110,9 @@ class _JassyMainBodyState extends State<JassyMainBody> {
         const CurvedWidget(child: JassyGradientColor()),
         Expanded(
           child: StreamBuilder<QuerySnapshot>(
-            stream:
-                usersdb.where('uid', isNotEqualTo: currentUser!.uid).snapshots(),
+            stream: usersdb
+                .where('uid', isNotEqualTo: currentUser!.uid)
+                .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return const Text('Something went wrong');
@@ -136,13 +137,13 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                       );
                     }
                     var thisuser = snapshot.data!.docs[0];
-        
+
                     List queryUser = [];
                     int indexLanguage = 0;
                     for (var user in users) {
                       int age = calculateAge(
                           DateTime.parse(user['birthDate'].toString()));
-        
+
                       if (user['userStatus'] == 'user') {
                         _LanguageLevelChoicesLists.forEachIndexed(
                             (index, lvlang) {
@@ -157,7 +158,8 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                           if (_languageLevelIndex <= indexLanguage) {
                             if (_currentRangeValues.start.round().toInt() <=
                                     age &&
-                                age <= _currentRangeValues.end.round().toInt()) {
+                                age <=
+                                    _currentRangeValues.end.round().toInt()) {
                               if (filter.gender.toLowerCase() ==
                                   user['gender'].toLowerCase()) {
                                 queryUser.add(user);
@@ -171,7 +173,8 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                       }
                     }
                     for (var hide in thisuser['hideUser']) {
-                      queryUser.removeWhere((user) => hide.contains(user['uid']));
+                      queryUser
+                          .removeWhere((user) => hide.contains(user['uid']));
                     }
                     //query for no one on list: new generate list user
                     if (queryUser.isEmpty) {
@@ -181,12 +184,14 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                               (index, lvlang) {
                             if ('${user['language']['levelDefaultLanguage']}'
                                     .toLowerCase() ==
-                                _LanguageLevelChoicesLists[index].toLowerCase()) {
+                                _LanguageLevelChoicesLists[index]
+                                    .toLowerCase()) {
                               indexLanguage = index;
                             }
                           });
                           if (filter.language.toLowerCase() ==
-                              user['language']['defaultLanguage'].toLowerCase()) {
+                              user['language']['defaultLanguage']
+                                  .toLowerCase()) {
                             if (_languageLevelIndex <= indexLanguage) {
                               queryUser.add(user);
                             }
@@ -219,8 +224,8 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                           }
                         }
                         for (var hide in thisuser['hideUser']) {
-                          queryUser
-                              .removeWhere((user) => hide.contains(user['uid']));
+                          queryUser.removeWhere(
+                              (user) => hide.contains(user['uid']));
                         }
                         if (queryUser.isEmpty) {
                           for (var user in users) {
@@ -238,30 +243,30 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                           }
                           if (queryUser.isEmpty) {
                             return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/images/no_user_filter.svg",
-                                          width: size.width * 0.72,
-                                        ),
-                                        // SizedBox(
-                                        //   height: size.height * 0.05,
-                                        // ),
-                                        Text(
-                                          'MainNoUserTitle'.tr,
-                                          style: const TextStyle(
-                                              fontSize: 18, color: textDark),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        SizedBox(
-                                          height: size.height * 0.012,
-                                        ),
-                                        Text(
-                                          'MainNoUserDesc'.tr,
-                                          style: const TextStyle(
-                                              fontSize: 14, color: greyDark),
-                                        ),
-                                      ],
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/images/no_user_filter.svg",
+                                  width: size.width * 0.72,
+                                ),
+                                // SizedBox(
+                                //   height: size.height * 0.05,
+                                // ),
+                                Text(
+                                  'MainNoUserTitle'.tr,
+                                  style: const TextStyle(
+                                      fontSize: 18, color: textDark),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.012,
+                                ),
+                                Text(
+                                  'MainNoUserDesc'.tr,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: greyDark),
+                                ),
+                              ],
                             );
                           }
                         }
@@ -379,7 +384,9 @@ class _JassyMainBodyState extends State<JassyMainBody> {
                                       fontFamily: "kanit",
                                       fontWeight: FontWeight.w700),
                                   children: [
-                                    TextSpan(text: StringUtils.capitalize(user['country'])),
+                                    TextSpan(
+                                        text: StringUtils.capitalize(
+                                            user['country'])),
                                   ]),
                             ),
                             RichText(

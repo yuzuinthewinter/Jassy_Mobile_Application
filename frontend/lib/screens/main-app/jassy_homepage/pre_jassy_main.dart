@@ -25,7 +25,7 @@ class _PreJassyMainBodyState extends State<PreJassyMain> {
   final int _genderIndex = 3;
 
   final _LanguageChoicesLists = [
-    'khmer',
+    'Khmer',
     'English',
     'Indonesian',
     'Japanese',

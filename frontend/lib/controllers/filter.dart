@@ -18,7 +18,7 @@ class FilterController extends GetxController {
   var currentUser = FirebaseAuth.instance.currentUser;
 
   final _LanguageChoicesLists = [
-    'khmer',
+    'Khmer',
     'English',
     'Indonesian',
     'Japanese',
