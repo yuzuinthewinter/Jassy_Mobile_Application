@@ -42,25 +42,25 @@ class EditProfilePictureWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-              top: size.height * 0.25,
-              right: size.width * 0.34,
-              child: InkWell(
-                onTap: () {
-                  // Todo: go to edit profile pic
-                },
-                child: Container(
-                  width: size.width * 0.09,
-                  height: size.height * 0.09,
-                  decoration: BoxDecoration(
-                    color: textLight,
-                    shape: BoxShape.circle,
-                    border: Border.all(width: 3, color: primaryLight)
-                  ),
-                  child: const Icon(Icons.mode_edit_outline_rounded, size: 20, color: primaryLight,)
-                ),
-              )
-            ),
+            // Positioned(
+            //   top: size.height * 0.25,
+            //   right: size.width * 0.34,
+            //   child: InkWell(
+            //     onTap: () {
+            //       // Todo: go to edit profile pic
+            //     },
+            //     child: Container(
+            //       width: size.width * 0.09,
+            //       height: size.height * 0.09,
+            //       decoration: BoxDecoration(
+            //         color: textLight,
+            //         shape: BoxShape.circle,
+            //         border: Border.all(width: 3, color: primaryLight)
+            //       ),
+            //       child: const Icon(Icons.mode_edit_outline_rounded, size: 20, color: primaryLight,)
+            //     ),
+            //   )
+            // ),
           ],
         ),
         

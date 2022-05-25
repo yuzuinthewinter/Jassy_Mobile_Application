@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismissible_page/dismissible_page.dart';
@@ -64,6 +65,7 @@ class _BodyState extends State<ConversationText> {
   String _chatid = '';
   String _type = 'text';
   int count = -1;
+  bool _isTranslate = false;
 
   getTime(timestamp) {
     DateTime datatime = DateTime.parse(timestamp.toDate().toString());
@@ -127,7 +129,6 @@ class _BodyState extends State<ConversationText> {
     final translator = GoogleTranslator();
     translation =
         await translator.translate(message['message'], to: '$langCode');
-    print('${translation.targetLanguage.name} : $translation');
   }
 
   @override
@@ -372,7 +373,8 @@ class _BodyState extends State<ConversationText> {
                               ? TypeTextMessage(
                                   isCurrentUser: isCurrentUser,
                                   currentMessage: currentMessage,
-                                  translate: translation)
+                                  translate: translation,
+                                )
                               : currentMessage['type'] == 'image'
                                   ? TypeImageMessage(
                                       isCurrentUser: isCurrentUser,
@@ -411,6 +413,7 @@ class _BodyState extends State<ConversationText> {
     var item4 = menuItems[3].id;
 
     Size size = MediaQuery.of(context).size;
+    bool isDismiss = true;
     return Container(
       constraints: BoxConstraints(
         maxWidth: size.width * 0.65,
@@ -429,7 +432,7 @@ class _BodyState extends State<ConversationText> {
                       border: Border(
                           right: BorderSide(color: textLight, width: 0.1))),
                   child: InkWell(
-                    onTap: () {
+                    onTap: () async {
                       // Todo: add onTab here
                       _controller.hideMenu();
                       if (item.id == item1) {
@@ -440,7 +443,23 @@ class _BodyState extends State<ConversationText> {
                         Clipboard.setData(
                             ClipboardData(text: message['message']));
                       } else if (item.id == item3) {
-                        translate(message);
+                        await translate(message);
+                        Flushbar(
+                          title: message['message'],
+                          message: translation.toString(),
+                          backgroundColor: primaryDarker,
+                          duration: null,
+                        ).show(context);
+                        await Future.delayed(
+                          const Duration(seconds: 5),
+                          () => 'Data Loaded',
+                        );
+                        Navigator.of(context).pop();
+                        //translate
+                        // setState(() {
+                        //   _isTranslate = !_isTranslate;
+                        // });
+                        // print("translate");
                       } else {
                         showModalBottomSheet(
                             isScrollControlled: true,
@@ -460,7 +479,7 @@ class _BodyState extends State<ConversationText> {
                                         alignment: Alignment.topRight,
                                         child: IconButton(
                                             onPressed: () {
-                                              Navigator.of(context).pop();
+                                              Navigator.pop(context);
                                             },
                                             icon: const Icon(
                                               Icons.close,
@@ -476,7 +495,7 @@ class _BodyState extends State<ConversationText> {
                                         itemBuilder: (context, index) {
                                           return InkWell(
                                               onTap: () {
-                                                Navigator.of(context).pop();
+                                                Navigator.pop(context);
                                                 AddFavorite(
                                                     message['messageID'],
                                                     _LanguageChoicesLists[
@@ -545,7 +564,51 @@ class TypeTextMessage extends StatelessWidget {
       decoration: BoxDecoration(
           color: isCurrentUser ? primaryLighter : textLight,
           borderRadius: BorderRadius.circular(20)),
-      child: Text(currentMessage['message']),
+      child:
+          // Column(
+          //   children: [
+          // isCurrentUser == false ? translate ? Text(currentMessage['message']) : SizedBox.shrink() : SizedBox.shrink(),
+          // isCurrentUser == false ? translate ? const Divider(
+          //   thickness: 2,
+          //   color: greyLight,
+          // ) : SizedBox.shrink() : SizedBox.shrink(),
+          Text(currentMessage['message']),
+      // ],
+      // ),
+    );
+  }
+}
+
+class TypeTextTranslate extends StatelessWidget {
+  const TypeTextTranslate({
+    Key? key,
+    required this.isCurrentUser,
+    required this.currentMessage,
+    // required this.translation,
+  }) : super(key: key);
+
+  final bool isCurrentUser;
+  final currentMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints:
+          BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+          color: isCurrentUser ? primaryLighter : textLight,
+          borderRadius: BorderRadius.circular(20)),
+      child: Column(
+        children: [
+          // Text(translation),
+          Divider(
+            thickness: 2,
+            color: greyLight,
+          ),
+          Text(currentMessage['message']),
+        ],
+      ),
     );
   }
 }
