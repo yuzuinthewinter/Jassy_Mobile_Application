@@ -36,7 +36,7 @@ class DeleteWarningPopUp extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 OutlinedButtonComponent(
-                  text: "ลบ", 
+                  text: "Delete".tr, 
                   minimumSize: Size(size.width * 0.3, size.height * 0.05), 
                   press: onPress
                 ),

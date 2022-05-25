@@ -111,38 +111,38 @@ class _LikeScreenBodyState extends State<LikeScreenBody> {
                     );
                   }
                   if (snapshot.data!.docs[0]['likesby'].length == 0) {
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height: size.height * 0.28,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          height: 270,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              alignment: Alignment.center,
-                              image: AssetImage(
-                                  "assets/images/no_likes_image.png"),
+                    return Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            height: 270,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                alignment: Alignment.center,
+                                image: AssetImage(
+                                    "assets/images/no_likes_image.png"),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.05,
-                        ),
-                        Text(
-                          'NoLikesTitle'.tr,
-                          style: const TextStyle(fontSize: 18, color: textDark),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                          height: size.height * 0.012,
-                        ),
-                        Text(
-                          'NoLikesDesc'.tr,
-                          style: const TextStyle(fontSize: 14, color: greyDark),
-                        ),
-                      ],
+                          SizedBox(
+                            height: size.height * 0.05,
+                          ),
+                          Text(
+                            'NoLikesTitle'.tr,
+                            style: const TextStyle(fontSize: 18, color: textDark),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: size.height * 0.012,
+                          ),
+                          Text(
+                            'NoLikesDesc'.tr,
+                            style: const TextStyle(fontSize: 14, color: greyDark),
+                          ),
+                        ],
+                      ),
                     );
                   }
                   var user = snapshot.data!.docs;
