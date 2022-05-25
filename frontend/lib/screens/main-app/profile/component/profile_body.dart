@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/screens/main-app/profile/about_jassy/about_jassy.dart';
 import 'package:flutter_application_1/screens/main-app/profile/app_setting/app_setting.dart';
 import 'package:flutter_application_1/screens/main-app/profile/help_center/help_center.dart';
 import 'package:flutter_application_1/screens/main-app/profile/mark_as_like/mark_message_as_like.dart';
@@ -162,7 +163,12 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                           size: size,
                           icon: SvgPicture.asset("assets/icons/about_jassy_icon.svg"),
                           text: "ProfileAboutJassy".tr,
-                          onTab: () {},
+                          onTab: () {
+                            Navigator.push(context,
+                                CupertinoPageRoute(builder: (context) {
+                              return AboutJassy();
+                            }));
+                          },
                         ),
                         Expanded(
                             child: InkWell(
