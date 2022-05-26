@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/appbar/back_only_appbar.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
+import 'package:flutter_application_1/controllers/currentUser.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/main-app/community/post_detail.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -76,9 +77,18 @@ class _SavedPostState extends State<SavedPost> {
                           itemBuilder: (context, index) {
                             int reverse = savepost['saved'].length - 1 - index;
                             return InkWell(
-                                onTap: () {
+                                onTap: () {PostDetailController postController =
+                                        PostDetailController();
+
+                                    postController.updatePostid(
+                                        savepost['saved'][reverse]);
+                                    Future.delayed(
+                                      const Duration(seconds: 2),
+                                      () => 'Data Loaded',
+                                    );
                                   Navigator.push(context,
                                       CupertinoPageRoute(builder: (context) {
+                                    
                                     return PostDetail(
                                       postid: savepost['saved'][reverse],
                                     );
@@ -279,6 +289,7 @@ class _SavedPostState extends State<SavedPost> {
                           // Todo: see post
                           Navigator.push(context,
                               CupertinoPageRoute(builder: (context) {
+                            
                             return PostDetail(
                               postid: postid,
                             );

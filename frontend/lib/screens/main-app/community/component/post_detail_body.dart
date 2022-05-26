@@ -12,6 +12,7 @@ import 'package:flutter_application_1/component/header_style/jassy_gradient_colo
 import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
 import 'package:flutter_application_1/component/text/report_choice.dart';
 import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/controllers/currentUser.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/comment_input.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/comment_tree.dart';
@@ -34,23 +35,16 @@ class _PostDetailBodyState extends State<PostDetailBody> {
   TextEditingController messageController = TextEditingController();
   late FocusNode myFocusNode;
   var currentUser = FirebaseAuth.instance.currentUser;
+  // var getgroupid;
+  bool isMember = false;
+  PostDetailController postDetailController = PostDetailController();
 
   @override
   void initState() {
-    // isSavedPost = checkSavePost();
-    myFocusNode = FocusNode();
+    // postDetailController.updatePostid(widget.postid);
     super.initState();
+    myFocusNode = FocusNode();
   }
-
-  // checkSavePost() async {
-  //   CollectionReference savePost =
-  //       FirebaseFirestore.instance.collection('SavePosts');
-  //   if (widget.post['postid']) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   String type = 'text';
   addComment(postid, comment) async {
@@ -86,59 +80,35 @@ class _PostDetailBodyState extends State<PostDetailBody> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection("Posts")
-            .where('postid', isEqualTo: widget.postid)
-            .snapshots(includeMetadataChanges: true),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Text('Something went wrong');
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: Text(''));
-          }
-          if (snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text(''));
-          }
-          var post = snapshot.data!.docs[0];
-          return Column(
-            children: [
-              CurvedWidget(
-                  child: JassyGradientColor(
-                gradientHeight: size.height * 0.23,
-              )),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('Users')
-                        .where('uid', isEqualTo: post['postby'])
-                        .snapshots(includeMetadataChanges: true),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text('Something went wrong');
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: Text(''));
-                      }
-                      if (snapshot.data!.docs.isEmpty) {
-                        return const Center(child: Text(''));
-                      }
-                      var queryUser = snapshot.data!.docs[0];
-                      return FullPostDetail(
-                        post: post,
-                        user: queryUser,
-                        myFocusNode: myFocusNode,
-                      );
-                    },
-                  ),
-                ),
-              ),
-              StreamBuilder<QuerySnapshot>(
+    return Column(
+      children: [
+        CurvedWidget(
+            child: JassyGradientColor(
+          gradientHeight: size.height * 0.23,
+        )),
+        Expanded(
+          child: SingleChildScrollView(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection("Posts")
+                  .where('postid', isEqualTo: widget.postid)
+                  .snapshots(includeMetadataChanges: true),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('Something went wrong');
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: Text(''));
+                }
+                if (snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text(''));
+                }
+                var post = snapshot.data!.docs[0];
+                // getgroupid = post['groupid'];
+                return StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('Users')
-                      .where('uid', isEqualTo: currentUser!.uid)
+                      .where('uid', isEqualTo: post['postby'])
                       .snapshots(includeMetadataChanges: true),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
@@ -150,36 +120,50 @@ class _PostDetailBodyState extends State<PostDetailBody> {
                     if (snapshot.data!.docs.isEmpty) {
                       return const Center(child: Text(''));
                     }
-                    var user = snapshot.data!.docs[0];
-                    bool isMember = false;
-                    for (var groupid in user['groups']) {
-                      if (groupid == post['groupid']) {
-                        isMember = true;
-                      }
-                    }
-                    return user['userStatus'] == 'admin'
-                        ? CommentInput(
-                            size: size,
-                            onTab: () {
-                              addComment(
-                                  post['postid'], messageController.text);
-                            },
-                            child: inputConsole(),
-                          )
-                        : isMember
-                            ? CommentInput(
-                                size: size,
-                                onTab: () {
-                                  addComment(
-                                      post['postid'], messageController.text);
-                                },
-                                child: inputConsole(),
-                              )
-                            : const SizedBox.shrink();
-                  }),
-            ],
-          );
-        });
+                    var queryUser = snapshot.data!.docs[0];
+                    return FullPostDetail(
+                      post: post,
+                      user: queryUser,
+                      myFocusNode: myFocusNode,
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+        GetX<PostDetailController>(
+            init: PostDetailController(),
+            builder: (controller) {
+              controller.updatePostid(widget.postid);
+              var group = controller.userGroup.value;
+              var statusUser = controller.statusUser.value;
+              var groupid = controller.groupid.value;
+              for (var id in group) {
+                if (id == groupid) {
+                  isMember = true;
+                }
+              }
+              return statusUser == 'admin'
+                  ? CommentInput(
+                      size: size,
+                      onTab: () {
+                        addComment(widget.postid, messageController.text);
+                      },
+                      child: inputConsole(),
+                    )
+                  : isMember
+                      ? CommentInput(
+                          size: size,
+                          onTab: () {
+                            addComment(widget.postid, messageController.text);
+                          },
+                          child: inputConsole(),
+                        )
+                      : const SizedBox.shrink();
+            }),
+      ],
+    );
   }
 
   Widget inputConsole() {

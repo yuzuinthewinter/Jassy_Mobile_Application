@@ -10,11 +10,13 @@ class MessageAsLikeDetail extends StatefulWidget {
   final int color;
   final message;
   final language;
+  final translate;
   const MessageAsLikeDetail(
       {Key? key,
       required this.color,
       required this.message,
-      required this.language})
+      required this.language,
+      required this.translate})
       : super(key: key);
 
   @override
@@ -52,19 +54,39 @@ class _MessageAsLikeDetailState extends State<MessageAsLikeDetail> {
                   });
                 });
           }),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-        width: double.infinity,
-        color: colors[widget.color],
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.message['message'],
-              style: TextStyle(fontSize: 16),
-            )
-          ],
-        ),
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+            width: double.infinity,
+            height: size.height * 0.3,
+            color: colors[widget.color],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.message['message'],
+                  style: TextStyle(fontSize: 16),
+                )
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.05),
+            width: double.infinity,
+            height: size.height * 0.42,
+            color: widget.color == 2 ? colors[0] : colors[widget.color + 1],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.translate.toString(),
+                  style: TextStyle(fontSize: 16),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

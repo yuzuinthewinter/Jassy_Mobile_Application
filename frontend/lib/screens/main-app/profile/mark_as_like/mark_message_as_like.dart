@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/appbar/mark_message_as_like_appbar.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
@@ -6,11 +7,13 @@ import 'package:flutter_application_1/component/header_style/jassy_gradient_colo
 import 'package:flutter_application_1/component/popup_page/delete_popup.dart';
 import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
 import 'package:flutter_application_1/models/item.dart';
+import 'package:flutter_application_1/screens/main-app/profile/mark_as_like/like_list_detail.dart';
 import 'package:flutter_application_1/screens/main-app/profile/mark_as_like/message_as_like_detail.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:get/utils.dart';
+import 'package:translator/translator.dart';
 
 class MarkMessageAsLike extends StatefulWidget {
   final user;
@@ -23,6 +26,7 @@ class MarkMessageAsLike extends StatefulWidget {
 class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
   List colors = [primaryLightest, tertiaryLightest, secoundaryLightest];
   bool isSelected = false;
+  bool isTranslate = false;
   final _LanguageChoicesLists = [
     'Khmer',
     'English',
@@ -33,13 +37,87 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
   ];
   int? selectedIndex;
 
+  CollectionReference memo =
+      FirebaseFirestore.instance.collection('MemoMessages');
+  removeMemo(memoid, language) async {
+    CollectionReference memo =
+        FirebaseFirestore.instance.collection('MemoMessages');
+    await memo.doc(widget.user['uid']).update({
+      '$language': FieldValue.arrayRemove([memoid]),
+    });
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void initState() {
+    getLangCode();
+    super.initState();
+  }
+
+  final List locale = [
+    {'name': 'Khmer', 'code': 'km'},
+    {'name': 'English', 'code': 'en'},
+    {'name': 'Indonesian', 'code': 'id'},
+    {'name': 'Japanese', 'code': 'ja'},
+    {'name': 'Korean', 'code': 'ko'},
+    {'name': 'Thai', 'code': 'th'},
+  ];
+
+  List translation = [];
+  var langCode;
+
+  getLangCode() async {
+    for (var local in locale) {
+      if (local['name'].toLowerCase() ==
+          widget.user['language']['defaultLanguage'].toLowerCase()) {
+        langCode = local['code'];
+      }
+    }
+  }
+
+  translateCard(listMemo) async {
+    translation = [];
+    List getListMessage = [];
+    final translator = GoogleTranslator();
+    for (var memo in listMemo) {
+      var snapshot = await FirebaseFirestore.instance
+          .collection('Messages')
+          .where('messageID', isEqualTo: memo)
+          .get();
+      if (snapshot.docs.isNotEmpty) {
+        var message = snapshot.docs[0]['message'];
+        getListMessage.add(message);
+      }
+    }
+    for (var message in getListMessage) {
+      var translationWord =
+          await translator.translate(message, to: '$langCode');
+      translation.add(translationWord);
+    }
+    print(translation);
+  }
+
+  var translationDetail;
+
+  translate(message) async {
+    final translator = GoogleTranslator();
+    translationDetail =
+        await translator.translate(message, to: '$langCode');
+  }
+
+  removeList(language) async {
+    await memo.doc(widget.user['uid']).update({
+      '$language': [],
+    });
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: MarkMessageAsLikeAppBar(
-      ),
+      appBar: MarkMessageAsLikeAppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -83,69 +161,66 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                                 children: [
                                   memo[language].length > 0
                                       ? Row(
-                                        children: [
-                                          Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: size.width * 0.02,
-                                                      vertical: size.height * 0.02),
-                                                  child: Text(
-                                                    StringUtils.capitalize(
-                                                        language),
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        color: greyDark),
-                                                  ),
-                                          ),
-                                          Spacer(),
-                                          TextButton.icon(
-                                             onPressed: () {
-                                                //Todo: delete list
-                                                print("del");
-                                              },
-                                              icon:SvgPicture.asset(
-                                                "assets/icons/del_bin.svg",
-                                                 width: size.width *0.03,
-                                              ),
-                                              label: Text(
-                                                "Delete".tr,
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: size.width * 0.02,
+                                                  vertical: size.height * 0.02),
+                                              child: Text(
+                                                StringUtils.capitalize(
+                                                    language),
                                                 style: TextStyle(
-                                                  fontSize: 16,
-                                                  color:  primaryDarker)
-                                              )
-                                          )
-                                        ],
-                                      )
+                                                    fontSize: 20,
+                                                    color: greyDark),
+                                              ),
+                                            ),
+                                            Spacer(),
+                                            MoreDetail(
+                                                language, memo[language]),
+                                          ],
+                                        )
                                       : const SizedBox.shrink(),
-                                  Container(
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: size.height * 0),
-                                    child: GridView.builder(
-                                      padding: const EdgeInsets.only(top: 0),
-                                      physics: const ScrollPhysics(),
-                                      shrinkWrap: true,
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                              childAspectRatio: size.width /
-                                                  size.height /
-                                                  0.35,
-                                              crossAxisCount: 2,
-                                              crossAxisSpacing:
-                                                  size.height * 0.02,
-                                              mainAxisSpacing:
-                                                  size.height * 0.02),
-                                      itemCount: memo[language].length,
-                                      itemBuilder: (context, i) {
-                                        var isSelect = isSelected;
-                                        return favMassageItem(
-                                            context,
-                                            i,
-                                            memo,
-                                            language,
-                                            index,
-                                            memo['listLanguage']);
-                                      },
-                                    ),
-                                  ),
+                                  memo[language].length > 0
+                                      ? Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: size.height * 0),
+                                          child: GridView.builder(
+                                            padding:
+                                                const EdgeInsets.only(top: 0),
+                                            physics: const ScrollPhysics(),
+                                            shrinkWrap: true,
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                    childAspectRatio:
+                                                        size.width /
+                                                            size.height /
+                                                            0.35,
+                                                    crossAxisCount: 2,
+                                                    crossAxisSpacing:
+                                                        size.height * 0.02,
+                                                    mainAxisSpacing:
+                                                        size.height * 0.02),
+                                            itemCount:
+                                                memo[language].length <= 4
+                                                    ? memo[language].length
+                                                    : 4,
+                                            itemBuilder: (context, i) {
+                                              var isSelect = isSelected;
+                                              var reversed =
+                                                  memo[language].length -
+                                                      1 -
+                                                      index;
+                                              return favMassageItem(
+                                                  context,
+                                                  i,
+                                                  memo,
+                                                  language,
+                                                  index,
+                                                  memo['listLanguage']);
+                                            },
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
                                 ],
                               );
                             });
@@ -161,13 +236,105 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
     );
   }
 
-  removeMemo(memoid, language) async {
-    CollectionReference memo =
-        FirebaseFirestore.instance.collection('MemoMessages');
-    await memo.doc(widget.user['uid']).update({
-      '$language': FieldValue.arrayRemove([memoid]),
-    });
-    Navigator.of(context).pop();
+  Widget MoreDetail(language, listMemo) {
+    Size size = MediaQuery.of(context).size;
+    return InkWell(
+        onTap: () {
+          showModalBottomSheet(
+              shape: const RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(20))),
+              context: context,
+              builder: (context) {
+                return Container(
+                  height: MediaQuery.of(context).size.height * 0.21,
+                  padding: const EdgeInsets.only(
+                      top: 5.0, left: 20.0, right: 20, bottom: 15),
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.02),
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height *
+                                      0.02),
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            CupertinoPageRoute(
+                                                builder: (context) {
+                                          return LikeListDetail(
+                                              language, listMemo, widget.user);
+                                        }));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: size.width * 0.05,
+                                            height: size.height * 0.1,
+                                          ),
+                                          Text("CommuMore".tr)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return DeleteWarningPopUp(
+                                                  onPress: () {
+                                                removeList(language);
+                                              });
+                                            });
+                                      },
+                                      child: Row(
+                                        children: [
+                                          // SvgPicture.asset(
+                                          //     "assets/icons/del_bin.svg"),
+                                          SizedBox(
+                                            width: size.width * 0.05,
+                                            height: size.height * 0.1,
+                                          ),
+                                          Text("Delete".tr)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                color: primaryDarker,
+                              ))),
+                    ],
+                  ),
+                );
+              });
+        },
+        child: Icon(
+          Icons.more_horiz,
+          color: primaryColor,
+          size: size.width * 0.08,
+        ));
   }
 
   Widget favMassageItem(context, i, memo, language, index, listLanguage) {
@@ -190,8 +357,9 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
           }
           var message = snapshot.data!.docs[0];
           return InkWell(
-            onTap: () {
+            onTap: () async {
               int color = index.toInt() % colors.length.toInt();
+              await translate(message['message']);
               isSelected == false
                   ? Navigator.push(
                       context,
@@ -200,6 +368,7 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                                 color: color,
                                 message: message,
                                 language: language,
+                                translate: translationDetail,
                               )))
                   : Container();
             },

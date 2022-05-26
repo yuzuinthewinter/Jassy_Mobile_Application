@@ -10,6 +10,7 @@ import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
 import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/controllers/currentUser.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/report_post.dart';
 import 'package:flutter_application_1/theme/index.dart';
