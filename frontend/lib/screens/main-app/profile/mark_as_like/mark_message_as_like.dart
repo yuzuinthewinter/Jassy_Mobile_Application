@@ -266,6 +266,7 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                                   Expanded(
                                     child: InkWell(
                                       onTap: () {
+                                        Navigator.pop(context);
                                         Navigator.push(context,
                                             CupertinoPageRoute(
                                                 builder: (context) {
@@ -287,6 +288,7 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                                   Expanded(
                                     child: InkWell(
                                       onTap: () {
+                                        Navigator.pop(context);
                                         showDialog(
                                             context: context,
                                             builder: (context) {
