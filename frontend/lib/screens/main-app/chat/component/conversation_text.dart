@@ -440,7 +440,7 @@ class _BodyState extends State<ConversationText> {
       ItemModel(
           id: 3, text: "Translate".tr, icon: "assets/icons/translate_icon.svg"),
       ItemModel(id: 4, text: "Like".tr, icon: "assets/icons/favorite_icon.svg"),
-      ItemModel(id: 5, text: "Delete".tr, icon: "assets/icons/del_bin.svg"),
+      ItemModel(id: 5, text: "Delete".tr, icon: "assets/icons/white_bin.svg"),
     ];
     var item1 = menuItems[0].id;
     var item2 = menuItems[1].id;
@@ -452,7 +452,9 @@ class _BodyState extends State<ConversationText> {
     bool isDismiss = true;
     return Container(
       constraints: BoxConstraints(
-        maxWidth: size.width * 0.8,
+        maxWidth: message['sentBy'] == widget.currentUser['uid']
+            ? size.width * 0.8
+            : size.width * 0.6,
         maxHeight: size.height * 0.08,
       ),
       decoration: const BoxDecoration(
@@ -461,7 +463,7 @@ class _BodyState extends State<ConversationText> {
       ),
       child: GridView.count(
         padding: const EdgeInsets.symmetric(vertical: 0),
-        crossAxisCount: 5,
+        crossAxisCount: message['sentBy'] == widget.currentUser['uid'] ? 5 : 4,
         children: menuItems
             .map((item) => Container(
                   decoration: const BoxDecoration(
@@ -659,29 +661,34 @@ class _TypeTextMessage extends State<TypeTextMessage> {
                 child: Text(widget.currentMessage['message']),
               ),
               isTranslate
-                  ? Container(
-                      constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width * 0.6),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: widget.isCurrentUser
-                              ? primaryLightest
-                              : greyLighter,
-                          borderRadius: widget.isCurrentUser
-                              ? const BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20))
-                              : const BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20))),
-                      child: translation == null
-                          ? Lottie.asset("assets/images/loading.json",
-                              width: 24, height: 24)
-                          : Text(translation.toString()),
-                    )
+                  ? widget.isCurrentUser
+                      ? Container(
+                          height: 1,
+                        )
+                      : Container(
+                          constraints: BoxConstraints(
+                              maxWidth:
+                                  MediaQuery.of(context).size.width * 0.6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                              color: widget.isCurrentUser
+                                  ? primaryLightest
+                                  : greyLighter,
+                              borderRadius: widget.isCurrentUser
+                                  ? const BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20))
+                                  : const BorderRadius.only(
+                                      topRight: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20))),
+                          child: translation == null
+                              ? Lottie.asset("assets/images/loading.json",
+                                  width: 24, height: 24)
+                              : Text(translation.toString()),
+                        )
                   : const SizedBox.shrink(),
             ],
           );
