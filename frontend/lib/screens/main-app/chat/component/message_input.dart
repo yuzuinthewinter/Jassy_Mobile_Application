@@ -99,6 +99,7 @@ class _BodyState extends State<MessageInput> {
       'type': type,
     });
     replyController.updateReply('', false, '', type);
+    urlFile = '';
   }
 
   XFile? pickedImage;
