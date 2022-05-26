@@ -59,58 +59,69 @@ class _MessageAsLikeDetailState extends State<MessageAsLikeDetail> {
           }),
       body: Column(
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-            width: double.infinity,
-            height: size.height * 0.3,
-            color: colors[widget.color],
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.message['message'],
-                  style: TextStyle(fontSize: 16),
-                )
-              ],
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+              width: double.infinity,
+              height: size.height * 0.3,
+              color: colors[widget.color],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.message['message'],
+                    style: TextStyle(fontSize: 16),
+                  )
+                ],
+              ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.05, vertical: size.height * 0.05),
-            width: double.infinity,
-            height: size.height * 0.42,
-            color: widget.color == 2 ? colors[0] : colors[widget.color + 1],
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.translate.targetLanguage.toString().toUpperCase(),
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isShow = !isShow;
-                        });
-                      },
-                      icon: isShow
-                          ? Icon(Icons.visibility_off_rounded)
-                          : Icon(Icons.visibility_rounded),
-                      color: primaryDarker,
-                    )
-                  ],
-                ),
-                !isShow
-                    ? const SizedBox.shrink()
-                    : Text(
-                        widget.translate.toString(),
-                        style: TextStyle(fontSize: 16),
-                      )
-              ],
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.05, vertical: size.height * 0.05),
+              width: double.infinity,
+              height: size.height * 0.42,
+              color: widget.color == 2 ? colors[0] : colors[widget.color + 1],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    children: [
+                      Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isShow = !isShow;
+                              });
+                            },
+                            icon: isShow
+                                  ? Icon(Icons.visibility_off_rounded,)
+                                  : Icon(Icons.visibility_rounded,),
+                              color: primaryDarker,
+                            ),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: size.width * 0.02),
+                          child: Text(
+                            widget.translate.targetLanguage.toString().toUpperCase(),
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  !isShow
+                      ? const SizedBox.shrink()
+                      : Text(
+                          widget.translate.toString(),
+                          style: TextStyle(fontSize: 16),
+                        )
+                ],
+              ),
             ),
           ),
         ],
