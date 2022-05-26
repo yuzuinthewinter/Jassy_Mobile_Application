@@ -454,7 +454,7 @@ class _BodyState extends State<ConversationText> {
                           const Duration(seconds: 5),
                           () => 'Data Loaded',
                         );
-                        Navigator.of(context).pop();
+                        Navigator.pop(context);
                         //translate
                         // setState(() {
                         //   _isTranslate = !_isTranslate;
