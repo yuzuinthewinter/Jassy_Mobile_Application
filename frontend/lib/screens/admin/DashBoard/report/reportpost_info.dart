@@ -8,6 +8,7 @@ import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/component/popup_page/body/successWithButton_body.dart';
 import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
+import 'package:flutter_application_1/controllers/currentUser.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/report/listReportPost.dart';
 import 'package:flutter_application_1/screens/main-app/community/post_detail.dart';
 import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/detail_page.dart';

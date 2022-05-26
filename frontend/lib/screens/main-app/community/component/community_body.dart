@@ -11,6 +11,7 @@ import 'package:flutter_application_1/component/header_style/jassy_gradient_colo
 import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
 import 'package:flutter_application_1/component/text/report_choice.dart';
 import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/controllers/currentUser.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/report/reportGroup.dart';
@@ -131,120 +132,120 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
         ),
         Expanded(
           child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.02, vertical: size.height * 0.01),
-                child: widget.user['userStatus'] != 'admin'
-                    ? // Todo: isEmpty show NoNewsWidget
-                            getAllPost().length == 0
-                                ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: NoNewsWidget(
-                                          headText: "CommuNoFeed".tr,
-                                          descText: "CommuStartJoin".tr,
-                                          size: size),
-                                    ),
-                                  ],
-                                )
-                                : getNewsFeed(context)
-                    : Column(
-                        children: [
-                          SizedBox(
-                            height: size.height * 0.04,
-                          ),
-                          Container(
-                            margin:
-                                EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: size.height * 0.025),
-                            width: size.width * 0.9,
-                            height: size.height * 0.15,
-                            decoration: BoxDecoration(
-                                color: textLight,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Column(children: [
-                              MenuCard(
-                                size: size,
-                                icon: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.add_circle_rounded),
-                                  color: primaryColor,
-                                ),
-                                text: 'เพิ่มกลุ่มชุมชน',
-                                onTab: () {
-                                  Navigator.push(context,
-                                      CupertinoPageRoute(builder: (context) {
-                                    return AddNewCommunity(widget.user);
-                                  }));
-                                },
+              padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.02, vertical: size.height * 0.01),
+              child: widget.user['userStatus'] != 'admin'
+                  ? // Todo: isEmpty show NoNewsWidget
+                  getAllPost().length == 0
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: double.infinity,
+                              child: NoNewsWidget(
+                                  headText: "CommuNoFeed".tr,
+                                  descText: "CommuStartJoin".tr,
+                                  size: size),
+                            ),
+                          ],
+                        )
+                      : getNewsFeed(context)
+                  : Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.04,
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.05),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: size.height * 0.025),
+                          width: size.width * 0.9,
+                          height: size.height * 0.15,
+                          decoration: BoxDecoration(
+                              color: textLight,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(children: [
+                            MenuCard(
+                              size: size,
+                              icon: IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.add_circle_rounded),
+                                color: primaryColor,
                               ),
-                              MenuCard(
-                                size: size,
-                                icon: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.people_alt),
-                                  color: primaryColor,
-                                ),
-                                text: 'การจัดการกลุ่มชุมชน',
-                                onTab: () {
-                                  Navigator.push(context,
-                                      CupertinoPageRoute(builder: (context) {
-                                    return ManageCommunity(
-                                        widget.user, widget.community);
-                                  }));
-                                },
+                              text: 'เพิ่มกลุ่มชุมชน',
+                              onTab: () {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return AddNewCommunity(widget.user);
+                                }));
+                              },
+                            ),
+                            MenuCard(
+                              size: size,
+                              icon: IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.people_alt),
+                                color: primaryColor,
                               ),
-                            ]),
-                          ),
-                          SizedBox(
-                            height: size.height * 0.03,
-                          ),
-                          Container(
-                            margin:
-                                EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: size.height * 0.025),
-                            width: size.width * 0.9,
-                            height: size.height * 0.075,
-                            decoration: BoxDecoration(
-                                color: textLight,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Column(children: [
-                              Expanded(
-                                  child: InkWell(
-                                onTap: () {
-                                  Navigator.push(context,
-                                      CupertinoPageRoute(builder: (context) {
-                                    return const ReportGroupScreen();
-                                  }));
-                                },
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.warning_rounded),
-                                      color: secoundary,
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.03,
-                                    ),
-                                    const Text(
-                                      "ตรวจสอบคำร้องเรียนจากชุมชน",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
-                                          color: textMadatory),
-                                    ),
-                                    const Spacer(),
-                                  ],
-                                ),
-                              ))
-                            ]),
-                          ),
-                        ],
-                      )),
+                              text: 'การจัดการกลุ่มชุมชน',
+                              onTab: () {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ManageCommunity(
+                                      widget.user, widget.community);
+                                }));
+                              },
+                            ),
+                          ]),
+                        ),
+                        SizedBox(
+                          height: size.height * 0.03,
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.05),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: size.height * 0.025),
+                          width: size.width * 0.9,
+                          height: size.height * 0.075,
+                          decoration: BoxDecoration(
+                              color: textLight,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(children: [
+                            Expanded(
+                                child: InkWell(
+                              onTap: () {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return const ReportGroupScreen();
+                                }));
+                              },
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.warning_rounded),
+                                    color: secoundary,
+                                  ),
+                                  SizedBox(
+                                    width: size.width * 0.03,
+                                  ),
+                                  const Text(
+                                    "ตรวจสอบคำร้องเรียนจากชุมชน",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+                                        color: textMadatory),
+                                  ),
+                                  const Spacer(),
+                                ],
+                              ),
+                            ))
+                          ]),
+                        ),
+                      ],
+                    )),
         ),
       ],
     );
@@ -287,30 +288,38 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
           });
 
           return ListView.separated(
-                  padding: EdgeInsets.only(top: size.height * 0.02),
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: sortPosts.toSet().toList().length,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      height: size.height * 0.02,
-                    );
+              padding: EdgeInsets.only(top: size.height * 0.02),
+              physics: const AlwaysScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: sortPosts.toSet().toList().length,
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(
+                  height: size.height * 0.02,
+                );
+              },
+              itemBuilder: (context, index) {
+                int reverse = sortPosts.length - 1 - index;
+                return InkWell(
+                  onTap: () {PostDetailController postController =
+                          PostDetailController();
+
+                      postController.updatePostid(sortPosts[reverse]['postid']);
+                      Future.delayed(
+                        const Duration(seconds: 2),
+                        () => 'Data Loaded',
+                      );
+                    Navigator.push(context,
+                        CupertinoPageRoute(builder: (context) {
+                      
+                      return PostDetail(
+                        postid: sortPosts[reverse]['postid'],
+                      );
+                    }));
                   },
-                  itemBuilder: (context, index) {
-                    int reverse = sortPosts.length - 1 - index;
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            CupertinoPageRoute(builder: (context) {
-                          return PostDetail(
-                            postid: sortPosts[reverse]['postid'],
-                          );
-                        }));
-                      },
-                      child: newsCard(sortPosts[reverse]['postid'], context),
-                    );
-                  });
+                  child: newsCard(sortPosts[reverse]['postid'], context),
+                );
+              });
         });
   }
 

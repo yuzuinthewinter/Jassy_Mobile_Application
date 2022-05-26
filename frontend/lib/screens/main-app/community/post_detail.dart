@@ -1,6 +1,7 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controllers/currentUser.dart';
 import 'package:flutter_application_1/models/community.dart';
 import 'package:flutter_application_1/screens/main-app/community/component/post_detail_body.dart';
 import 'package:flutter_application_1/theme/index.dart';
@@ -23,6 +24,12 @@ class PostDetail extends StatefulWidget {
 
 class _PostDetailState extends State<PostDetail> {
   bool isNotificationOn = false;
+ 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -84,7 +91,8 @@ class _PostDetailState extends State<PostDetail> {
             size: 20,
           ),
           color: primaryDarker,
-          onPressed: () => {FocusScope.of(context).unfocus(), Navigator.of(context).pop()},
+          onPressed: () =>
+              {FocusScope.of(context).unfocus(), Navigator.of(context).pop()},
         ),
         // actions: [
         //   PopupMenuButton<MenuItem>(
@@ -139,7 +147,6 @@ class _PostDetailState extends State<PostDetail> {
         // ],
       ),
       body: PostDetailBody(postid: widget.postid),
-     
     );
   }
 }
