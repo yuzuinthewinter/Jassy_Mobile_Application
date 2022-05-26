@@ -37,12 +37,15 @@ class _MessageAsLikeDetailState extends State<MessageAsLikeDetail> {
     Navigator.of(context).pop();
   }
 
+  bool isShow = false;
+
   @override
   Widget build(BuildContext context) {
     List colors = [primaryLightest, tertiaryLightest, secoundaryLightest];
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: BackAndDeleteAppBar(
+          text: widget.translate.sourceLanguage.toString().toUpperCase(),
           color: colors[widget.color],
           delete: () {
             // Todo: delete item
@@ -72,17 +75,41 @@ class _MessageAsLikeDetailState extends State<MessageAsLikeDetail> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.05),
+            padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.05, vertical: size.height * 0.05),
             width: double.infinity,
             height: size.height * 0.42,
             color: widget.color == 2 ? colors[0] : colors[widget.color + 1],
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.translate.toString(),
-                  style: TextStyle(fontSize: 16),
-                )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      widget.translate.targetLanguage.toString().toUpperCase(),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isShow = !isShow;
+                        });
+                      },
+                      icon: isShow
+                          ? Icon(Icons.visibility_off_rounded)
+                          : Icon(Icons.visibility_rounded),
+                      color: primaryDarker,
+                    )
+                  ],
+                ),
+                !isShow
+                    ? const SizedBox.shrink()
+                    : Text(
+                        widget.translate.toString(),
+                        style: TextStyle(fontSize: 16),
+                      )
               ],
             ),
           ),

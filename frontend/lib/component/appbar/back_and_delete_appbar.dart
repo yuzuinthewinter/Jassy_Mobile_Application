@@ -10,15 +10,18 @@ class BackAndDeleteAppBar extends StatelessWidget implements PreferredSizeWidget
     Key? key,
     required this.delete, 
     required this.color,
+    required this.text,
   }) : super(key: key);
 
   final VoidCallback delete;
   final Color color;
+  final text;
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return AppBar(
+      title: Text(text, style: TextStyle(color: textDark),),
       toolbarHeight: size.height * 0.15,
       centerTitle: true,
       elevation: 0,
