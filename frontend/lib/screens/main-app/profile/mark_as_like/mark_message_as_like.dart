@@ -101,8 +101,7 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
 
   translate(message) async {
     final translator = GoogleTranslator();
-    translationDetail =
-        await translator.translate(message, to: '$langCode');
+    translationDetail = await translator.translate(message, to: '$langCode');
   }
 
   removeList(language) async {
@@ -276,6 +275,8 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                                       },
                                       child: Row(
                                         children: [
+                                          SvgPicture.asset(
+                                              "assets/icons/see_more.svg"),
                                           SizedBox(
                                             width: size.width * 0.05,
                                             height: size.height * 0.1,
@@ -300,8 +301,8 @@ class _MarkMessageAsLikeState extends State<MarkMessageAsLike> {
                                       },
                                       child: Row(
                                         children: [
-                                          // SvgPicture.asset(
-                                          //     "assets/icons/del_bin.svg"),
+                                          SvgPicture.asset(
+                                              "assets/icons/del_bin_circle.svg"),
                                           SizedBox(
                                             width: size.width * 0.05,
                                             height: size.height * 0.1,
