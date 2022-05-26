@@ -271,11 +271,12 @@ class FullPostDetail extends StatelessWidget {
   CollectionReference comments =
       FirebaseFirestore.instance.collection('Comments');
 
-  deleteComment(post, user, commentid) async {
+  deleteComment(context, post, user, commentid) async {
     await comments.doc(commentid).delete();
     await posts.doc(post['postid']).update({
       'comments': FieldValue.arrayRemove([commentid]),
     });
+    Navigator.of(context).pop();
   }
 
   @override
@@ -477,9 +478,16 @@ class FullPostDetail extends StatelessWidget {
                                                                                 InkWell(
                                                                               onTap: () {
                                                                                 Navigator.pop(context);
-                                                                                Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                                                                                  return deleteComment(post, user, post['comments'][index]);
-                                                                                }));
+                                                                                showDialog(
+                                                                                    context: context,
+                                                                                    builder: (context) {
+                                                                                      return WarningPopUpWithButton(
+                                                                                        text: 'GroupDeleteWarning'.tr,
+                                                                                        okPress: () {
+                                                                                          deleteComment(context, post, user, post['comments'][index]);
+                                                                                        },
+                                                                                      );
+                                                                                    });
                                                                               },
                                                                               child: Row(
                                                                                 children: [

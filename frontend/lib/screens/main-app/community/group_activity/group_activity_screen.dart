@@ -39,6 +39,7 @@ class _GroupActivityScreenState extends State<GroupActivityScreen> {
     await users.doc(widget.user['uid']).update({
       'groups': FieldValue.arrayRemove([widget.groupActivity['groupid']]),
     });
+    Navigator.of(context).pop();
   }
 
   @override
