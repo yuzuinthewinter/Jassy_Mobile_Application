@@ -3,11 +3,13 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/controllers/reply.dart';
 import 'package:flutter_application_1/controllers/translateChat.dart';
 import 'package:flutter_application_1/models/item.dart';
+import 'package:flutter_application_1/screens/main-app/jassy_homepage/component/detail_page.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -297,13 +299,32 @@ class _BodyState extends State<ConversationText> {
                   Stack(
                     children: [
                       if (!isCurrentUser) ...[
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundImage: !widget.user['profilePic'].isEmpty
-                              ? NetworkImage(widget.user['profilePic'][0])
-                              : const AssetImage(
-                                      "assets/images/header_img1.png")
-                                  as ImageProvider,
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) {
+                              final curvedAnimation = CurvedAnimation(
+                                parent: animation,
+                                curve: const Interval(0, 0.5),
+                              );
+                              return FadeTransition(
+                                opacity: curvedAnimation,
+                                child: DetailPage(
+                                    user: widget.user,
+                                    isMainPage: false,
+                                    animation: animation),
+                              );
+                            }));
+                          },
+                          child: CircleAvatar(
+                            radius: 20,
+                            backgroundImage: !widget.user['profilePic'].isEmpty
+                                ? NetworkImage(widget.user['profilePic'][0])
+                                : const AssetImage(
+                                        "assets/images/header_img1.png")
+                                    as ImageProvider,
+                          ),
                         ),
                         SizedBox(
                           width: size.height * 0.06,
@@ -407,7 +428,7 @@ class _BodyState extends State<ConversationText> {
                               ? TypeTextMessage(
                                   isCurrentUser: isCurrentUser,
                                   currentMessage: currentMessage,
-                                  user: widget.user,
+                                  user: widget.currentUser,
                                 )
                               : currentMessage['type'] == 'image'
                                   ? TypeImageMessage(

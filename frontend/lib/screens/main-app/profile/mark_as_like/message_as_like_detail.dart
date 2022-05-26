@@ -39,7 +39,7 @@ class _MessageAsLikeDetailState extends State<MessageAsLikeDetail> {
     Navigator.of(context).pop();
   }
 
-  bool isShow = false;
+  bool isShow = true;
 
   @override
   Widget build(BuildContext context) {
