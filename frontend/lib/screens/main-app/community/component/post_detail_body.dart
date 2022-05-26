@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:comment_tree/comment_tree.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/button/like_button_widget.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
@@ -46,11 +47,11 @@ class _PostDetailBodyState extends State<PostDetailBody> {
     myFocusNode = FocusNode();
   }
 
+  CollectionReference comments =
+      FirebaseFirestore.instance.collection('Comments');
   String type = 'text';
   addComment(postid, comment) async {
     var currentUser = FirebaseAuth.instance.currentUser;
-    CollectionReference comments =
-        FirebaseFirestore.instance.collection('Comments');
     CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
     DocumentReference docRef = await comments.add({
       'postid': postid,
@@ -256,8 +257,8 @@ class FullPostDetail extends StatelessWidget {
     });
   }
 
+  CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
   deletePost(post, context) async {
-    CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
     CollectionReference groups =
         FirebaseFirestore.instance.collection('Community');
     await posts.doc(post['postid']).delete();
@@ -265,6 +266,16 @@ class FullPostDetail extends StatelessWidget {
       'postsID': FieldValue.arrayRemove([post['postid']]),
     });
     Navigator.of(context).pop();
+  }
+
+  CollectionReference comments =
+      FirebaseFirestore.instance.collection('Comments');
+
+  deleteComment(post, user, commentid) async {
+    await comments.doc(commentid).delete();
+    await posts.doc(post['postid']).update({
+      'comments': FieldValue.arrayRemove([commentid]),
+    });
   }
 
   @override
@@ -419,25 +430,146 @@ class FullPostDetail extends StatelessWidget {
                                             color: textLight,
                                             borderRadius:
                                                 BorderRadius.circular(20)),
-                                        child: RichText(
-                                          text: TextSpan(
-                                              style: TextStyle(
-                                                  color: textDark,
-                                                  fontFamily: 'Kanit',
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 16),
-                                              children: [
-                                                TextSpan(
-                                                    text:
-                                                        '${StringUtils.capitalize(user['name']['firstname'])} ${StringUtils.capitalize(user['name']['lastname'])}\n'),
-                                                TextSpan(
-                                                    text: comment['comment'],
+                                        child: user['uid'] == currentUser!.uid
+                                            ? InkWell(
+                                                onTap: () {
+                                                  showModalBottomSheet(
+                                                      shape: const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.vertical(
+                                                                  top: Radius
+                                                                      .circular(
+                                                                          20))),
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return Container(
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.12,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 5.0,
+                                                                  left: 20.0,
+                                                                  right: 20,
+                                                                  bottom: 15),
+                                                          child: Stack(
+                                                            children: [
+                                                              Padding(
+                                                                padding: EdgeInsets.only(
+                                                                    top: MediaQuery.of(context)
+                                                                            .size
+                                                                            .height *
+                                                                        0.02),
+                                                                child: Stack(
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: EdgeInsets.only(
+                                                                          top: MediaQuery.of(context).size.height *
+                                                                              0.02),
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          Expanded(
+                                                                            child:
+                                                                                InkWell(
+                                                                              onTap: () {
+                                                                                Navigator.pop(context);
+                                                                                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                                                                                  return deleteComment(post, user, post['comments'][index]);
+                                                                                }));
+                                                                              },
+                                                                              child: Row(
+                                                                                children: [
+                                                                                  SizedBox(
+                                                                                    width: size.width * 0.05,
+                                                                                    height: size.height * 0.1,
+                                                                                  ),
+                                                                                  Text("Delete".tr)
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .topRight,
+                                                                  child: IconButton(
+                                                                      onPressed: () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      icon: const Icon(
+                                                                        Icons
+                                                                            .close,
+                                                                        color:
+                                                                            primaryDarker,
+                                                                      ))),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      });
+                                                },
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                      style: TextStyle(
+                                                          color: textDark,
+                                                          fontFamily: 'Kanit',
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: 16),
+                                                      children: [
+                                                        TextSpan(
+                                                            text:
+                                                                '${StringUtils.capitalize(user['name']['firstname'])} ${StringUtils.capitalize(user['name']['lastname'])}\n',
+                                                            style: TextStyle(
+                                                              color: user['uid'] ==
+                                                                      currentUser!
+                                                                          .uid
+                                                                  ? primaryDark
+                                                                  : textDark,
+                                                            )),
+                                                        TextSpan(
+                                                            text: comment[
+                                                                'comment'],
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 16)),
+                                                      ]),
+                                                ),
+                                              )
+                                            : RichText(
+                                                text: TextSpan(
                                                     style: TextStyle(
+                                                        color: textDark,
+                                                        fontFamily: 'Kanit',
                                                         fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 16)),
-                                              ]),
-                                        ))
+                                                            FontWeight.w700,
+                                                        fontSize: 16),
+                                                    children: [
+                                                      TextSpan(
+                                                          text:
+                                                              '${StringUtils.capitalize(user['name']['firstname'])} ${StringUtils.capitalize(user['name']['lastname'])}\n'),
+                                                      TextSpan(
+                                                          text: comment[
+                                                              'comment'],
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 16)),
+                                                    ]),
+                                              ))
                                   ],
                                 ),
                               ],
