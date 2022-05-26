@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/component/curved_widget.dart';
+import 'package:flutter_application_1/component/header_style/jassy_gradient_color.dart';
 import 'package:flutter_application_1/controllers/reply.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/conversation_text.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/message_input.dart';
@@ -54,6 +56,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
       },
       child: Column(
         children: [
+          CurvedWidget(child: JassyGradientColor()),
           Expanded(
             child: ConversationText(
               user: widget.user,

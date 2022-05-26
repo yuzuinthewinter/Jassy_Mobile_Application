@@ -243,6 +243,7 @@ class _BodyState extends State<ConversationText> {
           );
         }
         return ListView.builder(
+          padding: EdgeInsets.only(top: 0),
           reverse: true,
           physics: const BouncingScrollPhysics(),
           itemCount: snapshot.data!.docs[0]['messages'].length,

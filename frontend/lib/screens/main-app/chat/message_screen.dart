@@ -137,6 +137,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Column(
           children: [
