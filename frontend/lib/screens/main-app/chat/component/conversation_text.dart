@@ -6,12 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/controllers/reply.dart';
+import 'package:flutter_application_1/controllers/translateChat.dart';
 import 'package:flutter_application_1/models/item.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:lottie/lottie.dart';
 import 'package:translator/translator.dart';
 
 class ConversationText extends StatefulWidget {
@@ -65,7 +67,6 @@ class _BodyState extends State<ConversationText> {
   String _chatid = '';
   String _type = 'text';
   int count = -1;
-  bool _isTranslate = false;
 
   getTime(timestamp) {
     DateTime datatime = DateTime.parse(timestamp.toDate().toString());
@@ -129,6 +130,37 @@ class _BodyState extends State<ConversationText> {
     final translator = GoogleTranslator();
     translation =
         await translator.translate(message['message'], to: '$langCode');
+  }
+
+  deleteMessage(message) async {
+    await messagesdb.doc(message['messageID']).delete();
+    var snapshot = await chats.get();
+    if (snapshot.docs.isNotEmpty) {
+      var listChat = snapshot.docs;
+      for (var chat in listChat) {
+        if (chat['chatid'] == widget.chatid) {
+          if (message['messageID'] ==
+              chat['messages'][chat['messages'].length - 1]) {
+            await chats.doc(widget.chatid).update({
+              'lastMessageSent':
+                  '${StringUtils.capitalize(widget.currentUser['name']['firstname'])} removed a message.',
+            });
+          }
+        }
+      }
+    }
+    await chats.doc(widget.chatid).update({
+      'messages': FieldValue.arrayRemove([message['messageID']]),
+    });
+    List chatMember = [widget.currentUser['uid'], widget.user['uid']];
+    for (var lang in _LanguageChoicesLists) {
+      lang = lang.toLowerCase();
+      for (var member in chatMember) {
+        await memos.doc(member).update({
+          lang: FieldValue.arrayRemove([message['messageID']]),
+        });
+      }
+    }
   }
 
   @override
@@ -283,7 +315,8 @@ class _BodyState extends State<ConversationText> {
                             currentMessage['status'] == 'read'
                                 ? Text(
                                     "ChatRead".tr,
-                                    style: const TextStyle(color: grey, fontSize: 12),
+                                    style: const TextStyle(
+                                        color: grey, fontSize: 12),
                                     textAlign: TextAlign.right,
                                   )
                                 : const Text(''),
@@ -373,7 +406,7 @@ class _BodyState extends State<ConversationText> {
                               ? TypeTextMessage(
                                   isCurrentUser: isCurrentUser,
                                   currentMessage: currentMessage,
-                                  translate: translation,
+                                  user: widget.user,
                                 )
                               : currentMessage['type'] == 'image'
                                   ? TypeImageMessage(
@@ -406,17 +439,19 @@ class _BodyState extends State<ConversationText> {
       ItemModel(
           id: 3, text: "Translate".tr, icon: "assets/icons/translate_icon.svg"),
       ItemModel(id: 4, text: "Like".tr, icon: "assets/icons/favorite_icon.svg"),
+      ItemModel(id: 5, text: "Delete".tr, icon: "assets/icons/del_bin.svg"),
     ];
     var item1 = menuItems[0].id;
     var item2 = menuItems[1].id;
     var item3 = menuItems[2].id;
     var item4 = menuItems[3].id;
+    var item5 = menuItems[4].id;
 
     Size size = MediaQuery.of(context).size;
     bool isDismiss = true;
     return Container(
       constraints: BoxConstraints(
-        maxWidth: size.width * 0.65,
+        maxWidth: size.width * 0.8,
         maxHeight: size.height * 0.08,
       ),
       decoration: const BoxDecoration(
@@ -425,7 +460,7 @@ class _BodyState extends State<ConversationText> {
       ),
       child: GridView.count(
         padding: const EdgeInsets.symmetric(vertical: 0),
-        crossAxisCount: 4,
+        crossAxisCount: 5,
         children: menuItems
             .map((item) => Container(
                   decoration: const BoxDecoration(
@@ -455,12 +490,7 @@ class _BodyState extends State<ConversationText> {
                           () => 'Data Loaded',
                         );
                         Navigator.pop(context);
-                        //translate
-                        // setState(() {
-                        //   _isTranslate = !_isTranslate;
-                        // });
-                        // print("translate");
-                      } else {
+                      } else if (item.id == item4) {
                         showModalBottomSheet(
                             isScrollControlled: true,
                             shape: const RoundedRectangleBorder(
@@ -518,6 +548,8 @@ class _BodyState extends State<ConversationText> {
                                 ),
                               );
                             });
+                      } else if (item.id == item5) {
+                        deleteMessage(message);
                       }
                     },
                     child: Column(
@@ -543,29 +575,116 @@ class _BodyState extends State<ConversationText> {
   }
 }
 
-class TypeTextMessage extends StatelessWidget {
-  const TypeTextMessage({
+class TypeTextMessage extends StatefulWidget {
+  TypeTextMessage({
     Key? key,
     required this.isCurrentUser,
     required this.currentMessage,
-    required this.translate,
+    required this.user,
   }) : super(key: key);
 
   final bool isCurrentUser;
   final currentMessage;
-  final translate;
+  final user;
+  @override
+  _TypeTextMessage createState() => _TypeTextMessage();
+}
+
+class _TypeTextMessage extends State<TypeTextMessage> {
+  var translation;
+  var langCode;
+
+  final List locale = [
+    {'name': 'Khmer', 'code': 'km'},
+    {'name': 'English', 'code': 'en'},
+    {'name': 'Indonesian', 'code': 'id'},
+    {'name': 'Japanese', 'code': 'ja'},
+    {'name': 'Korean', 'code': 'ko'},
+    {'name': 'Thai', 'code': 'th'},
+  ];
+
+  getLangCode() async {
+    for (var local in locale) {
+      if (local['name'].toLowerCase() ==
+          widget.user['language']['defaultLanguage'].toLowerCase()) {
+        langCode = local['code'];
+      }
+    }
+  }
+
+  translate(message) async {
+    final translator = GoogleTranslator();
+    translation = await translator.translate(message, to: '$langCode');
+  }
+
+  TranslateChatController translateChatController =
+      Get.put(TranslateChatController());
+
+  @override
+  void initState() {
+    getLangCode();
+    translate(widget.currentMessage['message']);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints:
-          BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      decoration: BoxDecoration(
-          color: isCurrentUser ? primaryLighter : textLight,
-          borderRadius: BorderRadius.circular(20)),
-      child: Text(currentMessage['message']),
-    );
+    return GetX<TranslateChatController>(
+        init: TranslateChatController(),
+        builder: (controller) {
+          var isTranslate = controller.isTranslate.value;
+          return Column(
+            crossAxisAlignment: widget.isCurrentUser
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
+            children: [
+              Container(
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * 0.6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  color: widget.isCurrentUser ? primaryLighter : textLight,
+                  borderRadius: widget.isCurrentUser
+                      ? const BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          topLeft: Radius.circular(20),
+                          bottomLeft: Radius.circular(20))
+                      : const BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          topLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20)),
+                ),
+                child: Text(widget.currentMessage['message']),
+              ),
+              isTranslate
+                  ? Container(
+                      constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width * 0.6),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: widget.isCurrentUser
+                              ? primaryLightest
+                              : greyLighter,
+                          borderRadius: widget.isCurrentUser
+                              ? const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20))
+                              : const BorderRadius.only(
+                                  topRight: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20))),
+                      child: translation == null
+                          ? Lottie.asset("assets/images/loading.json",
+                              width: 24, height: 24)
+                          : Text(translation.toString()),
+                    )
+                  : const SizedBox.shrink(),
+            ],
+          );
+        });
   }
 }
 

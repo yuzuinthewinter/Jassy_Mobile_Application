@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
 import 'package:flutter_application_1/component/text/report_choice.dart';
 import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/controllers/translateChat.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/message_screen_body.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -37,6 +38,8 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   CollectionReference chats =
       FirebaseFirestore.instance.collection('ChatRooms');
   var currentUser = FirebaseAuth.instance.currentUser;
+
+  TranslateChatController translateChatController = Get.put(TranslateChatController());
 
   getDifferance(timestamp) {
     DateTime now = DateTime.now();
@@ -82,10 +85,12 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
       'liked': FieldValue.arrayRemove([widget.user['uid']]),
     });
     await chats.doc(widget.chatid).delete();
-    Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [3, true, false]);
+    Navigator.of(context)
+        .pushNamed(Routes.JassyHome, arguments: [3, true, false]);
   }
 
   bool isInRoom = false;
+  late bool isTranslate;
 
   @override
   void initState() {
@@ -173,52 +178,46 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
           PopupMenuButton<MenuItem>(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            onSelected: (value) => {
-              if (value == MenuItem.item1)
-                {
-                  print(isNotificationOn),
-                  setState(() {
-                    isNotificationOn = !isNotificationOn;
-                  }),
-                  print("turn off notification"),
-                  print(isNotificationOn)
+            onSelected: (value) async {
+              if (value == MenuItem.item1) {
+                await translateChatController.updateTranslateChat();
+              } else if (value == MenuItem.item2) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return WarningPopUpWithButton(
+                        text: 'WarningUnmatch'.tr,
+                        okPress: () {
+                          unMatch();
+                        },
+                      );
+                    });
+              } else if (value == MenuItem.item3) {
+                reportModalBottomSheet(context) {
+                  print('report');
                 }
-              else if (value == MenuItem.item2)
-                {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return WarningPopUpWithButton(
-                          text: 'WarningUnmatch'.tr,
-                          okPress: () {
-                            unMatch();
-                          },
-                        );
-                      })
-                }
-              else if (value == MenuItem.item3)
-                {reportModalBottomSheet(context), print('report')}
+              }
             },
             itemBuilder: (context) => [
-              // PopupMenuItem(
-              //     value: MenuItem.item1,
-              //     child: Row(
-              //       children: [
-              //         isNotificationOn
-              //             ? SvgPicture.asset("assets/icons/notification_on.svg")
-              //             : SvgPicture.asset(
-              //                 "assets/icons/notification_off.svg"),
-              //         isNotificationOn
-              //             ? Text("MenuNotificationOn".tr)
-              //             : Text("MenuNotificationOff".tr),
-              //       ],
-              //     )),
+              PopupMenuItem(
+                  value: MenuItem.item1,
+                  child: Row(
+                    children: [
+                      // SvgPicture.asset("assets/icons/cancel_pairing.svg"), //todo: translate icon
+                      SizedBox(
+                        width: size.width * 0.02,
+                      ),
+                      Text("Translate".tr),
+                    ],
+                  )),
               PopupMenuItem(
                   value: MenuItem.item2,
                   child: Row(
                     children: [
                       SvgPicture.asset("assets/icons/cancel_pairing.svg"),
-                      SizedBox(width: size.width * 0.02,),
+                      SizedBox(
+                        width: size.width * 0.02,
+                      ),
                       Text("MenuUnmatch".tr),
                     ],
                   )),
@@ -227,7 +226,9 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                   child: Row(
                     children: [
                       SvgPicture.asset("assets/icons/report.svg"),
-                      SizedBox(width: size.width * 0.02,),
+                      SizedBox(
+                        width: size.width * 0.02,
+                      ),
                       Text("MenuReport".tr),
                     ],
                   )),
