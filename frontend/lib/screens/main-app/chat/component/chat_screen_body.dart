@@ -49,19 +49,19 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
       resizeToAvoidBottomInset: false,
       appBar: ChatSelectedAppBar(
         text: "HeaderChatPage".tr,
-        action: IconButton(
-          onPressed: () {
-            // Todo: go to edit chat list
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const EditChatList()),
-            );
-          },
-          icon: SvgPicture.asset(
-            'assets/icons/list_check.svg',
-          ),
-          color: primaryDarker,
-        ),
+        // action: IconButton(
+        //   onPressed: () {
+        //     // Todo: go to edit chat list
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => const EditChatList()),
+        //     );
+        //   },
+        //   icon: SvgPicture.asset(
+        //     'assets/icons/list_check.svg',
+        //   ),
+        //   color: primaryDarker,
+        // ),
       ),
       body: Column(
         children: [
