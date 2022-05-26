@@ -5,10 +5,8 @@ import 'package:get/get.dart';
 
 class MarkMessageAsLikeAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const MarkMessageAsLikeAppBar({Key? key, required this.actionWidget})
+  const MarkMessageAsLikeAppBar({Key? key})
       : super(key: key);
-
-  final Widget actionWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +28,6 @@ class MarkMessageAsLikeAppBar extends StatelessWidget
         color: primaryDarker,
         onPressed: () => Navigator.of(context).pop(),
       ),
-      actions: [actionWidget],
     );
   }
 
