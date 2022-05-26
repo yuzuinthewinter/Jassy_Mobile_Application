@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
@@ -117,10 +118,12 @@ class _BodyState extends State<Body> {
     } catch (e) {
       print('error');
       // TODO: return invalid popup
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => super.widget),
-      // );
+      Flushbar(
+        message: "You have entered an invalid otp , please try again.".tr,
+        backgroundColor: textMadatory,
+        duration: const Duration(seconds: 3),
+        flushbarPosition: FlushbarPosition.TOP,
+      ).show(context);
     }
   }
 
