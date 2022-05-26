@@ -34,6 +34,7 @@ class LocaleString extends Translations {
               "Please enter the OTP you received via your phone number within the time limit.",
           "OtpTimeout": "This OTP will expire in 5 minutes.",
           "OtpResend": "Resend",
+          "OtpWrong" : "You have entered an invalid otp , please try again.",
           //Login Page
           "LoginPage": "Log In",
           "WelcomeLoginPage": "Welcome back!",
@@ -275,6 +276,7 @@ class LocaleString extends Translations {
               "กรุณาใส่รหัส OTP ที่คุณได้รับผ่านหมายเลขโทรศัพท์ของคุณภายในเวลาที่กำหนด",
           "OtpTimeout": "รหัสนี้จะหมดเวลาภายใน 5 นาที",
           "OtpResend": " ส่งใหม่",
+          "OtpWrong" : "คุณกรอกรหัส OTP ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง",
           //Login Page
           "LoginPage": "เข้าสู่ระบบ",
           "WelcomeLoginPage": "ยินดีต้อนรับการกลับมา !",
