@@ -104,7 +104,7 @@ class _BodyState extends State<ConversationText> {
         '$languageHeader': FieldValue.arrayUnion([messageid]),
       });
     }
-    Navigator.of(context).pop();
+    Navigator.pop(context);
   }
 
   replyMessage(message) {
@@ -175,7 +175,7 @@ class _BodyState extends State<ConversationText> {
                 ),
                 Text(
                   '${StringUtils.capitalize(widget.user['name']['firstname'])} ${StringUtils.capitalize(widget.user['name']['lastname'])}',
-                  style: TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 20),
                 ),
                 const Text(
                   'want to share their language with you',
@@ -283,7 +283,7 @@ class _BodyState extends State<ConversationText> {
                             currentMessage['status'] == 'read'
                                 ? Text(
                                     "ChatRead".tr,
-                                    style: TextStyle(color: grey, fontSize: 12),
+                                    style: const TextStyle(color: grey, fontSize: 12),
                                     textAlign: TextAlign.right,
                                   )
                                 : const Text(''),
@@ -325,7 +325,7 @@ class _BodyState extends State<ConversationText> {
                                     ),
                                     Text(
                                       "Reply".tr + " : ",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: greyDark, fontSize: 12),
                                     ),
                                     currentMessage['type'] == 'text'
@@ -338,7 +338,7 @@ class _BodyState extends State<ConversationText> {
                                             child: Text(
                                               currentMessage[
                                                   'replyFromMessage'],
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: greyDark,
                                                   fontSize: 12),
                                               maxLines: null,
@@ -454,7 +454,7 @@ class _BodyState extends State<ConversationText> {
                           const Duration(seconds: 5),
                           () => 'Data Loaded',
                         );
-                        Navigator.of(context).pop();
+                        Navigator.pop(context);
                         //translate
                         // setState(() {
                         //   _isTranslate = !_isTranslate;
@@ -527,7 +527,7 @@ class _BodyState extends State<ConversationText> {
                         SvgPicture.asset(item.icon),
                         Text(
                           item.text,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
                           ),
@@ -564,51 +564,7 @@ class TypeTextMessage extends StatelessWidget {
       decoration: BoxDecoration(
           color: isCurrentUser ? primaryLighter : textLight,
           borderRadius: BorderRadius.circular(20)),
-      child:
-          // Column(
-          //   children: [
-          // isCurrentUser == false ? translate ? Text(currentMessage['message']) : SizedBox.shrink() : SizedBox.shrink(),
-          // isCurrentUser == false ? translate ? const Divider(
-          //   thickness: 2,
-          //   color: greyLight,
-          // ) : SizedBox.shrink() : SizedBox.shrink(),
-          Text(currentMessage['message']),
-      // ],
-      // ),
-    );
-  }
-}
-
-class TypeTextTranslate extends StatelessWidget {
-  const TypeTextTranslate({
-    Key? key,
-    required this.isCurrentUser,
-    required this.currentMessage,
-    // required this.translation,
-  }) : super(key: key);
-
-  final bool isCurrentUser;
-  final currentMessage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      constraints:
-          BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      decoration: BoxDecoration(
-          color: isCurrentUser ? primaryLighter : textLight,
-          borderRadius: BorderRadius.circular(20)),
-      child: Column(
-        children: [
-          // Text(translation),
-          Divider(
-            thickness: 2,
-            color: greyLight,
-          ),
-          Text(currentMessage['message']),
-        ],
-      ),
+      child: Text(currentMessage['message']),
     );
   }
 }
@@ -651,7 +607,7 @@ class TypeFileMessage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.width * 0.1),
-                child: Text("file.pdf"),
+                child: const Text("file.pdf"),
               ),
             ],
           )),
