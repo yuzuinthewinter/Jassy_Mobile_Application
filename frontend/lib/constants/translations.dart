@@ -149,10 +149,10 @@ class LocaleString extends Translations {
           "FindChatPartner":
               "Let's start searching for a language exchange partner. !",
           "DeleteConversation": "Delete conversation",
-          "Reply": "reply",
-          "Copy": "copy",
-          "Translate": "translate",
-          "LikeMassage": "like",
+          "Reply": "Reply",
+          "Copy": "Copy",
+          "Translate": "Translate",
+          "LikeMassage": "Like",
           //Appbar Chat
           "StatusActiveNow": "Active now",
           "StatusActiveAfew": "Active a few minutes ago",
