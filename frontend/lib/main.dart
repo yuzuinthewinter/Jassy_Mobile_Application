@@ -9,6 +9,7 @@ import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/constants/translations.dart';
 import 'package:flutter_application_1/screens/main-app/main.dart';
 import 'package:flutter_application_1/screens/pre-app/landing/landing_page.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
@@ -17,8 +18,14 @@ import 'theme/index.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // ignore: deprecated_member_use
+  FlutterNativeSplash.removeAfter(initialization);
+  // await Firebase.initializeApp();
   runApp(const App());
+}
+
+Future initialization(BuildContext context) async {
+  await Firebase.initializeApp();
 }
 
 //use this
