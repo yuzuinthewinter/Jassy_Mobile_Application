@@ -138,6 +138,7 @@ class LocaleString extends Translations {
           "GroupPostYesterday": "Yesterday",
           "GroupPostCommentHintText": "Write a comment",
           "GroupDeleteWarning": "Are you want to delete this post ?",
+          "GroupCommenDeleteWarning" : "Are you want to delete this comment ?",
 
           //Jassy Chat Page
           "ChatPage": "Chat",
@@ -379,6 +380,7 @@ class LocaleString extends Translations {
           "GroupPostYesterday": "เมื่อวานนี้",
           "GroupPostCommentHintText": "เขียนคอมเมนต์",
           "GroupDeleteWarning": "คุณต้องการลบโพสต์นี้ใช่หรือไม่ ?",
+          "GroupCommenDeleteWarning" : "คุณต้องการลบคอมเมนต์นี้ใช่หรือไม่ ?",
 
           //Jassy Chat Page
           "ChatPage": "แชท",

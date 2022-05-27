@@ -153,7 +153,7 @@ class _LikeListDetail extends State<LikeListDetail> {
                               ),
                             ),
                             const Spacer(),
-                            TextButton(
+                            TextButton.icon(
                                 onPressed: () async {
                                   await translateCard(widget.listWord);
                                   Navigator.push(context,
@@ -162,9 +162,11 @@ class _LikeListDetail extends State<LikeListDetail> {
                                         translation, widget.user);
                                   }));
                                 },
-                                child: Text("Translate".tr,
+                                label: Text("Translate".tr,
                                     style: TextStyle(
-                                        fontSize: 16, color: primaryDarker)))
+                                        fontSize: 16, color: primaryDarker)), 
+                                icon: SvgPicture.asset("assets/icons/translate_purple.svg"),
+                              ),
                           ],
                         ),
                         Container(

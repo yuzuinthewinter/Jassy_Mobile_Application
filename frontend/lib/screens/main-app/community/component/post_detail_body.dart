@@ -448,7 +448,7 @@ class FullPostDetail extends StatelessWidget {
                                                                       context)
                                                                   .size
                                                                   .height *
-                                                              0.12,
+                                                              0.17,
                                                           padding:
                                                               const EdgeInsets
                                                                       .only(
@@ -482,7 +482,7 @@ class FullPostDetail extends StatelessWidget {
                                                                                     context: context,
                                                                                     builder: (context) {
                                                                                       return WarningPopUpWithButton(
-                                                                                        text: 'GroupDeleteWarning'.tr,
+                                                                                        text: 'GroupCommenDeleteWarning'.tr,
                                                                                         okPress: () {
                                                                                           deleteComment(context, post, user, post['comments'][index]);
                                                                                         },
@@ -491,6 +491,7 @@ class FullPostDetail extends StatelessWidget {
                                                                               },
                                                                               child: Row(
                                                                                 children: [
+                                                                                  SvgPicture.asset("assets/icons/del_bin_circle.svg"),
                                                                                   SizedBox(
                                                                                     width: size.width * 0.05,
                                                                                     height: size.height * 0.1,
