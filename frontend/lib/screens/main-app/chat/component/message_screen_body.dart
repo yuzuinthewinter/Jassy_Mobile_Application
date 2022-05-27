@@ -56,7 +56,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
       },
       child: Column(
         children: [
-          CurvedWidget(child: JassyGradientColor()),
+          JassyGradientColor(gradientHeight: 90,),
           Expanded(
             child: ConversationText(
               user: widget.user,
