@@ -90,7 +90,6 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   }
 
   bool isInRoom = false;
-  late bool isTranslate;
 
   @override
   void initState() {
@@ -208,7 +207,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                       SizedBox(
                         width: size.width * 0.02,
                       ),
-                      isTranslate ? Text("Translate".tr) : Text("Cancel".tr),
+                      Text("Translate".tr),
                     ],
                   )),
               PopupMenuItem(
