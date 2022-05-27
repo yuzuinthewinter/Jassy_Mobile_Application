@@ -75,6 +75,10 @@ dependencies:
   google_cloud_translation: ^0.0.3
   flutter_native_splash: ^2.0.1+1
 
+  #face-detection
+  firebase_ml_vision: ^0.9.10
+
+
 
 
 dev_dependencies:
