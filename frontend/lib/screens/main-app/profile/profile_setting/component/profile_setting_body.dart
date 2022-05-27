@@ -324,7 +324,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
           TextFieldLabel(textLabel: "InfoCountry".tr),
           TextFormField(
             readOnly: true,
-            initialValue: widget.user['country'],
+            initialValue: StringUtils.capitalize(widget.user['country']),
             decoration: InputDecoration(
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
@@ -347,11 +347,11 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
           TextFieldLabel(textLabel: "InfoFirstLanguage".tr),
           TextFormField(
             readOnly: true,
-            initialValue: widget.user['language']["defaultLanguage"],
+            initialValue: StringUtils.capitalize(widget.user['language']["defaultLanguage"]),
             decoration: InputDecoration(
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-              hintText: languageItems[defaultIndex],
+              hintText: StringUtils.capitalize(languageItems[defaultIndex]),
               fillColor: grey,
               filled: true,
               border: OutlineInputBorder(
@@ -375,8 +375,8 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
                   ? defaultLevelScrollController.selectedItem
                   : defaultLevelIndex;
               language.levelDefaultLanguage = isLevelDefaultLanguageClick
-                  ? languageLevelItems[defaultLevelIndex]
-                  : language.levelDefaultLanguage;
+                  ? StringUtils.capitalize(languageLevelItems[defaultLevelIndex])
+                  : StringUtils.capitalize(language.levelDefaultLanguage);
             },
             onTap: () {
               isLevelDefaultLanguageClick = true;
@@ -395,8 +395,8 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
               hintText: isLevelDefaultLanguageClick
-                  ? languageLevelItems[defaultLevelIndex]
-                  : language.levelDefaultLanguage,
+                  ? StringUtils.capitalize(languageLevelItems[defaultLevelIndex])
+                  : StringUtils.capitalize(language.levelDefaultLanguage),
               fillColor: textLight,
               filled: true,
               suffixIcon: const Icon(
@@ -430,8 +430,8 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
                   ? interestScrollController.selectedItem
                   : interestIndex;
               language.interestedLanguage = isInterestLanguageClick
-                  ? languageItems[interestIndex]
-                  : language.interestedLanguage;
+                  ? StringUtils.capitalize(languageItems[interestIndex])
+                  : StringUtils.capitalize(language.interestedLanguage);
             },
             onTap: () {
               isInterestLanguageClick = true;
@@ -450,8 +450,8 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
               hintText: isInterestLanguageClick
-                  ? languageItems[interestIndex]
-                  : language.interestedLanguage,
+                  ? StringUtils.capitalize(languageItems[interestIndex])
+                  : StringUtils.capitalize(language.interestedLanguage),
               fillColor: textLight,
               filled: true,
               suffixIcon: const Icon(
@@ -485,8 +485,8 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
                   ? interestLevelScrollController.selectedItem
                   : interestLevelIndex;
               language.levelInterestedLanguage = isLevelInterestLanguageClick
-                  ? languageLevelItems[interestLevelIndex]
-                  : language.levelInterestedLanguage;
+                  ? StringUtils.capitalize(languageLevelItems[interestLevelIndex])
+                  : StringUtils.capitalize(language.levelInterestedLanguage);
             },
             onTap: () {
               isLevelInterestLanguageClick = true;
@@ -505,8 +505,8 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
               hintText: isLevelInterestLanguageClick
-                  ? languageLevelItems[interestLevelIndex]
-                  : language.levelInterestedLanguage,
+                  ? StringUtils.capitalize(languageLevelItems[interestLevelIndex])
+                  : StringUtils.capitalize(language.levelInterestedLanguage),
               fillColor: textLight,
               filled: true,
               suffixIcon: const Icon(
