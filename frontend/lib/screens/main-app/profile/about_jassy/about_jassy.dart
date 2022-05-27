@@ -15,14 +15,15 @@ class AboutJassy extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: BackAndCloseAppBar(text: "ProfileAboutJassy".tr,),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const CurvedWidget(child: JassyGradientColor()),
-          Text(
-            "ProfileAboutJassy".tr,
-            style: TextStyle(
-              fontSize: 18
-            ),
-          ),
+          // Text(
+          //   "ProfileAboutJassy".tr,
+          //   style: TextStyle(
+          //     fontSize: 18
+          //   ),
+          // ),
           Divider(
             endIndent: size.width * 0.07,
             indent: size.width * 0.07,
@@ -38,7 +39,24 @@ class AboutJassy extends StatelessWidget {
                 fontSize: 14
               ),
             ),
-          )
+          ),
+          SizedBox(height: size.height * 0.05,),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
+            child: Text(
+              "ContactJassy".tr,
+              style: TextStyle(
+                fontSize: 14
+              ),
+            ),
+          ),
+          Divider(
+            endIndent: size.width * 0.07,
+            indent: size.width * 0.07,
+            thickness: 3,
+            color: grey,
+            height: size.height * 0.05,
+          ),
         ]
       ),
     );

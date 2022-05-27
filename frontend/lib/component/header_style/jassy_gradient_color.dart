@@ -12,6 +12,9 @@ class JassyGradientColor extends StatelessWidget {
       width: double.infinity,
       height: gradientHeight,
       decoration: const BoxDecoration(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(20)
+        ),
         gradient: LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,

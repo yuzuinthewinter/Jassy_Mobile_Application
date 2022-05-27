@@ -204,11 +204,11 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                   value: MenuItem.item1,
                   child: Row(
                     children: [
-                      // SvgPicture.asset("assets/icons/cancel_pairing.svg"), //todo: translate icon
+                      SvgPicture.asset("assets/icons/translate_circle.svg"),
                       SizedBox(
                         width: size.width * 0.02,
                       ),
-                      Text("Translate".tr),
+                      isTranslate ? Text("Translate".tr) : Text("Cancel".tr),
                     ],
                   )),
               PopupMenuItem(

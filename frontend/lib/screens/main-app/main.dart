@@ -147,7 +147,7 @@ class _JassyHomeState extends State<JassyHome> with WidgetsBindingObserver {
                               'assets/icons/jassy_water.svg',
                               height: 35,
                             ),
-                            label: ''),
+                            label: 'CommuPage'.tr),
                         BottomNavigationBarItem(
                             icon: Icon(Icons.forum_outlined),
                             label: 'ChatPage'.tr),

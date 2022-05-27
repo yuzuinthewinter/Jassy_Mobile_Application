@@ -138,6 +138,7 @@ class LocaleString extends Translations {
           "GroupPostYesterday": "Yesterday",
           "GroupPostCommentHintText": "Write a comment",
           "GroupDeleteWarning": "Are you want to delete this post ?",
+          "GroupCommenDeleteWarning" : "Are you want to delete this comment ?",
 
           //Jassy Chat Page
           "ChatPage": "Chat",
@@ -240,6 +241,7 @@ class LocaleString extends Translations {
 
           //About Jassy
           "AboutJassyApp" : "The purposes of this project are to develop the Jassy application that is used to exchange knowledge and interests in languages, and to enable users to use it in the exchange of languages and knowledge who are interested and would like to develop a language directly with native speakers.\nThe project can meet the needs of the target audiences who desire to develop language potential, or discuss language exchange with native speakers, as well as exchange knowledge and skills with which this application can exchange knowledge through the communities that are provided.\nThe community will be categorized by language. The application exchanges only in Thai and English. It also offers one-on-one language exchange with native speakers or talented people through private conversations, with the option of qualifying for yourself and a wide range of functions that will encourage you to exchange languages more vividly.",
+          "ContactJassy" : "Contact: jassygroup@gmail.com",
 
           //Confirm
           "Confirm": "Confirm",
@@ -378,6 +380,7 @@ class LocaleString extends Translations {
           "GroupPostYesterday": "เมื่อวานนี้",
           "GroupPostCommentHintText": "เขียนคอมเมนต์",
           "GroupDeleteWarning": "คุณต้องการลบโพสต์นี้ใช่หรือไม่ ?",
+          "GroupCommenDeleteWarning" : "คุณต้องการลบคอมเมนต์นี้ใช่หรือไม่ ?",
 
           //Jassy Chat Page
           "ChatPage": "แชท",
@@ -479,6 +482,7 @@ class LocaleString extends Translations {
 
           //About Jassy
           "AboutJassyApp" : "การจัดทำโครงงานนี้มีวัตถุประสงค์เพื่อสร้างแอปพลิเคชั่น Jassy ที่ใช้ในการแลกเปลี่ยนความรู้และความสนใจทางด้านภาษาและเพื่อให้ผู้ใช้สามารถใช้งานในการแลกเปลี่ยนภาษาและความรู้ที่สนใจและอยากจะพัฒนาภาษากับเจ้าของภาษาโดยตรง\nซึ่งสามารถตอบสนองความต้องการของกลุ่มเป้าหมายที่ มีความต้องการที่จะพัฒนาศักยภาพทางภาษา หรือมีความต้องการที่จะพูดคุยแลกเปลี่ยนภาษากับเจ้าของภาษารวมไปถึงแลกเปลี่ยนความรู้ทักษะต่างๆกับการสร้างความรู้ผ่านชุมชนที่เรามีให้ซึ่งชุมชนของเราก็จะแบ่งหมวดหมู่ไปตามภาษา\nซึ่งแอปพลิเคชั่นนี้สามารถใช้งานได้เพียงภาษาไทยและอังกฤษ เท่านั้น รวมถึงสามารถแลกเปลี่ยนภาษาตัวต่อตัวกับเจ้าของภาษาหรือผู้ที่มีความสามารถได้ผ่านการสนทนาส่วนตัวโดยสามารถเลือกคุณสมบัติที่เหมาะสมกับตัวของคุณเองได้\nอีกทั้งมีฟังก์ชันหลากหลายที่จะช่วยส่งเสริมให้คุณสามารถแลกเปลี่ยนภาษาได้อย่างมีประสิทธิ์ภาพมากขึ้น",
+          "ContactJassy": "ติดต่อ: jassygroup@gmail.com",
 
           //Confirm
           "Confirm": "ตกลง",
