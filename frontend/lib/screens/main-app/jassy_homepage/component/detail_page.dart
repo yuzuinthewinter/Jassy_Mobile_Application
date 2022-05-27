@@ -127,12 +127,14 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
   String getuserid = '';
   checkHaveRoom() async {
     var chatMember = [widget.user['uid'], currentUser!.uid];
+    var reverseChatMember = [currentUser!.uid, widget.user['uid']];
     var snap = await chatRooms.get();
 
     if (snap.docs.isNotEmpty) {
       final chats = snap.docs;
       for (var chat in chats) {
-        if (chat['member'].toString() == chatMember.toString()) {
+        if (chat['member'].toString() == chatMember.toString() ||
+            chat['member'].toString() == reverseChatMember.toString()) {
           isHaveRoom = true;
           getIdRoom = chat['chatid'];
         }
@@ -256,8 +258,8 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                     : createChatRoom(widget.user['uid']);
                               },
                               child: SvgPicture.asset(widget.isMainPage
-                                      ? "assets/icons/heart_button.svg"
-                                      : "assets/icons/ms_button.svg")),
+                                  ? "assets/icons/heart_button.svg"
+                                  : "assets/icons/ms_button.svg")),
                         )
                       ]),
                   DescTabBar(tabController: tabController),
