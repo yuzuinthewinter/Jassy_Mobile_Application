@@ -61,7 +61,6 @@ dependencies:
   flutter_lints: ^1.0.4
   top_snackbar_flutter: ^1.1.1
   another_flushbar: ^1.10.29
-  camera: ^0.9.4+19
 
   # firebase
   firebase_storage: ^10.2.15

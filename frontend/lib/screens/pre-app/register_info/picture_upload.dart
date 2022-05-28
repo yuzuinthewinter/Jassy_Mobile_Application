@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui' as ui;
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
@@ -16,7 +17,7 @@ import 'package:flutter_application_1/component/header_style/header_style2.dart'
 import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
-import 'package:flutter_application_1/screens/pre-app/register_info/camera.dart';
+import 'package:flutter_application_1/screens/pre-app/facereg/camera.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/utils.dart';
 import 'package:image_picker/image_picker.dart';
@@ -57,7 +58,7 @@ class _PictureUploadState extends State<PictureUpload> {
 
       setState(() {
         pickedImage = File(image.path);
-
+        print(image.path);
         imagePath = image;
         imageName = image.name.toString();
         imageFile = imageFile;
@@ -76,6 +77,7 @@ class _PictureUploadState extends State<PictureUpload> {
 
   Future detectFace() async {
     result = '';
+    print(pickedImage);
     FirebaseVisionImage myImage = FirebaseVisionImage.fromFile(pickedImage);
     FaceDetector faceDetector = FirebaseVision.instance.faceDetector(
         const FaceDetectorOptions(
@@ -90,7 +92,7 @@ class _PictureUploadState extends State<PictureUpload> {
 
     for (Face face in faces) {
       rect.add(face.boundingBox);
-      
+
       final img.Image? capturedImage =
           img.decodeImage(pickedImage.readAsBytesSync());
       final img.Image copy = img.copyCrop(
@@ -249,6 +251,14 @@ class _PictureUploadState extends State<PictureUpload> {
                           MaterialPageRoute(
                               builder: (context) => CameraScreen()),
                         );
+                        // await availableCameras().then((value) => 
+                        // Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //           builder: (context) =>
+                        //               OpenCamera()),
+                        //     // )
+                        //     );
                       } else {
                         showDialog(
                             context: context,

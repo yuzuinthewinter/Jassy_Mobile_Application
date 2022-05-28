@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as ImageLib;
+import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -25,10 +26,10 @@ enum Status { RIGHT, LEFT, SMILE, NEUTRAL, EYES_CLOSED, GLASSES }
 class _CameraScreenState extends State {
   // This class is responsible for establishing a connection to the device’s camera.
 
-  CameraDescription camera = const CameraDescription(
+  CameraDescription camera = CameraDescription(
       lensDirection: CameraLensDirection.front, name: '', sensorOrientation: 0);
   CameraController controller = CameraController(
-      const CameraDescription(
+      CameraDescription(
           lensDirection: CameraLensDirection.front,
           name: '',
           sensorOrientation: 0),
@@ -65,11 +66,13 @@ class _CameraScreenState extends State {
 
       if (cameras.isNotEmpty) {
         setState(() {
-          selectedCameraIdx = 1;
+          selectedCameraIdx = selectedCameraIdx < cameras.length - 1
+              ? selectedCameraIdx + 1
+              : 0;
         });
 
         // _initializeControllerFuture = controller.initialize();
-        _initCameraController(cameras[selectedCameraIdx]).then((void v) {});
+        _initCameraController(cameras[selectedCameraIdx]);
       } else {
         print("No camera available");
       }
@@ -100,7 +103,7 @@ class _CameraScreenState extends State {
     try {
       await controller.initialize();
     } on CameraException catch (e) {
-      _showCameraException(e);
+      // _showCameraException(e);
     }
 
     if (mounted) {
@@ -118,18 +121,18 @@ class _CameraScreenState extends State {
             children: <Widget>[
               Expanded(
                 flex: 1,
-                child: _cameraPreviewWidget(),
+                child: _cameraPreviewWidget(context),
               ),
               // const SizedBox(height: 10.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // back
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     // back
 
-                  // _cameraTogglesRowWidget(), // toggle button
-                  _captureControlRowWidget(context), //capture button
-                ],
-              ),
+              //     // _cameraTogglesRowWidget(), // toggle button
+              //     _captureControlRowWidget(context), //capture button
+              //   ],
+              // ),
               // const SizedBox(height: 10.0)
             ],
           ),
@@ -139,7 +142,7 @@ class _CameraScreenState extends State {
   }
 
   /// Display Camera preview.
-  Widget _cameraPreviewWidget() {
+  Widget _cameraPreviewWidget(context) {
     if (!controller.value.isInitialized) {
       return const Text(
         'Loading',
@@ -176,6 +179,44 @@ class _CameraScreenState extends State {
               style: const TextStyle(color: Colors.white, fontSize: 30.0),
             ),
           ),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.20,
+                decoration: const BoxDecoration(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(24)),
+                    color: Colors.black),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          child: IconButton(
+                        padding: EdgeInsets.zero,
+                        iconSize: 30,
+                        icon: Icon(
+                            // _isRearCameraSelected
+                            //     ? CupertinoIcons.switch_camera
+                            //     :
+                            CupertinoIcons.switch_camera_solid,
+                            color: Colors.white),
+                        onPressed: () {
+                          _initCameraController(cameras[selectedCameraIdx]);
+                        },
+                      )),
+                      Expanded(
+                          child: IconButton(
+                        onPressed: () {
+                          _onAutoCapture(context);
+                        },
+                        iconSize: 50,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        icon: const Icon(Icons.circle, color: Colors.white),
+                      )),
+                      const Spacer(),
+                    ]),
+              )),
         ],
       ),
     );
@@ -208,101 +249,84 @@ class _CameraScreenState extends State {
     );
   }
 
-  /// Display a row of toggle to select the camera (or a message if no camera is available).
-  // Widget _cameraTogglesRowWidget() {
-  //   if (cameras == null || cameras.isEmpty) {
-  //     return const Spacer();
-  //   }
-
-  //   CameraDescription selectedCamera = cameras[0];
-  //   CameraLensDirection lensDirection = selectedCamera.lensDirection;
-  //   return Align(
-  //     alignment: Alignment.centerLeft,
-  //     child: FlatButton.icon(
-  //         onPressed: _onSwitchCamera,
-  //         icon: Icon(_getCameraLensIcon(lensDirection)),
-  //         label: Text(
-  //             "${lensDirection.toString().substring(lensDirection.toString().indexOf('.') + 1)}")),
-  //   );
-  // }
-
-  IconData _getCameraLensIcon(CameraLensDirection direction) {
-    switch (direction) {
-      case CameraLensDirection.back:
-        return Icons.camera_rear;
-      case CameraLensDirection.front:
-        return Icons.camera_front;
-      case CameraLensDirection.external:
-        return Icons.camera;
-      default:
-        return Icons.device_unknown;
-    }
-  }
-
-  void _getImageAndDetectFaces(String path, BuildContext context) async {
-    final image = FirebaseVisionImage.fromFilePath(path);
-    final faceDetector = FirebaseVision.instance
-        .faceDetector(const FaceDetectorOptions(enableClassification: true));
-    List<Face> faces = await faceDetector.processImage(image);
-    if (mounted) {
-      if (faces.isNotEmpty) {
-        if (faces.length > 1) {
-          setState(() {
-            isProcessing = false;
-            error = "WarningTakePictureMoreThanOnePerson".tr;
-          });
-        } else {
-          _processFaceSmile(context, path, faces[0]);
-        }
-      } else {
-        setState(() {
-          isProcessing = false;
-          error = "WarningTakePictureNoOne".tr;
-        });
-      }
-      if (error != '') {
-        print('error');
-        // Utils.showErrorDialog(context, error, () => _resetState());
-      } else {
-        //todo: popup success
-        print('success');
-      }
-    }
-  }
-
-  void _onSwitchCamera() {
-    selectedCameraIdx =
-        selectedCameraIdx < cameras.length - 1 ? selectedCameraIdx + 1 : 0;
-    CameraDescription selectedCamera = cameras[selectedCameraIdx];
-    _initCameraController(selectedCamera);
-  }
+  XFile? imageFile;
 
   void _onAutoCapture(BuildContext context) async {
     _resetState(processing: true);
     try {
-      final path = join(
+      final path = await join(
         // store the picture in the temp directory.
         (await getTemporaryDirectory()).path,
         '${DateTime.now()}.png',
-      ); //
-      await controller.takePicture();
+      );
+      await controller.takePicture().then((XFile? file) {
+        if (mounted) {
+          setState(() {
+            imageFile = file;
+          });
+          if (file != null) {
+            print('Picture saved to ${file.path}');
+          }
+        }
+      });
+      ;
+      print('after take picture');
       _getImageAndDetectFaces(path, context);
+    } catch (e) {
+      print('error on auto');
+      print(e);
+    }
+  }
+
+  void _getImageAndDetectFaces(String path, BuildContext context) async {
+    try {
+      FirebaseVisionImage image =
+          FirebaseVisionImage.fromFile(File(imageFile!.path));
+      FaceDetector faceDetector = FirebaseVision.instance.faceDetector(
+          const FaceDetectorOptions(
+              mode: FaceDetectorMode.fast,
+              enableClassification: true,
+              enableLandmarks: true));
+      List<Face> faces = await faceDetector.processImage(image);
+      print(faces.length.toString());
+      if (mounted) {
+        if (faces.isNotEmpty) {
+          print('face detected');
+          if (faces.length > 1) {
+            setState(() {
+              isProcessing = false;
+              error = "WarningTakePictureMoreThanOnePerson".tr;
+            });
+          } else {
+            _processFaceSmile(context, path, faces[0]);
+          }
+        } else {
+          print('no one');
+          setState(() {
+            isProcessing = false;
+            error = "WarningTakePictureNoOne".tr;
+          });
+        }
+        if (error != '') {
+          print('error');
+          // Utils.showErrorDialog(context, error, () => _resetState());
+        } else {
+          //todo: popup success
+          print('success');
+        }
+      }
     } catch (e) {
       print(e);
     }
   }
 
-  void _showCameraException(CameraException e) {
-    String errorText = 'Error: ${e.code}\nError Message: ${e.description}';
-    print(errorText);
-  }
-
   void _processFaceSmile(BuildContext context, String path, Face face) {
     {
+      print('is process face smile');
       setState(() {
         isProcessing = false;
       });
-
+      print('[smilingProbability] ' + face.smilingProbability.toString());
       if (face.smilingProbability < 0.80) {
         setState(() {
           error = "You're not smiling";
@@ -328,6 +352,7 @@ class _CameraScreenState extends State {
   }
 
   void _cropAndSaveImage(String path, Face face) {
+    print('cropping');
     final ImageLib.Image? capturedImage =
         ImageLib.decodeImage(File(path).readAsBytesSync());
     final ImageLib.Image copy = ImageLib.copyCrop(

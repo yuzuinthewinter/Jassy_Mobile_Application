@@ -33,6 +33,7 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   bool isNotificationOn = true;
+  bool isTranslate = false;
 
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
   CollectionReference chats =
