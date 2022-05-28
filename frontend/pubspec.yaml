@@ -121,6 +121,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/model/mobilefacenet.tflite
     - assets/icons/
     - assets/images/
     - assets/font/

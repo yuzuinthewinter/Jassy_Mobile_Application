@@ -7,7 +7,6 @@ import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/pre-app/register_info/preview.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_application_1/screens/pre-app/facereg/preview_picture.dart';
 import 'package:get/get.dart';

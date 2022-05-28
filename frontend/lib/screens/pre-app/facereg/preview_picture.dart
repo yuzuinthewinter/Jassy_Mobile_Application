@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:camera/camera.dart';
@@ -12,18 +13,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/component/back_close_appbar.dart';
 import 'package:flutter_application_1/component/button/disable_toggle_button.dart';
-import 'package:flutter_application_1/component/button/outlined_button.dart';
 import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/header_style2.dart';
-import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
-import 'package:flutter_application_1/component/text/description_text.dart';
-import 'package:flutter_application_1/component/text/header_text.dart';
-import 'package:flutter_application_1/screens/pre-app/facereg/camera.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
 
 class PreviewPicture extends StatefulWidget {
   final File imageFile;
@@ -49,31 +46,82 @@ class _PreviewPicture extends State<PreviewPicture> {
   List<Rect> rect1 = <Rect>[];
   List<Rect> rect2 = <Rect>[];
   var result = '';
+  var interpreter;
 
   var users = FirebaseFirestore.instance.collection('Users');
   var currentUser = FirebaseAuth.instance.currentUser;
-
-  late Uint8List _cmpImage1;
-  late Uint8List _cmpImage2;
-  final double _distance = 0;
-
-  String _getCompareResultString() {
-    if (_distance == 0) {
-      return "";
-    } else if (_distance < 0) {
-      return "processing....";
-    } else if (_distance < 0.6) {
-      return "Same person";
-    } else {
-      return "Another person";
-    }
-  }
 
   @override
   void initState() {
     super.initState();
     fetchImage();
+    loadModel();
   }
+
+  void loadModel() async {
+    interpreter = await tfl.Interpreter.fromAsset('model/mobilefacenet.tflite');
+    print('Interpreter loaded successfully');
+  }
+
+  double euclideanDistance(List e1, List e2) {
+    double sum = 0.0;
+    for (int i = 0; i < e1.length; i++) {
+      sum += pow((e1[i] - e2[i]), 2);
+    }
+    return sqrt(sum);
+  }
+
+  List e1 = [];
+  List e2 = [];
+
+  String _recog(img.Image img2, img.Image img1) {
+    List input = imageToByteListFloat32(img1, 112, 128, 128);
+    input = input.reshape([1, 112, 112, 3]);
+    List output = List.filled(1 * 192, null, growable: false).reshape([1, 192]);
+    interpreter.run(input, output);
+    output = output.reshape([192]);
+    e1 = List.from(output);
+
+    List input2 = imageToByteListFloat32(img2, 112, 128, 128);
+    input2 = input2.reshape([1, 112, 112, 3]);
+    List output2 = List.filled(1 * 192, null, growable: false).reshape([1, 192]);
+    interpreter.run(input2, output2);
+    output2 = output2.reshape([192]);
+    e2 = List.from(output2);
+
+    return compare(e2, e1).toUpperCase();
+  }
+
+  double threshold = 1.0;
+
+  String compare(List withEmb, List currEmb) {
+    double minDist = 999;
+    double currDist = 0.0;
+    String predRes = "NOT RECOGNIZED";
+    currDist = euclideanDistance(withEmb, currEmb);
+      if (currDist <= threshold && currDist < minDist) {
+        minDist = currDist;
+      }
+    print(minDist.toString() + " " + predRes);
+    return predRes;
+  }
+
+  Float32List imageToByteListFloat32(
+      img.Image image, int inputSize, double mean, double std) {
+    var convertedBytes = Float32List(1 * inputSize * inputSize * 3);
+    var buffer = Float32List.view(convertedBytes.buffer);
+    int pixelIndex = 0;
+    for (var i = 0; i < inputSize; i++) {
+      for (var j = 0; j < inputSize; j++) {
+        var pixel = image.getPixel(j, i);
+        buffer[pixelIndex++] = (img.getRed(pixel) - mean) / std;
+        buffer[pixelIndex++] = (img.getGreen(pixel) - mean) / std;
+        buffer[pixelIndex++] = (img.getBlue(pixel) - mean) / std;
+      }
+    }
+    return convertedBytes.buffer.asFloat32List();
+  }
+
 
   Future fetchImage() async {
     try {
@@ -117,8 +165,12 @@ class _PreviewPicture extends State<PreviewPicture> {
     }
   }
 
+  late img.Image croppedImage1;
+  late img.Image croppedImage2;
+
   Future detectFace() async {
     result = '';
+    String res;
     FirebaseVisionImage myImage1 = FirebaseVisionImage.fromFile(getImageFile);
     FirebaseVisionImage myImage2 =
         FirebaseVisionImage.fromFile(widget.imageFile);
@@ -136,12 +188,14 @@ class _PreviewPicture extends State<PreviewPicture> {
 
       final img.Image? capturedImage =
           img.decodeImage(getImageFile.readAsBytesSync());
-      img.copyCrop(
+      img.Image croppedImage = img.copyCrop(
           capturedImage!,
           face.boundingBox.topLeft.dy.toInt(),
           face.boundingBox.topLeft.dx.toInt(),
           face.boundingBox.width.toInt(),
           face.boundingBox.height.toInt());
+
+      croppedImage1 = img.copyResizeCropSquare(croppedImage, 112);
     }
     if (rect2.isNotEmpty) {
       rect2 = <Rect>[];
@@ -151,14 +205,17 @@ class _PreviewPicture extends State<PreviewPicture> {
 
       final img.Image? capturedImage =
           img.decodeImage(getImageFile.readAsBytesSync());
-      img.copyCrop(
+      img.Image croppedImage = img.copyCrop(
           capturedImage!,
           face.boundingBox.topLeft.dy.toInt(),
           face.boundingBox.topLeft.dx.toInt(),
           face.boundingBox.width.toInt(),
           face.boundingBox.height.toInt());
+
+      croppedImage2 = img.copyResizeCropSquare(croppedImage, 112);
     }
 
+      res = _recog(croppedImage2, croppedImage1);
     setState(() {
       isFaceDetected = true;
     });
