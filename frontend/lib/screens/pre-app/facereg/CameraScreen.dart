@@ -209,22 +209,22 @@ class _CameraScreenState extends State {
   }
 
   /// Display a row of toggle to select the camera (or a message if no camera is available).
-  Widget _cameraTogglesRowWidget() {
-    if (cameras == null || cameras.isEmpty) {
-      return const Spacer();
-    }
+  // Widget _cameraTogglesRowWidget() {
+  //   if (cameras == null || cameras.isEmpty) {
+  //     return const Spacer();
+  //   }
 
-    CameraDescription selectedCamera = cameras[0];
-    CameraLensDirection lensDirection = selectedCamera.lensDirection;
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: FlatButton.icon(
-          onPressed: _onSwitchCamera,
-          icon: Icon(_getCameraLensIcon(lensDirection)),
-          label: Text(
-              "${lensDirection.toString().substring(lensDirection.toString().indexOf('.') + 1)}")),
-    );
-  }
+  //   CameraDescription selectedCamera = cameras[0];
+  //   CameraLensDirection lensDirection = selectedCamera.lensDirection;
+  //   return Align(
+  //     alignment: Alignment.centerLeft,
+  //     child: FlatButton.icon(
+  //         onPressed: _onSwitchCamera,
+  //         icon: Icon(_getCameraLensIcon(lensDirection)),
+  //         label: Text(
+  //             "${lensDirection.toString().substring(lensDirection.toString().indexOf('.') + 1)}")),
+  //   );
+  // }
 
   IconData _getCameraLensIcon(CameraLensDirection direction) {
     switch (direction) {
@@ -261,9 +261,11 @@ class _CameraScreenState extends State {
         });
       }
       if (error != '') {
+        print('error');
         // Utils.showErrorDialog(context, error, () => _resetState());
       } else {
         //todo: popup success
+        print('success');
       }
     }
   }
@@ -310,9 +312,10 @@ class _CameraScreenState extends State {
       if (error == '') {
         imagePaths[currentStatus] = path;
         _cropAndSaveImage(path, face);
-        if (!isProcessing) {
-          _onAutoCapture(context);
-        }
+        print('is cropped');
+        // if (!isProcessing) {
+        //   _onAutoCapture(context);
+        // }
       }
     }
   }
