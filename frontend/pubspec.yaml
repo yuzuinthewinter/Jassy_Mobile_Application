@@ -77,6 +77,9 @@ dependencies:
 
   #face-detection
   firebase_ml_vision: ^0.9.10
+  image: ^3.2.0
+  camera: ^0.9.7+1
+  fluttertoast: ^8.0.9
 
 
 

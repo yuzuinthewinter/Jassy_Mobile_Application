@@ -1,4 +1,5 @@
 // @dart=2.9
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,11 +17,19 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'theme/index.dart';
 
+List<CameraDescription> cameras = [];
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // ignore: deprecated_member_use
   FlutterNativeSplash.removeAfter(initialization);
   // await Firebase.initializeApp();
+  try {
+    cameras = await availableCameras();
+
+  } on CameraException catch (e) {
+  //  logError(e.code, e.description);
+  }
   runApp(const App());
 }
 

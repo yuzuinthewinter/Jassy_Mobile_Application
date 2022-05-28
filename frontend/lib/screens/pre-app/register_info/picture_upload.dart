@@ -3,6 +3,8 @@ import 'dart:ui' as ui;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:flutter_application_1/screens/pre-app/facereg/CameraScreen.dart';
+import 'package:image/image.dart' as img;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,23 +29,21 @@ class PictureUpload extends StatefulWidget {
 
 class _PictureUploadState extends State<PictureUpload> {
   XFile? imagePath;
+  XFile? imageCropPath;
   String imageName = '';
-
-  // ui.Image? image;
-  // List<Rect> rect = <Rect>[];
-
-  // Future<ui.Image> loadImage(File image) async {
-  //   var img = await image.readAsBytes();
-  //   return await decodeImageFromList(img);
-  // }
 
   late File pickedImage;
   var imageFile;
+  var imageCrop;
 
   bool isImageLoaded = false;
   bool isFaceDetected = false;
 
   List<Rect> rect = <Rect>[];
+  var result = '';
+
+  var users = FirebaseFirestore.instance.collection('Users');
+  var currentUser = FirebaseAuth.instance.currentUser;
 
   Future pickImage() async {
     try {
@@ -73,37 +73,46 @@ class _PictureUploadState extends State<PictureUpload> {
     }
   }
 
-  var result = '';
-
   Future detectFace() async {
     result = '';
     FirebaseVisionImage myImage = FirebaseVisionImage.fromFile(pickedImage);
-    FaceDetector faceDetector = FirebaseVision.instance.faceDetector();
+    FaceDetector faceDetector = FirebaseVision.instance.faceDetector(
+        const FaceDetectorOptions(
+            mode: FaceDetectorMode.fast, enableLandmarks: true));
     List<Face> faces = await faceDetector.processImage(myImage);
 
     if (rect.isNotEmpty) {
       rect = <Rect>[];
     }
 
+    // List<Map<String, int>> faceMaps = [];
+
     for (Face face in faces) {
       rect.add(face.boundingBox);
+      
+      final img.Image? capturedImage =
+          img.decodeImage(pickedImage.readAsBytesSync());
+      final img.Image copy = img.copyCrop(
+          capturedImage!,
+          face.boundingBox.topLeft.dy.toInt(),
+          face.boundingBox.topLeft.dx.toInt(),
+          face.boundingBox.width.toInt(),
+          face.boundingBox.height.toInt());
+      final img.Image orientedImage = img.bakeOrientation(copy);
+      // File(imageFile).writeAsBytesSync(img.encodePng(orientedImage));
     }
 
     setState(() {
+      // imageCropPath = imageCropFile.path as XFile?;
       isFaceDetected = true;
     });
   }
 
-  var users = FirebaseFirestore.instance.collection('Users');
-
   _uploadImage() async {
-    var users = FirebaseFirestore.instance.collection('Users');
-    var currentUser = FirebaseAuth.instance.currentUser;
-
     String uploadFileName =
         DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
     Reference reference =
-        FirebaseStorage.instance.ref().child('profilePics/${uploadFileName}');
+        FirebaseStorage.instance.ref().child('profilePics/$uploadFileName');
     UploadTask uploadTask = reference.putFile(File(imagePath!.path));
 
     uploadTask.snapshotEvents.listen((event) {
@@ -212,7 +221,7 @@ class _PictureUploadState extends State<PictureUpload> {
                   }),
               Center(
                 child: DisableToggleButton(
-                  color: imagePath != null ? primaryColor : grey,
+                  color: isImageLoaded && isFaceDetected ? primaryColor : grey,
                   text: "NextButton".tr,
                   minimumSize: Size(size.width * 0.35, size.height * 0.05),
                   press: () async {
@@ -223,7 +232,7 @@ class _PictureUploadState extends State<PictureUpload> {
                             builder: (context) {
                               return WarningPopUpWithButton(
                                 text:
-                                    '${'WarningPictureMoreThanOnePerson'.tr} : ${rect.length}',
+                                    '${'WarningDetected'.tr} : ${rect.length} ${'WarningPersons'.tr}\n${'WarningPictureMoreThanOnePerson'.tr}',
                                 okPress: () {
                                   Navigator.of(context).pop();
                                 },
@@ -231,13 +240,20 @@ class _PictureUploadState extends State<PictureUpload> {
                             });
                       } else if (rect.length == 1) {
                         await _uploadImage();
+                        //crop and save to facereg picture
                         //todo: next
+                        //open camera
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CameraScreen()),
+                        );
                       } else {
                         showDialog(
                             context: context,
                             builder: (context) {
                               return WarningPopUpWithButton(
-                                text: 'WarningReport'.tr,
+                                text: 'WarningPictureNoOne'.tr,
                                 okPress: () {
                                   Navigator.of(context).pop();
                                 },

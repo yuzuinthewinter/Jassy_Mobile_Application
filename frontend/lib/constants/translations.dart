@@ -80,6 +80,11 @@ class LocaleString extends Translations {
           "WarningPictureMoreThanOnePerson":
               "Please upload\na single photo of yourself.",
           "WarningPictureNoOne": "Please upload\nan identity picture.",
+          "WarningDetected": "Detected",
+          "WarningPersons": "Persons",
+          "WarningTakePictureMoreThanOnePerson":
+              "Please take a picture of yourself.",
+          "WarningTakePictureNoOne": "Please take a identity picture.",
 
           //Main-Application
           //Jassy Main Page
@@ -158,6 +163,7 @@ class LocaleString extends Translations {
           "Copy": "Copy",
           "Translate": "Translate",
           "LikeMassage": "Like",
+          "RemoveMessage": "removed a message.",
           //Appbar Chat
           "StatusActiveNow": "Active now",
           "StatusActiveAfew": "Active a few minutes ago",
@@ -327,6 +333,11 @@ class LocaleString extends Translations {
           "WarningPictureMoreThanOnePerson":
               "กรุณาอัปโหลด\nรูปที่มีคุณเพียงคนเดียว",
           "WarningPictureNoOne": "กรุณาอัปโหลดรูปที่มีตัวตน",
+          "WarningDetected": "ตรวจพบ",
+          "WarningPersons": "คน",
+          "WarningTakePictureMoreThanOnePerson":
+              "กรุณาถ่ายรูปที่มีคุณเพียงคนเดียว",
+          "WarningTakePictureNoOne": "กรุณาถ่ายรูปที่มีตัวตน",
 
           //Main-Application
           //Jassy Main Page
@@ -404,6 +415,7 @@ class LocaleString extends Translations {
           "Copy": "คัดลอก",
           "Translate": "แปลภาษา",
           "LikeMassage": "ชอบ",
+          "RemoveMessage": "ลบข้อความแล้ว",
           //Appbar Chat
           "StatusActiveNow": "กำลังใช้งาน",
           "StatusActiveAfew": "ใช้งานเมื่อไม่กี่นาทีที่แล้ว",
