@@ -85,6 +85,8 @@ class LocaleString extends Translations {
           "WarningTakePictureMoreThanOnePerson":
               "Please take a picture of yourself.",
           "WarningTakePictureNoOne": "Please take a identity picture.",
+          "Smile" : "Please smile and take a picture.",
+          "PleaseSmile" : "Please smile.",
 
           //Main-Application
           //Jassy Main Page
@@ -338,6 +340,8 @@ class LocaleString extends Translations {
           "WarningTakePictureMoreThanOnePerson":
               "กรุณาถ่ายรูปที่มีคุณเพียงคนเดียว",
           "WarningTakePictureNoOne": "กรุณาถ่ายรูปที่มีตัวตน",
+          "Smile" : "กรุณายิ้ม แล้วกดถ่ายภาพ",
+          "PleaseSmile" : "กรุณายิ้ม",
 
           //Main-Application
           //Jassy Main Page

@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:camera/camera.dart';
 // import 'package:faceid_mobile/screens/preview_screen.dart';
 // import 'package:faceid_mobile/utils/utils.dart' as Utils;
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/pre-app/register_info/preview.dart';
+import 'package:flutter_application_1/theme/index.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as ImageLib;
@@ -26,10 +29,10 @@ enum Status { RIGHT, LEFT, SMILE, NEUTRAL, EYES_CLOSED, GLASSES }
 class _CameraScreenState extends State {
   // This class is responsible for establishing a connection to the device’s camera.
 
-  CameraDescription camera = CameraDescription(
+  CameraDescription camera = const CameraDescription(
       lensDirection: CameraLensDirection.front, name: '', sensorOrientation: 0);
   CameraController controller = CameraController(
-      CameraDescription(
+      const CameraDescription(
           lensDirection: CameraLensDirection.front,
           name: '',
           sensorOrientation: 0),
@@ -43,8 +46,6 @@ class _CameraScreenState extends State {
 
   //
   Set<Status> listOfStatus = {Status.NEUTRAL};
-
-  // Set<Status> listOfStatus = Set.of(Status.values);
 
   late Future<void> _initializeControllerFuture;
 
@@ -123,17 +124,6 @@ class _CameraScreenState extends State {
                 flex: 1,
                 child: _cameraPreviewWidget(context),
               ),
-              // const SizedBox(height: 10.0),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     // back
-
-              //     // _cameraTogglesRowWidget(), // toggle button
-              //     _captureControlRowWidget(context), //capture button
-              //   ],
-              // ),
-              // const SizedBox(height: 10.0)
             ],
           ),
         ),
@@ -161,7 +151,7 @@ class _CameraScreenState extends State {
         children: <Widget>[
           CameraPreview(controller),
           Container(
-            padding: const EdgeInsets.only(top: 40),
+            padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.2),
             alignment: Alignment.topCenter,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -174,15 +164,15 @@ class _CameraScreenState extends State {
                 ],
               ),
             ),
-            child: const Text(
-              'Smile',
-              style: const TextStyle(color: Colors.white, fontSize: 30.0),
+            child:  Text(
+              'Smile'.tr,
+              style: TextStyle(color: Colors.white, fontSize: 20),
             ),
           ),
           Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.20,
+                height: MediaQuery.of(context).size.height * 0.17,
                 decoration: const BoxDecoration(
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(24)),
@@ -190,20 +180,6 @@ class _CameraScreenState extends State {
                 child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Expanded(
-                          child: IconButton(
-                        padding: EdgeInsets.zero,
-                        iconSize: 30,
-                        icon: Icon(
-                            // _isRearCameraSelected
-                            //     ? CupertinoIcons.switch_camera
-                            //     :
-                            CupertinoIcons.switch_camera_solid,
-                            color: Colors.white),
-                        onPressed: () {
-                          _initCameraController(cameras[selectedCameraIdx]);
-                        },
-                      )),
                       Expanded(
                           child: IconButton(
                         onPressed: () {
@@ -214,7 +190,6 @@ class _CameraScreenState extends State {
                         constraints: const BoxConstraints(),
                         icon: const Icon(Icons.circle, color: Colors.white),
                       )),
-                      const Spacer(),
                     ]),
               )),
         ],
@@ -293,6 +268,13 @@ class _CameraScreenState extends State {
         if (faces.isNotEmpty) {
           print('face detected');
           if (faces.length > 1) {
+          //Todo: add translation
+            Flushbar(
+              message: "More than one person detect",
+              backgroundColor: textMadatory,
+              duration: const Duration(seconds: 3),
+              flushbarPosition: FlushbarPosition.TOP,
+            ).show(context);
             setState(() {
               isProcessing = false;
               error = "WarningTakePictureMoreThanOnePerson".tr;
@@ -301,6 +283,13 @@ class _CameraScreenState extends State {
             _processFaceSmile(context, path, faces[0]);
           }
         } else {
+          //Todo: add translation
+          Flushbar(
+            message: "No person in pic",
+            backgroundColor: textMadatory,
+            duration: const Duration(seconds: 3),
+            flushbarPosition: FlushbarPosition.TOP,
+          ).show(context);
           print('no one');
           setState(() {
             isProcessing = false;
@@ -309,7 +298,6 @@ class _CameraScreenState extends State {
         }
         if (error != '') {
           print('error');
-          // Utils.showErrorDialog(context, error, () => _resetState());
         } else {
           //todo: popup success
           print('success');
@@ -328,6 +316,12 @@ class _CameraScreenState extends State {
       });
       print('[smilingProbability] ' + face.smilingProbability.toString());
       if (face.smilingProbability < 0.80) {
+        Flushbar(
+          message: "You're not smiling",
+          backgroundColor: textMadatory,
+          duration: const Duration(seconds: 3),
+          flushbarPosition: FlushbarPosition.TOP,
+        ).show(context);
         setState(() {
           error = "You're not smiling";
         });
@@ -337,9 +331,12 @@ class _CameraScreenState extends State {
         imagePaths[currentStatus] = path;
         _cropAndSaveImage(path, face);
         print('is cropped');
-        // if (!isProcessing) {
-        //   _onAutoCapture(context);
-        // }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+           builder: (context) =>
+            PreviewPicture()),
+         );
       }
     }
   }
@@ -354,7 +351,7 @@ class _CameraScreenState extends State {
   void _cropAndSaveImage(String path, Face face) {
     print('cropping');
     final ImageLib.Image? capturedImage =
-        ImageLib.decodeImage(File(path).readAsBytesSync());
+        ImageLib.decodeImage(File(imageFile!.path).readAsBytesSync());
     final ImageLib.Image copy = ImageLib.copyCrop(
         capturedImage!,
         face.boundingBox.topLeft.dy.toInt(),
@@ -362,8 +359,6 @@ class _CameraScreenState extends State {
         face.boundingBox.width.toInt(),
         face.boundingBox.height.toInt());
     final ImageLib.Image orientedImage = ImageLib.bakeOrientation(copy);
-    File(path).writeAsBytesSync(ImageLib.encodePng(orientedImage));
-    //upload image
-    // loading
+    File(imageFile!.path).writeAsBytesSync(ImageLib.encodePng(orientedImage));
   }
 }
