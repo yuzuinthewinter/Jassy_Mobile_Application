@@ -74,7 +74,7 @@ class _PreviewPicture extends State<PreviewPicture> {
   List e1 = [];
   List e2 = [];
 
-  String _recog(img.Image img2, img.Image img1) {
+  String _recog(img.Image img1, img.Image img2) {
     List input = imageToByteListFloat32(img1, 112, 128, 128);
     input = input.reshape([1, 112, 112, 3]);
     List output = List.filled(1 * 192, null, growable: false).reshape([1, 192]);
@@ -99,9 +99,9 @@ class _PreviewPicture extends State<PreviewPicture> {
     double currDist = 0.0;
     String predRes = "NOT RECOGNIZED";
     currDist = euclideanDistance(withEmb, currEmb);
-      if (currDist <= threshold && currDist < minDist) {
-        minDist = currDist;
-      }
+    if (currDist <= threshold && currDist < minDist) {
+      minDist = currDist;
+    }
     print(minDist.toString() + " " + predRes);
     return predRes;
   }
@@ -121,7 +121,6 @@ class _PreviewPicture extends State<PreviewPicture> {
     }
     return convertedBytes.buffer.asFloat32List();
   }
-
 
   Future fetchImage() async {
     try {
@@ -178,7 +177,7 @@ class _PreviewPicture extends State<PreviewPicture> {
         const FaceDetectorOptions(
             mode: FaceDetectorMode.fast, enableLandmarks: true));
     List<Face> faces1 = await faceDetector.processImage(myImage1);
-    List<Face> faces2 = await faceDetector.processImage(myImage1);
+    List<Face> faces2 = await faceDetector.processImage(myImage2);
 
     if (rect1.isNotEmpty) {
       rect1 = <Rect>[];
@@ -204,7 +203,7 @@ class _PreviewPicture extends State<PreviewPicture> {
       rect2.add(face.boundingBox);
 
       final img.Image? capturedImage =
-          img.decodeImage(getImageFile.readAsBytesSync());
+          img.decodeImage(widget.imageFile.readAsBytesSync());
       img.Image croppedImage = img.copyCrop(
           capturedImage!,
           face.boundingBox.topLeft.dy.toInt(),
@@ -215,7 +214,8 @@ class _PreviewPicture extends State<PreviewPicture> {
       croppedImage2 = img.copyResizeCropSquare(croppedImage, 112);
     }
 
-      res = _recog(croppedImage2, croppedImage1);
+    res = _recog(croppedImage2, croppedImage1);
+    print(res.toString());
     setState(() {
       isFaceDetected = true;
     });
