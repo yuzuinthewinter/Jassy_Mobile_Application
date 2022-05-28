@@ -13,6 +13,7 @@ import 'package:flutter_application_1/component/text/header_text.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/manage/add_country.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/component/menu_card.dart';
 import 'package:flutter_application_1/screens/admin/DashBoard/manage/basic_card.dart';
+import 'package:flutter_application_1/screens/admin/DashBoard/manage/cant_click_card.dart';
 import 'package:flutter_application_1/screens/admin/Users/component/user_card.dart';
 import 'package:flutter_application_1/screens/main-app/chat/component/chat_card.dart';
 import 'package:flutter_application_1/screens/main-app/chat/message_screen.dart';
@@ -44,38 +45,38 @@ class _ManageLanguageScreenBody extends State<ManageLanguageScreenBody> {
       appBar: BackAndCloseAppBar(text: "การจัดการภาษา"),
       body: Column(children: [
         CurvedWidget(child: JassyGradientColor()),
-        SizedBox(
-          height: size.height * 0.04,
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-          padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
-          width: size.width,
-          height: size.height * 0.062,
-          decoration: BoxDecoration(
-              color: textLight, borderRadius: BorderRadius.circular(20)),
-          child: Column(children: [
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.translate_rounded),
-                  color: primaryColor,
-                ),
-                SizedBox(
-                  width: size.width * 0.03,
-                ),
-                const Text(
-                  "การเพิ่มภาษา",
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      color: textDark),
-                )
-              ],
-            ),
-          ]),
-        ),
+        // SizedBox(
+        //   height: size.height * 0.04,
+        // ),
+        // Container(
+        //   margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+        //   padding: EdgeInsets.symmetric(horizontal: size.height * 0.025),
+        //   width: size.width,
+        //   height: size.height * 0.062,
+        //   decoration: BoxDecoration(
+        //       color: textLight, borderRadius: BorderRadius.circular(20)),
+        //   child: Column(children: [
+        //     Row(
+        //       children: [
+        //         IconButton(
+        //           onPressed: () {},
+        //           icon: const Icon(Icons.translate_rounded),
+        //           color: primaryColor,
+        //         ),
+        //         SizedBox(
+        //           width: size.width * 0.03,
+        //         ),
+        //         const Text(
+        //           "การเพิ่มภาษา",
+        //           style: TextStyle(
+        //               fontSize: 15,
+        //               fontWeight: FontWeight.w400,
+        //               color: textDark),
+        //         )
+        //       ],
+        //     ),
+        //   ]),
+        // ),
         SizedBox(
           height: size.height * 0.6,
           width: size.width,
@@ -109,7 +110,7 @@ class _ManageLanguageScreenBody extends State<ManageLanguageScreenBody> {
                             color: textLight,
                             borderRadius: BorderRadius.circular(15)),
                         child: Column(children: [
-                          BasicCard(
+                          CantClickCard(
                             size: size,
                             text: StringUtils.capitalize(
                                 data['languages'][index]),

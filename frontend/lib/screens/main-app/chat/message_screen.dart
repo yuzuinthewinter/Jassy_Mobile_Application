@@ -207,7 +207,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                       SizedBox(
                         width: size.width * 0.02,
                       ),
-                      Text("Translate".tr),
+                      isTranslate ? Text("Translate".tr) : Text("Cancel".tr),
                     ],
                   )),
               PopupMenuItem(

@@ -53,19 +53,19 @@ class _AppSettingBodyState extends State<AppSettingBody> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5, bottom: 0),
-                child: Row(
-                  children: [
-                    Text(
-                      'NotificationSetting'.tr,
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    const Spacer(),
-                    buildNotificationSwitch()
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 5, bottom: 0),
+              //   child: Row(
+              //     children: [
+              //       Text(
+              //         'NotificationSetting'.tr,
+              //         style: const TextStyle(fontSize: 18),
+              //       ),
+              //       const Spacer(),
+              //       buildNotificationSwitch()
+              //     ],
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 0),
                 child: Row(

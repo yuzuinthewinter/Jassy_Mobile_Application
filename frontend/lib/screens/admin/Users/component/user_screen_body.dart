@@ -118,9 +118,7 @@ class _UserScreenBody extends State<UserScreenBody> {
             ),
           ),
         ),
-        SizedBox(
-          height: size.height * 0.6,
-          width: size.width,
+        Expanded(
           child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('Users')
@@ -138,8 +136,7 @@ class _UserScreenBody extends State<UserScreenBody> {
                     child: Lottie.asset("assets/images/loading.json"));
               }
               var data = snapshot.data!.docs;
-              return Expanded(
-                child: ListView.builder(
+              return ListView.builder(
                   padding: const EdgeInsets.symmetric(
                       vertical: 20.0, horizontal: 20.0),
                   itemCount: data.length,
@@ -263,7 +260,6 @@ class _UserScreenBody extends State<UserScreenBody> {
                     }
                     return const SizedBox.shrink();
                   },
-                ),
               );
             },
           ),

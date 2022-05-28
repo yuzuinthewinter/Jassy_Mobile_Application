@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_application_1/component/curved_widget.dart';
 import 'package:flutter_application_1/component/header_style/header_style2.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/screens/pre-app/register_info/camera.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/utils.dart';
 import 'package:image_picker/image_picker.dart';
@@ -142,14 +144,16 @@ class _PictureUploadState extends State<PictureUpload> {
                   color: imagePath != null ? primaryColor : grey,
                   text: "NextButton".tr,
                   minimumSize: Size(size.width * 0.35, size.height * 0.05),
-                  press: () {
+                  press: () async {
                     // Todo: face reg
                     if(imagePath != null) {
                       _uploadImage();
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => const FaceRecognition()),
-                      // );
+                      await availableCameras().then((value) => 
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => OpenCamera(cameras: value)),
+                        )
+                      );
                     }
                   },
                 ),
