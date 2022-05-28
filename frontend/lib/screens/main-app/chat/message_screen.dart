@@ -90,7 +90,6 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   }
 
   bool isInRoom = false;
-  late bool isTranslate;
 
   @override
   void initState() {
