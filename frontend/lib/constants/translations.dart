@@ -88,6 +88,12 @@ class LocaleString extends Translations {
           "Smile" : "Please smile and take a picture.",
           "PleaseSmile" : "Please smile.",
 
+          //Handle phase two 
+          "PhaseTwoSuccessHeader": "Registration is Successful.",
+          "PhaseTwoSuccessDetail":
+              "Press button to start exchange languages.",
+          "PhaseTwoFail" : "Your face doesn't match\nPlease try again",
+
           //Main-Application
           //Jassy Main Page
           "MainPage": "Home",
@@ -342,6 +348,12 @@ class LocaleString extends Translations {
           "WarningTakePictureNoOne": "กรุณาถ่ายรูปที่มีตัวตน",
           "Smile" : "กรุณายิ้ม แล้วกดถ่ายภาพ",
           "PleaseSmile" : "กรุณายิ้ม",
+
+           //Handle phase two 
+          "PhaseTwoSuccessHeader": "การลงทะเบียนสำเร็จ",
+          "PhaseTwoSuccessDetail":
+              "กดปุ่มเพื่อเริ่มแลกเปลี่ยนภาษา",
+          "PhaseTwoFail" : "ใบหน้าของคุณไม่ตรงกัน\nกรุณาลองใหม่อีกครั้ง",
 
           //Main-Application
           //Jassy Main Page

@@ -242,15 +242,10 @@ class _PictureUploadState extends State<PictureUpload> {
                             });
                       } else if (rect.length == 1) {
                         await _uploadImage();
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => CameraScreen()),
-                        // );
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PreviewPicture(imageFile: File(imagePath!.path),)),
+                              builder: (context) => CameraScreen()),
                         );
                       } else {
                         showDialog(

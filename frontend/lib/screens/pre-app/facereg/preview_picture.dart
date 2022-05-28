@@ -6,7 +6,9 @@ import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:flutter_application_1/component/popup_page/popup_with_button/error_popup_with_button.dart';
 import 'package:flutter_application_1/screens/pre-app/facereg/CameraScreen.dart';
+import 'package:flutter_application_1/screens/pre-app/facereg/register_success.dart';
 import 'package:image/image.dart' as img;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -81,6 +83,7 @@ class _PreviewPicture extends State<PreviewPicture> {
     interpreter.run(input, output);
     output = output.reshape([192]);
     e1 = List.from(output);
+    print(e1.toString());
 
     List input2 = imageToByteListFloat32(img2, 112, 128, 128);
     input2 = input2.reshape([1, 112, 112, 3]);
@@ -88,11 +91,14 @@ class _PreviewPicture extends State<PreviewPicture> {
     interpreter.run(input2, output2);
     output2 = output2.reshape([192]);
     e2 = List.from(output2);
+    print(e2.toString());
 
     return compare(e2, e1).toUpperCase();
   }
 
   double threshold = 1.0;
+  double getPredict = 0.0;
+  bool isRecognized = false;
 
   String compare(List withEmb, List currEmb) {
     double minDist = 999;
@@ -101,6 +107,11 @@ class _PreviewPicture extends State<PreviewPicture> {
     currDist = euclideanDistance(withEmb, currEmb);
     if (currDist <= threshold && currDist < minDist) {
       minDist = currDist;
+      if (minDist < threshold && minDist > 0.6) {
+        predRes = "RECOGNIZED";
+        getPredict = minDist;
+        isRecognized = true;
+      }
     }
     print(minDist.toString() + " " + predRes);
     return predRes;
@@ -215,9 +226,35 @@ class _PreviewPicture extends State<PreviewPicture> {
     }
 
     res = _recog(croppedImage2, croppedImage1);
-    print(res.toString());
+    if (res == 'RECOGNIZED') {
+      updateStatusUser();
+    } else {
+      //todo: popup
+      showDialog(
+        context: this.context, 
+        builder: (context) {
+          return ErrorPopUpWithButton(
+            text: "PhaseTwoFail".tr,
+            okPress: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CameraScreen()),
+              );
+            }
+          );
+        }
+      );
+    }
     setState(() {
       isFaceDetected = true;
+    });
+  }
+
+  void updateStatusUser() async {
+    await users.doc(currentUser!.uid).update({
+      'isAuth': true,
+      'isActive': true,
     });
   }
 
@@ -230,12 +267,12 @@ class _PreviewPicture extends State<PreviewPicture> {
         text: "LandingRegister".tr,
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const CurvedWidget(child: HeaderStyle2()),
           Expanded(
               child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   height: size.height * 0.015,
@@ -248,27 +285,30 @@ class _PreviewPicture extends State<PreviewPicture> {
                           Align(
                             alignment: Alignment.center,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20)
+                              ),
                               child: Image.file(
                                 getImageFile,
                                 fit: BoxFit.cover,
-                                height: size.height * 0.35,
-                                width: size.width * 0.35,
+                                height: size.height * 0.3,
+                                width: size.width * 0.4,
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: size.width * 0.02,
                           ),
                           Align(
                             alignment: Alignment.center,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                bottomRight: Radius.circular(20)
+                              ),
                               child: Image.file(
                                 widget.imageFile,
                                 fit: BoxFit.cover,
-                                height: size.height * 0.35,
-                                width: size.width * 0.35,
+                                height: size.height * 0.3,
+                                width: size.width * 0.4,
                               ),
                             ),
                           ),
@@ -282,10 +322,13 @@ class _PreviewPicture extends State<PreviewPicture> {
                               Align(
                                 alignment: Alignment.center,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20.0),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    bottomLeft: Radius.circular(20)
+                                  ),
                                   child: SizedBox(
-                                    height: size.height * 0.35,
-                                    width: size.width * 0.35,
+                                    height: size.height * 0.3,
+                                    width: size.width * 0.4,
                                     child: FittedBox(
                                       fit: BoxFit.cover,
                                       child: SizedBox(
@@ -301,16 +344,16 @@ class _PreviewPicture extends State<PreviewPicture> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                width: size.width * 0.02,
-                              ),
                               Align(
                                 alignment: Alignment.center,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20.0),
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(20),
+                                    bottomRight: Radius.circular(20)
+                                  ),
                                   child: SizedBox(
-                                    height: size.height * 0.35,
-                                    width: size.width * 0.35,
+                                    height: size.height * 0.3,
+                                    width: size.width * 0.4,
                                     child: FittedBox(
                                       fit: BoxFit.cover,
                                       child: SizedBox(
@@ -331,19 +374,27 @@ class _PreviewPicture extends State<PreviewPicture> {
                             ],
                           )
                         : Container(),
-              ],
-            ),
-          )),
+                ],
+              ),
+            )
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Center(
                 child: DisableToggleButton(
-                  color: isImageLoaded && isFaceDetected ? primaryColor : grey,
+                  color: isRecognized ? primaryColor : grey,
                   text: "NextButton".tr,
                   minimumSize: Size(size.width * 0.9, size.height * 0.05),
                   press: () async {
-                    if (profileImage != null) {}
+                    if (isRecognized) {
+                      //todo: navigator phase 2 success
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisterSuccess()),
+                      );
+                    }
                   },
                 ),
               ),

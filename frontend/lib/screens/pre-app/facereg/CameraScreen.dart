@@ -327,7 +327,6 @@ class _CameraScreenState extends State {
       } else {
         if (error == '') {
           imagePaths[currentStatus] = path;
-          _cropAndSaveImage(path, face);
           Navigator.push(
             context,
             MaterialPageRoute(
