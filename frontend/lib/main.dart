@@ -26,9 +26,8 @@ void main() async {
   // await Firebase.initializeApp();
   try {
     cameras = await availableCameras();
-
   } on CameraException catch (e) {
-  //  logError(e.code, e.description);
+    //  logError(e.code, e.description);
   }
   runApp(const App());
 }
@@ -122,9 +121,13 @@ class AuthGate extends StatelessWidget {
         Navigator.of(context).pushNamed(Routes.AdminJassyHome);
       } else if (data['userStatus'] == 'user') {
         if (data['isUser'] == true) {
+          await users.doc(currentUser.uid).update({
+            'isActive': true,
+            'timeStamp': DateTime.now(),
+          });
           if (data['isAuth'] == true) {
-            Navigator.of(context)
-                .pushNamed(Routes.JassyHome, arguments: [4, true, false]);//isBlocked == false
+            Navigator.of(context).pushNamed(Routes.JassyHome,
+                arguments: [4, true, false]); //isBlocked == false
           } else {
             return Navigator.of(context)
                 .pushNamed(Routes.JassyHome, arguments: [4, false, true]);
