@@ -575,8 +575,8 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                                                           width:
                                                                               size.width * 0.03,
                                                                         ),
-                                                                        const Text(
-                                                                            "บันทึกโพสต์")
+                                                                        Text(
+                                                                            "CommuSavePost".tr)
                                                                       ],
                                                                     ),
                                                                   ),
@@ -604,8 +604,8 @@ class _CommunityScreenBodyState extends State<CommunityScreenBody> {
                                                                           width:
                                                                               size.width * 0.03,
                                                                         ),
-                                                                        const Text(
-                                                                            "เลิกบันทึกโพสต์")
+                                                                        Text(
+                                                                            "ProfileRemoveSavedPost".tr)
                                                                       ],
                                                                     ),
                                                                   ),

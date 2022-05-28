@@ -373,8 +373,8 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                                                                         width: size.width *
                                                                             0.03,
                                                                       ),
-                                                                      const Text(
-                                                                          "บันทึกโพสต์")
+                                                                      Text(
+                                                                          "CommuSavePost".tr)
                                                                     ],
                                                                   ),
                                                                 ),
@@ -402,8 +402,8 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                                                                         width: size.width *
                                                                             0.03,
                                                                       ),
-                                                                      const Text(
-                                                                          "เลิกบันทึกโพสต์")
+                                                                      Text(
+                                                                          "ProfileRemoveSavedPost".tr)
                                                                     ],
                                                                   ),
                                                                 ),

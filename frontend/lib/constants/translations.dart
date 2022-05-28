@@ -132,6 +132,7 @@ class LocaleString extends Translations {
           "CommuSearchInterest": "Find a Group of Interest",
           "CommuFindGroup": "Find a Group",
           "CommuResults": "Search Results",
+          "CommuSavePost" : "Save post",
           //Group Activity
           "GroupActivity": "Group Activities",
           "GroupJoin": "Join Group",
@@ -392,6 +393,7 @@ class LocaleString extends Translations {
           "CommuSearchInterest": "ค้นหากลุ่มที่สนใจ",
           "CommuFindGroup": "ค้นหากลุ่ม",
           "CommuResults": "ผลลัพธ์การค้นหา",
+          "CommuSavePost" : "บันทึกโพสต์",
           //Group Activity
           "GroupActivity": "กิจกรรมของกลุ่ม",
           "GroupJoin": "เข้าร่วมกลุ่ม",
