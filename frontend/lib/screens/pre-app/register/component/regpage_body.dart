@@ -34,9 +34,27 @@ class _BodyState extends State<Body> {
 
     if (querySnapshot.docs.isNotEmpty) {
       var data = querySnapshot.docs[0];
-      if (data['isAuth'] == true) {
-        Navigator.of(context)
-            .pushNamed(Routes.JassyHome, arguments: [2, true, false]);
+      if (data['userStatus'] == 'admin') {
+        Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+      } else if (data['userStatus'] == 'user') {
+        if (data['isUser'] == true) {
+          await users.doc(currentUser.uid).update({
+            'isActive': true,
+            'timeStamp': DateTime.now(),
+          });
+          if (data['isAuth'] == true) {
+            Navigator.of(context).pushNamed(Routes.JassyHome,
+                arguments: [4, true, false]); //isBlocked == false
+          } else {
+            return Navigator.of(context)
+                .pushNamed(Routes.JassyHome, arguments: [4, false, true]);
+          }
+        } else {
+          return Navigator.of(context).pushNamed(Routes.RegisterProfile);
+        }
+      } else if (data['userStatus'] == 'blocked') {
+        return Navigator.of(context)
+            .pushNamed(Routes.JassyHome, arguments: [4, true, true]);
       }
     } else {
       final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -131,9 +149,27 @@ class _BodyState extends State<Body> {
 
       if (querySnapshot.docs.isNotEmpty) {
         var data = querySnapshot.docs[0];
-        if (data['isAuth'] == true) {
-          Navigator.of(context)
-              .pushNamed(Routes.JassyHome, arguments: [2, true, false]);
+        if (data['userStatus'] == 'admin') {
+          Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+        } else if (data['userStatus'] == 'user') {
+          if (data['isUser'] == true) {
+            await users.doc(currentUser.uid).update({
+              'isActive': true,
+              'timeStamp': DateTime.now(),
+            });
+            if (data['isAuth'] == true) {
+              Navigator.of(context).pushNamed(Routes.JassyHome,
+                  arguments: [4, true, false]); //isBlocked == false
+            } else {
+              return Navigator.of(context)
+                  .pushNamed(Routes.JassyHome, arguments: [4, false, true]);
+            }
+          } else {
+            return Navigator.of(context).pushNamed(Routes.RegisterProfile);
+          }
+        } else if (data['userStatus'] == 'blocked') {
+          return Navigator.of(context)
+              .pushNamed(Routes.JassyHome, arguments: [4, true, true]);
         }
       } else {
         final DateFormat formatter = DateFormat('yyyy-MM-dd');
