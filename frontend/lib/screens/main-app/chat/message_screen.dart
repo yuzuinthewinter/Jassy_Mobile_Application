@@ -33,6 +33,7 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   bool isNotificationOn = true;
+  bool isTranslate = false;
 
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
   CollectionReference chats =
@@ -193,9 +194,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                       );
                     });
               } else if (value == MenuItem.item3) {
-                reportModalBottomSheet(context) {
-                  print('report');
-                }
+                reportModalBottomSheet(context);
               }
             },
             itemBuilder: (context) => [

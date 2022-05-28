@@ -145,7 +145,7 @@ class _BodyState extends State<ConversationText> {
               chat['messages'][chat['messages'].length - 1]) {
             await chats.doc(widget.chatid).update({
               'lastMessageSent':
-                  '${StringUtils.capitalize(widget.currentUser['name']['firstname'])} removed a message.',
+                  '${StringUtils.capitalize(widget.currentUser['name']['firstname'])} ${'RemoveMessage'.tr}',
             });
           }
         }

@@ -18,11 +18,13 @@ import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_application_1/theme/index.dart';
+
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
   @override
   _BodyState createState() => _BodyState();
 }
+
 class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController phoneNumberController;
@@ -35,7 +37,9 @@ class _BodyState extends State<Body> {
   void getCountry(CountryCode? countryCode) {
     getCoutryCode = countryCode.toString();
   }
-  @override void initState() {
+
+  @override
+  void initState() {
     phoneNumberController = TextEditingController();
     phoneNumberController.addListener(() {
       final isButtonActivate = phoneNumberController.text.isEmpty;
@@ -45,12 +49,14 @@ class _BodyState extends State<Body> {
     });
     super.initState();
   }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     phoneNumberController.dispose();
     super.dispose();
   }
+
   //TODO: signin service function - facebook, google, phone
   Future _facebookLogin(BuildContext context) async {
     try {
@@ -70,19 +76,33 @@ class _BodyState extends State<Body> {
         'isActive': true,
         'timeStamp': DateTime.now(),
       });
-      if (data['isAuth'] == true) {
-        if (data['userStatus'] == 'admin') {
-          Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+      if (data['userStatus'] == 'admin') {
+        Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+      } else if (data['userStatus'] == 'user') {
+        if (data['isUser'] == true) {
+          await users.doc(currentUser.uid).update({
+            'isActive': true,
+            'timeStamp': DateTime.now(),
+          });
+          if (data['isAuth'] == true) {
+            Navigator.of(context).pushNamed(Routes.JassyHome,
+                arguments: [4, true, false]); //isBlocked == false
+          } else {
+            return Navigator.of(context)
+                .pushNamed(Routes.JassyHome, arguments: [4, false, true]);
+          }
         } else {
-          Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [2, true, false]);
+          return Navigator.of(context).pushNamed(Routes.RegisterProfile);
         }
-      } else {
-        Navigator.of(context).pushNamed(Routes.RegisterProfile);
+      } else if (data['userStatus'] == 'blocked') {
+        return Navigator.of(context)
+            .pushNamed(Routes.JassyHome, arguments: [4, true, true]);
       }
     } on FirebaseAuthException catch (e) {
       //TODO: handle failed
     }
   }
+
   Future _googleLogin(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -105,19 +125,33 @@ class _BodyState extends State<Body> {
         'isActive': true,
         'timeStamp': DateTime.now(),
       });
-      if (data['isAuth'] == true) {
-        if (data['userStatus'] == 'admin') {
-          Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+      if (data['userStatus'] == 'admin') {
+        Navigator.of(context).pushNamed(Routes.AdminJassyHome);
+      } else if (data['userStatus'] == 'user') {
+        if (data['isUser'] == true) {
+          await users.doc(currentUser.uid).update({
+            'isActive': true,
+            'timeStamp': DateTime.now(),
+          });
+          if (data['isAuth'] == true) {
+            Navigator.of(context).pushNamed(Routes.JassyHome,
+                arguments: [4, true, false]); //isBlocked == false
+          } else {
+            return Navigator.of(context)
+                .pushNamed(Routes.JassyHome, arguments: [4, false, true]);
+          }
         } else {
-          Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [2, true, false]);
+          return Navigator.of(context).pushNamed(Routes.RegisterProfile);
         }
-      } else {
-        Navigator.of(context).pushNamed(Routes.RegisterProfile);
+      } else if (data['userStatus'] == 'blocked') {
+        return Navigator.of(context)
+            .pushNamed(Routes.JassyHome, arguments: [4, true, true]);
       }
     } on FirebaseAuthException catch (e) {
       //TODO: handle failed
     }
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -128,126 +162,132 @@ class _BodyState extends State<Body> {
         children: <Widget>[
           const CurvedWidget(child: HeaderStyle3()),
           HeaderText(text: "WelcomeLoginPage".tr),
-          DescriptionText(
-              text: "DescLoginPage".tr),
+          DescriptionText(text: "DescLoginPage".tr),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-            child: Row(
-              children: [  
-                IconButtonComponent(
-                  text: "Google",
-                  minimumSize: Size(size.width * 0.4, size.height * 0.05),
-                  press: () => _googleLogin(context),
-                  iconPicture: SvgPicture.asset("assets/icons/google.svg",
-                      height: size.height * 0.027),
-                  color: textLight,
-                  textColor: greyDarker,
-                ),
-                IconButtonComponent(
-                  text: "Facebook",
-                  minimumSize: Size(size.width * 0.4, size.height * 0.05),
-                  press: () => _facebookLogin(context),
-                  iconPicture: SvgPicture.asset("assets/icons/facebook.svg",
-                      height: size.height * 0.027),
-                  color: facebookColor,
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: size.height * 0.02,
-          ),
-          Center(
-              child: Text(
-            "LoginWith".tr,
-            style: TextStyle(color: greyDark),
-          )),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
-          RequiredTextFieldLabel(textLabel: "PhoneLoginPage".tr),
-          SizedBox(
-                  height: size.height * 0.01,
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20.0),
-                  child: TextFormField(
-                    controller: phoneNumberController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [LengthLimitingTextInputFormatter(9)],
-                    decoration: InputDecoration(
-                        hintText: "Phone number",
-                        fillColor: textLight,
-                        filled: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(40),
-                            borderSide:
-                                const BorderSide(color: textLight, width: 0.0)),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(40.0),
-                          borderSide: const BorderSide(color: textLight),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 0, horizontal: 20.0),
+                    child: Row(
+                      children: [
+                        IconButtonComponent(
+                          text: "Google",
+                          minimumSize:
+                              Size(size.width * 0.4, size.height * 0.05),
+                          press: () => _googleLogin(context),
+                          iconPicture: SvgPicture.asset(
+                              "assets/icons/google.svg",
+                              height: size.height * 0.027),
+                          color: textLight,
+                          textColor: greyDarker,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(40.0),
-                          borderSide: const BorderSide(color: textLight),
+                        IconButtonComponent(
+                          text: "Facebook",
+                          minimumSize:
+                              Size(size.width * 0.4, size.height * 0.05),
+                          press: () => _facebookLogin(context),
+                          iconPicture: SvgPicture.asset(
+                              "assets/icons/facebook.svg",
+                              height: size.height * 0.027),
+                          color: facebookColor,
                         ),
-                        prefixIcon: CountryCodePicker(
-                          initialSelection: "+66",
-                          countryFilter: const ["+66", "+62", "+82"],
-                          onInit: getCountry,
-                          onChanged: getCountry,
-                          showDropDownButton: true,
-                          flagWidth: 25,
-                        )),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      } else if (value.length < 9) {
-                        //todo: translate
-                        return "กรอกให้ครบ";
-                      }
-                      return null;
-                    },
-                    onSaved: (String? phoneNumber) {
-                      phoneNumber = phoneNumberController.text;
-                    },
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: size.height * 0.07,
-                ),
-                Center(
-                  child: DisableToggleButton(
-                    color: phoneNumberController.text.isEmpty ? grey : primaryColor,
-                      text: "LoginPage".tr,
-                      minimumSize: const Size(339, 36),
-                      press: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          String phone =
-                              getCoutryCode + '${phoneNumberController.text}';
-                          print(phone);
-                          Navigator.pushNamed(context, Routes.EnterOTP,
-                              arguments: [phone, 'PhoneLoginPage'.tr]);
-                        } 
-                      }),
-                ),
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
-                const Center(child: NoAccountRegister()),
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
+                  Center(
+                      child: Text(
+                    "LoginWith".tr,
+                    style: TextStyle(color: greyDark),
+                  )),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  RequiredTextFieldLabel(textLabel: "PhoneLoginPage".tr),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 0, horizontal: 20.0),
+                    child: TextFormField(
+                      controller: phoneNumberController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [LengthLimitingTextInputFormatter(9)],
+                      decoration: InputDecoration(
+                          hintText: "Phone number",
+                          fillColor: textLight,
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40),
+                              borderSide: const BorderSide(
+                                  color: textLight, width: 0.0)),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40.0),
+                            borderSide: const BorderSide(color: textLight),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40.0),
+                            borderSide: const BorderSide(color: textLight),
+                          ),
+                          prefixIcon: CountryCodePicker(
+                            initialSelection: "+66",
+                            countryFilter: const ["+66", "+62", "+82"],
+                            onInit: getCountry,
+                            onChanged: getCountry,
+                            showDropDownButton: true,
+                            flagWidth: 25,
+                          )),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        } else if (value.length < 9) {
+                          //todo: translate
+                          return "กรอกให้ครบ";
+                        }
+                        return null;
+                      },
+                      onSaved: (String? phoneNumber) {
+                        phoneNumber = phoneNumberController.text;
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.07,
+                  ),
+                  Center(
+                    child: DisableToggleButton(
+                        color: phoneNumberController.text.isEmpty
+                            ? grey
+                            : primaryColor,
+                        text: "LoginPage".tr,
+                        minimumSize: const Size(339, 36),
+                        press: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            String phone =
+                                getCoutryCode + '${phoneNumberController.text}';
+                            print(phone);
+                            Navigator.pushNamed(context, Routes.EnterOTP,
+                                arguments: [phone, 'PhoneLoginPage'.tr]);
+                          }
+                        }),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  const Center(child: NoAccountRegister()),
                 ],
               ),
             ),
           )
-          ],
+        ],
       ),
     );
   }
