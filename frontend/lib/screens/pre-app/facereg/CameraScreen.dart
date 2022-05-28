@@ -34,7 +34,7 @@ class _CameraScreenState extends State {
           sensorOrientation: 0),
       ResolutionPreset.medium);
   List cameras = [];
-  int selectedCameraIdx = 0;
+  int selectedCameraIdx = 1;
   Map<Status, String> imagePaths = <Status, String>{};
   bool isProcessing = false;
   String error = '';
@@ -68,8 +68,8 @@ class _CameraScreenState extends State {
           selectedCameraIdx = 1;
         });
 
-        _initializeControllerFuture = controller.initialize();
-        // _initCameraController(cameras[selectedCameraIdx]).then((void v) {});
+        // _initializeControllerFuture = controller.initialize();
+        _initCameraController(cameras[selectedCameraIdx]).then((void v) {});
       } else {
         print("No camera available");
       }
@@ -122,12 +122,12 @@ class _CameraScreenState extends State {
               ),
               // const SizedBox(height: 10.0),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // back
 
-                  _cameraTogglesRowWidget(), // toggle button
-                  // _captureControlRowWidget(context), //capture button
+                  // _cameraTogglesRowWidget(), // toggle button
+                  _captureControlRowWidget(context), //capture button
                 ],
               ),
               // const SizedBox(height: 10.0)
@@ -140,7 +140,7 @@ class _CameraScreenState extends State {
 
   /// Display Camera preview.
   Widget _cameraPreviewWidget() {
-    if (controller == null || !controller.value.isInitialized) {
+    if (!controller.value.isInitialized) {
       return const Text(
         'Loading',
         style: TextStyle(
@@ -182,31 +182,31 @@ class _CameraScreenState extends State {
   }
 
   /// button capture
-  // Widget _captureControlRowWidget(BuildContext context) {
-  //   return Expanded(
-  //     child: Align(
-  //       alignment: Alignment.center,
-  //       child: Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //         mainAxisSize: MainAxisSize.max,
-  //         children: [
-  //           FloatingActionButton(
-  //               child: isProcessing
-  //                   ? const CircularProgressIndicator(
-  //                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-  //                     )
-  //                   : const Icon(Icons.camera),
-  //               backgroundColor: Colors.orange,
-  //               onPressed: isProcessing
-  //                   ? null
-  //                   : () {
-  //                       _onCapturePressed(context);
-  //                     })
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _captureControlRowWidget(BuildContext context) {
+    return Expanded(
+      child: Align(
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            FloatingActionButton(
+                child: isProcessing
+                    ? const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      )
+                    : const Icon(Icons.camera),
+                backgroundColor: Colors.orange,
+                onPressed: isProcessing
+                    ? null
+                    : () {
+                        _onAutoCapture(context);
+                      })
+          ],
+        ),
+      ),
+    );
+  }
 
   /// Display a row of toggle to select the camera (or a message if no camera is available).
   Widget _cameraTogglesRowWidget() {
@@ -260,7 +260,7 @@ class _CameraScreenState extends State {
           error = "WarningTakePictureNoOne".tr;
         });
       }
-      if (error != null) {
+      if (error != '') {
         // Utils.showErrorDialog(context, error, () => _resetState());
       } else {
         //todo: popup success
@@ -307,7 +307,7 @@ class _CameraScreenState extends State {
         });
       }
 
-      if (error == null) {
+      if (error == '') {
         imagePaths[currentStatus] = path;
         _cropAndSaveImage(path, face);
         if (!isProcessing) {
