@@ -6,7 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_application_1/screens/pre-app/facereg/preview_picture.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as ImageLib;
 import 'package:image_picker/image_picker.dart';
@@ -331,15 +331,17 @@ class _CameraScreenState extends State {
         setState(() {
           error = "You're not smiling";
         });
-      }
-
-      if (error == '') {
-        imagePaths[currentStatus] = path;
-        _cropAndSaveImage(path, face);
-        print('is cropped');
-        // if (!isProcessing) {
-        //   _onAutoCapture(context);
-        // }
+      } else {
+        if (error == '') {
+          imagePaths[currentStatus] = path;
+          _cropAndSaveImage(path, face);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    PreviewPicture(imageFile: File(imageFile!.path))),
+          );
+        }
       }
     }
   }
@@ -352,9 +354,8 @@ class _CameraScreenState extends State {
   }
 
   void _cropAndSaveImage(String path, Face face) {
-    print('cropping');
     final ImageLib.Image? capturedImage =
-        ImageLib.decodeImage(File(path).readAsBytesSync());
+        ImageLib.decodeImage(File(imageFile!.path).readAsBytesSync());
     final ImageLib.Image copy = ImageLib.copyCrop(
         capturedImage!,
         face.boundingBox.topLeft.dy.toInt(),
@@ -362,8 +363,6 @@ class _CameraScreenState extends State {
         face.boundingBox.width.toInt(),
         face.boundingBox.height.toInt());
     final ImageLib.Image orientedImage = ImageLib.bakeOrientation(copy);
-    File(path).writeAsBytesSync(ImageLib.encodePng(orientedImage));
-    //upload image
-    // loading
+    File(imageFile!.path).writeAsBytesSync(ImageLib.encodePng(orientedImage));
   }
 }

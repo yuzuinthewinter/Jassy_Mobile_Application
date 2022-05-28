@@ -12,7 +12,7 @@ import 'package:flutter_application_1/screens/pre-app/register/enter_otp.dart';
 import 'package:flutter_application_1/screens/pre-app/register/phone_register.dart';
 import 'package:flutter_application_1/screens/pre-app/register_info/component/phase_one_success.dart';
 import 'package:flutter_application_1/screens/pre-app/register_info/language.dart';
-import 'package:flutter_application_1/screens/pre-app/register_info/picture_upload.dart';
+import 'package:flutter_application_1/screens/pre-app/facereg/picture_upload.dart';
 import 'package:flutter_application_1/screens/pre-app/register_info/profile.dart';
 import 'package:flutter_application_1/screens/pre-app/register/register_page.dart';
 

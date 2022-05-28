@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter_application_1/screens/pre-app/facereg/CameraScreen.dart';
+import 'package:flutter_application_1/screens/pre-app/facereg/preview_picture.dart';
 import 'package:image/image.dart' as img;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,6 @@ class _PictureUploadState extends State<PictureUpload> {
 
       setState(() {
         pickedImage = File(image.path);
-        print(image.path);
         imagePath = image;
         imageName = image.name.toString();
         imageFile = imageFile;
@@ -243,22 +243,11 @@ class _PictureUploadState extends State<PictureUpload> {
                             });
                       } else if (rect.length == 1) {
                         await _uploadImage();
-                        //crop and save to facereg picture
-                        //todo: next
-                        //open camera
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => CameraScreen()),
                         );
-                        // await availableCameras().then((value) => 
-                        // Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           builder: (context) =>
-                        //               OpenCamera()),
-                        //     // )
-                        //     );
                       } else {
                         showDialog(
                             context: context,
