@@ -12,6 +12,7 @@ import 'package:flutter_application_1/component/header_style/jassy_gradient_colo
 import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/screens/main-app/community/group_activity/group_activity_screen.dart';
 import 'package:flutter_application_1/theme/index.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -112,9 +113,14 @@ class _WritePostState extends State<WritePost> {
         if (pickedFile != null) {
           await uploadFile();
         }
-        createPost();
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
+        if(writingTextController.text.isNotEmpty || pickedFile != null) {
+          createPost();
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        }
+        // createPost();
+        // Navigator.of(context).pop();
+        // Navigator.of(context).pop();
       }),
       body: Container(
         color: textLight,
@@ -171,12 +177,27 @@ class _WritePostState extends State<WritePost> {
                       ),
                     ),
                     pickedFile != null
-                        ? Image.file(
-                            File(pickedFile!.path!),
-                            fit: BoxFit.cover,
-                            height: MediaQuery.of(context).size.height * 0.6,
-                            width: double.infinity,
-                          )
+                        ? Stack(
+                          children: [
+                            Image.file(
+                                File(pickedFile!.path!),
+                                fit: BoxFit.cover,
+                                height: MediaQuery.of(context).size.height * 0.6,
+                                width: double.infinity,
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    pickedFile = null;
+                                  });
+                                },
+                                child: SvgPicture.asset("assets/icons/close_circle.svg")
+                              )
+                            ),
+                          ],
+                        )
                         : Container(),
                   ],
                 ),

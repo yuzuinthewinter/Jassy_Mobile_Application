@@ -114,9 +114,7 @@ class _AdminScreenBody extends State<AdminScreenBody> {
             ),
           ),
         ),
-        SizedBox(
-          height: size.height * 0.6,
-          width: size.width,
+        Expanded(
           child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('Users')

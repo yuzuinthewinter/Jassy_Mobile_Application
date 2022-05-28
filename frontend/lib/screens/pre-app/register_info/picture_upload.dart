@@ -16,6 +16,7 @@ import 'package:flutter_application_1/component/header_style/header_style2.dart'
 import 'package:flutter_application_1/component/popup_page/popup_with_button/warning_popup_with_button.dart';
 import 'package:flutter_application_1/component/text/description_text.dart';
 import 'package:flutter_application_1/component/text/header_text.dart';
+import 'package:flutter_application_1/screens/pre-app/register_info/camera.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:get/utils.dart';
 import 'package:image_picker/image_picker.dart';
