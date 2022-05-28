@@ -46,11 +46,28 @@ class _PreviewPicture extends State<PreviewPicture> {
   bool isImageLoaded = false;
   bool isFaceDetected = false;
 
-  List<Rect> rect = <Rect>[];
+  List<Rect> rect1 = <Rect>[];
+  List<Rect> rect2 = <Rect>[];
   var result = '';
 
   var users = FirebaseFirestore.instance.collection('Users');
   var currentUser = FirebaseAuth.instance.currentUser;
+
+  late Uint8List _cmpImage1;
+  late Uint8List _cmpImage2;
+  final double _distance = 0;
+
+  String _getCompareResultString() {
+    if (_distance == 0) {
+      return "";
+    } else if (_distance < 0) {
+      return "processing....";
+    } else if (_distance < 0.6) {
+      return "Same person";
+    } else {
+      return "Another person";
+    }
+  }
 
   @override
   void initState() {
@@ -72,10 +89,7 @@ class _PreviewPicture extends State<PreviewPicture> {
         File file = await File('${tempDir.path}/profileImage.png').create();
         file.writeAsBytesSync(bytes);
         getFile = file;
-        // profileImage = Image.memory(bytes);
-        // Image.file(File(XFile.path))
       }
-      // var image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (getFile == null) return;
 
@@ -87,8 +101,7 @@ class _PreviewPicture extends State<PreviewPicture> {
 
       setState(() {
         getImageFile = getFile;
-        // profileImage = image;
-        // imageName = image.name.toString();
+
         imageFile = imageFile;
         imageProfileFile = imageProfileFile;
 
@@ -97,37 +110,53 @@ class _PreviewPicture extends State<PreviewPicture> {
       });
 
       if (isImageLoaded && !isFaceDetected) {
-        detectFace(getImageFile);
-        // detectFace(getImageFile);
+        detectFace();
       }
     } on PlatformException catch (e) {
       print('Fail to pick image $e');
     }
   }
 
-  Future detectFace(visionImageFile) async {
+  Future detectFace() async {
     result = '';
-    FirebaseVisionImage myImage = FirebaseVisionImage.fromFile(visionImageFile);
+    FirebaseVisionImage myImage1 = FirebaseVisionImage.fromFile(getImageFile);
+    FirebaseVisionImage myImage2 =
+        FirebaseVisionImage.fromFile(widget.imageFile);
     FaceDetector faceDetector = FirebaseVision.instance.faceDetector(
         const FaceDetectorOptions(
             mode: FaceDetectorMode.fast, enableLandmarks: true));
-    List<Face> faces = await faceDetector.processImage(myImage);
+    List<Face> faces1 = await faceDetector.processImage(myImage1);
+    List<Face> faces2 = await faceDetector.processImage(myImage1);
 
-    if (rect.isNotEmpty) {
-      rect = <Rect>[];
+    if (rect1.isNotEmpty) {
+      rect1 = <Rect>[];
     }
-    for (Face face in faces) {
-      rect.add(face.boundingBox);
+    for (Face face in faces1) {
+      rect1.add(face.boundingBox);
 
       final img.Image? capturedImage =
           img.decodeImage(getImageFile.readAsBytesSync());
-      final img.Image copy = img.copyCrop(
+      img.copyCrop(
           capturedImage!,
           face.boundingBox.topLeft.dy.toInt(),
           face.boundingBox.topLeft.dx.toInt(),
           face.boundingBox.width.toInt(),
           face.boundingBox.height.toInt());
-      final img.Image orientedImage = img.bakeOrientation(copy);
+    }
+    if (rect2.isNotEmpty) {
+      rect2 = <Rect>[];
+    }
+    for (Face face in faces2) {
+      rect2.add(face.boundingBox);
+
+      final img.Image? capturedImage =
+          img.decodeImage(getImageFile.readAsBytesSync());
+      img.copyCrop(
+          capturedImage!,
+          face.boundingBox.topLeft.dy.toInt(),
+          face.boundingBox.topLeft.dx.toInt(),
+          face.boundingBox.width.toInt(),
+          face.boundingBox.height.toInt());
     }
 
     setState(() {
@@ -207,7 +236,8 @@ class _PreviewPicture extends State<PreviewPicture> {
                                         height: imageFile.height.toDouble(),
                                         child: CustomPaint(
                                           painter: FacePainter(
-                                              rect: rect, imageFile: imageFile),
+                                              rect: rect1,
+                                              imageFile: imageFile),
                                         ),
                                       ),
                                     ),
@@ -227,11 +257,13 @@ class _PreviewPicture extends State<PreviewPicture> {
                                     child: FittedBox(
                                       fit: BoxFit.cover,
                                       child: SizedBox(
-                                        width: imageFile.width.toDouble(),
-                                        height: imageFile.height.toDouble(),
+                                        width:
+                                            imageProfileFile.width.toDouble(),
+                                        height:
+                                            imageProfileFile.height.toDouble(),
                                         child: CustomPaint(
                                           painter: FacePainter(
-                                              rect: rect,
+                                              rect: rect2,
                                               imageFile: imageProfileFile),
                                         ),
                                       ),
