@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/pre-app/register_info/preview.dart';
 import 'package:flutter_application_1/theme/index.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_application_1/screens/pre-app/facereg/preview_picture.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as ImageLib;
 import 'package:image_picker/image_picker.dart';
@@ -325,18 +325,17 @@ class _CameraScreenState extends State {
         setState(() {
           error = "You're not smiling";
         });
-      }
-
-      if (error == '') {
-        imagePaths[currentStatus] = path;
-        _cropAndSaveImage(path, face);
-        print('is cropped');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-           builder: (context) =>
-            PreviewPicture()),
-         );
+      } else {
+        if (error == '') {
+          imagePaths[currentStatus] = path;
+          _cropAndSaveImage(path, face);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    PreviewPicture(imageFile: File(imageFile!.path))),
+          );
+        }
       }
     }
   }
@@ -349,7 +348,6 @@ class _CameraScreenState extends State {
   }
 
   void _cropAndSaveImage(String path, Face face) {
-    print('cropping');
     final ImageLib.Image? capturedImage =
         ImageLib.decodeImage(File(imageFile!.path).readAsBytesSync());
     final ImageLib.Image copy = ImageLib.copyCrop(
