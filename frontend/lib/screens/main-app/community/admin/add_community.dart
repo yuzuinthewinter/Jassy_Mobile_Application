@@ -132,115 +132,115 @@ class _NewCommunityState extends State<AddNewCommunity> {
               const HeaderText(text: "สร้างข้อมูลสำหรับกลุ่มชุมชน"),
               const DescriptionText(
                   text: "กรุณากรอกข้อมูลสำหรับชุมชนใหม่ของคุณ"),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const RequiredTextFieldLabel(textLabel: "ชื่อชุมชน"),
-                    Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextFormField(
-                              controller: communitynameController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hintText: "ชื่อชุมชน",
-                                hintStyle: const TextStyle(color: greyDark),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                fillColor: textLight,
-                                filled: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(40),
-                                    borderSide: const BorderSide(
-                                        color: textLight, width: 0.0)),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(40.0),
-                                  borderSide:
-                                      const BorderSide(color: textLight),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const RequiredTextFieldLabel(textLabel: "ชื่อชุมชน"),
+                      Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextFormField(
+                                controller: communitynameController,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  hintText: "ชื่อชุมชน",
+                                  hintStyle: const TextStyle(color: greyDark),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  fillColor: textLight,
+                                  filled: true,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(40),
+                                      borderSide: const BorderSide(
+                                          color: textLight, width: 0.0)),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(40.0),
+                                    borderSide:
+                                        const BorderSide(color: textLight),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(40.0),
+                                    borderSide:
+                                        const BorderSide(color: textLight),
+                                  ),
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(40.0),
-                                  borderSide:
-                                      const BorderSide(color: textLight),
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
-                                }
-                                return null;
-                              },
-                              onChanged: (String namegroup) {
-                                namegroup = communitynameController.text;
-                                commu.namegroup = namegroup;
-                              },
-                            ),
-                            SizedBox(
-                              height: size.height * 0.03,
-                            ),
-                            const TextFieldLabel(
-                                textLabel: "อัพโหลดรูปภาพสำหรับหน้าปกชุมชน"),
-                            OutlinedButton.icon(
-                                onPressed: selectFile,
-                                icon: const Icon(
-                                  Icons.file_upload,
-                                  color: primaryColor,
-                                ),
-                                label: const Text(
-                                  "เพิ่มรูปภาพหน้าปกชุมชน",
-                                  style: TextStyle(color: primaryColor),
-                                ),
-                                style: OutlinedButton.styleFrom(
-                                  minimumSize: const Size(159, 36),
-                                  side: const BorderSide(color: primaryColor),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                )),
-                            SizedBox(
-                              height: size.height * 0.01,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: pickedFile != null
-                                      ? Image.file(
-                                          File(pickedFile!.path!),
-                                          fit: BoxFit.cover,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.25,
-                                          width: double.infinity,
-                                        )
-                                      : Container(),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.14,
-                            ),
-                            Center(
-                              child: RoundButton(
-                                text: "สร้างชุมชน",
-                                minimumSize: const Size(279, 36),
-                                press: () async {
-                                  await uploadFile();
-                                  createCommunity();
-                                  Navigator.pushNamed(
-                                    context,
-                                    Routes.AdminJassyHome,
-                                  );
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
+                                onChanged: (String namegroup) {
+                                  namegroup = communitynameController.text;
+                                  commu.namegroup = namegroup;
                                 },
                               ),
-                            )
-                          ],
-                        )),
-                  ],
+                              SizedBox(
+                                height: size.height * 0.03,
+                              ),
+                              const TextFieldLabel(
+                                  textLabel: "อัพโหลดรูปภาพสำหรับหน้าปกชุมชน"),
+                              OutlinedButton.icon(
+                                  onPressed: selectFile,
+                                  icon: const Icon(
+                                    Icons.file_upload,
+                                    color: primaryColor,
+                                  ),
+                                  label: const Text(
+                                    "เพิ่มรูปภาพหน้าปกชุมชน",
+                                    style: TextStyle(color: primaryColor),
+                                  ),
+                                  style: OutlinedButton.styleFrom(
+                                    minimumSize: const Size(159, 36),
+                                    side: const BorderSide(color: primaryColor),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                  )),
+                              SizedBox(
+                                height: size.height * 0.01,
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: pickedFile != null
+                                        ? Image.file(
+                                            File(pickedFile!.path!),
+                                            fit: BoxFit.cover,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.25,
+                                            width: double.infinity,
+                                          )
+                                        : Container(),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )),
+                    ],
+                  ),
                 ),
               ),
+              Center(
+                child: RoundButton(
+                  text: "สร้างชุมชน",
+                  minimumSize: const Size(279, 36),
+                  press: () async {
+                    await uploadFile();
+                    createCommunity();
+                    Navigator.pushNamed(
+                      context,
+                      Routes.AdminJassyHome,
+                    );
+                  },
+                ),
+              )
             ],
           ),
         ));
