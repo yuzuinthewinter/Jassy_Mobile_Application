@@ -110,26 +110,29 @@ class _NewCommunityState extends State<AddNewCommunity> {
     super.initState();
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final _formKey = GlobalKey<FormState>();
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
-        appBar: BackAndCloseAppBar(
+        appBar: const BackAndCloseAppBar(
           text: "การเพิ่มกลุ่ม",
         ),
-        body: Column(
+        body: Form(
           key: _formKey,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CurvedWidget(
-              child: HeaderStyle2(),
-            ),
-            const HeaderText(text: "สร้างข้อมูลสำหรับกลุ่มชุมชน"),
-            const DescriptionText(text: "กรุณากรอกข้อมูลสำหรับชุมชนใหม่ของคุณ"),
-            Expanded(
-              child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CurvedWidget(
+                child: HeaderStyle2(),
+              ),
+              const HeaderText(text: "สร้างข้อมูลสำหรับกลุ่มชุมชน"),
+              const DescriptionText(
+                  text: "กรุณากรอกข้อมูลสำหรับชุมชนใหม่ของคุณ"),
+              SingleChildScrollView(
                 child: Column(
                   children: [
                     const RequiredTextFieldLabel(textLabel: "ชื่อชุมชน"),
@@ -170,7 +173,7 @@ class _NewCommunityState extends State<AddNewCommunity> {
                                 }
                                 return null;
                               },
-                              onChanged: (String? namegroup) {
+                              onChanged: (String namegroup) {
                                 namegroup = communitynameController.text;
                                 commu.namegroup = namegroup;
                               },
@@ -202,9 +205,17 @@ class _NewCommunityState extends State<AddNewCommunity> {
                             Row(
                               children: <Widget>[
                                 Expanded(
-                                  child: pickedFile != null 
-                        ? Image.file(File(pickedFile!.path!), fit: BoxFit.cover, height: MediaQuery.of(context).size.height * 0.25, width: double.infinity,)
-                        : Container(),
+                                  child: pickedFile != null
+                                      ? Image.file(
+                                          File(pickedFile!.path!),
+                                          fit: BoxFit.cover,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.25,
+                                          width: double.infinity,
+                                        )
+                                      : Container(),
                                 ),
                               ],
                             ),
@@ -230,8 +241,8 @@ class _NewCommunityState extends State<AddNewCommunity> {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }

@@ -196,33 +196,6 @@ class _CameraScreenState extends State {
     );
   }
 
-  /// button capture
-  Widget _captureControlRowWidget(BuildContext context) {
-    return Expanded(
-      child: Align(
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            FloatingActionButton(
-                child: isProcessing
-                    ? const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      )
-                    : const Icon(Icons.camera),
-                backgroundColor: Colors.orange,
-                onPressed: isProcessing
-                    ? null
-                    : () {
-                        _onAutoCapture(context);
-                      })
-          ],
-        ),
-      ),
-    );
-  }
-
   XFile? imageFile;
 
   void _onAutoCapture(BuildContext context) async {

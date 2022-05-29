@@ -33,10 +33,20 @@ class _ReportPostInfoPage extends State<ReportPostInfoPage> {
     CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
     CollectionReference groups =
         FirebaseFirestore.instance.collection('Community');
+    CollectionReference report =
+        FirebaseFirestore.instance.collection('ReportPost');
     await posts.doc(postid).delete();
     await groups.doc(groupid).update({
       'postsID': FieldValue.arrayRemove([postid]),
     });
+    var snapshot =
+        await report.where('postid', isEqualTo: widget.report['postid']).get();
+    if (snapshot.docs.isNotEmpty) {
+      QueryDocumentSnapshot doc = snapshot.docs[0];
+      DocumentReference docRef = doc.reference;
+      await report.doc(docRef.id).delete();
+    }
+    Navigator.of(context).pop();
     Navigator.of(context).pop();
   }
 

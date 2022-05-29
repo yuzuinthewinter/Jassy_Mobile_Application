@@ -53,8 +53,6 @@ class _AppScreen extends State<App> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      // Initialize FlutterFire
-      // future: Firebase.initializeApp(),
       future: _calculation,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -116,7 +114,7 @@ class AuthGate extends StatelessWidget {
     var snapshot = await queryUser.get();
 
     if (snapshot.docs.isNotEmpty) {
-      final data = snapshot.docs[0];
+      final data = await snapshot.docs[0];
       if (data['userStatus'] == 'admin') {
         Navigator.of(context).pushNamed(Routes.AdminJassyHome);
       } else if (data['userStatus'] == 'user') {
