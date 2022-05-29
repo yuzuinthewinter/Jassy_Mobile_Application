@@ -142,9 +142,27 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
     }
   }
 
+  bool isLoading = true;
+  bool isAdmin = false;
+
+  checkStatus() async {
+    var snapshot = await users.where('uid', isEqualTo: currentUser!.uid).get();
+    if (snapshot.docs.isNotEmpty) {
+      final data = await snapshot.docs[0];
+      if (data['userStatus'] == 'admin') {
+        isAdmin = true;
+        isLoading = false;
+      } else {
+        isAdmin = false;
+        isLoading = false;
+      }
+    }
+  }
+
   @override
   void initState() {
     checkHaveRoom();
+    checkStatus();
     tabController = TabController(length: 2, vsync: this);
 
     tabController.addListener(() {
@@ -249,18 +267,35 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20, top: 5),
-                          child: InkWell(
-                              onTap: () {
-                                widget.isMainPage
-                                    ? likeUser(widget.user['uid'])
-                                    : createChatRoom(widget.user['uid']);
-                              },
-                              child: SvgPicture.asset(widget.isMainPage
-                                  ? "assets/icons/heart_button.svg"
-                                  : "assets/icons/ms_button.svg")),
-                        )
+                        FutureBuilder(
+                            future: checkStatus(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return const Scaffold(
+                                  body: Text('error'),
+                                );
+                              }
+                              return isLoading
+                                  ? const SizedBox.shrink()
+                                  : isAdmin
+                                      ? const SizedBox.shrink()
+                                      : Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 20, top: 5),
+                                          child: InkWell(
+                                              onTap: () {
+                                                widget.isMainPage
+                                                    ? likeUser(
+                                                        widget.user['uid'])
+                                                    : createChatRoom(
+                                                        widget.user['uid']);
+                                              },
+                                              child: SvgPicture.asset(widget
+                                                      .isMainPage
+                                                  ? "assets/icons/heart_button.svg"
+                                                  : "assets/icons/ms_button.svg")),
+                                        );
+                            }),
                       ]),
                   DescTabBar(tabController: tabController),
                   Container(
