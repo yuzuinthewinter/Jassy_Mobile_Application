@@ -59,6 +59,7 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
   //array data
   final languageItems = [
     'Khmer',
+    'Chinese Traditional',
     'English',
     'Indonesian',
     'Japanese',

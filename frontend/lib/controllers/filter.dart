@@ -19,6 +19,7 @@ class FilterController extends GetxController {
 
   final _LanguageChoicesLists = [
     'Khmer',
+    'Chinese Traditional',
     'English',
     'Indonesian',
     'Japanese',

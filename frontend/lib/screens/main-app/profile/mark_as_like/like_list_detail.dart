@@ -33,6 +33,7 @@ class _LikeListDetail extends State<LikeListDetail> {
   bool isTranslate = false;
   final _LanguageChoicesLists = [
     'Khmer',
+    'Chinese Traditional',
     'English',
     'Indonesian',
     'Japanese',
@@ -62,6 +63,7 @@ class _LikeListDetail extends State<LikeListDetail> {
 
   final List locale = [
     {'name': 'Khmer', 'code': 'km'},
+    {'name': 'Chinese Traditional', 'code' : 'zh-tw'},
     {'name': 'English', 'code': 'en'},
     {'name': 'Indonesian', 'code': 'id'},
     {'name': 'Japanese', 'code': 'ja'},

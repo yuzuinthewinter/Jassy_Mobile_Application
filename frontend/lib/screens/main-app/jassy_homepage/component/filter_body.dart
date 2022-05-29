@@ -19,6 +19,7 @@ class FilterBody extends StatefulWidget {
 class _FilterBodyState extends State<FilterBody> {
   final _LanguageChoicesLists = [
     'Khmer',
+    'Chinese Traditional',
     'English',
     'Indonesian',
     'Japanese',
