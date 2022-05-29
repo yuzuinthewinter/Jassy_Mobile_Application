@@ -549,7 +549,6 @@ class _BodyState extends State<ConversationText> {
                                         itemBuilder: (context, index) {
                                           return InkWell(
                                               onTap: () {
-                                                Navigator.pop(context);
                                                 AddFavorite(
                                                     message['messageID'],
                                                     _LanguageChoicesLists[

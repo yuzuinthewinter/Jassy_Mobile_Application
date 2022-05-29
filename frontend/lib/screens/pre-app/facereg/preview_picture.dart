@@ -235,10 +235,8 @@ class _PreviewPicture extends State<PreviewPicture> {
             return ErrorPopUpWithButton(
                 text: "PhaseTwoFail".tr,
                 okPress: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CameraScreen()),
-                  );
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 });
           });
     }
