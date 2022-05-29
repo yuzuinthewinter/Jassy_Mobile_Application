@@ -57,7 +57,14 @@ class _ProfileSettingBodyState extends State<ProfileSettingBody>
   bool isLVIntlang = false;
 
   //array data
-  final languageItems = ['Thai', 'Korean', 'Indonsian'];
+  final languageItems = [
+    'Khmer',
+    'English',
+    'Indonesian',
+    'Japanese',
+    'Korean',
+    'Thai',
+  ];
   final languageLevelItems = [
     "Beginner",
     "Elementary",
