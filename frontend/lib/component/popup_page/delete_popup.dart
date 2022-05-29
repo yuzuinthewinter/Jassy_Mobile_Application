@@ -30,7 +30,7 @@ class DeleteWarningPopUp extends StatelessWidget {
           children: [
             SvgPicture.asset("assets/icons/warning.svg",),
             SizedBox(height: size.height * 0.04,),
-            const Text("คุณแน่ใจหรือไม่ว่าต้องการลบรายการที่เลือก", style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+            Text("WarningDelete".tr, style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
             SizedBox(height: size.height * 0.03,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

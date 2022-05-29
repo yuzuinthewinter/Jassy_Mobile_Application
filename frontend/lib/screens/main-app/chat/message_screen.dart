@@ -182,6 +182,9 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             onSelected: (value) async {
               if (value == MenuItem.item1) {
                 await translateChatController.updateTranslateChat();
+                setState(() {
+                        isTranslate = !isTranslate;
+                      });
               } else if (value == MenuItem.item2) {
                 showDialog(
                     context: context,
@@ -206,7 +209,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                       SizedBox(
                         width: size.width * 0.02,
                       ),
-                      isTranslate ? Text("Translate".tr) : Text("Cancel".tr),
+                      isTranslate ? Text("Cancel".tr) : Text("Translate".tr),
                     ],
                   )),
               PopupMenuItem(

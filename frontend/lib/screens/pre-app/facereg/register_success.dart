@@ -62,7 +62,7 @@ class _RegisterSuccess extends State<RegisterSuccess> {
           Center(
             child: DisableToggleButton(
               color: primaryColor,
-              text: "PhaseOneGoToPhaseTwo".tr,
+              text: "PhaseOneGoToApp".tr,
               minimumSize: Size(size.width * 0.8, size.height * 0.05),
               press: () {
                 Navigator.of(context).pushNamed(Routes.JassyHome, arguments: [4, true, false]);

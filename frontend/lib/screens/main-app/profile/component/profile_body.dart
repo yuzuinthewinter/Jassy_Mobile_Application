@@ -12,7 +12,6 @@ import 'package:flutter_application_1/screens/main-app/profile/profile_setting/p
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_picture_widget.dart';
 import 'package:flutter_application_1/screens/main-app/profile/saved_post/saved_post.dart';
-import 'package:flutter_application_1/screens/pre-app/facereg/picture_upload.dart';
 import 'package:flutter_application_1/theme/index.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -167,7 +166,7 @@ class _ProfileScreenBody extends State<ProfileScreenBody> {
                           onTab: () {
                             Navigator.push(context,
                                 CupertinoPageRoute(builder: (context) {
-                              return PictureUpload();
+                              return const AboutJassy();
                             }));
                           },
                         ),

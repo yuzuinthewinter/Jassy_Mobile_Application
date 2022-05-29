@@ -256,6 +256,7 @@ class LocaleString extends Translations {
           "WarningLeave": "Are you sure you\nwant to leave this group ?",
           "RegisterSuccess": "Success",
           "NextButton": "Next",
+          "WarningDelete" : "Are you sure you want to delete the selected item?",
 
           //About Jassy
           "AboutJassyApp":
@@ -516,6 +517,7 @@ class LocaleString extends Translations {
           "WarningLeave": "คุณต้องการออกจากกลุ่มนี้ ?",
           "RegisterSuccess": "ลงทะเบียนสำเร็จ",
           "NextButton": "ต่อไป",
+          "WarningDelete" : "คุณแน่ใจหรือไม่ว่าต้องการลบรายการที่เลือก",
 
           //About Jassy
           "AboutJassyApp":

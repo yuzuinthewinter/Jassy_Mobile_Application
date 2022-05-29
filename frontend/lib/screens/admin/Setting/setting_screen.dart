@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/component/appbar/noaction_appbar.dart';
 import 'package:flutter_application_1/constants/routes.dart';
+import 'package:flutter_application_1/screens/main-app/profile/about_jassy/about_jassy.dart';
 import 'package:flutter_application_1/screens/main-app/profile/app_setting/app_setting.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_body.dart';
 import 'package:flutter_application_1/screens/main-app/profile/component/profile_menu_widget.dart';
@@ -101,8 +102,13 @@ class SettingScreen extends StatelessWidget {
                 ProfileMenu(
                   size: size,
                   icon: SvgPicture.asset("assets/icons/about_jassy_icon.svg"),
-                  text: "เกี่ยวกับแจสซี่",
-                  onTab: () {},
+                  text: "ProfileAboutJassy".tr,
+                  onTab: () {
+                    Navigator.push(context,
+                      CupertinoPageRoute(builder: (context) {
+                      return const AboutJassy();
+                    }));
+                  },
                 ),
               ]),
             ),
@@ -126,7 +132,7 @@ class SettingScreen extends StatelessWidget {
                         width: size.width * 0.03,
                       ),
                       Text(
-                        "ออกจากระบบ",
+                        "ProfileLogOut".tr,
                         style: TextStyle(color: textMadatory),
                       ),
                       Spacer(),
