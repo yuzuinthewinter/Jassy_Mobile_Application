@@ -47,6 +47,7 @@ class _BodyState extends State<ConversationText> {
 
   final _LanguageChoicesLists = [
     'Khmer',
+    'Chinese Traditional',
     'English',
     'Indonesian',
     'Japanese',
@@ -56,6 +57,7 @@ class _BodyState extends State<ConversationText> {
 
   final List locale = [
     {'name': 'Khmer', 'code': 'km'},
+    {'name': 'Chinese Traditional', 'code' : 'zh-tw'},
     {'name': 'English', 'code': 'en'},
     {'name': 'Indonesian', 'code': 'id'},
     {'name': 'Japanese', 'code': 'ja'},
@@ -619,6 +621,7 @@ class _TypeTextMessage extends State<TypeTextMessage> {
 
   final List locale = [
     {'name': 'Khmer', 'code': 'km'},
+    {'name': 'Chinese Traditional', 'code' : 'zh-tw'},
     {'name': 'English', 'code': 'en'},
     {'name': 'Indonesian', 'code': 'id'},
     {'name': 'Japanese', 'code': 'ja'},

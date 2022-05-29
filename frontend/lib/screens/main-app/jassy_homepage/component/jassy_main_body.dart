@@ -39,6 +39,7 @@ class _JassyMainBodyState extends State<JassyMainBody> {
 
   final _LanguageChoicesLists = [
     'Khmer',
+    'Chinese Traditional',
     'English',
     'Indonesian',
     'Japanese',
