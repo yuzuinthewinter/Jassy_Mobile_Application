@@ -230,17 +230,17 @@ class _PreviewPicture extends State<PreviewPicture> {
     if (!isRecognized) {
       //todo: popup
       showDialog(
-          context: this.context,
-          builder: (context) {
-            return ErrorPopUpWithButton(
-                text: "PhaseTwoFail".tr,
-                okPress: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CameraScreen()),
-                  );
-                });
-          });
+        context: this.context, 
+        builder: (context) {
+          return ErrorPopUpWithButton(
+            text: "PhaseTwoFail".tr,
+            okPress: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            }
+          );
+        }
+      );
     }
     setState(() {
       isFaceDetected = true;

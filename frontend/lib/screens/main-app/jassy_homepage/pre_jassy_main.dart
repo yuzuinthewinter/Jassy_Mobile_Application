@@ -26,6 +26,7 @@ class _PreJassyMainBodyState extends State<PreJassyMain> {
 
   final _LanguageChoicesLists = [
     'Khmer',
+    'Chinese Traditional',
     'English',
     'Indonesian',
     'Japanese',

@@ -217,7 +217,7 @@ class _BodyState extends State<Body> {
                     child: TextFormField(
                       controller: phoneNumberController,
                       keyboardType: TextInputType.number,
-                      inputFormatters: [LengthLimitingTextInputFormatter(9)],
+                      inputFormatters: [LengthLimitingTextInputFormatter(15)],
                       decoration: InputDecoration(
                           hintText: "Phone number",
                           fillColor: textLight,
@@ -238,7 +238,7 @@ class _BodyState extends State<Body> {
                           ),
                           prefixIcon: CountryCodePicker(
                             initialSelection: "+66",
-                            countryFilter: const ["+66", "+62", "+82"],
+                            countryFilter: const ["+66", "+62", "+82", "+886", "+855", "+81"],
                             onInit: getCountry,
                             onChanged: getCountry,
                             showDropDownButton: true,
@@ -246,10 +246,10 @@ class _BodyState extends State<Body> {
                           )),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'InfoPleaseFill'.tr;
                         } else if (value.length < 9) {
                           //todo: translate
-                          return "กรอกให้ครบ";
+                          return "PhoneWarning".tr;
                         }
                         return null;
                       },

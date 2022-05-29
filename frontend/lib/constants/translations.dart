@@ -28,6 +28,7 @@ class LocaleString extends Translations {
           "PhonePageDesc":
               "Please enter your phone number for sending OTP to register.",
           "PhonePagePhoneNumber": "Phone number",
+          "PhoneWarning" : "Please fill out the information completely.",
           //OTP comfirmed page
           "OtpPageFilled": "Enter OTP code",
           "OtpPageDesc":
@@ -292,6 +293,7 @@ class LocaleString extends Translations {
           "PhonePageDesc":
               "กรุณากรอกหมายเลขโทรศัพท์ของคุณสำหรับการส่งเลข OTP เพื่อลงทะเบียน",
           "PhonePagePhoneNumber": "เบอร์โทรศัพท์",
+          "PhoneWarning" : "กรุณากรอกข้อมูลให้ครบถ้วน",
           //OTP comfirmed page
           "OtpPageFilled": "กรุณาใส่รหัสลับ",
           "OtpPageDesc":
