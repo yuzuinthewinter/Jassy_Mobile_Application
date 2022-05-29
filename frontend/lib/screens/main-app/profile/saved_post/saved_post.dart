@@ -345,7 +345,7 @@ class _SavedPostState extends State<SavedPost> {
                                   width: size.width * 0.03,
                                 ),
                                 Text(
-                                  "เลิกบันทึก",
+                                  "ProfileRemoveSavedPost".tr,
                                   style: TextStyle(fontSize: 16),
                                 )
                               ],

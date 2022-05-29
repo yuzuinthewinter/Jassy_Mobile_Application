@@ -207,10 +207,44 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
           FirebaseFirestore.instance.collection('Posts');
       CollectionReference groups =
           FirebaseFirestore.instance.collection('Community');
+      CollectionReference report =
+          FirebaseFirestore.instance.collection('ReportPost');
+      CollectionReference savePost =
+          FirebaseFirestore.instance.collection('SavePosts');
       await posts.doc(post['postid']).delete();
       await groups.doc(post['groupid']).update({
         'postsID': FieldValue.arrayRemove([post['postid']]),
       });
+
+      var snapshot =
+          await report.where('postid', isEqualTo: post['postid']).get();
+      if (snapshot.docs.isNotEmpty) {
+        List<QueryDocumentSnapshot> doc = snapshot.docs;
+        if (doc.length > 1) {
+          for (var docid in doc) {
+            DocumentReference docRef = docid.reference;
+            await report.doc(docRef.id).delete();
+          }
+        } else if (doc.length == 1) {
+          DocumentReference docRef = doc[0].reference;
+          await report.doc(docRef.id).delete();
+        }
+      }
+
+      var snap =
+          await savePost.where('saved', arrayContains: post['postid']).get();
+      if (snap.docs.isNotEmpty) {
+        List<QueryDocumentSnapshot> docSave = snap.docs;
+        if (docSave.length > 1) {
+          for (var docid in docSave) {
+            DocumentReference docRef = docid.reference;
+            await report.doc(docRef.id).delete();
+          }
+        } else if (docSave.length == 1) {
+          DocumentReference docRef = docSave[0].reference;
+          await report.doc(docRef.id).delete();
+        }
+      }
       Navigator.of(context).pop();
     }
 
@@ -373,8 +407,8 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                                                                         width: size.width *
                                                                             0.03,
                                                                       ),
-                                                                      Text(
-                                                                          "CommuSavePost".tr)
+                                                                      Text("CommuSavePost"
+                                                                          .tr)
                                                                     ],
                                                                   ),
                                                                 ),
@@ -402,8 +436,8 @@ class _GroupActivityScreenBodyState extends State<GroupActivityScreenBody> {
                                                                         width: size.width *
                                                                             0.03,
                                                                       ),
-                                                                      Text(
-                                                                          "ProfileRemoveSavedPost".tr)
+                                                                      Text("ProfileRemoveSavedPost"
+                                                                          .tr)
                                                                     ],
                                                                   ),
                                                                 ),

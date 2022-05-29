@@ -42,9 +42,16 @@ class _ReportPostInfoPage extends State<ReportPostInfoPage> {
     var snapshot =
         await report.where('postid', isEqualTo: widget.report['postid']).get();
     if (snapshot.docs.isNotEmpty) {
-      QueryDocumentSnapshot doc = snapshot.docs[0];
-      DocumentReference docRef = doc.reference;
-      await report.doc(docRef.id).delete();
+      List<QueryDocumentSnapshot> doc = snapshot.docs;
+      if (doc.length > 1) {
+        for (var docid in doc) {
+          DocumentReference docRef = docid.reference;
+          await report.doc(docRef.id).delete();
+        }
+      } else if (doc.length == 1) {
+        DocumentReference docRef = doc[0].reference;
+        await report.doc(docRef.id).delete();
+      }
     }
     Navigator.of(context).pop();
     Navigator.of(context).pop();
