@@ -247,11 +247,7 @@ class _BodyState extends State<Body> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'InfoPleaseFill'.tr;
-                        } else if (value.length < 15) {
-                          //todo: translate
-                          return "PhoneWarning".tr;
-                        }
-                        return null;
+                        } return null;
                       },
                       onSaved: (String? phoneNumber) {
                         phoneNumber = phoneNumberController.text;

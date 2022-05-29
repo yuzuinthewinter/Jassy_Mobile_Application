@@ -91,10 +91,7 @@ class _BodyState extends State<Body> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'InfoPleaseFill'.tr;
-                } else if (value.length < 15) {
-                  return "PhoneWarning".tr;
-                }
-                return null;
+                } return null;
               },
             ),
           ),
