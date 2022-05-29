@@ -87,7 +87,8 @@ class _PreviewPicture extends State<PreviewPicture> {
 
     List input2 = imageToByteListFloat32(img2, 112, 128, 128);
     input2 = input2.reshape([1, 112, 112, 3]);
-    List output2 = List.filled(1 * 192, null, growable: false).reshape([1, 192]);
+    List output2 =
+        List.filled(1 * 192, null, growable: false).reshape([1, 192]);
     interpreter.run(input2, output2);
     output2 = output2.reshape([192]);
     e2 = List.from(output2);
@@ -226,9 +227,7 @@ class _PreviewPicture extends State<PreviewPicture> {
     }
 
     res = _recog(croppedImage2, croppedImage1);
-    if (res == 'RECOGNIZED') {
-      updateStatusUser();
-    } else {
+    if (!isRecognized) {
       //todo: popup
       showDialog(
         context: this.context, 
@@ -283,9 +282,8 @@ class _PreviewPicture extends State<PreviewPicture> {
                             alignment: Alignment.center,
                             child: ClipRRect(
                               borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                bottomLeft: Radius.circular(20)
-                              ),
+                                  topLeft: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20)),
                               child: Image.file(
                                 getImageFile,
                                 fit: BoxFit.cover,
@@ -298,9 +296,8 @@ class _PreviewPicture extends State<PreviewPicture> {
                             alignment: Alignment.center,
                             child: ClipRRect(
                               borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20)
-                              ),
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20)),
                               child: Image.file(
                                 widget.imageFile,
                                 fit: BoxFit.cover,
@@ -320,9 +317,8 @@ class _PreviewPicture extends State<PreviewPicture> {
                                 alignment: Alignment.center,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    bottomLeft: Radius.circular(20)
-                                  ),
+                                      topLeft: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20)),
                                   child: SizedBox(
                                     height: size.height * 0.3,
                                     width: size.width * 0.4,
@@ -345,9 +341,8 @@ class _PreviewPicture extends State<PreviewPicture> {
                                 alignment: Alignment.center,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(20),
-                                    bottomRight: Radius.circular(20)
-                                  ),
+                                      topRight: Radius.circular(20),
+                                      bottomRight: Radius.circular(20)),
                                   child: SizedBox(
                                     height: size.height * 0.3,
                                     width: size.width * 0.4,
@@ -371,10 +366,9 @@ class _PreviewPicture extends State<PreviewPicture> {
                             ],
                           )
                         : Container(),
-                ],
-              ),
-            )
-          ),
+              ],
+            ),
+          )),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -386,6 +380,7 @@ class _PreviewPicture extends State<PreviewPicture> {
                   press: () async {
                     if (isRecognized) {
                       //todo: navigator phase 2 success
+                      updateStatusUser();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
