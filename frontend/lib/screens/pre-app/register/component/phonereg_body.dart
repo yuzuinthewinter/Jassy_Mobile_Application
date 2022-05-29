@@ -61,7 +61,7 @@ class _BodyState extends State<Body> {
             child: TextFormField(
               controller: phoneNumberController,
               keyboardType: TextInputType.number,
-              inputFormatters: [LengthLimitingTextInputFormatter(9)],
+              inputFormatters: [LengthLimitingTextInputFormatter(15)],
               decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(
                       vertical: 15.0, horizontal: 10.0),
@@ -91,7 +91,10 @@ class _BodyState extends State<Body> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'InfoPleaseFill'.tr;
-                } return null;
+                } else if (value.length < 9) {
+                  return "PhoneWarning".tr;
+                }
+                return null;
               },
             ),
           ),

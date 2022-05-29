@@ -217,7 +217,7 @@ class _BodyState extends State<Body> {
                     child: TextFormField(
                       controller: phoneNumberController,
                       keyboardType: TextInputType.number,
-                      inputFormatters: [LengthLimitingTextInputFormatter(9)],
+                      inputFormatters: [LengthLimitingTextInputFormatter(15)],
                       decoration: InputDecoration(
                           hintText: "Phone number",
                           fillColor: textLight,
@@ -247,7 +247,11 @@ class _BodyState extends State<Body> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'InfoPleaseFill'.tr;
-                        } return null;
+                        } else if (value.length < 9) {
+                          //todo: translate
+                          return "PhoneWarning".tr;
+                        }
+                        return null;
                       },
                       onSaved: (String? phoneNumber) {
                         phoneNumber = phoneNumberController.text;
